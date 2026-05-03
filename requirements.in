@@ -1,0 +1,32 @@
+catboost
+datasets
+gpustat ; platform_system == "Linux"
+joblib
+kaggle>=2.0.1
+kagglehub >= 1.0.0
+lightgbm
+numpy
+openml
+pandas >= 2.2.2
+peft
+pytabkit
+pytest
+python-dotenv
+sap_rpt_oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss@v1.1.2
+scikit-learn
+sentence_transformers
+setuptools < 82
+scipy
+skrub
+streamlit
+tabdpt >= 1.1.9
+tabicl>=2.0.3
+autogluon.multimodal
+tabpfn >= 7.1.1
+tabstar >= 1.1.15
+torch >= 2.6.0
+torchvision
+tqdm
+transformers >= 4.49.0
+xgboost
+wandb

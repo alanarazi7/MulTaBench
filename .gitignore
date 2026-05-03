@@ -1,0 +1,22 @@
+.DS_Store
+.env
+.idea
+.venv
+**/catboost_info/
+**/wandb/
+**/.tabstar_*/
+**/temp_*/
+**/check_whl/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# venv legacy
+.TabSTAR-env/
+kaggle_uploads/
+
+# Generated outputs (kept in paper-multabench repo instead)
+results/qualitative/
+figures/
