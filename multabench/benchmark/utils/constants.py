@@ -1,6 +1,4 @@
-import os
-
-KAGGLE_USERNAME = os.getenv("KAGGLE_USERNAME")
+KAGGLE_USERNAME = "chico89"
 BENCHMARK_NAME = "MulTaBench"
 
 IMAGES_DIR = "images"
