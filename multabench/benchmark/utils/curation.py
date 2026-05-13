@@ -12,7 +12,7 @@ from PIL import Image, UnidentifiedImageError
 
 from multabench.datasets.description import get_dataset_description
 from multabench.benchmark.utils.constants import (
-    BENCHMARK_NAME, IMAGES_DIR, KAGGLE_METADATA_JSON, KAGGLE_USERNAME, METADATA_JSON,
+    BENCHMARK_NAME, IMAGES_DIR, KAGGLE_METADATA_JSON, METADATA_JSON, MULTABENCH_KAGGLE_OWNER,
 )
 
 TASK_REG = "reg"
@@ -120,7 +120,7 @@ def write_kaggle_metadata(output_dir: str, slug: str, dataset_id: str, task_type
     title = f"{BENCHMARK_NAME}: {readable} [{modality}, {task_label}]"
     kaggle_metadata = {
         "title": title,
-        "id": f"{KAGGLE_USERNAME}/{slug}",
+        "id": f"{MULTABENCH_KAGGLE_OWNER}/{slug}",
         "licenses": [{"name": "other"}],
         "isPublic": True,
     }

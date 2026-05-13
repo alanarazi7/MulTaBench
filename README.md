@@ -2,6 +2,9 @@
 
 Multimodal tabular benchmark with image and text modalities. Evaluates tabular learners on 20 image datasets and 20 text datasets, with optional DINO/E5 LoRA fine-tuning.
 
+**Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616)  
+**Datasets**: [kaggle.com/chico89](https://www.kaggle.com/chico89/datasets)
+
 ## Setup
 
 ```bash

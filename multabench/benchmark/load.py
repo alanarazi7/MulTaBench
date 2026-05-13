@@ -20,7 +20,7 @@ import pandas as pd
 from multabench.datasets.curation import MultimodalDataset
 from multabench.datasets.multimodal import MultimodalState, MultimodalError
 from multabench.datasets.objects import SupervisedTask
-from multabench.benchmark.utils.constants import KAGGLE_USERNAME, METADATA_JSON, DATA_CSV
+from multabench.benchmark.utils.constants import METADATA_JSON, DATA_CSV, MULTABENCH_KAGGLE_OWNER
 from multabench.benchmark.utils.curation import TASK_REG, task_type_from_name
 from multabench.preprocessing.feat_types import detect_text_features
 
@@ -67,7 +67,7 @@ def _apply_multimodal_state(x: pd.DataFrame, image_col: Optional[str],
 
 def load_multabench_dataset(dataset_id, multimodal_state: Optional[MultimodalState] = None) -> MultimodalDataset:
     slug = dataset_id.value
-    kaggle_ref = f"{KAGGLE_USERNAME}/{slug}"
+    kaggle_ref = f"{MULTABENCH_KAGGLE_OWNER}/{slug}"
     print(f"Downloading {kaggle_ref} from Kaggle...")
     for attempt in range(3):
         try:
