@@ -1,4 +1,3 @@
-MULTABENCH_KAGGLE_USER = "chico89"
 BENCHMARK_NAME = "MulTaBench"
 
 IMAGES_DIR = "images"
