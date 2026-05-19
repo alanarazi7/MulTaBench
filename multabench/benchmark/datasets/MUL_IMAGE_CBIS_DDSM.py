@@ -1,18 +1,23 @@
 """
-Source: awsaf49/cbis-ddsm-breast-cancer-image-dataset on Kaggle
-        CBIS-DDSM breast cancer mammography; predict breast density (4-class).
+Dataset Name: MUL_IMAGE_CBIS_DDSM
+====
+Examples: 1696
+====
+URL: https://www.kaggle.com/datasets/awsaf49/cbis-ddsm-breast-cancer-image-dataset
+====
+Target Variable: breast_density (int64, 4 distinct): ['2', '3', '1', '4']
+====
+Features:
 
-Target: breast_density (multiclass).
-Features: left/right breast, image view, mass shape/margins, assessment, pathology, subtlety + image.
-Dropped: patient_id, abnormality type, cropped/ROI image paths.
-
-Produces:
-    <output_dir>/
-        data.csv          features + target; image col contains "images/<filename>"
-        images/           all images, flat, one file per row
-        metadata.json     dataset info for MulTaBench loading
-        dataset-metadata.json   Kaggle API upload metadata
-
+left or right breast (object, 2 distinct): ['RIGHT', 'LEFT']
+image view (object, 2 distinct): ['MLO', 'CC']
+abnormality id (int64, 6 distinct): ['1', '2', '3', '4', '5', '6']
+mass shape (object, 20 distinct, 0.2% missing): ['IRREGULAR', 'OVAL', 'LOBULATED', 'ROUND', 'ARCHITECTURAL_DISTORTION', 'IRREGULAR-ARCHITECTURAL_DISTORTION', 'LYMPH_NODE', 'FOCAL_ASYMMETRIC_DENSITY', 'ASYMMETRIC_BREAST_TISSUE', 'LOBULATED-IRREGULAR']
+mass margins (object, 19 distinct, 3.5% missing): ['CIRCUMSCRIBED', 'ILL_DEFINED', 'SPICULATED', 'OBSCURED', 'MICROLOBULATED', 'ILL_DEFINED-SPICULATED', 'CIRCUMSCRIBED-ILL_DEFINED', 'OBSCURED-ILL_DEFINED', 'CIRCUMSCRIBED-OBSCURED', 'OBSCURED-ILL_DEFINED-SPICULATED']
+assessment (int64, 6 distinct): ['4', '5', '3', '0', '2', '1']
+pathology (object, 3 distinct): ['MALIGNANT', 'BENIGN', 'BENIGN_WITHOUT_CALLBACK']
+subtlety (int64, 6 distinct): ['5', '4', '3', '2', '1', '0']
+image file path (object, 1592 distinct): ['images/1.3.6.1.4.1.9590.100.1.2.87251504411596839017815563663575708222_1-219.jpg', 'images/1.3.6.1.4.1.9590.100.1.2.354587724213018641829708719832963731890_1-179.jpg', 'images/1.3.6.1.4.1.9590.100.1.2.383084015312187246035597241651391161847_1-124.jpg', 'images/1.3.6.1.4.1.9590.100.1.2.292605978712963936606864280561587921668_1-031.jpg', 'images/1.3.6.1.4.1.9590.100.1.2.260395375912689985505181352172038713429_1-061.jpg', 'images/1.3.6.1.4.1.9590.100.1.2.101999469712679926627011488331183444331_1-063.jpg', 'images/1.3.6.1.4.1.9590.100.1.2.10098093912338239901459163343317187533_1-285.jpg', 'images/1.3.6.1.4.1.9590.100.1.2.252718871411822036139213438773416034416_1-212.jpg', 'images/1.3.6.1.4.1.9590.100.1.2.419410657312812960613390693250292392446_1-037.jpg', 'images/1.3.6.1.4.1.9590.100.1.2.180117656012441206012066533421449364027_1-036.jpg']
 """
 
 import os
