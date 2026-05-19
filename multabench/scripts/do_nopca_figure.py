@@ -13,9 +13,9 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
 _HERE    = os.path.dirname(os.path.abspath(__file__))
-_RESULTS = os.path.join(_HERE, "multimodal/leaderboard/results")
+_RESULTS = os.path.join(_HERE, "..", "leaderboard", "results")
 _PCA_DIR = os.path.join(_RESULTS, "analysis_pca")
-_OUT     = os.path.join(_HERE, "../paper-multabench/figures/nopca.pdf")
+_OUT     = os.path.join(_HERE, "../../../paper-multabench/figures/nopca.pdf")
 
 # ---------------------------------------------------------------------------
 # Style constants — match paper_production / encoder_scale / pca figures
@@ -26,12 +26,12 @@ _COLOR_CTX        = "#E8722A"
 _COLOR_CTX_NP     = "#FBC9A0"
 _HATCH_NOPCA      = "\\\\"
 
-_FS_TITLE   = 13
-_FS_YLABEL  = 14
-_FS_XTICK   = 11
-_FS_YTICK   = 11
-_FS_LEGEND  = 11
-_FONTWEIGHT = "bold"
+_FS_TITLE   = 15
+_FS_YLABEL  = 15
+_FS_XTICK   = 13
+_FS_YTICK   = 13
+_FS_LEGEND  = 13
+_FONTWEIGHT = "normal"
 _CAPSIZE    = 2
 _ERR_LW     = 0.7
 

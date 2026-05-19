@@ -3,6 +3,11 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib
+import streamlit
+import streamlit as st
+
+from multabench.leaderboard.data.keys import TEST_SCORE, FOLD
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
@@ -13,13 +18,13 @@ COLORS = ['#FFCC99', '#FFD1DC', '#8DE5A1', '#A1C9F4']
 
 _CONDITIONS = ["Unimodal Structured", "Unimodal Unstructured", "Joint Frozen", "Joint TAR"]
 
-_FS_TITLE    = 13
-_FS_YLABEL   = 12
-_FS_XTICK    = 11
-_FS_YTICK    = 11
+_FS_TITLE    = 15
+_FS_YLABEL   = 14
+_FS_XTICK    = 13
+_FS_YTICK    = 13
 _FS_BARLABEL = 10
-_FS_LEGEND   = 11
-_FONTWEIGHT  = "bold"
+_FS_LEGEND   = 13
+_FONTWEIGHT  = "normal"
 
 _MODEL_LABELS = {
     "LightGBM 💡":     "LightGBM",
@@ -53,7 +58,9 @@ def _load_osha() -> pd.DataFrame:
     df = df[df["dataset"] == "BIN_TEXT_TRANSPORTATION_OSHA_ACCIDENT_INJURY_DATA"].copy()
     df["condition"] = df["multimodal_state"].map(_TEXT_COND_MAP)
     df["model_label"] = df["model"].map(_MODEL_LABELS)
-    return df.dropna(subset=["condition", "model_label"])
+    assert len(df) == 100
+    df = df[['condition', 'model_label', TEST_SCORE, FOLD]]
+    return df
 
 
 def _load_chexpert() -> pd.DataFrame:
@@ -61,13 +68,14 @@ def _load_chexpert() -> pd.DataFrame:
     df = pd.read_csv(path)
     df["condition"] = df["multimodal_state"].map(_IMAGE_COND_MAP)
     df["model_label"] = df["model"].map(_MODEL_LABELS)
-    return df.dropna(subset=["condition", "model_label"])
+    assert len(df) == 100
+    df = df[['condition', 'model_label', TEST_SCORE, FOLD]]
+    return df
 
 
-def _annotate_jc_gap(ax, agg, x, bar_width, offset):
-    """Draw red ✗ between Joint and TAR bars where Joint > TAR."""
-    joint_i = _CONDITIONS.index("Joint Frozen")
-    ctx_i   = _CONDITIONS.index("Joint TAR")
+def _annotate_jc_gap(ax, agg, x, bar_width, offset, margin):
+    """Draw red ✗ above the Joint TAR bar (the shorter one) where Joint Frozen > Joint TAR."""
+    ctx_i = _CONDITIONS.index("Joint TAR")
     joint_vals = (agg[agg["condition"] == "Joint Frozen"]
                   .set_index("model_label").reindex(_MODEL_ORDER)["mean"].fillna(0))
     ctx_vals = (agg[agg["condition"] == "Joint TAR"]
@@ -79,49 +87,34 @@ def _annotate_jc_gap(ax, agg, x, bar_width, offset):
         c = ctx_vals[model]
         if j - c < 0.001:
             continue
-        x_j   = x[xi] + (joint_i - offset) * bar_width + bar_width / 2
-        x_c   = x[xi] + (ctx_i   - offset) * bar_width + bar_width / 2
-        x_mid = (x_j + x_c) / 2
-        ax.annotate(
-            "",
-            xy=(x_mid, c + 0.003),
-            xytext=(x_mid, j - 0.003),
-            arrowprops=dict(arrowstyle="|-|", color=_GAP_COLOR, lw=1.5, mutation_scale=4),
-        )
-        ax.text(x_mid + 0.06, (j + c) / 2, "✗",
-                ha="left", va="center", fontsize=18, color=_GAP_COLOR, fontweight=_FONTWEIGHT)
+        x_c = x[xi] + (ctx_i - offset) * bar_width + bar_width / 2
+        ax.text(x_c, c + margin, "✗",
+                ha="center", va="bottom", fontsize=18, color=_GAP_COLOR)
         annotated.append((xi, model))
     return annotated
 
 
-def _annotate_ctx_wins(ax, agg, x, bar_width, offset):
-    """Draw green ✓ to the left of the TAR bar for all models."""
+def _annotate_ctx_wins(ax, agg, x, bar_width, offset, margin):
+    """Draw green ✓ above the Joint Frozen bar (the shorter one) for all models."""
+    joint_i = _CONDITIONS.index("Joint Frozen")
     joint_vals = (agg[agg["condition"] == "Joint Frozen"]
                   .set_index("model_label").reindex(_MODEL_ORDER)["mean"].fillna(0))
-    ctx_vals = (agg[agg["condition"] == "Joint TAR"]
-                .set_index("model_label").reindex(_MODEL_ORDER)["mean"].fillna(0))
 
     for xi, model in enumerate(_MODEL_ORDER):
         j = joint_vals[model]
-        c = ctx_vals[model]
-        ctx_left = x[xi] + (3 - offset) * bar_width
-        x_arrow  = ctx_left - 0.20
-        ax.annotate(
-            "",
-            xy=(x_arrow, j + 0.003),
-            xytext=(x_arrow, c - 0.003),
-            arrowprops=dict(arrowstyle="|-|", color=_CHECK_COLOR, lw=1.5, mutation_scale=4),
-        )
-        ax.text(x_arrow - 0.01, (j + c) / 2, "✓",
-                ha="right", va="center", fontsize=18, color=_CHECK_COLOR, fontweight=_FONTWEIGHT)
+        x_j = x[xi] + (joint_i - offset) * bar_width  # left edge of Joint Frozen bar
+        ax.text(x_j, j + margin, "✓",
+                ha="center", va="bottom", fontsize=18, color=_CHECK_COLOR)
 
 
 def _panel(ax, df: pd.DataFrame, title: str, annotate_jc_gap: bool = False,
            mirror_models=None, yticks=None, ylim=None):
-    agg = (df.groupby(["model_label", "condition"])["test_score"]
-             .mean().reset_index().rename(columns={"test_score": "mean"}))
+    agg = (df.groupby(["model_label", "condition"])[TEST_SCORE]
+             .mean().reset_index().rename(columns={TEST_SCORE: "mean"}))
     floor   = agg["mean"].min()
     ceiling = agg["mean"].max()
+    y_range = (ylim[1] - ylim[0]) if ylim else (ceiling - floor + 0.03)
+    margin  = y_range * 0.04
 
     x = np.arange(len(_MODEL_ORDER))
     bar_width = 0.18
@@ -135,9 +128,9 @@ def _panel(ax, df: pd.DataFrame, title: str, annotate_jc_gap: bool = False,
 
     annotated = []
     if annotate_jc_gap:
-        annotated = _annotate_jc_gap(ax, agg, x, bar_width, offset)
+        annotated = _annotate_jc_gap(ax, agg, x, bar_width, offset, margin)
     elif mirror_models is not None:
-        _annotate_ctx_wins(ax, agg, x, bar_width, offset)
+        _annotate_ctx_wins(ax, agg, x, bar_width, offset, margin)
 
     color = "#c0392b" if title.startswith("✗") else "#27ae60"
     ax.set_title(title, fontsize=_FS_TITLE, fontweight=_FONTWEIGHT, pad=8, color=color)
@@ -163,7 +156,7 @@ def make_fig() -> plt.Figure:
     osha     = _load_osha()
     chexpert = _load_chexpert()
 
-    fig, (ax_bad, ax_good) = plt.subplots(1, 2, figsize=(12, 3.6))
+    fig, (ax_bad, ax_good) = plt.subplots(1, 2, figsize=(14, 3.6))
 
     annotated = _panel(ax_bad, osha, "✗ OSHA Accident Injury",
                        annotate_jc_gap=True,
@@ -175,7 +168,13 @@ def make_fig() -> plt.Figure:
     handles = [Patch(color=COLORS[i], label=c) for i, c in enumerate(_CONDITIONS)]
     fig.legend(handles=handles, loc="center left", bbox_to_anchor=(1.0, 0.5),
                frameon=True, edgecolor="black", framealpha=0.95,
-               prop={"weight": "bold", "size": _FS_LEGEND})
+               prop={"size": _FS_LEGEND})
 
     plt.tight_layout()
+
+    with streamlit.expander("Data"):
+        st.markdown("### Osha")
+        st.table(osha.pivot_table(index="model_label", columns="condition", values=TEST_SCORE))
+        st.markdown("### CheXpert")
+        st.table(chexpert.pivot_table(index="model_label", columns="condition", values=TEST_SCORE))
     return fig

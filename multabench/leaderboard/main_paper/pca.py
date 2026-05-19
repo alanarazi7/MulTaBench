@@ -35,12 +35,12 @@ _CI_COLORS = {
     "TAR N=60":    "#7A3008",
 }
 
-_FS_TITLE   = 13
-_FS_YLABEL  = 14
-_FS_XTICK   = 11
-_FS_YTICK   = 11
-_FS_LEGEND  = 11
-_FONTWEIGHT = "bold"
+_FS_TITLE   = 15
+_FS_YLABEL  = 15
+_FS_XTICK   = 13
+_FS_YTICK   = 13
+_FS_LEGEND  = 13
+_FONTWEIGHT = "normal"
 _CAPSIZE    = 2
 _ERR_LW     = 0.7
 
@@ -167,6 +167,6 @@ def make_figure():
     fig.legend(handles=legend_handles,
                loc="center left", bbox_to_anchor=(0.79, 0.5),
                frameon=True, edgecolor="black", framealpha=0.95,
-               prop={"weight": "bold", "size": _FS_LEGEND})
+               prop={"size": _FS_LEGEND})
 
     return fig, agg

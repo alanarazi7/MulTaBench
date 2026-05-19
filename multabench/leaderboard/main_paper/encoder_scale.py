@@ -1,8 +1,9 @@
 """Paper figure: encoder scale robustness (§6.1).
 
-Two stacked bars per model (small / large encoder), consistent with the
-leaderboard figure style. Orange TAR bar drawn first (full 0→ft), then blue
-frozen bar drawn on top (narrower, 0→all). Darker shades for large encoder.
+Main figure: single combined panel (image + text), 4 non-stacked grouped vertical bars per
+model (LightGBM → TabPFN-2.5, left to right), order Frozen Small, Frozen Large, TAR Small,
+TAR Large within each group.
+Appendix figures: separate DINO (image) and E5 (text) panels, horizontal bar style.
 """
 import os
 import numpy as np
@@ -15,21 +16,29 @@ from matplotlib.patches import Patch
 _RESULTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "results")
 
 _COLOR_FROZEN_SMALL = "#A8D4F0"
-_COLOR_TAR_SMALL    = "#E8722A"
 _COLOR_FROZEN_LARGE = "#3A88C8"
+_COLOR_TAR_SMALL    = "#E8722A"
 _COLOR_TAR_LARGE    = "#B85010"
 
-_FS_TITLE   = 13
-_FS_XLABEL  = 14
-_FS_YTICK   = 12
-_FS_XTICK   = 11
-_FS_LEGEND  = 13
-_FONTWEIGHT = "bold"
+_FS_TITLE   = 15
+_FS_XLABEL  = 15
+_FS_YTICK   = 13
+_FS_XTICK   = 13
+_FS_LEGEND  = 14
+_FONTWEIGHT = "normal"
 _CAPSIZE    = 2
 _ERR_LW     = 0.9
 
-_BAR_H = 0.28
-_DY    = 0.19
+_BAR_H     = 0.14
+_BAR_GAP   = 0.03
+_GROUP_GAP = 0.38
+
+_GROUPED_CONDITIONS = ["Frozen Small", "Frozen Large", "TAR Small", "TAR Large"]
+_GROUPED_COLORS     = [_COLOR_FROZEN_SMALL, _COLOR_FROZEN_LARGE, _COLOR_TAR_SMALL, _COLOR_TAR_LARGE]
+_GROUPED_ERR_COLORS = ["#3A88C8", "#1A5888", "#B85010", "#7A3008"]
+
+_MODELS          = ["TabPFN-2.5", "TabPFNv2", "TabM", "CatBoost", "LightGBM"]  # horizontal appendix (top→bottom)
+_MODELS_VERTICAL = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]  # vertical main (left→right)
 
 DINO_SMALL_ALL = "DINO-small (all)"
 DINO_SMALL_FT  = "DINO-small (ft)"
@@ -39,6 +48,13 @@ E5_SMALL_ALL   = "E5-small (all)"
 E5_SMALL_FT    = "E5-small (ft)"
 E5_LARGE_ALL   = "E5-large (all)"
 E5_LARGE_FT    = "E5-large (ft)"
+
+_MODE_TO_CONDITION = {
+    DINO_SMALL_ALL: "Frozen Small", DINO_SMALL_FT: "TAR Small",
+    DINO_LARGE_ALL: "Frozen Large", DINO_LARGE_FT: "TAR Large",
+    E5_SMALL_ALL:   "Frozen Small", E5_SMALL_FT:   "TAR Small",
+    E5_LARGE_ALL:   "Frozen Large", E5_LARGE_FT:   "TAR Large",
+}
 
 _MODEL_LABELS = {
     "LightGBM 💡": "LightGBM", "CatBoost 😸": "CatBoost",
@@ -106,100 +122,139 @@ def _normalize_within_model(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _aggregate(df: pd.DataFrame, conditions: list) -> pd.DataFrame:
+def _aggregate(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     df["model_label"] = df["model"].map(_MODEL_LABELS).fillna(df["model"].str.split().str[0])
-    agg = (df.groupby(["model_label", "mode"])["norm"]
+    df["condition"]   = df["mode"].map(_MODE_TO_CONDITION)
+    agg = (df.groupby(["model_label", "condition"])["norm"]
              .agg(mean="mean", std="std", n="count")
              .reset_index())
     agg["ci"] = 1.96 * agg["std"] / agg["n"] ** 0.5
-    return agg[agg["mode"].isin(conditions)]
+    return agg[agg["condition"].isin(_GROUPED_CONDITIONS)]
 
 
-def _plot_panel(ax, agg: pd.DataFrame, small_all: str, small_ft: str,
-                large_all: str, large_ft: str, title: str):
-    models = sorted(agg["model_label"].unique())
-    y = np.arange(len(models))
+def _plot_grouped_panel(ax, agg, title):
+    n_conds  = len(_GROUPED_CONDITIONS)
+    bar_slot = _BAR_H + _BAR_GAP
+    group_h  = n_conds * bar_slot
+    y_centers = np.arange(len(_MODELS)) * (group_h + _GROUP_GAP)
 
-    def _get(mode):
-        return (agg[agg["mode"] == mode]
-                .set_index("model_label").reindex(models).reset_index())
-
-    sa = _get(small_all)
-    sf = _get(small_ft)
-    la = _get(large_all)
-    lf = _get(large_ft)
-
-    for row_sa, row_sf, row_la, row_lf, yi in zip(
-            sa.itertuples(), sf.itertuples(), la.itertuples(), lf.itertuples(), y):
-
-        ypos_s = yi + _DY
-        if pd.notna(row_sf.mean):
-            ax.barh(ypos_s, row_sf.mean, _BAR_H, color=_COLOR_TAR_SMALL,
+    for ci, (cond, color, ec) in enumerate(
+            zip(_GROUPED_CONDITIONS, _GROUPED_COLORS, _GROUPED_ERR_COLORS)):
+        y_offset = ((n_conds - 1) / 2 - ci) * bar_slot
+        for mi, model in enumerate(_MODELS):
+            row = agg[(agg["model_label"] == model) & (agg["condition"] == cond)]
+            if row.empty:
+                continue
+            y = y_centers[mi] + y_offset
+            ax.barh(y, row["mean"].iloc[0], _BAR_H, color=color,
                     edgecolor="black", linewidth=0.6, zorder=2)
-            ax.errorbar(row_sf.mean, ypos_s, xerr=row_sf.ci,
-                        fmt="none", ecolor="#B85010", capsize=_CAPSIZE, linewidth=_ERR_LW, zorder=4)
-        if pd.notna(row_sa.mean):
-            ax.barh(ypos_s, row_sa.mean, _BAR_H, color=_COLOR_FROZEN_SMALL,
-                    edgecolor="black", linewidth=0.6, zorder=3)
-            ax.errorbar(row_sa.mean, ypos_s, xerr=row_sa.ci,
-                        fmt="none", ecolor="#3A88C8", capsize=_CAPSIZE, linewidth=_ERR_LW, zorder=4)
+            ax.errorbar(row["mean"].iloc[0], y, xerr=row["ci"].iloc[0],
+                        fmt="none", ecolor=ec, capsize=_CAPSIZE, linewidth=_ERR_LW, zorder=3)
 
-        ypos_l = yi - _DY
-        if pd.notna(row_lf.mean):
-            ax.barh(ypos_l, row_lf.mean, _BAR_H, color=_COLOR_TAR_LARGE,
-                    edgecolor="black", linewidth=0.6, hatch="//", zorder=2)
-            ax.errorbar(row_lf.mean, ypos_l, xerr=row_lf.ci,
-                        fmt="none", ecolor="#7A3008", capsize=_CAPSIZE, linewidth=_ERR_LW, zorder=4)
-        if pd.notna(row_la.mean):
-            ax.barh(ypos_l, row_la.mean, _BAR_H, color=_COLOR_FROZEN_LARGE,
-                    edgecolor="black", linewidth=0.6, hatch="//", zorder=3)
-            ax.errorbar(row_la.mean, ypos_l, xerr=row_la.ci,
-                        fmt="none", ecolor="#1A5888", capsize=_CAPSIZE, linewidth=_ERR_LW, zorder=4)
-
-    ax.set_title(title, fontsize=_FS_TITLE, fontweight=_FONTWEIGHT, pad=7)
+    if title:
+        ax.set_title(title, fontsize=_FS_TITLE, fontweight=_FONTWEIGHT, pad=7)
     ax.set_xlabel("Normalized Score", fontsize=_FS_XLABEL, fontweight=_FONTWEIGHT)
-    ax.set_yticks(y)
-    ax.set_yticklabels(models, fontsize=_FS_YTICK, fontweight=_FONTWEIGHT)
+    ax.set_yticks(y_centers)
+    ax.set_yticklabels(_MODELS, fontsize=_FS_YTICK, fontweight=_FONTWEIGHT)
     ax.tick_params(axis="y", length=0)
-    ax.set_xlim(0, 1.02)
+    ax.set_xlim(0, 1.05)
     ax.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
     ax.set_xticklabels(["0", "0.2", "0.4", "0.6", "0.8", "1"],
                        fontsize=_FS_XTICK, fontweight=_FONTWEIGHT)
-    ax.set_ylim(y[0] - _DY - _BAR_H * 0.6, y[-1] + _DY + _BAR_H * 0.6)
+    half = group_h / 2
+    ax.set_ylim(y_centers[0] - half - 0.08, y_centers[-1] + half + 0.08)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.xaxis.grid(True, linestyle="--", alpha=0.3)
     ax.set_axisbelow(True)
 
 
-def make_figure(task_type: str = "all"):
-    dino_df = _build_dino_df(task_type)
-    e5_df   = _build_e5_df(task_type)
+def _plot_vertical_panel(ax, agg):
+    n_conds  = len(_GROUPED_CONDITIONS)
+    bar_slot = _BAR_H  # no gap — bars touch within each model group
+    group_w  = n_conds * bar_slot
+    x_centers = np.arange(len(_MODELS_VERTICAL)) * (group_w + _GROUP_GAP)
 
+    for ci, (cond, color, ec) in enumerate(
+            zip(_GROUPED_CONDITIONS, _GROUPED_COLORS, _GROUPED_ERR_COLORS)):
+        x_offset = (ci - (n_conds - 1) / 2) * bar_slot  # ci=0 leftmost, ci=3 rightmost
+        for mi, model in enumerate(_MODELS_VERTICAL):
+            row = agg[(agg["model_label"] == model) & (agg["condition"] == cond)]
+            if row.empty:
+                continue
+            x = x_centers[mi] + x_offset
+            ax.bar(x, row["mean"].iloc[0], _BAR_H, color=color,
+                   edgecolor="black", linewidth=0.6, zorder=2)
+            ax.errorbar(x, row["mean"].iloc[0], yerr=row["ci"].iloc[0],
+                        fmt="none", ecolor=ec, capsize=_CAPSIZE, linewidth=_ERR_LW, zorder=3)
+
+    ax.set_ylabel("Normalized Score", fontsize=_FS_XLABEL, fontweight=_FONTWEIGHT)
+    ax.set_xticks(x_centers)
+    ax.set_xticklabels(_MODELS_VERTICAL, fontsize=_FS_XTICK, fontweight=_FONTWEIGHT)
+    ax.tick_params(axis="x", length=0)
+    ax.set_ylim(0, 1.10)
+    ax.set_yticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.set_yticklabels(["0", "0.2", "0.4", "0.6", "0.8", "1"],
+                       fontsize=_FS_YTICK, fontweight=_FONTWEIGHT)
+    half = group_w / 2
+    ax.set_xlim(x_centers[0] - half - 0.1, x_centers[-1] + half + 0.1)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.yaxis.grid(True, linestyle="--", alpha=0.3)
+    ax.set_axisbelow(True)
+
+
+def _legend_handles():
+    return [
+        Patch(facecolor=_COLOR_FROZEN_SMALL, edgecolor="black", linewidth=0.6, label="Frozen Small"),
+        Patch(facecolor=_COLOR_FROZEN_LARGE, edgecolor="black", linewidth=0.6, label="Frozen Large"),
+        Patch(facecolor=_COLOR_TAR_SMALL,    edgecolor="black", linewidth=0.6, label="TAR Small"),
+        Patch(facecolor=_COLOR_TAR_LARGE,    edgecolor="black", linewidth=0.6, label="TAR Large"),
+    ]
+
+
+def make_figure(task_type: str = "all"):
+    """Main paper figure — combined image+text, single vertical-bar panel."""
+    dino_norm = _normalize_within_model(_build_dino_df(task_type))
+    e5_norm   = _normalize_within_model(_build_e5_df(task_type))
+    combined  = pd.concat([dino_norm, e5_norm], ignore_index=True)
+    agg = _aggregate(combined)
+
+    fig, ax = plt.subplots(1, 1, figsize=(11, 3.8))
+    fig.subplots_adjust(left=0.07, right=0.75, top=0.95, bottom=0.13)
+
+    _plot_vertical_panel(ax, agg)
+
+    fig.legend(handles=_legend_handles(),
+               loc="center left", bbox_to_anchor=(0.76, 0.5),
+               frameon=True, edgecolor="black", framealpha=0.95,
+               prop={"size": _FS_LEGEND})
+
+    return fig, {"Combined": agg}
+
+
+def make_appendix_figure(task_type: str = "all"):
+    """Appendix figure — separate DINO (image) and E5 (text) panels."""
+    dino_df   = _build_dino_df(task_type)
+    e5_df     = _build_e5_df(task_type)
     dino_norm = _normalize_within_model(dino_df)
     e5_norm   = _normalize_within_model(e5_df)
+    dino_agg  = _aggregate(dino_norm)
+    e5_agg    = _aggregate(e5_norm)
 
-    dino_agg = _aggregate(dino_norm, [DINO_SMALL_ALL, DINO_SMALL_FT, DINO_LARGE_ALL, DINO_LARGE_FT])
-    e5_agg   = _aggregate(e5_norm,   [E5_SMALL_ALL,   E5_SMALL_FT,   E5_LARGE_ALL,   E5_LARGE_FT])
+    n_img = dino_df["dataset"].nunique()
+    n_txt = e5_df["dataset"].nunique()
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.2))
-    fig.subplots_adjust(wspace=0.45, left=0.10, right=0.82, top=0.90, bottom=0.12)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4.8))
+    fig.subplots_adjust(wspace=0.42, left=0.10, right=0.82, top=0.90, bottom=0.12)
 
-    _plot_panel(ax1, dino_agg, DINO_SMALL_ALL, DINO_SMALL_FT, DINO_LARGE_ALL, DINO_LARGE_FT,
-                "(a) Image-Tabular (DINO-v3)")
-    _plot_panel(ax2, e5_agg,   E5_SMALL_ALL,   E5_SMALL_FT,   E5_LARGE_ALL,   E5_LARGE_FT,
-                "(b) Text-Tabular (E5-v2)")
+    _plot_grouped_panel(ax1, dino_agg, "(a) Image-Tabular (DINO-v3)")
+    _plot_grouped_panel(ax2, e5_agg,   "(b) Text-Tabular (E5-v2)")
 
-    legend_handles = [
-        Patch(facecolor=_COLOR_FROZEN_SMALL, edgecolor="black", linewidth=0.6, label="Frozen Small"),
-        Patch(facecolor=_COLOR_TAR_SMALL,    edgecolor="black", linewidth=0.6, label="TAR Small"),
-        Patch(facecolor=_COLOR_FROZEN_LARGE, edgecolor="black", linewidth=0.6, hatch="//", label="Frozen Large"),
-        Patch(facecolor=_COLOR_TAR_LARGE,    edgecolor="black", linewidth=0.6, hatch="//", label="TAR Large"),
-    ]
-    fig.legend(handles=legend_handles,
+    fig.legend(handles=_legend_handles(),
                loc="center left", bbox_to_anchor=(0.83, 0.5),
                frameon=True, edgecolor="black", framealpha=0.95,
-               prop={"weight": "bold", "size": _FS_LEGEND})
+               prop={"size": _FS_LEGEND})
 
     return fig, {"DINO": dino_agg, "E5": e5_agg}

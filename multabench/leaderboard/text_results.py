@@ -37,6 +37,50 @@ def _load_pool_corpus_data() -> pd.DataFrame:
     return df
 
 
+_MODEL_ORDER = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]
+_MODEL_LABELS = {
+    "LightGBM 💡": "LightGBM", "CatBoost 😸": "CatBoost",
+    "TabM Ⓜ️": "TabM", "TabPFN-v2 🤯": "TabPFNv2",
+    "TabPFN-v2p5 🇩🇪": "TabPFN-2.5",
+}
+
+
+def compute_curation_grid(df: pd.DataFrame) -> pd.DataFrame:
+    from multabench.leaderboard.main_paper.text_pool import _MULTABENCH_POOL_NAMES as _MB_NAMES
+    """Return per-dataset × per-model all_three pass/fail grid.
+
+    Rows: datasets (56 candidates), sorted approved-first then by all_three count desc.
+    Columns: LightGBM, CatBoost, TabM, TabPFNv2, TabPFN-2.5, then all_three (/5), decision, reason.
+    Values: True/False for each model column.
+    """
+    raw = df.copy()
+    raw[MM] = raw[MODE].map({ALL_FEAT: "all", FINETUNED: "ft", TEXT_ONLY: "text_only", NO_TEXT: "no_text"})
+    raw["model_label"] = raw[MODEL].map(_MODEL_LABELS)
+    raw = raw[raw["model_label"].notna()]
+
+    avg = raw.groupby([DATASET, "model_label", MM])[TEST_SCORE].mean().reset_index()
+    avg[TEST_SCORE] = avg[TEST_SCORE].round(3)
+    pivot = avg.pivot_table(index=[DATASET, "model_label"], columns=MM, values=TEST_SCORE).reset_index()
+    pivot["all_three"] = (
+        (pivot["ft"] > pivot["all"]) &
+        (pivot["all"] > pivot["no_text"]) &
+        (pivot["all"] > pivot["text_only"])
+    )
+
+    grid = pivot.pivot_table(index=DATASET, columns="model_label", values="all_three")
+    for m in _MODEL_ORDER:
+        if m not in grid.columns:
+            grid[m] = False
+    grid = grid[_MODEL_ORDER]
+
+    grid["all_three (/5)"] = grid[_MODEL_ORDER].sum(axis=1).astype(int)
+    grid["decision"] = grid.index.map(
+        lambda d: "approved" if (d in _APPROVED_NAMES or d in _MB_NAMES) else ("rejected" if d in _REJECTED_NAMES else "unknown")
+    )
+    grid["reason"] = grid.apply(_rejection_reason, axis=1)
+    return grid.sort_values(["decision", "all_three (/5)"], ascending=[True, False])
+
+
 def display_pool_performance():
     st.title("🏊 Pool Performance")
     df = _load_pool_corpus_data()
@@ -44,6 +88,8 @@ def display_pool_performance():
 
     summary = _compute_curation_summary(df)
     _display_per_dataset_curation(df, summary)
+    with st.expander("Dataset Summary"):
+        st.dataframe(summary)
 
 
 def _display_e5_comparison(df: pd.DataFrame):
