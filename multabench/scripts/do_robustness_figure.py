@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
 _HERE    = os.path.dirname(os.path.abspath(__file__))
-_RESULTS = os.path.join(_HERE, "multimodal/leaderboard/results")
-_OUT     = os.path.join(_HERE, "../paper-multabench/figures/robustness.pdf")
+_RESULTS = os.path.join(_HERE, "..", "leaderboard", "results")
+_OUT     = os.path.join(_HERE, "../../../paper-multabench/figures/robustness.pdf")
 
 _COLOR_FROZEN    = "#A8D4F0"
 _COLOR_FINETUNED = "#E8722A"
@@ -189,13 +189,13 @@ def _tfidf_data():
 # ---------------------------------------------------------------------------
 
 def _style_ax(ax, title, xlabel):
-    ax.set_title(title, fontsize=11, fontweight="bold", pad=6)
+    ax.set_title(title, fontsize=13, pad=6)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.xaxis.grid(True, linestyle="--", alpha=0.35, zorder=0)
     ax.set_axisbelow(True)
-    ax.set_xlabel(xlabel, fontsize=8.5)
-    ax.tick_params(axis="both", labelsize=8.5)
+    ax.set_xlabel(xlabel, fontsize=10)
+    ax.tick_params(axis="both", labelsize=10)
 
 
 def _hbar_gap(ax, df, color, sep_after=None):
@@ -208,7 +208,7 @@ def _hbar_gap(ax, df, color, sep_after=None):
     if sep_after is not None:
         ax.axhline(y=sep_after + 0.5, color="#888", linewidth=0.8, linestyle="--", zorder=1)
     ax.set_yticks(y)
-    ax.set_yticklabels(df["label"].tolist(), fontsize=8.5)
+    ax.set_yticklabels(df["label"].tolist(), fontsize=10)
     ax.axvline(0, color="#888", linewidth=0.7, zorder=1)
 
 
@@ -223,7 +223,7 @@ def _hbar_norm(ax, df, order, colors):
         ax.errorbar(row["mean"], y[i], xerr=row["ci"],
                     fmt="none", ecolor="#444", capsize=2.5, linewidth=0.8, zorder=3)
     ax.set_yticks(y)
-    ax.set_yticklabels(order, fontsize=8.5)
+    ax.set_yticklabels(order, fontsize=10)
 
 
 # ---------------------------------------------------------------------------
@@ -274,7 +274,7 @@ def make_figure():
         Patch(color=_COLOR_FROZEN,    label="E5 frozen"),
         Patch(color=_COLOR_FINETUNED, label="E5 fine-tuned"),
     ]
-    ax.legend(handles=legend_tf, fontsize=8, frameon=True,
+    ax.legend(handles=legend_tf, fontsize=10, frameon=True,
               framealpha=0.85, edgecolor="none", loc="lower right")
 
     os.makedirs(os.path.dirname(_OUT), exist_ok=True)

@@ -129,16 +129,16 @@ def _plot_overview_ax(ax, df_raw: pd.DataFrame, modality: str, title: str, legen
                 ax.text(0.02, y[i], "★", va="center", ha="left",
                         fontsize=9, color="black", zorder=5)
 
-    ax.set_xlabel("Normalized Score", fontsize=14, fontweight="bold")
+    ax.set_xlabel("Normalized Score", fontsize=15)
     ax.set_yticks(y)
-    ax.set_yticklabels(models, fontsize=12, fontweight="bold")
+    ax.set_yticklabels(models, fontsize=13)
     ax.tick_params(axis="y", length=0)
     ax.set_xlim(0, 1.02)
     ax.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
     ax.set_xticklabels(["0", "0.2", "0.4", "0.6", "0.8", "1"],
-                       fontsize=11, fontweight="bold")
+                       fontsize=13)
     ax.set_ylim(y[0] - bar_h * 1.1, y[-1] + bar_h * 1.1)
-    ax.set_title(title, fontsize=13, fontweight="bold", pad=7)
+    ax.set_title(title, fontsize=15, pad=7)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.xaxis.grid(True, linestyle="--", alpha=0.3)
@@ -154,7 +154,7 @@ def _plot_overview_ax(ax, df_raw: pd.DataFrame, modality: str, title: str, legen
         ], frameon=True, loc="upper right",
            framealpha=0.95, edgecolor="black",
            bbox_to_anchor=(1.0, 0.93), borderaxespad=0,
-           prop={"weight": "bold", "size": 11})
+           prop={"size": 13})
 
     return agg
 

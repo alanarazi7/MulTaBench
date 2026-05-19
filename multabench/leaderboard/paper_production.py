@@ -4,7 +4,7 @@ Generates paper-quality figures (PNG/PDF) and LaTeX tables from live data.
 """
 import io
 from os import listdir
-from os.path import dirname, join
+from os.path import dirname, join, expanduser
 
 import matplotlib
 matplotlib.use("Agg")
@@ -13,7 +13,17 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+from multabench.scripts.do_dataset_summary import _SUMMARY_CSV
+from multabench.datasets.text_benchmarks import (
+    AUTOML_MULTIMODAL_ACCEPTED, AUTOML_MULTIMODAL_REJECTED,
+    VECTORIZING_ACCEPTED, VECTORIZING_REJECTED,
+    CARTE_ACCEPTED, CARTE_REJECTED,
+    TEXT_TAB_BENCH_ACCEPTED, TEXT_TAB_BENCH_REJECTED,
+    ACCEPTED_TEXT_DATASETS, REJECTED_TEXT_DATASETS,
+)
+
 from multabench.leaderboard.main_paper.curation_example import make_fig        as _make_curation_example_fig
+from multabench.leaderboard.text_results                import compute_curation_grid, _load_pool_corpus_data
 from multabench.leaderboard.main_paper.text_pool        import make_joint_tar_figure   as _make_text_pool_joint_tar_fig
 from multabench.leaderboard.main_paper.text_pool        import make_tfidf_figure       as _make_text_pool_tfidf_fig
 from multabench.leaderboard.main_paper.text_pool        import make_struct_unstruct_figure as _make_text_pool_struct_fig
@@ -91,11 +101,26 @@ _DATASET_LABELS = {
     "REG_TEXT_ZOMATO_RESTAURANTS":     "Zomato Restaurants",
 }
 
+_COSTS_ROOT = join(_RESULTS_ROOT, "costs")
+_COSTS_FILES = {
+    ("IMAGE", "small"): "image_all.csv",
+    ("IMAGE", "large"): "image_large.csv",
+    ("TEXT",  "small"): "text_small.csv",
+    ("TEXT",  "large"): "text_large.csv",
+}
+_COSTS_MODEL_ORDER = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]
+
 _PETFINDER_IMG_CSV  = join(_RESULTS_ROOT, "images/MUL_IMAGE_PETFINDER.csv")
 _PETFINDER_TRI_CSV  = join(_RESULTS_ROOT, "tabular_image_text/MUL_IMAGE_PETFINDER.csv")
 _PETFINDER_COL_ORDER  = ["img", "txt", "non_txt", "non", "all", "ft", "ft-txt", "ft-img-ft-txt"]
 _PETFINDER_COL_LABELS = ["I",   "T",   "S+I",    "S+T", "S+I+T", "S+I_TAR+T", "S+I+T_TAR", "S+I_TAR+T_TAR"]
 _PETFINDER_MODEL_ORDER = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]
+
+_AMAZON_IMG_CSV    = join(_RESULTS_ROOT, "images/REG_IMAGE_AMAZON_PACKAGES.csv")
+_AMAZON_TRI_CSV    = join(_RESULTS_ROOT, "tabular_image_text/REG_IMAGE_AMAZON_PACKAGES.csv")
+_AMAZON_COL_ORDER  = ["img", "txt", "non_txt", "non", "all", "ft", "ft-txt", "ft-img-ft-txt"]
+_AMAZON_COL_LABELS = ["I",   "T",   "S+I",    "S+T", "S+I+T", "S+I_TAR+T", "S+I+T_TAR", "S+I_TAR+T_TAR"]
+_AMAZON_MODEL_ORDER = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]
 
 
 # ---------------------------------------------------------------------------
@@ -166,6 +191,149 @@ def _to_latex_conditions(tbl: pd.DataFrame) -> str:
     )
 
 
+def _make_costs_table(modality: str) -> pd.DataFrame:
+    frames = []
+    for size in ("small", "large"):
+        fname = _COSTS_FILES[(modality, size)]
+        df = pd.read_csv(join(_COSTS_ROOT, fname))
+        df["encoder_size"] = size
+        frames.append(df)
+    df = pd.concat(frames, ignore_index=True)
+    df["model"] = df["model"].str.strip()
+    df = df[df["model"].isin(_CORE_MODELS)].copy()
+    df["Runtime"] = pd.to_numeric(df["Runtime"], errors="coerce")
+    df["train_peak_gpu_gb"] = pd.to_numeric(df["train_peak_gpu_gb"], errors="coerce")
+    df["label"] = df["model"].map(_MODEL_LABELS)
+    agg = (df.groupby(["label", "encoder_size", "multimodal_state"])
+             .agg(runtime=("Runtime", "median"), gpu=("train_peak_gpu_gb", "median"))
+             .round(1))
+    # pivot to wide: columns = (size, state, metric)
+    tbl = agg.unstack(["encoder_size", "multimodal_state"])
+    tbl.columns = ["_".join(c) for c in tbl.columns]
+    col_order = [
+        "runtime_small_all", "runtime_small_ft",
+        "gpu_small_all",     "gpu_small_ft",
+        "runtime_large_all", "runtime_large_ft",
+        "gpu_large_all",     "gpu_large_ft",
+    ]
+    tbl = tbl[[c for c in col_order if c in tbl.columns]]
+    return tbl.reindex(_COSTS_MODEL_ORDER).reset_index()
+
+
+def _make_costs_figure() -> plt.Figure:
+    from matplotlib.patches import Patch
+    _C_FROZEN = "#A8D4F0"
+    _C_TAR    = "#E8722A"
+
+    conditions = [
+        ("IMAGE", "small", "Image\nSmall"),
+        ("IMAGE", "large", "Image\nLarge"),
+        ("TEXT",  "small", "Text\nSmall"),
+        ("TEXT",  "large", "Text\nLarge"),
+    ]
+
+    # aggregate median across models for each condition × state
+    frames = []
+    for (mod, size), fname in _COSTS_FILES.items():
+        df = pd.read_csv(join(_COSTS_ROOT, fname))
+        df["modality"] = mod
+        df["encoder_size"] = size
+        frames.append(df)
+    df = pd.concat(frames, ignore_index=True)
+    df["model"] = df["model"].str.strip()
+    df = df[df["model"].isin(_CORE_MODELS)].copy()
+    df["Runtime"] = pd.to_numeric(df["Runtime"], errors="coerce")
+    df["train_peak_gpu_gb"] = pd.to_numeric(df["train_peak_gpu_gb"], errors="coerce")
+    agg = (df.groupby(["modality", "encoder_size", "multimodal_state"])
+             .agg(runtime=("Runtime", "median"), gpu=("train_peak_gpu_gb", "median"))
+             .reset_index())
+
+    x = np.arange(len(conditions))
+    w = 0.32
+    fig, axes = plt.subplots(1, 2, figsize=(10, 3.8))
+
+    for ax, metric, ylabel, log_scale in [
+        (axes[0], "runtime", "Runtime (s)", True),
+        (axes[1], "gpu",     "Peak GPU memory (GB)", False),
+    ]:
+        for i, (mod, size, _) in enumerate(conditions):
+            for j, (state, color, label) in enumerate([("all", _C_FROZEN, "Frozen"), ("ft", _C_TAR, "TAR")]):
+                row = agg[(agg["modality"] == mod) & (agg["encoder_size"] == size) & (agg["multimodal_state"] == state)]
+                val = row[metric].values[0] if len(row) else 0
+                ax.bar(i + (j - 0.5) * w, val, w, color=color, edgecolor="white", linewidth=1.0)
+
+        ax.set_xticks(x)
+        ax.set_xticklabels([c[2] for c in conditions], fontsize=13)
+        ax.set_ylabel(ylabel, fontsize=13)
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+        ax.yaxis.grid(True, linestyle="--", alpha=0.35, zorder=0)
+        ax.set_axisbelow(True)
+        if log_scale:
+            ax.set_yscale("log")
+        # faint vertical divider between image and text groups
+        ax.axvline(1.5, color="0.75", linewidth=0.8, linestyle="--")
+
+    axes[0].legend(
+        handles=[Patch(color=_C_FROZEN, label="Frozen"), Patch(color=_C_TAR, label="TAR")],
+        frameon=False, fontsize=13, loc="upper left",
+    )
+    fig.tight_layout()
+    return fig
+
+
+def _to_latex_costs(tbl_img: pd.DataFrame, tbl_txt: pd.DataFrame) -> str:
+    def _rows(tbl):
+        lines = []
+        for _, r in tbl.iterrows():
+            def _rt(col):
+                v = r.get(col)
+                return "--" if pd.isna(v) else f"{int(v):,}"
+            def _gb(col):
+                v = r.get(col)
+                return "--" if pd.isna(v) else f"{v:.1f}"
+            lines.append(
+                f"{r['label']} & "
+                f"{_rt('runtime_small_all')} & {_rt('runtime_small_ft')} & "
+                f"{_gb('gpu_small_all')} & {_gb('gpu_small_ft')} & "
+                f"{_rt('runtime_large_all')} & {_rt('runtime_large_ft')} & "
+                f"{_gb('gpu_large_all')} & {_gb('gpu_large_ft')} \\\\"
+            )
+        return "\n".join(lines)
+
+    header = (
+        "\\begin{table*}[h]\n\\centering\n"
+        "\\caption{Computation costs per (dataset, fold) run on a single GPU. "
+        "Runtime in seconds (median over all datasets and folds). "
+        "Peak GPU memory in GB (median). "
+        "Frozen = structured + frozen embeddings; "
+        "TAR = structured + target-aware fine-tuned embeddings. "
+        "Image encoder: DINO-v3-small / DINO-v3-large. "
+        "Text encoder: E5-small-v2 / E5-large-v2.}\n"
+        "\\label{tab:compute_costs}\n"
+        "\\setlength{\\tabcolsep}{4pt}\\small\n"
+        "\\begin{tabular}{l rr rr rr rr}\n"
+        "\\toprule\n"
+        "& \\multicolumn{4}{c}{\\textit{Small Encoder}} "
+        "& \\multicolumn{4}{c}{\\textit{Large Encoder}} \\\\\n"
+        "\\cmidrule(lr){2-5}\\cmidrule(lr){6-9}\n"
+        "& \\multicolumn{2}{c}{Runtime (s)} & \\multicolumn{2}{c}{Peak GPU (GB)} "
+        "& \\multicolumn{2}{c}{Runtime (s)} & \\multicolumn{2}{c}{Peak GPU (GB)} \\\\\n"
+        "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\\cmidrule(lr){8-9}\n"
+        "\\textbf{Model} & Frozen & TAR & Frozen & TAR & Frozen & TAR & Frozen & TAR \\\\\n"
+        "\\midrule\n"
+        "\\multicolumn{9}{l}{\\textit{Image-Tabular (DINO encoder)}} \\\\\n"
+        "\\midrule\n"
+    )
+    middle = (
+        "\n\\midrule\n"
+        "\\multicolumn{9}{l}{\\textit{Text-Tabular (E5 encoder)}} \\\\\n"
+        "\\midrule\n"
+    )
+    footer = "\n\\bottomrule\n\\end{tabular}\n\\end{table*}"
+    return header + _rows(tbl_img) + middle + _rows(tbl_txt) + footer
+
+
 def _make_petfinder_table() -> pd.DataFrame:
     img_df = pd.read_csv(_PETFINDER_IMG_CSV)
     tri_df = pd.read_csv(_PETFINDER_TRI_CSV)
@@ -175,7 +343,7 @@ def _make_petfinder_table() -> pd.DataFrame:
     df = pd.concat([img_df[["model", "multimodal_state", "test_score", "fold"]],
                     tri_df[["model", "multimodal_state", "test_score", "fold"]]],
                    ignore_index=True)
-    df["model_label"] = df["model"].map(_MODEL_LABELS).fillna(df["model"])
+    df["model_label"] = df["model"].map(_MODEL_LABELS)
     pivot = (df.groupby(["model_label", "multimodal_state"])["test_score"]
                .mean()
                .unstack("multimodal_state")
@@ -214,12 +382,73 @@ def _to_latex_petfinder(tbl: pd.DataFrame) -> str:
     )
 
 
+def _make_amazon_packages_table() -> pd.DataFrame:
+    img_df = pd.read_csv(_AMAZON_IMG_CSV)
+    tri_df = pd.read_csv(_AMAZON_TRI_CSV)
+    for df in [img_df, tri_df]:
+        df.columns = [c.strip() for c in df.columns]
+        df["model"] = df["model"].str.strip()
+    df = pd.concat([img_df[["model", "multimodal_state", "test_score", "fold"]],
+                    tri_df[["model", "multimodal_state", "test_score", "fold"]]],
+                   ignore_index=True)
+    df["model_label"] = df["model"].map(_MODEL_LABELS).fillna(df["model"])
+    pivot = (df.groupby(["model_label", "multimodal_state"])["test_score"]
+               .mean()
+               .unstack("multimodal_state")
+               .multiply(100)
+               .round(1))
+    tbl = pivot.reindex(index=_AMAZON_MODEL_ORDER, columns=_AMAZON_COL_ORDER)
+    tbl.columns = _AMAZON_COL_LABELS
+    tbl.index.name = "Model"
+    return tbl
+
+
+def _to_latex_amazon_packages(tbl: pd.DataFrame) -> str:
+    rows = []
+    for model, row in tbl.iterrows():
+        best = row.max()
+        vals = " & ".join(f"\\textbf{{{v:.1f}}}" if v == best else f"{v:.1f}" for v in row)
+        rows.append(f"{model} & {vals} \\\\")
+    return (
+        "\\begin{table}[h]\n\\centering\n"
+        "\\caption{Amazon Packages trimodal analysis. S=Structured, I=Image, T=Text. "
+        "Mean $R^2$ (\\%) per model and condition. "
+        "The best condition uses Target-Aware Representations for both modalities.}\n"
+        "\\label{tab:amazon_packages}\n"
+        "\\setlength{\\tabcolsep}{4pt}\n\\small\n"
+        "\\begin{tabular}{l cc ccc ccc}\n\\toprule\n"
+        " & \\multicolumn{2}{c}{\\textit{Single modality}} "
+        "& \\multicolumn{3}{c}{\\textit{Frozen combinations}} "
+        "& \\multicolumn{3}{c}{\\textit{Target-Aware Representations (TAR)}} \\\\\n"
+        "\\cmidrule(lr){2-3}\\cmidrule(lr){4-6}\\cmidrule(lr){7-9}\n"
+        "\\textbf{Model} & I & T & S+I & S+T & S+I+T "
+        "& S+I\\textsubscript{TAR}+T & S+I+T\\textsubscript{TAR} "
+        "& \\textbf{S+I\\textsubscript{TAR}+T\\textsubscript{TAR}} \\\\\n"
+        "\\midrule\n"
+        + "\n".join(rows) +
+        "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
+    )
+
+
 # ---------------------------------------------------------------------------
 # Appendix tables
 # ---------------------------------------------------------------------------
 
 def _make_results_table(modality: str) -> pd.DataFrame:
-    df = _load_core_results(modality)
+    subdir = "images" if modality == "IMAGE" else "text"
+    base_df = _load_dir(subdir)
+    mb_df   = _load_dir("more_baselines")
+    ref_datasets = set(base_df["dataset"].unique())
+    mb_df = mb_df[mb_df["dataset"].isin(ref_datasets)]
+    df = pd.concat([base_df, mb_df], ignore_index=True)
+
+    # keep only models that have both frozen (all) and TAR (ft) on this modality
+    has_both = (df.groupby("model")["multimodal_state"]
+                  .apply(lambda s: {"all", "ft"}.issubset(set(s)))
+                  .loc[lambda x: x].index)
+    df = df[df["model"].isin(has_both)]
+
+    n_models = df["model"].nunique()
     avg = (df.groupby(["dataset", "multimodal_state"])["test_score"]
              .mean().unstack("multimodal_state"))
     tbl = pd.DataFrame({
@@ -230,6 +459,7 @@ def _make_results_table(modality: str) -> pd.DataFrame:
     })
     tbl["Gain"] = (tbl["FT"] - tbl["Frozen"]).round(3)
     tbl[["Frozen", "FT"]] = tbl[["Frozen", "FT"]].round(3)
+    tbl.attrs["n_models"] = n_models
     return tbl.sort_values("Gain", ascending=False).reset_index(drop=True)
 
 
@@ -292,6 +522,22 @@ def _make_win_rate_table() -> pd.DataFrame:
         "Combined", ascending=False).reset_index()
 
 
+@st.cache_data
+def _make_datasets_table() -> pd.DataFrame:
+    df = pd.read_csv(_SUMMARY_CSV)
+    df["Classes"] = df["Classes"].apply(lambda x: str(int(x)) if pd.notna(x) else "--")
+    return df
+
+
+def _get_datasets_table_latex() -> str:
+    tex_path = expanduser("~/tabstar/paper-multabench/appendix.tex")
+    with open(tex_path) as f:
+        content = f.read()
+    start = content.find("\\begin{table*}")
+    end   = content.find("\\end{table*}") + len("\\end{table*}")
+    return content[start:end]
+
+
 def _to_latex_win_rate(tbl: pd.DataFrame) -> str:
     header = (
         "\\begin{table}[h]\n\\centering\n"
@@ -314,6 +560,102 @@ def _to_latex_win_rate(tbl: pd.DataFrame) -> str:
         for _, r in tbl.iterrows()
     ]
     return header + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
+
+
+def _make_curation_grid_latex(grid: pd.DataFrame) -> str:
+    models = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]
+    header = (
+        "\\begin{longtable}{lcccccc}\n"
+        "\\caption{Per-dataset curation grid across all 56 text-tabular candidates. "
+        "Each cell indicates whether that model satisfies all three criteria: "
+        "Joint Signal and Task-awareness (\\S\\ref{sec:benchmarking}). "
+        "Datasets are sorted approved-first, then by descending pass count.}"
+        "\\label{tab:text_curation_grid}\\\\\n"
+        "\\toprule\n"
+        "\\textbf{Dataset} & \\textbf{LGB} & \\textbf{CTB} & \\textbf{TabM} "
+        "& \\textbf{PFNv2} & \\textbf{PFN-2.5} & \\textbf{Pass} \\\\\n"
+        "\\midrule\n"
+        "\\endfirsthead\n"
+        "\\toprule\n"
+        "\\textbf{Dataset} & \\textbf{LGB} & \\textbf{CTB} & \\textbf{TabM} "
+        "& \\textbf{PFNv2} & \\textbf{PFN-2.5} & \\textbf{Pass} \\\\\n"
+        "\\midrule\n"
+        "\\endhead\n"
+        "\\midrule\\multicolumn{7}{r}{\\textit{Continued on next page}}\\\\\n"
+        "\\endfoot\n"
+        "\\bottomrule\n"
+        "\\endlastfoot\n"
+    )
+    rows = []
+    prev_decision = None
+    for ds, row in grid.iterrows():
+        decision = row["decision"]
+        if prev_decision is not None and decision != prev_decision:
+            rows.append("\\midrule")
+        prev_decision = decision
+        name = ds.replace("_", "\\_")
+        def _cell(v):
+            import math
+            if v is None or (isinstance(v, float) and math.isnan(v)):
+                return "$-$"
+            return "$\\checkmark$" if v else "$\\times$"
+        cells = " & ".join(_cell(row[m]) for m in models)
+        count = int(row["all_three (/5)"])
+        rows.append(f"{name} & {cells} & {count} \\\\")
+    return header + "\n".join(rows) + "\n\\end{longtable}"
+
+
+def _make_text_curation_rates_table() -> pd.DataFrame:
+    benchmarks = [
+        ("AutoML Multimodal", AUTOML_MULTIMODAL_ACCEPTED, AUTOML_MULTIMODAL_REJECTED),
+        ("Grinsztajn et al.", VECTORIZING_ACCEPTED,       VECTORIZING_REJECTED),
+        ("CARTE",             CARTE_ACCEPTED,              CARTE_REJECTED),
+        ("TextTabBench",      TEXT_TAB_BENCH_ACCEPTED,     TEXT_TAB_BENCH_REJECTED),
+    ]
+    rows = []
+    for name, acc, rej in benchmarks:
+        candidates = len(set(acc + rej))
+        accepted   = len(set(acc))
+        rows.append({"Benchmark": name, "Candidates": candidates,
+                     "Accepted": accepted, "Rate": f"{accepted / candidates:.0%}"})
+    total_cands = len(set(ACCEPTED_TEXT_DATASETS) | set(REJECTED_TEXT_DATASETS))
+    total_acc   = len(set(ACCEPTED_TEXT_DATASETS))
+    rows.append({"Benchmark": "Total (unique, deduplicated)", "Candidates": total_cands,
+                 "Accepted": total_acc, "Rate": f"{total_acc / total_cands:.0%}"})
+    return pd.DataFrame(rows)
+
+
+def _to_latex_text_curation_rates(tbl: pd.DataFrame) -> str:
+    header = (
+        "\\begin{table}[h]\n\\centering\n"
+        "\\caption{Text-tabular curation acceptance rates by source benchmark. "
+        "Counts refer to unique datasets evaluated from each source.}\n"
+        "\\label{tab:text_curation_rates}\n\\small\n"
+        "\\begin{tabular}{lrrr}\n\\toprule\n"
+        "\\textbf{Benchmark} & \\textbf{Candidates} & \\textbf{Accepted} & \\textbf{Rate} \\\\\n"
+        "\\midrule\n"
+    )
+    cite_map = {
+        "AutoML Multimodal": "AutoML Multimodal \\cite{shi_benchmarking_2021}",
+        "Grinsztajn et al.": "\\citet{grinsztajn_vectorizing_2023}",
+        "CARTE":             "CARTE \\cite{kim_carte_2024}",
+        "TextTabBench":      "TextTabBench \\cite{mraz_towards_2025}",
+        "Total (unique, deduplicated)": "\\textbf{Total (unique, deduplicated)}",
+    }
+    rows = []
+    for _, r in tbl.iterrows():
+        name = cite_map.get(r["Benchmark"], r["Benchmark"])
+        acc  = r["Accepted"]
+        cand = r["Candidates"]
+        rate = r["Rate"]
+        rate_tex = rate.replace("%", "\\%")
+        bold = r["Benchmark"].startswith("Total")
+        if bold:
+            rows.append(f"{name} & \\textbf{{{cand}}} & \\textbf{{{acc}}} & \\textbf{{{rate_tex}}} \\\\")
+        else:
+            rows.append(f"{name} & {cand} & {acc} & {rate_tex} \\\\")
+    body = "\n".join(rows[:4]) + "\n\\midrule\n" + rows[4]
+    return header + body + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
 
 
 # ---------------------------------------------------------------------------
@@ -354,6 +696,14 @@ def display_paper_production():
                 else:
                     st.dataframe(agg_data, use_container_width=True)
 
+        st.subheader("Table 1 — Experimental Conditions")
+        cond_tbl   = _make_conditions_table()
+        cond_latex = _to_latex_conditions(cond_tbl)
+        st.dataframe(cond_tbl, use_container_width=True)
+        with st.expander("📋 LaTeX source"):
+            st.code(cond_latex, language="latex")
+        st.divider()
+
         for ref, title, kind, make_fn, fname_stem in _MAIN_PAPER:
             st.subheader(f"{ref} — {title}")
             if kind == "figure":
@@ -376,26 +726,12 @@ def display_paper_production():
                     _tbl.style.highlight_max(axis=1, props="font-weight:bold").format("{:.1f}"),
                     use_container_width=True)
                 _latex = _to_latex_petfinder(_tbl)
-                st.download_button("⬇ Download LaTeX", data=_latex,
-                                   file_name=f"table_{fname_stem}.tex", mime="text/plain",
-                                   key=f"dl_tex_{fname_stem}")
                 with st.expander("📋 LaTeX source"):
                     st.code(_latex, language="latex")
             st.divider()
 
     # ── Tables ────────────────────────────────────────────────────────────────
     with tbl_tab:
-        st.subheader("Table 1 — Experimental Conditions")
-        cond_tbl   = _make_conditions_table()
-        cond_latex = _to_latex_conditions(cond_tbl)
-        st.dataframe(cond_tbl, use_container_width=True)
-        st.download_button("⬇ Download LaTeX", data=cond_latex,
-                           file_name="table_conditions.tex", mime="text/plain",
-                           key="dl_tex_conditions")
-        with st.expander("📋 LaTeX source"):
-            st.code(cond_latex, language="latex")
-        st.divider()
-
         st.subheader("Appendix — Per-Dataset Results")
         _APP_CAPTIONS = {
             "IMAGE": (
@@ -427,15 +763,9 @@ def display_paper_production():
                          use_container_width=True)
             caption, label = _APP_CAPTIONS[modality]
             latex = _to_latex(tbl, label, caption)
-            c1, c2 = st.columns(2)
-            with c1:
-                st.download_button("⬇ Download CSV", data=tbl.to_csv(index=False),
-                                   file_name=f"results_{modality.lower()}.csv", mime="text/csv",
-                                   key=f"dl_csv_{modality}")
-            with c2:
-                st.download_button("⬇ Download LaTeX", data=latex,
-                                   file_name=f"table_{modality.lower()}.tex", mime="text/plain",
-                                   key=f"dl_tex_{modality}")
+            st.download_button("⬇ Download CSV", data=tbl.to_csv(index=False),
+                               file_name=f"results_{modality.lower()}.csv", mime="text/csv",
+                               key=f"dl_csv_{modality}")
             with st.expander("📋 LaTeX source"):
                 st.code(latex, language="latex")
             st.divider()
@@ -449,18 +779,75 @@ def display_paper_production():
         st.dataframe(wr_tbl[display_cols].style.background_gradient(
             subset=["Image", "Text", "Combined"], cmap="RdYlGn", vmin=0, vmax=100
         ).format(fmt, na_rep=""), use_container_width=True)
-        c1, c2 = st.columns(2)
-        with c1:
-            st.download_button("⬇ Download CSV", data=wr_tbl.to_csv(index=False),
-                               file_name="win_rate.csv", mime="text/csv", key="dl_csv_wr")
-        with c2:
-            st.download_button("⬇ Download LaTeX", data=wr_latex,
-                               file_name="table_win_rate.tex", mime="text/plain", key="dl_tex_wr")
+        st.download_button("⬇ Download CSV", data=wr_tbl.to_csv(index=False),
+                           file_name="win_rate.csv", mime="text/csv", key="dl_csv_wr")
         with st.expander("📋 LaTeX source"):
             st.code(wr_latex, language="latex")
 
     # ── Appendix ──────────────────────────────────────────────────────────────
     with app_tab:
+        st.subheader("Table 3 — MulTaBench Datasets")
+        datasets_df = _make_datasets_table()
+        st.dataframe(datasets_df, use_container_width=True, hide_index=True)
+        datasets_latex = _get_datasets_table_latex()
+        with st.expander("📋 LaTeX source"):
+            st.code(datasets_latex, language="latex")
+        st.divider()
+
+        st.subheader("Table — Text Curation Grid (56 datasets × 5 models)")
+        _pool_df = _load_pool_corpus_data()
+        from multabench.leaderboard.text_results import single_variant_name
+        from multabench.leaderboard.data.keys import MODE
+        _pool_df[MODE] = _pool_df.apply(single_variant_name, axis=1)
+        _grid_df = compute_curation_grid(_pool_df)
+        st.dataframe(_grid_df, use_container_width=True)
+        _grid_latex = _make_curation_grid_latex(_grid_df)
+        with st.expander("📋 LaTeX source (longtable)"):
+            st.code(_grid_latex, language="latex")
+        st.divider()
+
+        st.subheader("Table — Text Curation Acceptance Rates")
+        curation_df = _make_text_curation_rates_table()
+        st.dataframe(curation_df, use_container_width=True, hide_index=True)
+        curation_latex = _to_latex_text_curation_rates(curation_df)
+        with st.expander("📋 LaTeX source"):
+            st.code(curation_latex, language="latex")
+        st.divider()
+
+        st.subheader("Table — Computation Costs")
+        costs_img = _make_costs_table("IMAGE")
+        costs_txt = _make_costs_table("TEXT")
+        st.caption("Image (DINO)")
+        st.dataframe(costs_img, use_container_width=True, hide_index=True)
+        st.caption("Text (E5)")
+        st.dataframe(costs_txt, use_container_width=True, hide_index=True)
+        costs_latex = _to_latex_costs(costs_img, costs_txt)
+        with st.expander("📋 LaTeX source"):
+            st.code(costs_latex, language="latex")
+
+        st.subheader("Figure — Computation Costs")
+        costs_fig = _make_costs_figure()
+        st.pyplot(costs_fig, use_container_width=True)
+        c1, c2 = st.columns(2)
+        with c1:
+            st.download_button("⬇ Download PDF", data=_fig_to_bytes(costs_fig, "pdf"),
+                               file_name="compute_costs.pdf", mime="application/pdf",
+                               key="dl_pdf_compute_costs")
+        with c2:
+            st.download_button("⬇ Download PNG", data=_fig_to_bytes(costs_fig, "png"),
+                               file_name="compute_costs.png", mime="image/png",
+                               key="dl_png_compute_costs")
+        plt.close(costs_fig)
+        st.divider()
+
+        st.subheader("Table — Amazon Packages Trimodal Analysis (appendix Tab. amazon_packages)")
+        amz_tbl = _make_amazon_packages_table()
+        st.dataframe(amz_tbl.style.highlight_max(axis=1, props="font-weight:bold").format("{:.1f}"),
+                     use_container_width=True)
+        with st.expander("📋 LaTeX source"):
+            st.code(_to_latex_amazon_packages(amz_tbl), language="latex")
+        st.divider()
+
         _APP_PLOTS = [
             ("Text Pool: TF-IDF vs E5",              _make_text_pool_tfidf_fig,   "text_pool_tfidf"),
             ("Text Pool: Structured vs Unstructured", _make_text_pool_struct_fig,  "text_pool_struct_unstruct"),

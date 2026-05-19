@@ -8,6 +8,9 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib
+
+from multabench.leaderboard.data.keys import TEST_SCORE
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
@@ -27,12 +30,12 @@ _CI_TAR      = "#B85010"
 _CI_STRUCT   = "#3A9A30"
 _CI_UNSTRUCT = "#C89000"
 
-_FS_TITLE   = 13
-_FS_YLABEL  = 14
-_FS_XTICK   = 11
-_FS_YTICK   = 11
-_FS_LEGEND  = 11
-_FONTWEIGHT = "bold"
+_FS_TITLE   = 15
+_FS_YLABEL  = 15
+_FS_XTICK   = 13
+_FS_YTICK   = 13
+_FS_LEGEND  = 13
+_FONTWEIGHT = "normal"
 _CAPSIZE    = 2
 _ERR_LW     = 0.7
 
@@ -67,8 +70,8 @@ _MULTABENCH_POOL_NAMES = frozenset({
     "REG_TEXT_SOCIAL_VIDEO_GAMES_SALES",
 })
 
-_STRUCT_STATE_MAP  = {"no_text": "Structured", "text_only": "Unstructured", "all": "Frozen", "ft": "TAR"}
-_STRUCT_CONDITIONS = ["Structured", "Unstructured", "Frozen", "TAR"]
+_STRUCT_STATE_MAP  = {"no_text": "Unimodal Structured", "text_only": "Unimodal Unstructured", "all": "Joint Frozen", "ft": "Joint TAR"}
+_STRUCT_CONDITIONS = ["Unimodal Structured", "Unimodal Unstructured", "Joint Frozen", "Joint TAR"]
 _STRUCT_COLORS     = [_COLOR_STRUCT, _COLOR_UNSTRUCT, _COLOR_FROZEN, _COLOR_TAR]
 _STRUCT_CI_COLORS  = [_CI_STRUCT,   _CI_UNSTRUCT,    _CI_FROZEN,    _CI_TAR]
 
@@ -138,9 +141,9 @@ def _normalize_pool(df: pd.DataFrame, state_map: dict) -> pd.DataFrame:
     df = df.copy()
     df["condition"] = df["multimodal_state"].map(state_map)
     df = df[df["condition"].notna()]
-    lo = df.groupby(["dataset", "fold"])["test_score"].transform("min")
-    hi = df.groupby(["dataset", "fold"])["test_score"].transform("max")
-    df["norm"] = (df["test_score"] - lo) / (hi - lo).clip(lower=1e-9)
+    lo = df.groupby(["dataset", "fold"])[TEST_SCORE].transform("min")
+    hi = df.groupby(["dataset", "fold"])[TEST_SCORE].transform("max")
+    df["norm"] = (df[TEST_SCORE] - lo) / (hi - lo).clip(lower=1e-9)
     agg = (df.groupby(["model_label", "condition"])["norm"]
              .agg(mean="mean", std="std", n="count")
              .reset_index())
@@ -152,7 +155,7 @@ def _raw_pool(df: pd.DataFrame, state_map: dict) -> pd.DataFrame:
     df = df.copy()
     df["condition"] = df["multimodal_state"].map(state_map)
     df = df[df["condition"].notna()]
-    agg = (df.groupby(["model_label", "condition"])["test_score"]
+    agg = (df.groupby(["model_label", "condition"])[TEST_SCORE]
              .agg(mean="mean", std="std", n="count")
              .reset_index())
     agg["ci"] = 1.96 * agg["std"] / agg["n"] ** 0.5
@@ -162,8 +165,8 @@ def _raw_pool(df: pd.DataFrame, state_map: dict) -> pd.DataFrame:
 def _normalize_tfidf(df: pd.DataFrame) -> pd.DataFrame:
     conds = ["TF-IDF", "E5-small, Frozen", "E5-small, TAR"]
     df = df.copy()
-    lo = df.groupby(["dataset", "fold", "model_label"])["test_score"].transform("min")
-    hi = df.groupby(["dataset", "fold", "model_label"])["test_score"].transform("max")
+    lo = df.groupby(["dataset", "fold", "model_label"])[TEST_SCORE].transform("min")
+    hi = df.groupby(["dataset", "fold", "model_label"])[TEST_SCORE].transform("max")
     df["norm"] = (df["test_score"] - lo) / (hi - lo).clip(lower=1e-9)
     agg = (df.groupby(["model_label", "condition"])["norm"]
              .agg(mean="mean", std="std", n="count")
@@ -230,8 +233,8 @@ def make_joint_tar_figure():
     agg_all = _normalize_pool(df,    _JOINT_TAR_STATE_MAP)
     agg_mb  = _normalize_pool(df_mb, _JOINT_TAR_STATE_MAP)
 
-    fig, axes = plt.subplots(1, 2, figsize=(14, 4.2), sharey=True)
-    fig.subplots_adjust(left=0.07, right=0.80, top=0.92, bottom=0.14, wspace=0.10)
+    fig, axes = plt.subplots(1, 2, figsize=(16, 4.2))
+    fig.subplots_adjust(left=0.07, right=0.80, top=0.92, bottom=0.14, wspace=0.22)
 
     _draw_panel(axes[0], agg_all, _JOINT_TAR_CONDITIONS, _JOINT_TAR_COLORS, _JOINT_TAR_CI_COLORS,
                 f"All ({n_all} datasets)")
@@ -243,7 +246,7 @@ def make_joint_tar_figure():
     fig.legend(handles=legend_handles,
                loc="center left", bbox_to_anchor=(0.81, 0.5),
                frameon=True, edgecolor="black", framealpha=0.95,
-               prop={"weight": "bold", "size": _FS_LEGEND})
+               prop={"size": _FS_LEGEND})
 
     return fig, {"All": agg_all, "MulTaBench": agg_mb}
 
@@ -271,7 +274,7 @@ def make_tfidf_figure():
     fig.legend(handles=legend_handles,
                loc="center left", bbox_to_anchor=(0.83, 0.5),
                frameon=True, edgecolor="black", framealpha=0.95,
-               prop={"weight": "bold", "size": _FS_LEGEND})
+               prop={"size": _FS_LEGEND})
 
     return fig, agg_all
 
@@ -287,7 +290,7 @@ def make_struct_unstruct_figure():
     agg_mb  = _normalize_pool(df_mb, _STRUCT_STATE_MAP)
 
     fig, axes = plt.subplots(1, 2, figsize=(18, 4.2), sharey=True)
-    fig.subplots_adjust(left=0.06, right=0.84, top=0.92, bottom=0.14, wspace=0.12)
+    fig.subplots_adjust(left=0.06, right=0.97, top=0.80, bottom=0.14, wspace=0.12)
 
     _draw_panel(axes[0], agg_all, _STRUCT_CONDITIONS, _STRUCT_COLORS, _STRUCT_CI_COLORS,
                 f"All ({n_all} datasets)")
@@ -297,8 +300,8 @@ def make_struct_unstruct_figure():
     legend_handles = [Patch(facecolor=c, edgecolor="black", linewidth=0.6, label=l)
                       for c, l in zip(_STRUCT_COLORS, _STRUCT_CONDITIONS)]
     fig.legend(handles=legend_handles,
-               loc="center left", bbox_to_anchor=(0.85, 0.5),
-               frameon=True, edgecolor="black", framealpha=0.95,
-               prop={"weight": "bold", "size": _FS_LEGEND})
+               loc="upper center", bbox_to_anchor=(0.5, 1.0),
+               ncol=4, frameon=True, edgecolor="black", framealpha=0.95,
+               prop={"size": _FS_LEGEND})
 
     return fig, {"All": agg_all, "MulTaBench": agg_mb}

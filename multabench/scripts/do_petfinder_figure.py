@@ -21,9 +21,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 _HERE  = os.path.dirname(os.path.abspath(__file__))
-_CSV_IMG = os.path.join(_HERE, "multimodal/leaderboard/results/images/MUL_IMAGE_PETFINDER.csv")
-_CSV_TRI = os.path.join(_HERE, "multimodal/leaderboard/results/tabular_image_text/MUL_IMAGE_PETFINDER.csv")
-_OUT   = os.path.join(_HERE, "../paper-multabench/figures/petfinder.pdf")
+_CSV_IMG = os.path.join(_HERE, "..", "leaderboard", "results", "images", "MUL_IMAGE_PETFINDER.csv")
+_CSV_TRI = os.path.join(_HERE, "..", "leaderboard", "results", "tabular_image_text", "MUL_IMAGE_PETFINDER.csv")
+_OUT   = os.path.join(_HERE, "../../../paper-multabench/figures/petfinder.pdf")
 
 _BAR_EDGE = "#555"
 
@@ -91,9 +91,9 @@ _MODEL_ORDER = list(_MODEL_LABELS.keys())
 
 _CAPSIZE  = 1.5
 _ERR_LW   = 0.7
-_FS_TITLE  = 12
-_FS_TICK   = 9
-_FS_LEGEND = 8.5
+_FS_TITLE  = 14
+_FS_TICK   = 11
+_FS_LEGEND = 10
 _Y_MIN     = 0.68
 
 
@@ -143,7 +143,7 @@ def main() -> None:
     ax.set_ylim(_Y_MIN, 0.92)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.2f"))
     ax.tick_params(axis="y", labelsize=_FS_TICK)
-    ax.set_title("PetFinder", fontsize=_FS_TITLE, fontweight="bold")
+    ax.set_title("PetFinder", fontsize=_FS_TITLE)
     ax.grid(axis="y", linestyle="--", linewidth=0.5, alpha=0.5, zorder=0)
     ax.set_axisbelow(True)
 
