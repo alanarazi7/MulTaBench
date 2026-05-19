@@ -1,0 +1,41 @@
+Dataset,Modality,Task,Classes,N,Struct.,Text cols,Img.
+Fake Job Postings,Text,CLS,2.0,12725,2,3,0
+Jigsaw Toxicity,Text,CLS,2.0,100000,29,2,0
+Kickstarter,Text,CLS,2.0,86502,4,5,0
+Data Scientist Salary,Text,CLS,6.0,15841,1,5,0
+Michelin Guide,Text,CLS,5.0,18843,5,6,0
+Product Sentiment,Text,CLS,4.0,5091,1,1,0
+Spotify Genres,Text,CLS,114.0,114000,15,3,0
+US Accidents,Text,CLS,4.0,100001,35,9,0
+Wine Review,Text,CLS,30.0,84123,3,2,0
+Women's Clothing,Text,CLS,5.0,18788,8,2,0
+Baby Products,Text,REG,,5085,8,4,0
+Book Price,Text,REG,,4989,3,5,0
+Book Readability,Text,REG,,4724,24,6,0
+Mercari Marketplace,Text,REG,,100000,3,6,0
+Montgomery Salaries,Text,REG,,9228,7,4,0
+Rotten Tomatoes,Text,REG,,7158,2,13,0
+SciMagojr Impact,Text,REG,,31136,12,10,0
+Vancouver Salaries,Text,REG,,44574,3,2,0
+Video Games Sales,Text,REG,,16598,3,2,0
+Zomato Restaurants,Text,REG,,41665,8,7,0
+Celeb Attractiveness,Image,CLS,2.0,99999,39,0,1
+Hateful Meme,Image,CLS,2.0,9000,20,0,1
+Mammography CMMD,Image,CLS,2.0,5202,4,0,1
+CheXpert,Image,CLS,3.0,46437,17,0,1
+CBIS-DDSM,Image,CLS,4.0,1696,8,0,1
+Glaucoma SMDG,Image,CLS,3.0,12449,8,0,1
+CS:GO Skins,Image,CLS,10.0,956,3,1,1
+Flower Bouquets,Image,CLS,5.0,600,3,1,1
+HubMAP HPA,Image,CLS,10.0,12581,5,1,1
+Justin Instagram,Image,CLS,5.0,10319,6,0,1
+PetFinder,Image,CLS,8.0,14652,17,4,1
+Zooscan Plankton,Image,CLS,10.0,100000,28,0,1
+Amazon Bestseller,Image,REG,,3488,4,0,1
+Amazon Packages,Image,REG,,46398,1,1,1
+H&M Fashion,Image,REG,,104072,9,4,1
+Khaadi Clothes,Image,REG,,400,2,1,1
+Letterboxd Movies,Image,REG,,12564,23,3,1
+Mango Mass,Image,REG,,546,2,0,1
+MkPhoto Bots,Image,REG,,13748,8,0,1
+Painting Price,Image,REG,,12369,245,2,1
