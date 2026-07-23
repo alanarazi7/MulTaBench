@@ -1,5 +1,6 @@
 import streamlit as st
 
+from multabench.leaderboard.curation_sensitivity_results import display_curation_sensitivity
 from multabench.leaderboard.large_results import display_large_results
 from multabench.leaderboard.multabench_results import display_multabench
 from multabench.leaderboard.no_pca_results import display_no_pca_results
@@ -13,8 +14,8 @@ from multabench.leaderboard.triple_results import display_triple
 
 def display_leaderboard():
     st.title("MulTaBench Leaderboard 🌟")
-    tabs = ["🏆 MulTaBench", "🧹 Curation", "🦣 Large", "🏊 Pool", "📈 Text Pool", "📊 TF-IDF", "😍 Triple", "📐 PCA", "🔓 No-PCA"]
-    multabench, curation, large, pool, text_pool, tfidf, triple, pca, no_pca = st.tabs(tabs)
+    tabs = ["🏆 MulTaBench", "🧹 Curation", "🦣 Large", "🏊 Pool", "📈 Text Pool", "🎯 Sensitivity", "📊 TF-IDF", "😍 Triple", "📐 PCA", "🔓 No-PCA"]
+    multabench, curation, large, pool, text_pool, sensitivity, tfidf, triple, pca, no_pca = st.tabs(tabs)
     with multabench:
         display_paper_benchmark()
     with curation:
@@ -25,6 +26,8 @@ def display_leaderboard():
         display_pool_performance()
     with text_pool:
         display_text_pool_tar()
+    with sensitivity:
+        display_curation_sensitivity()
     with tfidf:
         display_tfidf_benchmark()
     with triple:
