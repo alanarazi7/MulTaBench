@@ -6,6 +6,7 @@
 
 Used by the three sensitivity-analysis scripts and by the leaderboard's Sensitivity tab.
 """
+import glob
 from os.path import dirname, join
 from typing import Iterable
 
@@ -16,6 +17,26 @@ _CORPUS_CSV = join(_RESULTS, "tabstar_corpus", "text_50_datasets.csv")
 _TEXTTABENCH_CSV = join(_RESULTS, "tabstar_corpus", "texttabench_datasets.csv")
 _TEXT_SOURCE_DIR = join(_RESULTS, "text_source")
 _MORE_BASELINES_DIR = join(_RESULTS, "more_baselines")
+_TEXT_DIR = join(_RESULTS, "text")
+
+# more_baselines/*.csv covering the accepted-20 with Frozen/TAR (i.e. non-end-to-end models
+# that fit the frozen-embedding-vs-TAR framework). Excludes autogluon_mm.csv, contexttab.csv,
+# tabstar.csv -- those are end-to-end models with only a single 'all' condition, no separate
+# TAR variant, so they can't contribute a Delta_Awareness signal.
+_MORE_BASELINES_NON_E2E_FILES = [
+    "realmlp.csv", "tabdpt.csv", "xgboost.csv", "random_forest.csv",
+    "tabiclv2.csv", "tabfm.csv", "tabpfnv3.csv",
+]
+
+# The 20 accepted datasets are named differently across CSV sources: tabstar_corpus/ and
+# text_source/ use the long, post-rename MulTaBenchDatasetID identifiers (e.g.
+# "BIN_TEXT_PROFESSIONAL_FAKE_JOB_POSTING"), while results/text/ and more_baselines/ use the
+# original short pre-rename identifiers (e.g. "BIN_TEXT_FAKE_JOB_POSTING"). Two pairs can't be
+# resolved by token matching alone (a typo and a pluralization) and are listed explicitly.
+_SHORT_TO_LONG_MANUAL_OVERRIDES = {
+    "REG_TEXT_VANCOUVER_SALARIES": "REG_TEXT_PROFESSIONAL_EMPLOYEE_RENUMERATION_VANCOUBER",  # "VANCOUBER" typo in the long name
+    "REG_TEXT_MONTGOMERY_SALARIES": "REG_TEXT_PROFESSIONAL_EMPLOYEE_SALARY_MONTGOMERY",  # SALARY vs SALARIES
+}
 
 # The 5 curation learners, in paper order.
 CURATION_MODELS = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]
@@ -63,23 +84,63 @@ def load_pool_5model() -> pd.DataFrame:
               .mean().reset_index().rename(columns={"test_score": "score"}))
 
 
-def load_pool_extended_awareness() -> pd.DataFrame:
-    """Per (dataset, model, condition in {JointFrozen, JointTAR}) mean score, across the
-    12-model text_source (36 rejected pool datasets) + more_baselines (20 accepted) +
-    the original 5-model pool restricted to Frozen/TAR. Delta_Joint is NOT available here for
-    the extra (non-curation) models -- only Delta_Awareness.
+def _build_short_to_long_name_map(long_names: Iterable[str]) -> dict:
+    """Resolve results/text/*.csv's short (pre-rename) dataset filenames to the long pool
+    names used everywhere else, via token-subset matching (short name's tokens, after the
+    TASK_MODALITY prefix, must be a subset of the long name's tokens) plus 2 manual overrides
+    for a typo and a pluralization mismatch that token matching can't catch. Every short name
+    must resolve to exactly one long name -- raises if not, rather than silently mismatching.
     """
-    import glob
-    frames = []
-    for f in glob.glob(join(_TEXT_SOURCE_DIR, "*.csv")):
-        frames.append(pd.read_csv(f))
-    for f in glob.glob(join(_MORE_BASELINES_DIR, "*.csv")):
-        frames.append(pd.read_csv(f))
-    # Also fold in the original 5-model pool (all/ft only) so extra + curation models coexist.
+    def _tokens(name):
+        parts = name.split("_")
+        return tuple(parts[:2]), set(parts[2:])
+
+    long_by_prefix = {}
+    for name in long_names:
+        prefix, toks = _tokens(name)
+        long_by_prefix.setdefault(prefix, []).append((name, toks))
+
+    mapping = {}
+    for f in glob.glob(join(_TEXT_DIR, "*.csv")):
+        short = f.split("/")[-1].replace(".csv", "")
+        if short in _SHORT_TO_LONG_MANUAL_OVERRIDES:
+            mapping[short] = _SHORT_TO_LONG_MANUAL_OVERRIDES[short]
+            continue
+        prefix, short_toks = _tokens(short)
+        candidates = [name for name, toks in long_by_prefix.get(prefix, []) if short_toks <= toks]
+        if len(candidates) != 1:
+            raise ValueError(f"Could not uniquely resolve short dataset name {short!r} "
+                              f"to a long pool name (candidates: {candidates})")
+        mapping[short] = candidates[0]
+    return mapping
+
+
+def load_pool_extended_awareness() -> pd.DataFrame:
+    """Per (dataset, model, condition in {JointFrozen, JointTAR}) mean score, for all models
+    beyond the 5 curation ones, across the full 56-dataset pool:
+    - the 36 REJECTED pool datasets, via text_source/*.csv (12 models, Frozen/TAR only)
+    - the 20 ACCEPTED pool datasets, via the non-end-to-end more_baselines/*.csv files
+      (_MORE_BASELINES_NON_E2E_FILES), filtered to text-tabular rows and Frozen/TAR only,
+      with short dataset names translated to long pool names.
+    Folds in the original 5-model pool (Frozen/TAR only) so curation + extra models coexist.
+    Delta_Joint is NOT available here for the extra (non-curation) models -- only
+    Delta_Awareness, since no unimodal-ablation runs exist for them on the pool.
+    """
     base = load_pool_5model()
     base_af = base[base["condition"].isin(["JointFrozen", "JointTAR"])].copy()
+    name_map = _build_short_to_long_name_map(base["dataset"].unique())
 
     all_labels = {**_MODEL_LABELS, **_EXTRA_MODEL_LABELS}
+
+    frames = [pd.read_csv(f) for f in glob.glob(join(_TEXT_SOURCE_DIR, "*.csv"))]
+
+    for fname in _MORE_BASELINES_NON_E2E_FILES:
+        df = pd.read_csv(join(_MORE_BASELINES_DIR, fname))
+        df = df[df["dataset"].str.contains("_TEXT_")].copy()
+        df["dataset"] = df["dataset"].map(name_map)
+        df = df.dropna(subset=["dataset"])
+        frames.append(df)
+
     extra = pd.concat(frames, ignore_index=True)
     extra = extra.dropna(subset=["model"])
     extra["model"] = extra["model"].str.strip().map(all_labels)
