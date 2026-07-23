@@ -153,6 +153,63 @@ def extended_model_awareness(delta: float = DELTA_DEFAULT) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("frac_pass_awareness", ascending=False)
 
 
+TABPFN_FAMILY = ["TabPFNv2", "TabPFN-2.5"]
+NON_TABPFN_MODELS = ["LightGBM", "CatBoost", "TabM"]
+ALT_PANEL_MODELS = ["RandomForest", "RealMLP", "TabDPT", "XGBoost", "TabICLv2"]
+
+
+def family_swap(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT,
+                 rho: float = RHO_DEFAULT) -> pd.DataFrame:
+    """Drop the whole TabPFN family (both correlated variants) at once, and the mirror case
+    of keeping ONLY the TabPFN family -- a stronger test of the "same-family bloc vote"
+    concern than single leave-one-out, since it removes/isolates the correlated pair wholesale
+    rather than one model at a time."""
+    baseline = accept_set(deltas, CURATION_MODELS, delta=delta, rho=rho)
+    baseline_accepted = {d for d, v in baseline.items() if v}
+
+    rows = []
+    for label, models in [("Drop TabPFN family (3 remain)", NON_TABPFN_MODELS),
+                           ("ONLY TabPFN family (2 models)", TABPFN_FAMILY)]:
+        result = accept_set(deltas, models, delta=delta, rho=rho)
+        accepted = {d for d, v in result.items() if v}
+        rows.append({
+            "scenario": label,
+            "models": "+".join(models),
+            "n_accepted": len(accepted),
+            "jaccard_vs_baseline": round(_jaccard(accepted, baseline_accepted), 3),
+            "flipped_out": ", ".join(sorted(baseline_accepted - accepted)),
+            "flipped_in": ", ".join(sorted(accepted - baseline_accepted)),
+        })
+    return pd.DataFrame(rows)
+
+
+def alternative_panel_awareness(delta: float = DELTA_DEFAULT, rho: float = RHO_DEFAULT) -> pd.DataFrame:
+    """Compare the original 5 curation models against a fully different 5-model panel (the
+    paper's 5 supplementary baselines: RandomForest, RealMLP, TabDPT, XGBoost, TabICLv2) on
+    Delta_Awareness alone (Delta_Joint isn't available for non-curation models on the pool,
+    so this can't redo the full Accept(D) rule -- it's a partial, Awareness-only proxy for
+    "what if we'd picked five completely different learners?")."""
+    ext = load_pool_extended_awareness()
+    deltas = compute_deltas_awareness_only(ext)
+
+    def _vote(models):
+        sub = deltas[deltas["model"].isin(models)].copy()
+        sub["passes"] = sub["delta_awareness"] > delta
+        counts = sub.groupby("dataset")["passes"].sum()
+        n_models = sub.groupby("dataset")["model"].nunique()
+        return counts >= rho * n_models
+
+    orig_vote = _vote(CURATION_MODELS)
+    alt_vote = _vote(ALT_PANEL_MODELS)
+    common = orig_vote.index.intersection(alt_vote.index)
+    disagreements = common[orig_vote[common] != alt_vote[common]]
+
+    return pd.DataFrame([
+        {"dataset": d, "original_5_panel_passes": bool(orig_vote[d]), "alt_5_panel_passes": bool(alt_vote[d])}
+        for d in sorted(disagreements)
+    ])
+
+
 def main():
     df = load_pool_5model()
     deltas = compute_deltas(df)
@@ -189,6 +246,17 @@ def main():
     extended.to_csv(join(_OUT_DIR, "model_extended_awareness.csv"), index=False)
     print("\n=== Extended-model task-awareness generalization (Delta_Awareness > delta only) ===")
     print(extended.to_string(index=False))
+
+    swap = family_swap(deltas)
+    swap.drop(columns=["flipped_out", "flipped_in"]).to_csv(join(_OUT_DIR, "model_family_swap.csv"), index=False)
+    print("\n=== TabPFN family swap (baseline: 23 accepted with all 5) ===")
+    print(swap[["scenario", "models", "n_accepted", "jaccard_vs_baseline"]].to_string(index=False))
+
+    alt_panel = alternative_panel_awareness()
+    alt_panel.to_csv(join(_OUT_DIR, "model_alt_panel_disagreements.csv"), index=False)
+    print(f"\n=== Original-5 vs. fully-different-5 panel, Delta_Awareness only: "
+          f"{len(alt_panel)} disagreements out of 56 ===")
+    print(alt_panel.to_string(index=False))
 
 
 if __name__ == "__main__":

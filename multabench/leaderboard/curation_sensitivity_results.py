@@ -12,8 +12,8 @@ from multabench.leaderboard.analysis.curation_accept import (
 )
 from multabench.leaderboard.analysis.delta_sweep import borderline_datasets, delta_sweep
 from multabench.leaderboard.analysis.model_sensitivity import (
-    agreement_matrix, all_subsets, dataset_stability, extended_model_awareness,
-    fleiss_kappa, leave_one_out,
+    agreement_matrix, all_subsets, alternative_panel_awareness, dataset_stability,
+    extended_model_awareness, family_swap, fleiss_kappa, leave_one_out,
 )
 from multabench.leaderboard.analysis.threshold_grid import rho_sweep_at_k5, size_rho_grid
 
@@ -84,6 +84,20 @@ def display_curation_sensitivity():
                "data exists for these on the pool, so this tests task-awareness only, not "
                "the full accept/reject rule).")
     st.dataframe(extended_model_awareness(), use_container_width=True)
+
+    st.subheader("TabPFN family swap")
+    st.caption("A stronger test of the same-family bloc-vote concern than single "
+               "leave-one-out: drop BOTH TabPFN variants at once (3 models remain), and the "
+               "mirror case of keeping ONLY the TabPFN family (2 models).")
+    st.dataframe(family_swap(deltas), use_container_width=True)
+
+    st.subheader("Original 5 vs. a fully different 5-model panel")
+    st.caption("Delta_Awareness-only comparison (Delta_Joint isn't available for non-curation "
+               "models on the pool, so this can't redo the full Accept(D) rule) between the "
+               "original 5 curation models and the paper's 5 supplementary baselines "
+               "(RandomForest, RealMLP, TabDPT, XGBoost, TabICLv2). Rows below are the "
+               "datasets where the two panels' majority vote disagrees.")
+    st.dataframe(alternative_panel_awareness(), use_container_width=True)
 
     st.divider()
 

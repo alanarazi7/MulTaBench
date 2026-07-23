@@ -1,0 +1,3 @@
+scenario,models,n_accepted,jaccard_vs_baseline
+Drop TabPFN family (3 remain),LightGBM+CatBoost+TabM,27,0.724
+ONLY TabPFN family (2 models),TabPFNv2+TabPFN-2.5,17,0.667
