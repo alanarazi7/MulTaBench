@@ -12,8 +12,8 @@ from multabench.leaderboard.analysis.curation_accept import (
 )
 from multabench.leaderboard.analysis.delta_sweep import borderline_datasets, delta_sweep
 from multabench.leaderboard.analysis.model_sensitivity import (
-    agreement_matrix, all_subsets, alternative_panel_awareness, dataset_stability,
-    extended_model_awareness, family_swap, fleiss_kappa, leave_one_out,
+    agreement_matrix, all_subsets, alternative_panel_awareness, calibrate_awareness_proxy,
+    dataset_stability, extended_model_awareness, family_swap, fleiss_kappa, leave_one_out,
     pairwise_subset_agreement, stability_distribution, subset_agreement_by_size,
 )
 from multabench.leaderboard.analysis.threshold_grid import rho_sweep_at_k5, size_rho_grid
@@ -94,12 +94,28 @@ def display_curation_sensitivity():
               help="Compare to Fleiss' kappa across all 5 models below.")
     st.metric("Fleiss' kappa (all 5 models)", f"{fleiss_kappa(deltas):.3f}")
 
+    st.warning(
+        "**No unimodal (no_text/text_only) runs exist anywhere in the repo for any of the 7 "
+        "non-curation models** (verified by exhaustively scanning all 163 results CSVs). "
+        "Delta_Joint can therefore never be computed for them -- every analysis below that "
+        "involves an extra model uses Delta_Awareness alone, and is evidence for "
+        "task-awareness generalization only, never a stand-in for what a different panel's "
+        "actual accepted SET would be."
+    )
+    calib = calibrate_awareness_proxy(deltas)
+    st.caption("Calibration: how much does dropping Delta_Joint matter? Checked against the "
+               "one case where both the real rule and the Awareness-only proxy are computable "
+               "-- the original 5 curation models.")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Real Accept(D)", calib["n_real_accepted"])
+    c2.metric("Awareness-only proxy", calib["n_proxy_accepted"],
+              delta=f"+{calib['n_false_positives']} false positives", delta_color="inverse")
+    c3.metric("Jaccard(proxy, real)", f"{calib['jaccard_proxy_vs_real']:.3f}")
+
     st.subheader("Extended-model task-awareness generalization")
     st.caption("Fraction of pool datasets with Delta_Awareness > delta, for the 5 curation "
                "models plus up to 7 additional models (TabDPT, TabICLv2, TabFM, TabPFN-v3, "
-               "RealMLP, XGBoost, RandomForest) available only for Frozen/TAR (no Delta_Joint "
-               "data exists for these on the pool, so this tests task-awareness only, not "
-               "the full accept/reject rule).")
+               "RealMLP, XGBoost, RandomForest) available only for Frozen/TAR.")
     st.dataframe(extended_model_awareness(), use_container_width=True)
 
     st.subheader("TabPFN family swap")

@@ -220,24 +220,60 @@ def family_swap(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT,
     return pd.DataFrame(rows)
 
 
+def _awareness_only_vote(deltas: pd.DataFrame, models, delta: float = DELTA_DEFAULT,
+                          rho: float = RHO_DEFAULT) -> pd.Series:
+    sub = deltas[deltas["model"].isin(models)].copy()
+    sub["passes"] = sub["delta_awareness"] > delta
+    counts = sub.groupby("dataset")["passes"].sum()
+    n_models = sub.groupby("dataset")["model"].nunique()
+    return counts >= rho * n_models
+
+
+def calibrate_awareness_proxy(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT,
+                               rho: float = RHO_DEFAULT) -> dict:
+    """IMPORTANT LIMITATION CHECK: no unimodal (no_text/text_only) runs exist anywhere in the
+    repo for any of the 7 non-curation models (verified by exhaustively scanning every results
+    CSV) -- so Delta_Joint can never be computed for them, and any "would a different panel
+    change the accepted set" comparison using those models can only use Delta_Awareness alone.
+
+    Since Accept(D) requires BOTH Delta_Joint>delta AND Delta_Awareness>delta, dropping the
+    Delta_Joint condition can only ever ADD acceptances relative to the real rule, never remove
+    them. This calibrates exactly how much that matters, using the one case where both the
+    real rule and the Awareness-only proxy are computable: the original 5 curation models.
+    """
+    real = accept_set(deltas, CURATION_MODELS, delta=delta, rho=rho)
+    real_accepted = {d for d, v in real.items() if v}
+
+    ext_deltas = compute_deltas_awareness_only(load_pool_extended_awareness())
+    orig_sub = ext_deltas[ext_deltas["model"].isin(CURATION_MODELS)]
+    proxy_vote = _awareness_only_vote(orig_sub, CURATION_MODELS, delta=delta, rho=rho)
+    proxy_accepted = set(proxy_vote[proxy_vote].index)
+
+    false_positives = proxy_accepted - real_accepted
+    false_negatives = real_accepted - proxy_accepted
+    return {
+        "n_real_accepted": len(real_accepted),
+        "n_proxy_accepted": len(proxy_accepted),
+        "n_false_positives": len(false_positives),  # proxy says accept, real rule says reject
+        "n_false_negatives": len(false_negatives),  # always 0 by construction -- proxy is a superset
+        "jaccard_proxy_vs_real": round(_jaccard(proxy_accepted, real_accepted), 3),
+    }
+
+
 def alternative_panel_awareness(delta: float = DELTA_DEFAULT, rho: float = RHO_DEFAULT) -> pd.DataFrame:
     """Compare the original 5 curation models against a fully different 5-model panel (the
     paper's 5 supplementary baselines: RandomForest, RealMLP, TabDPT, XGBoost, TabICLv2) on
-    Delta_Awareness alone (Delta_Joint isn't available for non-curation models on the pool,
-    so this can't redo the full Accept(D) rule -- it's a partial, Awareness-only proxy for
-    "what if we'd picked five completely different learners?")."""
+    Delta_Awareness alone. CAUTION: see calibrate_awareness_proxy() -- this Awareness-only
+    comparison systematically OVERCOUNTS acceptances relative to the real Accept(D) rule (0
+    false negatives, false positives only), so it should be read only as evidence about
+    whether task-awareness generalizes to new models, never as a stand-in for what a different
+    panel's actual accepted SET would be.
+    """
     ext = load_pool_extended_awareness()
     deltas = compute_deltas_awareness_only(ext)
 
-    def _vote(models):
-        sub = deltas[deltas["model"].isin(models)].copy()
-        sub["passes"] = sub["delta_awareness"] > delta
-        counts = sub.groupby("dataset")["passes"].sum()
-        n_models = sub.groupby("dataset")["model"].nunique()
-        return counts >= rho * n_models
-
-    orig_vote = _vote(CURATION_MODELS)
-    alt_vote = _vote(ALT_PANEL_MODELS)
+    orig_vote = _awareness_only_vote(deltas, CURATION_MODELS, delta=delta, rho=rho)
+    alt_vote = _awareness_only_vote(deltas, ALT_PANEL_MODELS, delta=delta, rho=rho)
     common = orig_vote.index.intersection(alt_vote.index)
     disagreements = common[orig_vote[common] != alt_vote[common]]
 
@@ -307,6 +343,17 @@ def main():
     swap.drop(columns=["flipped_out", "flipped_in"]).to_csv(join(_OUT_DIR, "model_family_swap.csv"), index=False)
     print("\n=== TabPFN family swap (baseline: 23 accepted with all 5) ===")
     print(swap[["scenario", "models", "n_accepted", "jaccard_vs_baseline"]].to_string(index=False))
+
+    calib = calibrate_awareness_proxy(deltas)
+    pd.DataFrame([calib]).to_csv(join(_OUT_DIR, "model_awareness_proxy_calibration.csv"), index=False)
+    print("\n=== CAUTION: Awareness-only proxy calibration (no unimodal runs exist for the "
+          "extra models -- verified by scanning all results CSVs) ===")
+    print(f"Real Accept(D):    {calib['n_real_accepted']} accepted")
+    print(f"Awareness-only proxy: {calib['n_proxy_accepted']} accepted "
+          f"({calib['n_false_positives']} false positives, {calib['n_false_negatives']} false negatives)")
+    print(f"Jaccard(proxy, real) = {calib['jaccard_proxy_vs_real']:.3f} -- "
+          f"the proxy below should be read as evidence for task-awareness generalization only, "
+          f"never as a stand-in for what a different panel's accepted SET would be.")
 
     alt_panel = alternative_panel_awareness()
     alt_panel.to_csv(join(_OUT_DIR, "model_alt_panel_disagreements.csv"), index=False)
