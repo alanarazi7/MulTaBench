@@ -14,6 +14,7 @@ from multabench.leaderboard.analysis.delta_sweep import borderline_datasets, del
 from multabench.leaderboard.analysis.model_sensitivity import (
     agreement_matrix, all_subsets, alternative_panel_awareness, dataset_stability,
     extended_model_awareness, family_swap, fleiss_kappa, leave_one_out,
+    pairwise_subset_agreement, stability_distribution, subset_agreement_by_size,
 )
 from multabench.leaderboard.analysis.threshold_grid import rho_sweep_at_k5, size_rho_grid
 
@@ -67,6 +68,22 @@ def display_curation_sensitivity():
         stability.style.background_gradient(cmap="RdYlGn", subset=["frac_subsets_accept"], vmin=0, vmax=1),
         use_container_width=True, height=350,
     )
+    st.caption("How contested is each dataset's decision across all 31 subsets:")
+    st.dataframe(stability_distribution(stability), use_container_width=True)
+
+    st.subheader("Pairwise agreement across all model-subset combinations")
+    st.caption("Jaccard agreement between the accepted sets of every pair of the 31 model "
+               "subsets (C(31,2)=465 pairs) -- generalizes the per-model kappa below to the "
+               "full combinatorial space of curation panels, rather than anchoring everything "
+               "to the single all-5 baseline.")
+    pairwise = pairwise_subset_agreement(subsets)
+    col1, col2 = st.columns(2)
+    col1.metric("Mean Jaccard, all 465 pairs", f"{pairwise['jaccard'].mean():.3f}")
+    majority_only = pairwise[(pairwise["size_1"] >= 3) & (pairwise["size_2"] >= 3)]
+    col2.metric("Mean Jaccard, size>=3 pairs only", f"{majority_only['jaccard'].mean():.3f}")
+    st.caption("Mean Jaccard by (subset size, subset size):")
+    st.dataframe(subset_agreement_by_size(pairwise).style.background_gradient(cmap="RdYlGn", vmin=0, vmax=1),
+                 use_container_width=True)
 
     st.subheader("Pairwise agreement (Cohen's kappa on per-model accept vote)")
     st.caption("Directly tests whether TabPFNv2 and TabPFN-2.5 (same model family) vote as a bloc.")

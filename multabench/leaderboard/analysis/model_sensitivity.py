@@ -92,6 +92,43 @@ def dataset_stability(subsets_df: pd.DataFrame, deltas: pd.DataFrame) -> pd.Data
     ]).sort_values(["baseline_accept", "frac_subsets_accept"], ascending=[False, False])
 
 
+def pairwise_subset_agreement(subsets_df: pd.DataFrame) -> pd.DataFrame:
+    """Jaccard agreement between the accepted sets of EVERY pair of the 31 model subsets
+    (C(31,2) = 465 pairs) -- generalizes the 5x5 per-model kappa matrix to the full
+    combinatorial space of curation panels, rather than anchoring everything to the single
+    all-5 baseline (as jaccard_vs_baseline in all_subsets() does). Answers "if you'd picked
+    any two different subsets of the 5 models, how much would their accepted sets agree?"
+    """
+    rows = subsets_df.to_dict("records")
+    out = []
+    for r1, r2 in combinations(rows, 2):
+        out.append({
+            "subset_1": r1["subset"], "size_1": r1["size"],
+            "subset_2": r2["subset"], "size_2": r2["size"],
+            "jaccard": round(_jaccard(r1["accepted_datasets"], r2["accepted_datasets"]), 3),
+        })
+    return pd.DataFrame(out)
+
+
+def subset_agreement_by_size(pairwise_df: pd.DataFrame) -> pd.DataFrame:
+    """Mean pairwise Jaccard, grouped by (size_1, size_2) -- e.g. how much do two random
+    3-model panels agree on average, vs. a 3-model and a 5-model panel, etc."""
+    sym = pd.concat([
+        pairwise_df.rename(columns={"size_1": "a", "size_2": "b"}),
+        pairwise_df.rename(columns={"size_2": "a", "size_1": "b"}),
+    ], ignore_index=True)
+    return sym.pivot_table(index="a", columns="b", values="jaccard", aggfunc="mean").round(3)
+
+
+def stability_distribution(stability_df: pd.DataFrame) -> pd.DataFrame:
+    """Bucket each dataset's frac_subsets_accept (from dataset_stability) into how contested
+    its decision is across all 31 model subsets."""
+    bins = [-0.001, 0.0, 0.25, 0.5, 0.75, 0.999, 1.0]
+    labels = ["0% (always rejected)", "1-25%", "26-50%", "51-75%", "76-99%", "100% (always accepted)"]
+    bucket = pd.cut(stability_df["frac_subsets_accept"], bins=bins, labels=labels)
+    return bucket.value_counts().reindex(labels).rename("n_datasets").reset_index().rename(columns={"index": "stability_bucket"})
+
+
 def agreement_matrix(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
     """Pairwise Cohen's kappa between each pair of models' per-dataset accept vote.
     Two datasets (e.g. Spotify Genres, 114 classes) have no TabPFNv2/TabPFN-2.5 runs at all
@@ -231,6 +268,25 @@ def main():
     n_always_rejected = ((~stability["baseline_accept"]) & (stability["frac_subsets_accept"] == 0.0)).sum()
     print(f"\nDatasets accepted under ALL 31 subsets: {n_always_accepted}/23")
     print(f"Datasets rejected under ALL 31 subsets: {n_always_rejected}/33")
+
+    dist = stability_distribution(stability)
+    dist.to_csv(join(_OUT_DIR, "model_stability_distribution.csv"), index=False)
+    print("\n=== Per-dataset stability distribution (how contested across all 31 subsets) ===")
+    print(dist.to_string(index=False))
+
+    pairwise = pairwise_subset_agreement(subsets)
+    pairwise.to_csv(join(_OUT_DIR, "model_pairwise_subset_agreement.csv"), index=False)
+    by_size = subset_agreement_by_size(pairwise)
+    by_size.to_csv(join(_OUT_DIR, "model_subset_agreement_by_size.csv"))
+    print(f"\n=== Pairwise agreement across all C(31,2)={len(pairwise)} model-subset pairs ===")
+    print(f"Overall mean Jaccard: {pairwise['jaccard'].mean():.3f}  "
+          f"median: {pairwise['jaccard'].median():.3f}  "
+          f"min: {pairwise['jaccard'].min():.3f}  max: {pairwise['jaccard'].max():.3f}")
+    majority_only = pairwise[(pairwise["size_1"] >= 3) & (pairwise["size_2"] >= 3)]
+    print(f"Restricted to majority-capable subsets (size>=3, n={len(majority_only)}): "
+          f"mean Jaccard = {majority_only['jaccard'].mean():.3f}")
+    print("\nMean Jaccard by (subset size, subset size):")
+    print(by_size)
 
     agreement = agreement_matrix(deltas)
     agreement.to_csv(join(_OUT_DIR, "model_agreement_kappa.csv"))
