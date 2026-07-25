@@ -133,55 +133,6 @@ def build_long_csv() -> pd.DataFrame:
     return out.sort_values(["dataset", "model", "state", "fold"]).reset_index(drop=True)
 
 
-_STATES = ("no_text", "text_only", "all", "ft")
-_FOLDS = range(5)
-
-# The ONE known, genuine gap in the raw source data (a single dropped/failed wandb run),
-# confirmed by exhaustively diffing the full expected (model, dataset, state, fold) grid
-# against pool_scores_long.csv: exactly this row is missing, nothing else. Hardcoded here so
-# it doesn't trip the completeness assertion below; any OTHER missing or duplicate row is
-# unexpected and must fail loudly, not be silently averaged over.
-_KNOWN_MISSING_ROWS = {("TabPFNv2", "REG_TEXT_CONSUMER_CAR_PRICE_CARDEKHO", "ft", 4)}
-
-
-def passes(scores: pd.DataFrame, delta: float = 0.001) -> bool:
-    """Given ONE model's rows for ONE dataset (exactly 20 rows: 5 folds x 4 states, except
-    the one hardcoded gap in _KNOWN_MISSING_ROWS), decide pass/fail.
-
-        Delta_Joint     = mean(all) - max(mean(no_text), mean(text_only))
-        Delta_Awareness = mean(ft)  - mean(all)
-        passes <=> Delta_Joint > delta AND Delta_Awareness > delta
-
-    Each state's mean is rounded to 3 decimals before differencing (matches the paper's
-    reported precision). Asserts (loudly, not a warning) that `scores` is exactly complete
-    for one (model, dataset) pair -- no missing rows beyond the one known gap, no
-    duplicates/extras -- since silently computing a mean over fewer folds would understate
-    variance and bias the pass/fail decision without any visible signal.
-    """
-    models, datasets = scores["model"].unique(), scores["dataset"].unique()
-    assert len(models) == 1 and len(datasets) == 1, (
-        f"scores must cover exactly one (model, dataset) pair, "
-        f"got models={list(models)} datasets={list(datasets)}"
-    )
-    model, dataset = models[0], datasets[0]
-
-    expected_rows = {(model, dataset, s, f) for s in _STATES for f in _FOLDS}
-    actual_rows = set(zip(scores["model"], scores["dataset"], scores["state"], scores["fold"]))
-    missing = expected_rows - actual_rows - _KNOWN_MISSING_ROWS
-    extra = actual_rows - expected_rows
-    assert not missing, (
-        f"Unexpected missing row(s) for ({model}, {dataset}): {sorted(missing)} -- "
-        f"this is a NEW data gap, not the one known/hardcoded case. Investigate before "
-        f"trusting pass/fail; do not silently add it to _KNOWN_MISSING_ROWS."
-    )
-    assert not extra, f"Unexpected extra/duplicate row(s) for ({model}, {dataset}): {sorted(extra)}"
-
-    means = scores.groupby("state")["test_score"].mean().round(3)
-    delta_joint = means["all"] - max(means["no_text"], means["text_only"])
-    delta_awareness = means["ft"] - means["all"]
-    return bool(delta_joint > delta and delta_awareness > delta)
-
-
 if __name__ == "__main__":
     df = build_long_csv()
     df.to_csv(_OUT_CSV, index=False)
