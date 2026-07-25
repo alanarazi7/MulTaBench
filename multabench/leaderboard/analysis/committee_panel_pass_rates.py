@@ -12,7 +12,14 @@ TabPFN-2.5, 3-of-5 rule).
 TabPFN-ineligible datasets (Wine Review, Spotify Genres -- 30 and 114 target classes) draw
 from the 8 remaining eligible models (C(8,5) = 56 panels each).
 
-Run standalone: `python -m multabench.leaderboard.analysis.committee_panel_pass_rates`
+The output of panel_pass_rates() at delta=0.001 is exactly the delta=0.001 slice of
+committee_delta_sweep.csv (analysis (b)), which now holds the single, canonical persisted
+copy of this table across all swept delta values -- so this module no longer writes its own
+CSV, to avoid keeping two files with duplicate/overlapping data. Import panel_pass_rates()
+directly, or filter committee_delta_sweep.csv to delta==0.001 for the single-delta view.
+
+Run standalone (prints only, does not write a CSV):
+`python -m multabench.leaderboard.analysis.committee_panel_pass_rates`
 """
 from itertools import combinations
 from os.path import dirname, join
@@ -23,7 +30,6 @@ from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, EXTR
 from multabench.leaderboard.main_paper.text_pool import _MULTABENCH_POOL_NAMES
 
 _MATRIX_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity", "pass_matrix.csv")
-_OUT_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity", "committee_panel_pass_rates.csv")
 
 ALL_MODELS = CURATION_MODELS + EXTRA_MODELS
 PANEL_SIZE = 5
@@ -95,8 +101,8 @@ def panel_pass_rates(matrix: pd.DataFrame) -> pd.DataFrame:
 def main():
     matrix = load_matrix()
     table = panel_pass_rates(matrix)
-    table.to_csv(_OUT_CSV)
-    print(f"Wrote {len(table)} rows to {_OUT_CSV}")
+    print(f"Computed {len(table)} rows (not written to CSV -- see committee_delta_sweep.csv, "
+          f"filtered to delta==0.001, for the canonical persisted copy)")
     print(f"\naccept_8of10: {table['accept_8of10'].sum()} accepted (vs. {(table['original_decision']=='accept').sum()} at the paper's 3-of-5)")
     flipped_out = table[(table["original_decision"] == "accept") & (~table["accept_8of10"])]
     print(f"Flipped out under 8-of-10: {len(flipped_out)}")
