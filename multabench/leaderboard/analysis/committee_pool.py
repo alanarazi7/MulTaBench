@@ -182,6 +182,24 @@ def passes(scores: pd.DataFrame, delta: float = 0.001) -> bool:
     return bool(delta_joint > delta and delta_awareness > delta)
 
 
+def build_pass_matrix(df: pd.DataFrame, delta: float = 0.001) -> pd.DataFrame:
+    """The canonical artifact for analyses (1) [committee] and (3) [quorum], which both hold
+    delta fixed: a dataset x model boolean matrix (rows=dataset, columns=model), True iff that
+    model passes on that dataset at this delta. NaN where a model has no data at all for a
+    dataset (e.g. TabPFNv2/TabPFN-2.5's 2 fully-missing datasets) -- deliberately NOT filled
+    to False here, so callers can decide how to treat "no data" (the paper's Accept(D) rule
+    treats it as a non-pass, i.e. fillna(False), but that's a caller decision, not baked in).
+    Does NOT support analysis (2) [delta sweep] -- that needs the underlying Delta_Joint/
+    Delta_Awareness values, not a boolean already fixed at one delta.
+    """
+    rows = {}
+    for (model, dataset), sub in df.groupby(["model", "dataset"]):
+        rows.setdefault(dataset, {})[model] = passes(sub, delta=delta)
+    matrix = pd.DataFrame(rows).T
+    matrix.index.name = "dataset"
+    return matrix[CURATION_MODELS + EXTRA_MODELS]
+
+
 if __name__ == "__main__":
     df = build_long_csv()
     df.to_csv(_OUT_CSV, index=False)
@@ -194,3 +212,9 @@ if __name__ == "__main__":
     print(counts.to_string())
     expected = df["dataset"].nunique() * 4 * 5
     print(f"\nExpected rows if fully populated (n_datasets * 4 states * 5 folds): {expected}")
+
+    matrix = build_pass_matrix(df)
+    matrix_csv = join(_RESULTS, "analysis_curation_sensitivity", "pass_matrix.csv")
+    matrix.to_csv(matrix_csv)
+    print(f"\nWrote {matrix.shape[0]}x{matrix.shape[1]} pass matrix to {matrix_csv}")
+    print(f"NaN cells (model has no data for that dataset): {matrix.isna().sum().sum()}")
