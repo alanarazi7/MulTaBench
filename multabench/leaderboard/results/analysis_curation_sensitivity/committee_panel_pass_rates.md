@@ -68,7 +68,3 @@ All 56 text-tabular pool datasets, at the paper's default curation setting (5-mo
 | `REG_TEXT_SOCIAL_FILMTV_MOVIE_RATING_ITALY` | reject |  | 0.0% |  |
 | `REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE` | reject |  | 0.0% |  |
 | `REG_TEXT_SPORTS_NBA_DRAFT_VALUE_OVER_REPLACEMENT` | reject |  | 0.0% |  |
-
----
-
-Interactive version (sortable): https://claude.ai/code/artifact/8f469cb7-c5b1-4465-a8b4-7024170aabfc
