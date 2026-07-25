@@ -22,10 +22,10 @@ _TEXT_DIR = join(_RESULTS, "text")
 # more_baselines/*.csv covering the accepted-20 with Frozen/TAR (i.e. non-end-to-end models
 # that fit the frozen-embedding-vs-TAR framework). Excludes autogluon_mm.csv, contexttab.csv,
 # tabstar.csv -- those are end-to-end models with only a single 'all' condition, no separate
-# TAR variant, so they can't contribute a Delta_Awareness signal.
+# TAR variant, so they can't contribute a Delta_Awareness signal. tabfm.csv/tabpfnv3.csv were
+# removed upstream (models dropped from the panel, not in the paper).
 _MORE_BASELINES_NON_E2E_FILES = [
-    "realmlp.csv", "tabdpt.csv", "xgboost.csv", "random_forest.csv",
-    "tabiclv2.csv", "tabfm.csv", "tabpfnv3.csv",
+    "realmlp.csv", "tabdpt.csv", "xgboost.csv", "random_forest.csv", "tabiclv2.csv",
 ]
 
 # The 20 accepted datasets are named differently across CSV sources: tabstar_corpus/ and
@@ -52,8 +52,6 @@ _MODEL_LABELS = {
 _EXTRA_MODEL_LABELS = {
     "TabDPT 6️⃣": "TabDPT",
     "TabICLv2 🗼": "TabICLv2",
-    "TabFM 🇬": "TabFM",
-    "TabPFN-v3 🆕": "TabPFN-v3",
     "RealMLP 🕸": "RealMLP",
     "XGBoost 🌲": "XGBoost",
     "RandomForest 🌳": "RandomForest",

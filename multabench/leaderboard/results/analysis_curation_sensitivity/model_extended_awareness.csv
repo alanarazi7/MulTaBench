@@ -8,6 +8,4 @@ RandomForest,False,56,35,0.625
 TabM,True,56,32,0.571
 TabPFNv2,True,54,29,0.537
 TabICLv2,False,56,29,0.518
-TabPFN-v3,False,56,29,0.518
 TabPFN-2.5,True,54,23,0.426
-TabFM,False,51,21,0.412
