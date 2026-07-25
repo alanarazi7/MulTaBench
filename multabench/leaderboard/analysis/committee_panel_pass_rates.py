@@ -42,10 +42,29 @@ def original_decision(matrix: pd.DataFrame) -> pd.Series:
     return count.apply(lambda c: "accept" if c >= threshold else "reject")
 
 
+def accept_at_quorum(matrix: pd.DataFrame, models, n_required: int) -> pd.Series:
+    """Per-dataset boolean: does this committee accept the dataset at a quorum of
+    n_required-out-of-len(models)? For datasets where fewer than len(models) are eligible
+    (e.g. Wine Review / Spotify Genres, 8 of 10), the required count is SCALED to preserve
+    the ratio (n_required / len(models)) rather than held at the fixed absolute n_required --
+    consistent with how the rest of this module excludes ineligible models from the
+    denominator instead of counting them as failing. Using the fixed absolute count instead
+    would silently turn an "8/10" (80%) quorum into a 100% quorum for those 2 datasets.
+    """
+    models = list(models)
+    ratio = n_required / len(models)
+    sub = matrix[models]
+    n_eligible = sub.notna().sum(axis=1)
+    n_pass = sub.fillna(False).astype(bool).sum(axis=1)
+    threshold = ratio * n_eligible
+    return (n_eligible > 0) & (n_pass >= threshold)
+
+
 def panel_pass_rates(matrix: pd.DataFrame) -> pd.DataFrame:
     """For every dataset, across all C(n_eligible, 5) panels drawn from ITS OWN eligible
     models, the % of panels that would accept it at each quorum threshold."""
     decision = original_decision(matrix)
+    accept_8of10 = accept_at_quorum(matrix, ALL_MODELS, 8)
     rows = []
     for dataset in matrix.index:
         eligible = [m for m in ALL_MODELS if pd.notna(matrix.loc[dataset, m])]
@@ -61,6 +80,9 @@ def panel_pass_rates(matrix: pd.DataFrame) -> pd.DataFrame:
             # from the final 20 (to match the image-tabular subset's size), so
             # original_decision=="accept" does NOT imply in_multabench.
             "in_multabench": dataset in _MULTABENCH_POOL_NAMES,
+            # Quorum-size sensitivity (analysis 3): would an 8-of-10 committee (all 10
+            # available models, an 80% supermajority) still accept this dataset?
+            "accept_8of10": bool(accept_8of10[dataset]),
             "n_eligible_models": len(eligible),
             "n_panels": len(panels),
             "pct_pass_ge3": round((counts >= 3).mean() * 100, 1),
@@ -75,6 +97,10 @@ def main():
     table = panel_pass_rates(matrix)
     table.to_csv(_OUT_CSV)
     print(f"Wrote {len(table)} rows to {_OUT_CSV}")
+    print(f"\naccept_8of10: {table['accept_8of10'].sum()} accepted (vs. {(table['original_decision']=='accept').sum()} at the paper's 3-of-5)")
+    flipped_out = table[(table["original_decision"] == "accept") & (~table["accept_8of10"])]
+    print(f"Flipped out under 8-of-10: {len(flipped_out)}")
+    print(flipped_out[["pct_pass_ge3"]].to_string())
 
     full = table[table["n_eligible_models"] == 10]
     partial = table[table["n_eligible_models"] < 10]
