@@ -20,6 +20,7 @@ from os.path import dirname, join
 import pandas as pd
 
 from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, EXTRA_MODELS
+from multabench.leaderboard.main_paper.text_pool import _MULTABENCH_POOL_NAMES
 
 _MATRIX_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity", "pass_matrix.csv")
 _OUT_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity", "committee_panel_pass_rates.csv")
@@ -55,6 +56,11 @@ def panel_pass_rates(matrix: pd.DataFrame) -> pd.DataFrame:
         rows.append({
             "dataset": dataset,
             "original_decision": decision[dataset],
+            # True only for the 20 datasets in the final MulTaBench benchmark -- 3 of the 23
+            # "accept"-decision datasets were accepted by the pipeline but manually excluded
+            # from the final 20 (to match the image-tabular subset's size), so
+            # original_decision=="accept" does NOT imply in_multabench.
+            "in_multabench": dataset in _MULTABENCH_POOL_NAMES,
             "n_eligible_models": len(eligible),
             "n_panels": len(panels),
             "pct_pass_ge3": round((counts >= 3).mean() * 100, 1),
