@@ -20,9 +20,8 @@ import pandas as pd
 from sklearn.metrics import cohen_kappa_score
 
 from multabench.leaderboard.analysis.curation_accept import (
-    CURATION_MODELS, DELTA_DEFAULT, RHO_DEFAULT,
-    accept_set, compute_deltas, compute_deltas_awareness_only,
-    load_pool_5model, load_pool_extended_awareness, per_model_pass,
+    CURATION_MODELS, DELTA_DEFAULT, EXTRA_MODELS, RHO_DEFAULT,
+    accept_set, compute_deltas, load_pool_10model, load_pool_5model, per_model_pass,
 )
 
 _OUT_DIR = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity")
@@ -170,11 +169,22 @@ def fleiss_kappa(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT) -> float:
     return round((P_bar - P_e) / (1 - P_e), 3) if P_e != 1 else float("nan")
 
 
-def extended_model_awareness(delta: float = DELTA_DEFAULT) -> pd.DataFrame:
-    """Fraction of pool datasets with Delta_Awareness > delta, per model, for the 5 curation
-    models plus all models available via text_source/more_baselines (Frozen/TAR-only pool)."""
-    df = load_pool_extended_awareness()
-    deltas = compute_deltas_awareness_only(df)
+def real_per_model_accept_rate(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
+    """Per-model breakdown of the REAL individual accept vote (BOTH Delta_Joint>delta AND
+    Delta_Awareness>delta), across the full 56-dataset pool, for all 10 models. Now possible
+    for the 5 extra models too, since results/sensitivity/ added their missing unimodal runs
+    -- previously this could only be computed for the 5 curation models."""
+    votes = per_model_pass(deltas, delta=delta)
+    summary = votes.groupby("model")["passes"].agg(n_pass="sum", n_datasets="count")
+    summary["frac_pass"] = (summary["n_pass"] / summary["n_datasets"]).round(3)
+    summary["is_curation_model"] = summary.index.isin(CURATION_MODELS)
+    return summary.reset_index().sort_values("frac_pass", ascending=False)
+
+
+def extended_model_awareness(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
+    """Fraction of pool datasets with Delta_Awareness > delta alone, per model -- isolates the
+    task-awareness property specifically, decoupled from joint signal. A distinct diagnostic
+    from real_per_model_accept_rate() (which requires both conditions)."""
     rows = []
     for model in sorted(deltas["model"].unique()):
         sub = deltas[deltas["model"] == model]
@@ -192,7 +202,6 @@ def extended_model_awareness(delta: float = DELTA_DEFAULT) -> pd.DataFrame:
 
 TABPFN_FAMILY = ["TabPFNv2", "TabPFN-2.5"]
 NON_TABPFN_MODELS = ["LightGBM", "CatBoost", "TabM"]
-ALT_PANEL_MODELS = ["RandomForest", "RealMLP", "TabDPT", "XGBoost", "TabICLv2"]
 
 
 def family_swap(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT,
@@ -220,67 +229,56 @@ def family_swap(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT,
     return pd.DataFrame(rows)
 
 
-def _awareness_only_vote(deltas: pd.DataFrame, models, delta: float = DELTA_DEFAULT,
-                          rho: float = RHO_DEFAULT) -> pd.Series:
-    sub = deltas[deltas["model"].isin(models)].copy()
-    sub["passes"] = sub["delta_awareness"] > delta
-    counts = sub.groupby("dataset")["passes"].sum()
-    n_models = sub.groupby("dataset")["model"].nunique()
-    return counts >= rho * n_models
-
-
-def calibrate_awareness_proxy(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT,
-                               rho: float = RHO_DEFAULT) -> dict:
-    """IMPORTANT LIMITATION CHECK: no unimodal (no_text/text_only) runs exist anywhere in the
-    repo for any of the 7 non-curation models (verified by exhaustively scanning every results
-    CSV) -- so Delta_Joint can never be computed for them, and any "would a different panel
-    change the accepted set" comparison using those models can only use Delta_Awareness alone.
-
-    Since Accept(D) requires BOTH Delta_Joint>delta AND Delta_Awareness>delta, dropping the
-    Delta_Joint condition can only ever ADD acceptances relative to the real rule, never remove
-    them. This calibrates exactly how much that matters, using the one case where both the
-    real rule and the Awareness-only proxy are computable: the original 5 curation models.
+def real_alternative_panel(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT,
+                            rho: float = RHO_DEFAULT) -> pd.DataFrame:
+    """REAL Accept(D) (both conditions) comparing the original 5 curation models against a
+    fully different 5-model panel (the paper's 5 supplementary baselines: RandomForest,
+    RealMLP, TabDPT, XGBoost, TabICLv2). Directly answers the review's "what if we took any
+    other five" -- now computable for real since results/sensitivity/ added the missing
+    unimodal runs for these models (previously only a Delta_Awareness-only proxy was possible).
     """
-    real = accept_set(deltas, CURATION_MODELS, delta=delta, rho=rho)
-    real_accepted = {d for d, v in real.items() if v}
+    baseline = accept_set(deltas, CURATION_MODELS, delta=delta, rho=rho)
+    baseline_accepted = {d for d, v in baseline.items() if v}
 
-    ext_deltas = compute_deltas_awareness_only(load_pool_extended_awareness())
-    orig_sub = ext_deltas[ext_deltas["model"].isin(CURATION_MODELS)]
-    proxy_vote = _awareness_only_vote(orig_sub, CURATION_MODELS, delta=delta, rho=rho)
-    proxy_accepted = set(proxy_vote[proxy_vote].index)
+    rows = []
+    for label, models in [("Original 5 (curation panel)", CURATION_MODELS),
+                           ("Alternative 5 (paper's other baselines)", EXTRA_MODELS)]:
+        result = accept_set(deltas, models, delta=delta, rho=rho)
+        accepted = {d for d, v in result.items() if v}
+        rows.append({
+            "scenario": label,
+            "models": "+".join(models),
+            "n_accepted": len(accepted),
+            "jaccard_vs_baseline": round(_jaccard(accepted, baseline_accepted), 3),
+            "flipped_out": ", ".join(sorted(baseline_accepted - accepted)),
+            "flipped_in": ", ".join(sorted(accepted - baseline_accepted)),
+        })
+    return pd.DataFrame(rows)
 
-    false_positives = proxy_accepted - real_accepted
-    false_negatives = real_accepted - proxy_accepted
-    return {
-        "n_real_accepted": len(real_accepted),
-        "n_proxy_accepted": len(proxy_accepted),
-        "n_false_positives": len(false_positives),  # proxy says accept, real rule says reject
-        "n_false_negatives": len(false_negatives),  # always 0 by construction -- proxy is a superset
-        "jaccard_proxy_vs_real": round(_jaccard(proxy_accepted, real_accepted), 3),
-    }
 
-
-def alternative_panel_awareness(delta: float = DELTA_DEFAULT, rho: float = RHO_DEFAULT) -> pd.DataFrame:
-    """Compare the original 5 curation models against a fully different 5-model panel (the
-    paper's 5 supplementary baselines: RandomForest, RealMLP, TabDPT, XGBoost, TabICLv2) on
-    Delta_Awareness alone. CAUTION: see calibrate_awareness_proxy() -- this Awareness-only
-    comparison systematically OVERCOUNTS acceptances relative to the real Accept(D) rule (0
-    false negatives, false positives only), so it should be read only as evidence about
-    whether task-awareness generalizes to new models, never as a stand-in for what a different
-    panel's actual accepted SET would be.
+def all_10_choose_5_panels(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT,
+                            rho: float = RHO_DEFAULT) -> pd.DataFrame:
+    """REAL Accept(D) for EVERY possible 5-model panel drawn from the 10 available models
+    (C(10,5) = 252 panels) -- the direct, full-data answer to "what if we'd chosen any other
+    five [models]", simulating the entire combinatorial space rather than one alternative
+    panel or subsets restricted to the original 5.
     """
-    ext = load_pool_extended_awareness()
-    deltas = compute_deltas_awareness_only(ext)
+    all_models = CURATION_MODELS + EXTRA_MODELS
+    baseline = accept_set(deltas, CURATION_MODELS, delta=delta, rho=rho)
+    baseline_accepted = {d for d, v in baseline.items() if v}
 
-    orig_vote = _awareness_only_vote(deltas, CURATION_MODELS, delta=delta, rho=rho)
-    alt_vote = _awareness_only_vote(deltas, ALT_PANEL_MODELS, delta=delta, rho=rho)
-    common = orig_vote.index.intersection(alt_vote.index)
-    disagreements = common[orig_vote[common] != alt_vote[common]]
-
-    return pd.DataFrame([
-        {"dataset": d, "original_5_panel_passes": bool(orig_vote[d]), "alt_5_panel_passes": bool(alt_vote[d])}
-        for d in sorted(disagreements)
-    ])
+    rows = []
+    for panel in combinations(all_models, 5):
+        result = accept_set(deltas, panel, delta=delta, rho=rho)
+        accepted = {d for d, v in result.items() if v}
+        n_curation_in_panel = len(set(panel) & set(CURATION_MODELS))
+        rows.append({
+            "panel": "+".join(panel),
+            "n_curation_models": n_curation_in_panel,
+            "n_accepted": len(accepted),
+            "jaccard_vs_baseline": round(_jaccard(accepted, baseline_accepted), 3),
+        })
+    return pd.DataFrame(rows)
 
 
 def main():
@@ -334,32 +332,41 @@ def main():
     print(f"\nTabPFNv2 x TabPFN-2.5 kappa: {tabpfn_kappa:.3f}  |  avg of other 9 pairs: {np.mean(other_pairs):.3f}")
     print(f"Fleiss' kappa (all 5 models): {fleiss_kappa(deltas):.3f}")
 
-    extended = extended_model_awareness()
-    extended.to_csv(join(_OUT_DIR, "model_extended_awareness.csv"), index=False)
-    print("\n=== Extended-model task-awareness generalization (Delta_Awareness > delta only) ===")
-    print(extended.to_string(index=False))
-
     swap = family_swap(deltas)
     swap.drop(columns=["flipped_out", "flipped_in"]).to_csv(join(_OUT_DIR, "model_family_swap.csv"), index=False)
     print("\n=== TabPFN family swap (baseline: 23 accepted with all 5) ===")
     print(swap[["scenario", "models", "n_accepted", "jaccard_vs_baseline"]].to_string(index=False))
 
-    calib = calibrate_awareness_proxy(deltas)
-    pd.DataFrame([calib]).to_csv(join(_OUT_DIR, "model_awareness_proxy_calibration.csv"), index=False)
-    print("\n=== CAUTION: Awareness-only proxy calibration (no unimodal runs exist for the "
-          "extra models -- verified by scanning all results CSVs) ===")
-    print(f"Real Accept(D):    {calib['n_real_accepted']} accepted")
-    print(f"Awareness-only proxy: {calib['n_proxy_accepted']} accepted "
-          f"({calib['n_false_positives']} false positives, {calib['n_false_negatives']} false negatives)")
-    print(f"Jaccard(proxy, real) = {calib['jaccard_proxy_vs_real']:.3f} -- "
-          f"the proxy below should be read as evidence for task-awareness generalization only, "
-          f"never as a stand-in for what a different panel's accepted SET would be.")
+    # --- From here on: full 10-model data (5 curation + 5 extra), now that
+    # results/sensitivity/ closed the missing-unimodal-runs gap for the extra models. ---
+    deltas_10 = compute_deltas(load_pool_10model())
 
-    alt_panel = alternative_panel_awareness()
-    alt_panel.to_csv(join(_OUT_DIR, "model_alt_panel_disagreements.csv"), index=False)
-    print(f"\n=== Original-5 vs. fully-different-5 panel, Delta_Awareness only: "
-          f"{len(alt_panel)} disagreements out of 56 ===")
-    print(alt_panel.to_string(index=False))
+    real_rates = real_per_model_accept_rate(deltas_10)
+    real_rates.to_csv(join(_OUT_DIR, "model_real_accept_rate_10model.csv"), index=False)
+    print("\n=== REAL per-model accept vote (both conditions), all 10 models ===")
+    print(real_rates.to_string(index=False))
+
+    extended = extended_model_awareness(deltas_10)
+    extended.to_csv(join(_OUT_DIR, "model_extended_awareness.csv"), index=False)
+    print("\n=== Extended-model task-awareness generalization (Delta_Awareness > delta only) ===")
+    print(extended.to_string(index=False))
+
+    real_alt = real_alternative_panel(deltas_10)
+    real_alt.drop(columns=["flipped_out", "flipped_in"]).to_csv(
+        join(_OUT_DIR, "model_real_alternative_panel.csv"), index=False)
+    print("\n=== REAL Accept(D): original-5 vs. a fully different 5-model panel ===")
+    print(real_alt[["scenario", "models", "n_accepted", "jaccard_vs_baseline"]].to_string(index=False))
+
+    all_panels = all_10_choose_5_panels(deltas_10)
+    all_panels.to_csv(join(_OUT_DIR, "model_all_10choose5_panels.csv"), index=False)
+    print(f"\n=== REAL Accept(D) for all C(10,5)={len(all_panels)} possible 5-model panels ===")
+    print(f"accepted count: min={all_panels['n_accepted'].min()} "
+          f"mean={all_panels['n_accepted'].mean():.1f} max={all_panels['n_accepted'].max()}")
+    print(f"jaccard vs. original-5 baseline: min={all_panels['jaccard_vs_baseline'].min():.3f} "
+          f"mean={all_panels['jaccard_vs_baseline'].mean():.3f} max={all_panels['jaccard_vs_baseline'].max():.3f}")
+    by_n_curation = all_panels.groupby("n_curation_models")[["n_accepted", "jaccard_vs_baseline"]].mean().round(3)
+    print("\nMean by how many of the panel's 5 models are original curation models:")
+    print(by_n_curation)
 
 
 if __name__ == "__main__":

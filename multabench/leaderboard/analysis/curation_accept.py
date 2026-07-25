@@ -18,6 +18,7 @@ _TEXTTABENCH_CSV = join(_RESULTS, "tabstar_corpus", "texttabench_datasets.csv")
 _TEXT_SOURCE_DIR = join(_RESULTS, "text_source")
 _MORE_BASELINES_DIR = join(_RESULTS, "more_baselines")
 _TEXT_DIR = join(_RESULTS, "text")
+_SENSITIVITY_DIR = join(_RESULTS, "sensitivity")
 
 # more_baselines/*.csv covering the accepted-20 with Frozen/TAR (i.e. non-end-to-end models
 # that fit the frozen-embedding-vs-TAR framework). Excludes autogluon_mm.csv, contexttab.csv,
@@ -48,7 +49,9 @@ _MODEL_LABELS = {
     "TabPFN-v2 🤯": "TabPFNv2",
     "TabPFN-v2p5 🇩🇪": "TabPFN-2.5",
 }
-# Extra models available (Frozen/TAR only) via text_source/ + more_baselines/.
+# The paper's 5 supplementary baseline models. Frozen/TAR via text_source/ + more_baselines/;
+# no_text/text_only (added later, for the rebuttal) via results/sensitivity/.
+EXTRA_MODELS = ["TabDPT", "TabICLv2", "RealMLP", "XGBoost", "RandomForest"]
 _EXTRA_MODEL_LABELS = {
     "TabDPT 6️⃣": "TabDPT",
     "TabICLv2 🗼": "TabICLv2",
@@ -113,25 +116,16 @@ def _build_short_to_long_name_map(long_names: Iterable[str]) -> dict:
     return mapping
 
 
-def load_pool_extended_awareness() -> pd.DataFrame:
-    """Per (dataset, model, condition in {JointFrozen, JointTAR}) mean score, for all models
-    beyond the 5 curation ones, across the full 56-dataset pool:
-    - the 36 REJECTED pool datasets, via text_source/*.csv (12 models, Frozen/TAR only)
+def _load_extra_models_frozen_tar(name_map: dict) -> pd.DataFrame:
+    """Extra (non-curation) models' Frozen/TAR data, across the full 56-dataset pool:
+    - the 36 REJECTED pool datasets, via text_source/*.csv (Frozen/TAR only)
     - the 20 ACCEPTED pool datasets, via the non-end-to-end more_baselines/*.csv files
-      (_MORE_BASELINES_NON_E2E_FILES), filtered to text-tabular rows and Frozen/TAR only,
-      with short dataset names translated to long pool names.
-    Folds in the original 5-model pool (Frozen/TAR only) so curation + extra models coexist.
-    Delta_Joint is NOT available here for the extra (non-curation) models -- only
-    Delta_Awareness, since no unimodal-ablation runs exist for them on the pool.
+      (_MORE_BASELINES_NON_E2E_FILES), filtered to text-tabular rows, short names translated
+      to long pool names via `name_map`.
+    Returns [dataset, model, condition in {JointFrozen, JointTAR}, score].
     """
-    base = load_pool_5model()
-    base_af = base[base["condition"].isin(["JointFrozen", "JointTAR"])].copy()
-    name_map = _build_short_to_long_name_map(base["dataset"].unique())
-
     all_labels = {**_MODEL_LABELS, **_EXTRA_MODEL_LABELS}
-
     frames = [pd.read_csv(f) for f in glob.glob(join(_TEXT_SOURCE_DIR, "*.csv"))]
-
     for fname in _MORE_BASELINES_NON_E2E_FILES:
         df = pd.read_csv(join(_MORE_BASELINES_DIR, fname))
         df = df[df["dataset"].str.contains("_TEXT_")].copy()
@@ -145,12 +139,61 @@ def load_pool_extended_awareness() -> pd.DataFrame:
     extra = extra[extra["model"].notna()]
     extra["condition"] = extra["multimodal_state"].map(_AWARENESS_ONLY_MAP)
     extra = extra[extra["condition"].notna()]
-    extra = (extra.groupby(["dataset", "model", "condition"])["test_score"]
-                   .mean().reset_index().rename(columns={"test_score": "score"}))
+    return (extra.groupby(["dataset", "model", "condition"])["test_score"]
+                 .mean().reset_index().rename(columns={"test_score": "score"}))
 
+
+def _load_extra_models_unimodal(name_map: dict) -> pd.DataFrame:
+    """Extra models' no_text/text_only data from results/sensitivity/fold{0-4}.csv (added for
+    the rebuttal -- closes the gap that previously made Delta_Joint uncomputable for these
+    models). Like more_baselines/, this uses the short (pre-rename) names for the 20
+    originally-accepted datasets -- translated via `name_map` (same one built from
+    results/text/). Datasets outside that 20 already use the long/only name, so the map is a
+    no-op for them (checked: 56 unique short names in, 56 unique long names out).
+    Returns [dataset, model, condition in {UnimodalStructured, UnimodalUnstructured}, score].
+    """
+    frames = [pd.read_csv(f) for f in glob.glob(join(_SENSITIVITY_DIR, "*.csv"))]
+    df = pd.concat(frames, ignore_index=True)
+    df = df.dropna(subset=["model"])
+    df["model"] = df["model"].str.strip().map(_EXTRA_MODEL_LABELS)
+    df = df[df["model"].notna()]
+    df["dataset"] = df["dataset"].map(lambda d: name_map.get(d, d))
+    df["condition"] = df["multimodal_state"].map(_CONDITION_MAP)
+    df = df[df["condition"].notna()]
+    return (df.groupby(["dataset", "model", "condition"])["test_score"]
+              .mean().reset_index().rename(columns={"test_score": "score"}))
+
+
+def load_pool_extended_awareness() -> pd.DataFrame:
+    """Per (dataset, model, condition in {JointFrozen, JointTAR}) mean score, for all models
+    beyond the 5 curation ones, across the full 56-dataset pool. Folds in the original 5-model
+    pool (Frozen/TAR only) so curation + extra models coexist.
+
+    Superseded by load_pool_10model() for anything needing Delta_Joint -- kept only for the
+    Awareness-only proxy / calibration check, which is still useful context even after
+    load_pool_10model() made the real rule computable for these 5 models.
+    """
+    base = load_pool_5model()
+    base_af = base[base["condition"].isin(["JointFrozen", "JointTAR"])].copy()
+    name_map = _build_short_to_long_name_map(base["dataset"].unique())
+    extra = _load_extra_models_frozen_tar(name_map)
     combined = pd.concat([base_af, extra], ignore_index=True)
     # A (dataset, model) pair may appear in both the base pool and text_source/more_baselines
     # for the 5 curation models -- keep one (they're the same underlying runs).
+    combined = combined.drop_duplicates(subset=["dataset", "model", "condition"])
+    return combined
+
+
+def load_pool_10model() -> pd.DataFrame:
+    """Per (dataset, model, condition) mean score, all 4 conditions, for all 10 non-E2E models
+    (5 curation + 5 extra), across the full 56-dataset pool. This is now possible for the
+    extra models too, since results/sensitivity/ added their missing no_text/text_only runs.
+    """
+    base = load_pool_5model()
+    name_map = _build_short_to_long_name_map(base["dataset"].unique())
+    extra_af = _load_extra_models_frozen_tar(name_map)
+    extra_unimodal = _load_extra_models_unimodal(name_map)
+    combined = pd.concat([base, extra_af, extra_unimodal], ignore_index=True)
     combined = combined.drop_duplicates(subset=["dataset", "model", "condition"])
     return combined
 

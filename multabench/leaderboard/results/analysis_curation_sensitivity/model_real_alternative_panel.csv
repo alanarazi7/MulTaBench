@@ -1,0 +1,3 @@
+scenario,models,n_accepted,jaccard_vs_baseline
+Original 5 (curation panel),LightGBM+CatBoost+TabM+TabPFNv2+TabPFN-2.5,23,1.0
+Alternative 5 (paper's other baselines),TabDPT+TabICLv2+RealMLP+XGBoost+RandomForest,24,0.741
