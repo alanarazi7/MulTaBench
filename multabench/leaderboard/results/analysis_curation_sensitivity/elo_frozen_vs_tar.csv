@@ -1,50 +1,56 @@
 split,rank,model,elo,ci_low,ci_high,n_datasets
-combined,1,TabPFN-2.5 (TAR),1913,1826,2039,38
-combined,2,TabICLv2 (TAR),1905,1791,2059,40
-combined,3,TabICLv2 (Frozen),1765,1667,1908,40
-combined,4,TabPFN-2.5 (Frozen),1720,1636,1840,38
-combined,5,TabM (TAR),1710,1605,1848,40
-combined,6,TabPFNv2 (TAR),1692,1584,1823,38
-combined,7,CatBoost (TAR),1617,1540,1728,40
-combined,8,AutoGluon-MM (E2E),1564,1393,1779,40
-combined,9,TabDPT (TAR),1557,1421,1738,40
-combined,10,TabSTAR (E2E),1523,1400,1672,40
-combined,11,TabM (Frozen),1506,1408,1630,40
-combined,12,TabPFNv2 (Frozen),1490,1396,1606,38
-combined,13,ConTextTab (E2E),1487,1385,1620,40
-combined,14,RealMLP (TAR),1464,1345,1597,40
-combined,15,LightGBM (TAR),1448,1353,1570,40
-combined,16,TabDPT (Frozen),1428,1303,1589,40
-combined,17,CatBoost (Frozen),1365,1308,1448,40
-combined,18,RandomForest (TAR),1319,1230,1427,40
-combined,19,RealMLP (Frozen),1289,1176,1404,40
-combined,20,XGBoost (TAR),1278,1184,1380,40
-combined,21,LightGBM (Frozen),1203,1133,1290,40
-combined,22,XGBoost (Frozen),1015,940,1092,40
-combined,23,RandomForest (Frozen),1000,1000,1000,40
-image,1,TabPFN-2.5 (TAR),1920,1803,2185,20
-image,2,TabICLv2 (TAR),1895,1733,2207,20
-image,3,TabICLv2 (Frozen),1800,1652,2073,20
-image,4,TabPFNv2 (TAR),1762,1627,2014,20
-image,5,TabDPT (TAR),1699,1512,2002,20
-image,6,TabM (TAR),1696,1548,1975,20
-image,7,TabPFN-2.5 (Frozen),1678,1559,1900,20
-image,8,ConTextTab (E2E),1646,1501,1914,20
-image,9,CatBoost (TAR),1607,1482,1829,20
-image,10,TabDPT (Frozen),1551,1369,1796,20
-image,11,TabPFNv2 (Frozen),1525,1395,1743,20
-image,12,AutoGluon-MM (E2E),1521,1271,1896,20
-image,13,TabSTAR (E2E),1500,1329,1792,20
-image,14,RealMLP (TAR),1463,1282,1739,20
-image,15,TabM (Frozen),1452,1312,1684,20
-image,16,LightGBM (TAR),1448,1292,1669,20
-image,17,CatBoost (Frozen),1337,1249,1503,20
-image,18,RandomForest (TAR),1335,1200,1552,20
-image,19,RealMLP (Frozen),1240,1066,1495,20
-image,20,XGBoost (TAR),1198,1057,1418,20
-image,21,LightGBM (Frozen),1173,1066,1324,20
-image,22,RandomForest (Frozen),1000,1000,1000,20
-image,23,XGBoost (Frozen),911,824,1031,20
+combined,1,TabPFN-2.5 (TAR),1916,1823,2053,38
+combined,2,TabICLv2 (TAR),1910,1798,2068,40
+combined,3,TabICLv2 (Frozen),1774,1675,1920,40
+combined,4,TabPFN-2.5 (Frozen),1727,1643,1854,38
+combined,5,TabM (TAR),1714,1607,1859,40
+combined,6,TabPFNv2 (TAR),1698,1590,1835,38
+combined,7,ConTextTab-Image-TAR,1640,1530,1792,20
+combined,8,CatBoost (TAR),1622,1542,1737,40
+combined,9,TabDPT (TAR),1566,1431,1752,40
+combined,10,AutoGluon-MM,1562,1390,1778,40
+combined,11,TabSTAR-Text-Frozen,1555,1420,1726,20
+combined,12,TabM (Frozen),1509,1412,1636,40
+combined,13,TabSTAR-Image-TAR,1498,1344,1668,20
+combined,14,TabPFNv2 (Frozen),1495,1400,1614,38
+combined,15,ConTextTab-Image-Frozen,1476,1391,1592,20
+combined,16,RealMLP (TAR),1468,1340,1608,40
+combined,17,LightGBM (TAR),1449,1351,1577,40
+combined,18,TabDPT (Frozen),1438,1315,1594,40
+combined,19,CatBoost (Frozen),1363,1305,1446,40
+combined,20,ConTextTab-Text-Frozen,1334,1190,1471,20
+combined,21,RandomForest (TAR),1319,1230,1427,40
+combined,22,TabSTAR-Image-Frozen,1306,1173,1468,20
+combined,23,RealMLP (Frozen),1288,1170,1413,40
+combined,24,XGBoost (TAR),1278,1177,1387,40
+combined,25,LightGBM (Frozen),1197,1126,1282,40
+combined,26,XGBoost (Frozen),1009,931,1091,40
+combined,27,RandomForest (Frozen),1000,1000,1000,40
+image,1,TabPFN-2.5 (TAR),1907,1793,2162,20
+image,2,TabICLv2 (TAR),1887,1737,2189,20
+image,3,TabICLv2 (Frozen),1799,1663,2059,20
+image,4,TabPFNv2 (TAR),1753,1627,2008,20
+image,5,TabDPT (TAR),1694,1512,1974,20
+image,6,TabM (TAR),1690,1543,1947,20
+image,7,TabPFN-2.5 (Frozen),1677,1562,1895,20
+image,8,ConTextTab-Image-TAR,1641,1503,1894,20
+image,9,CatBoost (TAR),1602,1483,1820,20
+image,10,TabDPT (Frozen),1549,1387,1766,20
+image,11,TabPFNv2 (Frozen),1520,1397,1717,20
+image,12,AutoGluon-MM,1509,1266,1866,20
+image,13,TabSTAR-Image-TAR,1495,1330,1773,20
+image,14,ConTextTab-Image-Frozen,1472,1366,1661,20
+image,15,RealMLP (TAR),1460,1280,1734,20
+image,16,TabM (Frozen),1452,1320,1673,20
+image,17,LightGBM (TAR),1441,1294,1640,20
+image,18,CatBoost (Frozen),1330,1245,1480,20
+image,19,RandomForest (TAR),1328,1199,1531,20
+image,20,TabSTAR-Image-Frozen,1294,1142,1521,20
+image,21,RealMLP (Frozen),1240,1065,1489,20
+image,22,XGBoost (TAR),1204,1053,1424,20
+image,23,LightGBM (Frozen),1162,1053,1307,20
+image,24,RandomForest (Frozen),1000,1000,1000,20
+image,25,XGBoost (Frozen),910,813,1036,20
 text,1,TabICLv2 (TAR),1976,1862,2178,20
 text,2,TabPFN-2.5 (TAR),1964,1850,2160,18
 text,3,TabPFN-2.5 (Frozen),1828,1737,1997,18
@@ -52,16 +58,16 @@ text,4,TabICLv2 (Frozen),1780,1676,1972,20
 text,5,TabM (TAR),1774,1684,1930,20
 text,6,CatBoost (TAR),1670,1588,1811,20
 text,7,TabPFNv2 (TAR),1664,1513,1878,18
-text,8,AutoGluon-MM (E2E),1646,1454,1916,20
+text,8,AutoGluon-MM,1646,1454,1916,20
 text,9,TabM (Frozen),1592,1505,1747,20
-text,10,TabSTAR (E2E),1579,1437,1766,20
+text,10,TabSTAR-Text-Frozen,1579,1437,1766,20
 text,11,RealMLP (TAR),1492,1410,1616,20
 text,12,TabPFNv2 (Frozen),1481,1359,1640,18
 text,13,LightGBM (TAR),1473,1366,1625,20
 text,14,TabDPT (TAR),1454,1266,1686,20
 text,15,CatBoost (Frozen),1408,1357,1512,20
 text,16,XGBoost (TAR),1357,1281,1463,20
-text,17,ConTextTab (E2E),1355,1249,1472,20
+text,17,ConTextTab-Text-Frozen,1355,1249,1472,20
 text,18,RealMLP (Frozen),1346,1275,1443,20
 text,19,TabDPT (Frozen),1324,1126,1552,20
 text,20,RandomForest (TAR),1320,1223,1453,20

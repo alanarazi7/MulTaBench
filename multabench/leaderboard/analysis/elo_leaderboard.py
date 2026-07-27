@@ -53,10 +53,12 @@ SCALE, BASE, INIT = 400, 10, 1000
 
 # For the Frozen-vs-TAR variant leaderboard: the 10 models that consume DINO/E5 embeddings
 # (so "all"=Frozen and "ft"=TAR is exactly the paper's frozen-vs-target-aware comparison), and
-# the 3 end-to-end models, which natively process the modality and so have no Frozen/TAR split.
+# the 3 end-to-end models, which natively process the modality and are split by modality+state.
 EMBEDDING_MODELS = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5",
                     "TabDPT", "TabICLv2", "RealMLP", "XGBoost", "RandomForest"]
 E2E_MODELS = ["AutoGluon-MM", "TabSTAR", "ConTextTab"]
+# Modality-split E2E models (TabSTAR and ConTextTab split by image/text and frozen/tar)
+E2E_SPLIT_MODELS = ["TabSTAR", "ConTextTab"]
 VARIANT_ANCHOR = "RandomForest (Frozen)"
 
 
@@ -96,10 +98,8 @@ def load_default_scores() -> pd.DataFrame:
 
 def load_variant_scores() -> pd.DataFrame:
     """[dataset, model, mean_score, modality] where `model` is a COMPETITOR label: each of the
-    10 embedding models split into "<name> (Frozen)" (all) and "<name> (TAR)" (ft), plus each
-    of the 3 end-to-end models as a single "<name> (E2E)" entry at its default config. This is
-    the leaderboard that shows the TAR uplift directly (every model's TAR variant vs. its own
-    Frozen variant), while still ranking everything."""
+    10 embedding models split into "<name> (Frozen)" (all) and "<name> (TAR)" (ft), plus the
+    modality+state variants of split E2E models (TabSTAR, ConTextTab) and AutoGluon-MM as-is."""
     img = _load(glob.glob(join(_RES, "images", "*.csv")))
     txt = _load(glob.glob(join(_RES, "text", "*.csv")))
     mb = _load(glob.glob(join(_RES, "more_baselines", "*.csv")))
@@ -113,16 +113,28 @@ def load_variant_scores() -> pd.DataFrame:
     rows = []
     for (model, dataset), g in allrows.groupby(["model", "dataset"]):
         states = set(g["multimodal_state"])
+        modality = "image" if dataset in img_ds else "text"
+
         if model in EMBEDDING_MODELS:
+            # Embedding models: split into Frozen and TAR variants
             if "all" in states:
                 rows.append({"dataset": dataset, "model": f"{model} (Frozen)",
                              "mean_score": g[g["multimodal_state"] == "all"]["test_score"].mean()})
             if "ft" in states:
                 rows.append({"dataset": dataset, "model": f"{model} (TAR)",
                              "mean_score": g[g["multimodal_state"] == "ft"]["test_score"].mean()})
-        else:  # E2E: single competitor at default config (TAR-preferred)
+        elif model in E2E_SPLIT_MODELS:
+            # Split E2E models (TabSTAR, ConTextTab): split by modality and state
+            if "all" in states:
+                rows.append({"dataset": dataset, "model": f"{model}-{modality.title()}-Frozen",
+                             "mean_score": g[g["multimodal_state"] == "all"]["test_score"].mean()})
+            if "ft" in states:
+                rows.append({"dataset": dataset, "model": f"{model}-{modality.title()}-TAR",
+                             "mean_score": g[g["multimodal_state"] == "ft"]["test_score"].mean()})
+        else:
+            # Other E2E models (AutoGluon-MM): single competitor at default config (TAR-preferred)
             state = "ft" if "ft" in states else "all"
-            rows.append({"dataset": dataset, "model": f"{model} (E2E)",
+            rows.append({"dataset": dataset, "model": f"{model}",
                          "mean_score": g[g["multimodal_state"] == state]["test_score"].mean()})
     out = pd.DataFrame(rows)
     out["modality"] = np.where(out["dataset"].isin(img_ds), "image", "text")
@@ -194,14 +206,25 @@ def _print(lb):
 
 
 def tar_uplift(variant_lb: pd.DataFrame) -> pd.DataFrame:
-    """Per embedding model, Elo(TAR) - Elo(Frozen) -- the headline "how much does TAR help"."""
+    """Per model, Elo(TAR) - Elo(Frozen) -- the headline "how much does TAR help"."""
     e = variant_lb.set_index("model")["elo"]
     rows = []
+
+    # Embedding models
     for m in EMBEDDING_MODELS:
         f, t = f"{m} (Frozen)", f"{m} (TAR)"
         if f in e.index and t in e.index:
-            rows.append({"model": m, "elo_frozen": int(e[f]), "elo_tar": int(e[t]),
+            rows.append({"model": m, "type": "embedding", "elo_frozen": int(e[f]), "elo_tar": int(e[t]),
                          "tar_uplift": int(e[t] - e[f])})
+
+    # Split E2E models (by modality)
+    for m in E2E_SPLIT_MODELS:
+        for mod in ["Image", "Text"]:
+            f, t = f"{m}-{mod}-Frozen", f"{m}-{mod}-TAR"
+            if f in e.index and t in e.index:
+                rows.append({"model": f"{m} ({mod})", "type": "e2e", "elo_frozen": int(e[f]), "elo_tar": int(e[t]),
+                             "tar_uplift": int(e[t] - e[f])})
+
     return pd.DataFrame(rows).sort_values("tar_uplift", ascending=False).reset_index(drop=True)
 
 
@@ -222,11 +245,16 @@ def main():
     pd.concat(frames, ignore_index=True).to_csv(_OUT_CSV, index=False)
     print(f"\nWrote {_OUT_CSV}")
 
-    # --- Frozen-vs-TAR variant leaderboard (23 competitors) ---
+    # --- Frozen-vs-TAR variant leaderboard ---
     variant = load_variant_scores()
+    # Order: embeddings Frozen, embeddings TAR, split E2E (Image Frozen, Image TAR, Text Frozen, Text TAR), AutoGLUON
     variant_order = ([f"{m} (Frozen)" for m in EMBEDDING_MODELS]
                      + [f"{m} (TAR)" for m in EMBEDDING_MODELS]
-                     + [f"{m} (E2E)" for m in E2E_MODELS])
+                     + [f"{m}-Image-Frozen" for m in E2E_SPLIT_MODELS]
+                     + [f"{m}-Image-TAR" for m in E2E_SPLIT_MODELS]
+                     + [f"{m}-Text-Frozen" for m in E2E_SPLIT_MODELS]
+                     + [f"{m}-Text-TAR" for m in E2E_SPLIT_MODELS]
+                     + ["AutoGluon-MM"])
     vframes = []
     for label, sub in [("combined", variant),
                        ("image", variant[variant.modality == "image"]),
@@ -240,9 +268,14 @@ def main():
             up = tar_uplift(lb)
             print("\n  TAR uplift (Elo TAR - Elo Frozen), per model:")
             print(up.to_string(index=False))
-            print(f"\n  All {len(up)} embedding models: TAR > Frozen? {(up.tar_uplift > 0).all()}")
-            print(f"  Median TAR uplift: {up.tar_uplift.median():.0f} Elo   "
-                  f"(mean {up.tar_uplift.mean():.0f})")
+            embedding_only = up[up["type"] == "embedding"]
+            print(f"\n  All {len(embedding_only)} embedding models: TAR > Frozen? {(embedding_only.tar_uplift > 0).all()}")
+            print(f"  Median TAR uplift (embeddings): {embedding_only.tar_uplift.median():.0f} Elo   "
+                  f"(mean {embedding_only.tar_uplift.mean():.0f})")
+            e2e_only = up[up["type"] == "e2e"]
+            if not e2e_only.empty:
+                print(f"\n  E2E models TAR uplift:")
+                print(e2e_only.to_string(index=False))
     pd.concat(vframes, ignore_index=True).to_csv(_OUT_VARIANT_CSV, index=False)
     print(f"\nWrote {_OUT_VARIANT_CSV}")
 
