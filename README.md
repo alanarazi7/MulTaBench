@@ -1,6 +1,6 @@
 # MulTaBench
 
-Multimodal tabular benchmark with image and text modalities. Evaluates tabular learners on 20 image datasets and 20 text datasets, with optional DINO/E5 LoRA fine-tuning.
+Multimodal tabular benchmark with image and text modalities. Evaluates tabular learners on **MulTaBench-Core** (40 datasets: 20 image-tabular + 20 text-tabular), with optional DINO/E5 LoRA fine-tuning. **MulTaBench-Full** (80: 40 + 40) is in progress; see [Tiers](#tiers).
 
 **Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616)  
 **Datasets**: [kaggle.com/chico89](https://www.kaggle.com/chico89/datasets)
@@ -77,9 +77,39 @@ Append `_opt` for hyperparameter-optimized variants (e.g. `light_opt`).
 
 ## Datasets
 
-20 image benchmark datasets hosted on Kaggle under `multabench-*`. Downloads are automatic via `kagglehub`. Datasets follow the naming convention `{TASK}_{MODALITY}_{NAME}` where task is `BIN`/`MUL`/`REG`.
+The MulTaBench-Core 40 are hosted on Kaggle under `multabench-*` and download automatically via `kagglehub`. Datasets follow the naming convention `{TASK}_{MODALITY}_{NAME}` where task is `BIN`/`MUL`/`REG`. Full-tier datasets appear under the same `multabench-<name>` convention as they land; until then they load from their original source.
 
-**Image benchmark** (20 datasets): celebrity attractiveness, hateful memes, mammography, CheXpert, CBIS-DDSM, glaucoma, CS:GO skins, flower bouquets, HuBMAP, Instagram engagement, PetFinder adoption, zooplankton, Amazon bestsellers, Amazon packages, H&M fashion, Khaadi clothes, Letterboxd movies, mango mass, photography bots, painting price.
+**MulTaBench-Core, image** (20 datasets): celebrity attractiveness, hateful memes, mammography, CheXpert, CBIS-DDSM, glaucoma, CS:GO skins, flower bouquets, HuBMAP, Instagram engagement, PetFinder adoption, zooplankton, Amazon bestsellers, Amazon packages, H&M fashion, Khaadi clothes, Letterboxd movies, mango mass, photography bots, painting price.
+
+### Tiers
+
+| Tier | Datasets | Admission rule |
+|------|----------|----------------|
+| `MULTABENCH_CORE` | 40 (20 image + 20 text) | Joint Signal **and** Tabular Awareness — the published benchmark, frozen |
+| `MULTABENCH_FULL` | 80 target (40 + 40) | Joint Signal only — growing |
+
+Joint Signal means the joint frozen model beats both unimodal models
+(`Delta_Joint = all - max(no_text, text_only) > delta`); Tabular Awareness means fine-tuning the
+encoder beats freezing it (`Delta_Awareness = ft - all > delta`). Both at `delta = 0.001` with a
+3-of-5 curation-model committee — see `multabench/leaderboard/analysis/pass_matrix.py`.
+
+The registry lives in `multabench/datasets/tiers.py`:
+
+```python
+from multabench.datasets.tiers import Tier, datasets_for_tier, get_tier, pending_upload
+
+datasets_for_tier(Tier.CORE)                    # 40 dataset ids, image half first
+datasets_for_tier("full", modality="text")      # the text half of Full
+get_tier(dataset_id)                            # narrowest tier, or None
+pending_upload(Tier.FULL)                       # Full members not yet hosted on Kaggle
+```
+
+Current composition, and which Full members still need uploading:
+
+```bash
+python -m multabench.scripts.do_tier_status
+python -m multabench.scripts.do_tier_status --candidates
+```
 
 ## Architecture
 
@@ -113,7 +143,8 @@ multabench/
 | `do_kaggle_prepare.py` | Prepare dataset for Kaggle upload |
 | `do_kaggle_upload.py` | Upload curated dataset to Kaggle |
 | `do_multabench_audit.py` | Validate all benchmark datasets |
-| `do_dataset_summary.py` | Dataset statistics summary |
+| `do_dataset_summary.py` | Dataset statistics summary (`--tier core\|full`) |
+| `do_tier_status.py` | Core/Full tier composition and Full-tier progress |
 | `do_paper.py` | Paper figure production |
 
 ---
@@ -136,16 +167,25 @@ trimodal criterion is adopted. Sequencing is datasets-first.
 
 Blocking track. The text side already has evaluation records; the image side is the real work.
 
-- [ ] **Define the Core/Full tiering in the registry.** No `core`/`full` concept exists today —
-      only the flat 40-entry `MulTaBenchDatasetID` in `multabench/datasets/all_datasets.py`, plus
-      `PAPER_BENCHMARK` (`multabench/datasets/image_benchmarks.py`) and `TEXT_PAPER_BENCHMARK`
-      (currently defined locally in `scripts/do_dataset_summary.py`; should move into the
-      registry). Add `MULTABENCH_CORE` (40) and `MULTABENCH_FULL` (80).
-- [ ] **Text-tabular Full (20 → 40).** Select the extra 20 from the 36 non-selected candidates in
-      the 56-dataset pool, keeping only those passing **Joint Signal** (drop Joint-Signal
-      failures: pure-NLP tasks and redundant-text tasks). Accept/reject lists already exist in
-      `multabench/datasets/text_benchmarks.py`; results exist under
-      `multabench/leaderboard/results/text_source/` and `.../tabstar_corpus/`.
+- [x] **Define the Core/Full tiering in the registry.** Landed in
+      `multabench/datasets/tiers.py`: `MULTABENCH_CORE` (40) and `MULTABENCH_FULL` (80 target,
+      populated incrementally), with a `Tier` enum and `datasets_for_tier` / `get_tier` /
+      `is_curated` / `pending_upload` resolvers. `PAPER_BENCHMARK` is now a deprecated alias of
+      `MULTABENCH_CORE_IMAGE`, and the script-local `TEXT_PAPER_BENCHMARK` is gone. Tier
+      membership is typed over `MultimodalDatasetID`, so a Full member can live under its
+      original source id until it is re-hosted. `do_dataset_summary.py` and
+      `do_multabench_audit.py` take `--tier`; `do_tier_status.py` reports composition and
+      progress.
+- [x] **Text-tabular Full (20 → 40).** Done from committed evidence — no new runs.
+      `multabench/leaderboard/analysis/text_full_selection.py` splits the fused curation rule
+      into its two predicates and admits on Joint Signal alone: 45 of the 56 pool datasets pass
+      (vs 23 under the Core rule), i.e. 25 of the 36 non-selected. The 20 highest-ranked
+      (unanimous 5/5 first, then by 10-model agreement and median `Delta_Joint`) are wired into
+      `MULTABENCH_FULL_TEXT_EXTRA`; the 5 remaining passers are kept as `TEXT_FULL_NEAR_MISS`.
+      Per-dataset decisions are committed in
+      `multabench/leaderboard/results/analysis_curation_sensitivity/text_full_selection.csv`.
+      Still open: the 20 skew regression-heavy (16 REG / 2 MUL / 2 BIN) and lump on domains
+      (3 wine/alcohol, 2 used-car); swap against the reserve if the paper wants a flatter spread.
 - [ ] **Image-tabular Full (20 → 40).** The big lift: ~20 additional image-tabular datasets
       passing Joint Signal. Sources: the ~13 non-published image entries that already have
       `annotated/` curation modules, the 7 in `IMAGE_BENCHMARK_CANDIDATES`, the BagOfTricks set,
@@ -161,7 +201,9 @@ Blocking track. The text side already has evaluation records; the image side is 
       `compare_df_summaries()` first and dropping truncated or corrupt images.
 - [ ] **Extend the trimodal group toward ~15** (the rebuttal estimate for Full) by detecting text
       columns on the new image-tabular datasets.
-- [ ] **Regenerate `datasets_summary.csv`** and the appendix dataset table for 80 datasets.
+- [ ] **Regenerate `datasets_summary.csv`** and the appendix dataset table for 80 datasets
+      (`do_dataset_summary.py --tier full`, which writes `datasets_summary_full.csv`;
+      `_FRIENDLY_NAMES` still covers only the Core 40).
 
 ## Track 2 — Analyses (consolidate what exists; fill the two real gaps)
 
