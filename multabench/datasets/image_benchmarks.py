@@ -1,4 +1,5 @@
 from multabench.datasets.all_datasets import KaggleDatasetID, MulTaBenchDatasetID, UrlDatasetID
+from multabench.datasets.tiers import MULTABENCH_CORE_IMAGE
 
 
 
@@ -14,28 +15,8 @@ IMAGE_BENCHMARK_CANDIDATES = [
 
 
 
-PAPER_BENCHMARK = [
-    MulTaBenchDatasetID.BIN_IMAGE_CELEB_ATTRACTIVENESS,
-    MulTaBenchDatasetID.BIN_IMAGE_HATEFUL_MEME,
-    MulTaBenchDatasetID.BIN_IMAGE_MAMMOGRAPHY_CMMD,
-    MulTaBenchDatasetID.MUL_IMAGE_CHEXPERT,
-    MulTaBenchDatasetID.MUL_IMAGE_CBIS_DDSM,
-    MulTaBenchDatasetID.MUL_IMAGE_GLAUCOMA_SMDG,
-    MulTaBenchDatasetID.MUL_IMAGE_CSGO_SKIN_PRICE,
-    MulTaBenchDatasetID.MUL_IMAGE_FLOWER_BOUQUETS,
-    MulTaBenchDatasetID.MUL_IMAGE_HUBMAP_HPA,
-    MulTaBenchDatasetID.MUL_IMAGE_JUSTIN_INSTAGRAM,
-    MulTaBenchDatasetID.MUL_IMAGE_PETFINDER,
-    MulTaBenchDatasetID.MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,
-    MulTaBenchDatasetID.REG_IMAGE_AMAZON_BEST_SELLER,
-    MulTaBenchDatasetID.REG_IMAGE_AMAZON_PACKAGES,
-    MulTaBenchDatasetID.REG_IMAGE_HNM_FASHION,
-    MulTaBenchDatasetID.REG_IMAGE_KHAADI_CLOTHES,
-    MulTaBenchDatasetID.REG_IMAGE_LETTERBOXD_MOVIES,
-    MulTaBenchDatasetID.REG_IMAGE_MANGO_MASS,
-    MulTaBenchDatasetID.REG_IMAGE_MKPHOTO_BOTS,
-    MulTaBenchDatasetID.REG_IMAGE_PAINTING_PRICE,
-]
+# Deprecated alias -- use multabench.datasets.tiers.MULTABENCH_CORE_IMAGE.
+PAPER_BENCHMARK = MULTABENCH_CORE_IMAGE
 
 # Datasets with detectable raw text columns (detect_text_features: >=100 unique OR >=80% unique ratio)
 FULLY_MULTIMODAL_DATASET_CANDIDATES = [
