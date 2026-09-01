@@ -56,5 +56,13 @@ def detect_text_features(
     exclude_columns = set(exclude_columns) if exclude_columns else set()
     x_no_dates = x.select_dtypes(exclude=["datetime", "datetimetz"])
     numerical = set(detect_numerical_features(x_no_dates)) | exclude_columns
+    # TODO: likely a bug. Dates are excluded from the numerical pass but `x` below still
+    # includes them, so a datetime column with >= MIN_TEXT_UNIQUE_FREQUENCY unique values is
+    # classified as text and gets E5-encoded (low-cardinality dates fall to categorical, which
+    # is why this went unnoticed). Passing x_no_dates here is the one-line fix, but it changes
+    # the feature set of every dataset with a high-cardinality date column, so it needs the
+    # affected datasets re-run before it can land. Behaviour dates from the commit that added
+    # the date exclusion above (2026-03-04) to stop detect_numerical_features raising on dates;
+    # it therefore predates all published results.
     semantic = classify_semantic_features(x=x, numerical_features=numerical)
     return [c for c in semantic.text_features if c not in exclude_columns]
