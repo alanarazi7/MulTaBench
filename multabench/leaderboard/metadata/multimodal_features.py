@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List
 
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
+from multabench.datasets.tiers import MULTABENCH_CORE
 
 NO_PCA_THRESHOLD = 5
 
@@ -161,7 +162,9 @@ MULTIMODAL_FEATURES: Dict[MulTaBenchDatasetID, DatasetMultimodalFeatures] = {
     ),
 }
 
-assert len(MULTIMODAL_FEATURES) == len(MulTaBenchDatasetID), (
-    f"MULTIMODAL_FEATURES covers {len(MULTIMODAL_FEATURES)} datasets but "
-    f"MulTaBenchDatasetID has {len(MulTaBenchDatasetID)}"
-)
+_missing_core = [d.name for d in MULTABENCH_CORE if d not in MULTIMODAL_FEATURES]
+assert not _missing_core, f"MULTIMODAL_FEATURES is missing MulTaBench-Core datasets: {_missing_core}"
+
+# Uploaded datasets not yet in the inventory -- reported, not asserted, so that uploading a
+# Full-tier dataset does not break every import until its features are annotated.
+UNAUDITED = [d for d in MulTaBenchDatasetID if d not in MULTIMODAL_FEATURES]

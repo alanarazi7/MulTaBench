@@ -6,14 +6,17 @@ and prints a per-dataset summary.  Datasets with more than MAX_MULTIMODAL featur
 are flagged ❌ (red); those within the limit get ✅ (green).
 
 Usage:
-    python do_multabench_audit.py
+    python do_multabench_audit.py                  # every uploaded MulTaBench dataset
+    python do_multabench_audit.py --tier core      # the MulTaBench-Core 40
 """
 from __future__ import annotations
 
+import argparse
 from dataclasses import dataclass, field
 from typing import List
 
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
+from multabench.datasets.tiers import Tier, datasets_for_tier, is_curated, pending_upload
 from multabench.benchmark.load import load_multabench_dataset
 from multabench.preprocessing.feat_types import detect_text_features
 from multabench.baselines.preprocessing.feature_types import detect_image_features
@@ -81,8 +84,24 @@ def print_summary(audits: list[DatasetAudit]) -> None:
     print(f"\n  Passed (≤{MAX_MULTIMODAL}): {sum(1 for a in successful if a.ok)}/{len(successful)}")
 
 
+def _resolve_ids(tier: str) -> List[MulTaBenchDatasetID]:
+    """Uploaded datasets only -- audit_dataset() loads through the unified MulTaBench API."""
+    if tier == "uploaded":
+        return list(MulTaBenchDatasetID)
+    skipped = [d.name for d in pending_upload(tier)]
+    if skipped:
+        print(f"Skipping {len(skipped)} MulTaBench-{tier} datasets that are not uploaded yet: {skipped}")
+    return [d for d in datasets_for_tier(tier) if is_curated(d)]
+
+
 def main() -> None:
-    all_ids = list(MulTaBenchDatasetID)
+    parser = argparse.ArgumentParser(description="Audit multimodal feature counts of MulTaBench datasets")
+    parser.add_argument("--tier", type=str, default="uploaded",
+                        choices=["uploaded"] + [t.value for t in Tier],
+                        help="'uploaded' (default) audits every uploaded dataset, tiers audit their members")
+    args = parser.parse_args()
+
+    all_ids = _resolve_ids(args.tier)
     print(f"Auditing {len(all_ids)} MulTaBench datasets  (threshold: ≤{MAX_MULTIMODAL} = ✅)")
     print("=" * 80)
 
