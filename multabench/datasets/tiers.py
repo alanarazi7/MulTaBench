@@ -30,8 +30,11 @@ from enum import Enum
 from typing import Dict, List, Literal, Optional
 
 from multabench.datasets.all_datasets import (
+    KaggleDatasetID,
     MulTaBenchDatasetID,
     MultimodalDatasetID,
+    OpenMLDatasetID,
+    UrlDatasetID,
     is_image_dataset,
     is_text_dataset,
 )
@@ -100,8 +103,31 @@ MULTABENCH_CORE_TEXT: List[MultimodalDatasetID] = [
 MULTABENCH_FULL_IMAGE_EXTRA: List[MultimodalDatasetID] = [
 ]
 
-# Full-only text-tabular datasets, on top of Core. Grows to 20 (camera-ready Track 1, item 2).
+# Full-only text-tabular datasets, on top of Core. Admitted on Joint Signal alone (delta=0.001,
+# 3-of-5 curation models) and ranked by (joint_pass_5, joint_pass_10, median Delta_Joint); see
+# multabench/leaderboard/analysis/text_full_selection.py and text_full_selection.csv. These load
+# through their original source until they are re-hosted as curated multabench-* datasets.
 MULTABENCH_FULL_TEXT_EXTRA: List[MultimodalDatasetID] = [
+    KaggleDatasetID.REG_TEXT_FOOD_WINE_POLISH_MARKET_PRICES,             # joint 5/5, 10/10 — CARTE
+    KaggleDatasetID.REG_TEXT_SOCIAL_KOREAN_DRAMA,                        # joint 5/5, 10/10 — CARTE
+    KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_SAUDI_ARABIA,       # joint 5/5, 10/10 — CARTE
+    KaggleDatasetID.BIN_TEXT_FINANCIAL_CONSUMER_COMPLAINT,               # joint 5/5, 10/10 — TextTabBench
+    KaggleDatasetID.MUL_TEXT_SOCIAL_HEARTHSTONE_CARD_GAME_WARCRAFT,      # joint 5/5, 10/10 — TextTabBench
+    KaggleDatasetID.REG_TEXT_FOOD_WINE_VIVINO_SPAIN,                     # joint 5/5, 10/10 — CARTE
+    KaggleDatasetID.REG_TEXT_FOOD_CHOCOLATE_BAR_RATINGS,                 # joint 5/5,  9/10 — CARTE
+    KaggleDatasetID.REG_TEXT_SOCIAL_ANIME_PLANET_RATING,                 # joint 5/5,  9/10 — CARTE
+    KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_PAKISTAN,           # joint 5/5,  9/10 — CARTE
+    UrlDatasetID.REG_TEXT_SOCIAL_BOOKS_GOODREADS,                        # joint 5/5,  9/10 — Vectorizing
+    KaggleDatasetID.REG_TEXT_FOOD_RAMEN_RATINGS_2022,                    # joint 5/5,  9/10 — CARTE+Vectorizing
+    KaggleDatasetID.BIN_TEXT_TRANSPORTATION_OSHA_ACCIDENT_INJURY_DATA,   # joint 5/5,  9/10 — TextTabBench
+    OpenMLDatasetID.REG_TEXT_SPORTS_FIFA22_WAGES,                        # joint 5/5,  9/10 — CARTE
+    OpenMLDatasetID.REG_TEXT_HOUSES_CALIFORNIA_PRICES_2020,              # joint 5/5,  9/10 — AutoMLMultimodal+TextTabBench
+    KaggleDatasetID.REG_TEXT_FOOD_ALCOHOL_WIKILIQ_PRICES,                # joint 5/5,  8/10 — CARTE
+    OpenMLDatasetID.REG_TEXT_CONSUMER_AMERICAN_EAGLE_PRICES,             # joint 5/5,  8/10 — AutoMLMultimodal
+    KaggleDatasetID.REG_TEXT_HOUSES_AIRBNB_SEATTLE,                      # joint 5/5,  7/10 — TextTabBench
+    OpenMLDatasetID.MUL_TEXT_SOCIAL_NEWS_CHANNEL_CATEGORY,               # joint 5/5,  7/10 — AutoMLMultimodal
+    KaggleDatasetID.REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE,              # joint 4/5,  8/10 — CARTE
+    UrlDatasetID.REG_TEXT_PROFESSIONAL_ML_DS_AI_JOBS_SALARIES,           # joint 4/5,  7/10 — CARTE
 ]
 
 MULTABENCH_CORE: List[MultimodalDatasetID] = MULTABENCH_CORE_IMAGE + MULTABENCH_CORE_TEXT
