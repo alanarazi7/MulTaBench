@@ -1,4 +1,12 @@
 from multabench.datasets.all_datasets import KaggleDatasetID, UrlDatasetID, OpenMLDatasetID, MulTaBenchDatasetID
+from multabench.datasets.tiers import MULTABENCH_FULL_TEXT_EXTRA
+
+# The ACCEPTED/REJECTED lists below record the MulTaBench-Core curation decision over the
+# 56-dataset candidate pool: Joint Signal AND Tabular Awareness, 3 of 5 curation models at
+# delta=0.001. They are hand-maintained but reproducible -- REJECTED_TEXT_DATASETS is exactly the
+# set of "reject" rows of leaderboard/results/analysis_curation_sensitivity/text_full_selection.csv
+# (column core_decision). MulTaBench-Full uses the weaker Joint-Signal-only rule; see the bottom
+# of this file and multabench/leaderboard/analysis/text_full_selection.py.
 
 
 # Benchmarking Multimodal AutoML for Tabular Data with Text Fields
@@ -133,4 +141,35 @@ assert len(set(ACCEPTED_TEXT_DATASETS)) == 23, (
 assert len(set(ACCEPTED_TEXT_DATASETS) | set(REJECTED_TEXT_DATASETS)) == 56, (
     f"Expected 56 unique text-tabular candidate datasets total, "
     f"got {len(set(ACCEPTED_TEXT_DATASETS) | set(REJECTED_TEXT_DATASETS))}"
+)
+
+
+# --- MulTaBench-Full (Joint Signal only) ---------------------------------------------------
+# The 20 pool datasets promoted from rejected/excluded to MulTaBench-Full: they show joint signal
+# (the joint frozen model beats both unimodal models) even though fine-tuning the encoder adds
+# nothing on most of them, which is what kept them out of Core.
+TEXT_FULL_EXTRA = MULTABENCH_FULL_TEXT_EXTRA
+
+# Passed Joint Signal too, but ranked below the top 20. Kept here as the documented reserve, in
+# selection-rank order, for swaps or if a selected dataset later has to be dropped.
+TEXT_FULL_NEAR_MISS = [
+    KaggleDatasetID.REG_TEXT_CONSUMER_LAPTOP_INDIAN_PRICES,          # joint 4/5, 7/10
+    OpenMLDatasetID.BIN_TEXT_SOCIAL_IMDB_GENRE_PREDICTION,           # joint 4/5, 7/10
+    KaggleDatasetID.REG_TEXT_SOCIAL_MUSEUMS_US_REVENUES,             # joint 3/5, 5/10
+    KaggleDatasetID.REG_TEXT_HOUSES_SAN_FRANCISCO_PERMITS_APPLICATIONS,  # joint 3/5, 4/10
+    OpenMLDatasetID.MUL_TEXT_HOUSES_MELBOURNE_AIRBNB,                # joint 3/5, 4/10
+]
+
+_TEXT_POOL = set(ACCEPTED_TEXT_DATASETS) | set(REJECTED_TEXT_DATASETS)
+assert set(TEXT_FULL_EXTRA) <= _TEXT_POOL, (
+    "Full-tier text datasets must come from the 56-dataset candidate pool: "
+    f"{[d.name for d in set(TEXT_FULL_EXTRA) - _TEXT_POOL]}"
+)
+assert set(TEXT_FULL_NEAR_MISS) <= _TEXT_POOL, (
+    "Near-miss text datasets must come from the 56-dataset candidate pool: "
+    f"{[d.name for d in set(TEXT_FULL_NEAR_MISS) - _TEXT_POOL]}"
+)
+assert not set(TEXT_FULL_EXTRA) & set(TEXT_FULL_NEAR_MISS), (
+    "A dataset cannot be both selected for Full and held in reserve: "
+    f"{[d.name for d in set(TEXT_FULL_EXTRA) & set(TEXT_FULL_NEAR_MISS)]}"
 )
