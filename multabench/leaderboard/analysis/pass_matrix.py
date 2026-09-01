@@ -29,19 +29,21 @@ _FOLDS = range(5)
 _KNOWN_MISSING_ROWS = {("TabPFNv2", "REG_TEXT_CONSUMER_CAR_PRICE_CARDEKHO", "ft", 4)}
 
 
-def passes(scores: pd.DataFrame, delta: float = 0.001) -> bool:
-    """Given ONE model's rows for ONE dataset (exactly 20 rows: 5 folds x 4 states, except
-    the one hardcoded gap in _KNOWN_MISSING_ROWS), decide pass/fail.
+DELTA_DEFAULT = 0.001
+
+
+def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
+    """Given ONE model's rows for ONE dataset (exactly 20 rows: 5 folds x 4 states, except the
+    one hardcoded gap in _KNOWN_MISSING_ROWS), return (Delta_Joint, Delta_Awareness).
 
         Delta_Joint     = mean(all) - max(mean(no_text), mean(text_only))
         Delta_Awareness = mean(ft)  - mean(all)
-        passes <=> Delta_Joint > delta AND Delta_Awareness > delta
 
     Each state's mean is rounded to 3 decimals before differencing (matches the paper's
-    reported precision). Asserts (loudly, not a warning) that `scores` is exactly complete
-    for one (model, dataset) pair -- no missing rows beyond the one known gap, no
-    duplicates/extras -- since silently computing a mean over fewer folds would understate
-    variance and bias the pass/fail decision without any visible signal.
+    reported precision). Asserts (loudly, not a warning) that `scores` is exactly complete for
+    one (model, dataset) pair -- no missing rows beyond the one known gap, no duplicates/extras
+    -- since silently computing a mean over fewer folds would understate variance and bias the
+    decision without any visible signal.
     """
     models, datasets = scores["model"].unique(), scores["dataset"].unique()
     assert len(models) == 1 and len(datasets) == 1, (
@@ -64,10 +66,33 @@ def passes(scores: pd.DataFrame, delta: float = 0.001) -> bool:
     means = scores.groupby("state")["test_score"].mean().round(3)
     delta_joint = means["all"] - max(means["no_text"], means["text_only"])
     delta_awareness = means["ft"] - means["all"]
+    return float(delta_joint), float(delta_awareness)
+
+
+def joint_signal_passes(scores: pd.DataFrame, delta: float = DELTA_DEFAULT) -> bool:
+    """Joint Signal: the joint frozen model beats BOTH unimodal models. This alone is the
+    MulTaBench-Full admission condition -- it rejects pure-NLP tasks (the unstructured modality
+    suffices) and redundant-text tasks (the structured modality suffices)."""
+    delta_joint, _ = compute_deltas(scores)
+    return delta_joint > delta
+
+
+def awareness_passes(scores: pd.DataFrame, delta: float = DELTA_DEFAULT) -> bool:
+    """Tabular Awareness: fine-tuning the encoder inside the joint model beats freezing it."""
+    _, delta_awareness = compute_deltas(scores)
+    return delta_awareness > delta
+
+
+def passes(scores: pd.DataFrame, delta: float = DELTA_DEFAULT) -> bool:
+    """MulTaBench-Core admission for one (model, dataset): Joint Signal AND Awareness.
+
+        passes <=> Delta_Joint > delta AND Delta_Awareness > delta
+    """
+    delta_joint, delta_awareness = compute_deltas(scores)
     return bool(delta_joint > delta and delta_awareness > delta)
 
 
-def build_pass_matrix(df: pd.DataFrame, delta: float = 0.001) -> pd.DataFrame:
+def build_pass_matrix(df: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
     """A dataset x model boolean matrix (rows=dataset, columns=model), True iff that model
     passes on that dataset at this delta. NaN where a model has no data at all for a dataset
     (e.g. TabPFNv2/TabPFN-2.5's 2 fully-missing datasets) -- deliberately NOT filled to False
