@@ -32,17 +32,16 @@ _KNOWN_MISSING_ROWS = {("TabPFNv2", "REG_TEXT_CONSUMER_CAR_PRICE_CARDEKHO", "ft"
 DELTA_DEFAULT = 0.001
 
 
-def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
-    """Given ONE model's rows for ONE dataset (exactly 20 rows: 5 folds x 4 states, except the
-    one hardcoded gap in _KNOWN_MISSING_ROWS), return (Delta_Joint, Delta_Awareness).
+_JOINT_STATES = ("no_text", "text_only", "all")
 
-        Delta_Joint     = mean(all) - max(mean(no_text), mean(text_only))
-        Delta_Awareness = mean(ft)  - mean(all)
 
-    Each state's mean is rounded to 3 decimals before differencing (matches the paper's
-    reported precision). Asserts (loudly, not a warning) that `scores` is exactly complete for
-    one (model, dataset) pair -- no missing rows beyond the one known gap, no duplicates/extras
-    -- since silently computing a mean over fewer folds would understate variance and bias the
+def state_means(scores: pd.DataFrame, states: tuple = _STATES) -> pd.Series:
+    """The per-state mean score of ONE model on ONE dataset, rounded to 3 decimals (the paper's
+    reported precision) before any differencing.
+
+    Asserts (loudly, not a warning) that `scores` is exactly complete for that (model, dataset)
+    pair over `states` -- no missing rows beyond the one known gap, no duplicates/extras --
+    since silently computing a mean over fewer folds would understate variance and bias the
     decision without any visible signal.
     """
     models, datasets = scores["model"].unique(), scores["dataset"].unique()
@@ -52,8 +51,9 @@ def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
     )
     model, dataset = models[0], datasets[0]
 
-    expected_rows = {(model, dataset, s, f) for s in _STATES for f in _FOLDS}
-    actual_rows = set(zip(scores["model"], scores["dataset"], scores["state"], scores["fold"]))
+    expected_rows = {(model, dataset, s, f) for s in states for f in _FOLDS}
+    actual_rows = {r for r in zip(scores["model"], scores["dataset"], scores["state"], scores["fold"])
+                   if r[2] in states}
     missing = expected_rows - actual_rows - _KNOWN_MISSING_ROWS
     extra = actual_rows - expected_rows
     assert not missing, (
@@ -63,10 +63,29 @@ def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
     )
     assert not extra, f"Unexpected extra/duplicate row(s) for ({model}, {dataset}): {sorted(extra)}"
 
-    means = scores.groupby("state")["test_score"].mean().round(3)
+    return scores[scores["state"].isin(states)].groupby("state")["test_score"].mean().round(3)
+
+
+def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
+    """(Delta_Joint, Delta_Awareness) for ONE model on ONE dataset, over all 4 states.
+
+        Delta_Joint     = mean(all) - max(mean(no_text), mean(text_only))
+        Delta_Awareness = mean(ft)  - mean(all)
+    """
+    means = state_means(scores)
     delta_joint = means["all"] - max(means["no_text"], means["text_only"])
     delta_awareness = means["ft"] - means["all"]
     return float(delta_joint), float(delta_awareness)
+
+
+def compute_joint_delta(scores: pd.DataFrame) -> float:
+    """Delta_Joint alone, from the 3 states it needs -- no `ft` runs required.
+
+    Identical arithmetic to compute_deltas()[0], but usable on experiments that never fine-tune
+    an encoder (fine-tuning is what makes a curation sweep expensive).
+    """
+    means = state_means(scores, states=_JOINT_STATES)
+    return float(means["all"] - max(means["no_text"], means["text_only"]))
 
 
 def joint_signal_passes(scores: pd.DataFrame, delta: float = DELTA_DEFAULT) -> bool:
