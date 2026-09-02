@@ -77,7 +77,7 @@ Append `_opt` for hyperparameter-optimized variants (e.g. `light_opt`).
 
 ## Datasets
 
-The MulTaBench-Core 40 are hosted on Kaggle under `multabench-*` and download automatically via `kagglehub`. Datasets follow the naming convention `{TASK}_{MODALITY}_{NAME}` where task is `BIN`/`MUL`/`REG`. Full-tier datasets appear under the same `multabench-<name>` convention as they land; until then they load from their original source.
+The MulTaBench-Core 40 are hosted on Kaggle under `multabench-*` and download automatically via `kagglehub`. Datasets follow the naming convention `{TASK}_{MODALITY}_{NAME}` where task is `BIN`/`MUL`/`REG`. Full-tier datasets are hosted under `multabench-full-<name>` as they land, so the tier is visible in the slug and the Kaggle title; until a dataset is re-hosted it loads from its original source, and `tiers.PROMOTED_FROM` records which source each re-hosted dataset came from.
 
 **MulTaBench-Core, image** (20 datasets): celebrity attractiveness, hateful memes, mammography, CheXpert, CBIS-DDSM, glaucoma, CS:GO skins, flower bouquets, HuBMAP, Instagram engagement, PetFinder adoption, zooplankton, Amazon bestsellers, Amazon packages, H&M fashion, Khaadi clothes, Letterboxd movies, mango mass, photography bots, painting price.
 
@@ -184,8 +184,30 @@ Blocking track. The text side already has evaluation records; the image side is 
       `MULTABENCH_FULL_TEXT_EXTRA`; the 5 remaining passers are kept as `TEXT_FULL_NEAR_MISS`.
       Per-dataset decisions are committed in
       `multabench/leaderboard/results/analysis_curation_sensitivity/text_full_selection.csv`.
-      Still open: the 20 skew regression-heavy (16 REG / 2 MUL / 2 BIN) and lump on domains
+      Still open: the 20 skew regression-heavy (16 REG / 3 MUL / 1 BIN) and lump on domains
       (3 wine/alcohol, 2 used-car); swap against the reserve if the paper wants a flatter spread.
+- [x] **Upload and verify the Full-tier text classification datasets.** All six non-Core text
+      datasets that pass Joint Signal and are already classification tasks are curated, uploaded
+      and re-verified on their own artifacts: Consumer Complaint, Hearthstone Cards, OSHA Injury,
+      News Channel, IMDB Genre, Melbourne Airbnb. Recipes live in `multabench/benchmark/datasets/`,
+      the 450 verification runs in `multabench/leaderboard/results/text_full/`, and the verdict in
+      `text_full_verification.py` — **6 of 6 admitted** (Joint Signal, δ=0.001, 3-of-5), with IMDB
+      Genre and Melbourne Airbnb scoring *better* on the uploaded artifact (5/5 and 4/5) than in
+      the pool (4/5 and 3/5). Curation notes: Consumer Complaint is capped at 100K of its 1.28M
+      rows, and Melbourne Airbnb drops three URL columns that would otherwise make it load as an
+      image-tabular dataset.
+- [ ] **Decide the two reserve slots.** IMDB Genre and Melbourne Airbnb are uploaded and verified
+      but not in the selected 20, so the text half is at its 40 cap and they sit in
+      `tiers.MULTABENCH_FULL_TEXT_UPLOADED_RESERVE` (reported by `do_tier_status.py` as "uploaded
+      but in no tier"). Admitting them means displacing two pool-only members — the two
+      lowest-ranked are `REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE` and
+      `REG_TEXT_PROFESSIONAL_ML_DS_AI_JOBS_SALARIES` (both joint 4/5) — which would also move the
+      task mix from 16/3/1 to 14/4/2. Blocked on the regression-binning outcome below, which will
+      reshuffle the task types anyway.
+- [ ] **Rebalance the regression-heavy text half** by binning regression targets into
+      classification (one bin count per dataset sampled from {2, 3, 5, 10}), then re-running the
+      cheap three-state Joint Signal check on the binned targets and keeping the formulation that
+      passes.
 - [ ] **Image-tabular Full (20 → 40).** The big lift: ~20 additional image-tabular datasets
       passing Joint Signal. Sources: the ~13 non-published image entries that already have
       `annotated/` curation modules, the 7 in `IMAGE_BENCHMARK_CANDIDATES`, the BagOfTricks set,
@@ -275,6 +297,13 @@ to get a real page count.
 - [ ] **Update every dataset count** across `neurips_2026.tex`, `appendix.tex` (including the
       per-dataset description subsections and the dataset/results tables), and the verbatim
       abstract quote in `checklist.tex`.
+- [ ] **Describe the tier's provenance mechanism**: Full members are re-hosted under
+      `multabench-full-<name>` and, once uploaded, are re-verified on the uploaded artifact rather
+      than the original source. Worth one sentence in §4 — it is what makes the growing tier
+      auditable, and the six text classification datasets are the first evidence of it.
+- [ ] **Report the Full text half's task mix** (26 REG / 10 MUL / 4 BIN as it stands) and say
+      whether binned regression targets are used to flatten it. If they are, the binning rule
+      (one bin count per dataset, sampled from {2, 3, 5, 10}) has to be stated in the appendix.
 - [ ] **Adopt the relaxed trimodal rule** in §4 and Appendix E: report **8 trimodal datasets**,
       keeping the strict-rule result (PetFinder, Amazon Packages) as a stricter sub-tier. Verify
       all 8 pass Joint Signal on both modalities before claiming it. Note that Full is expected
@@ -309,6 +338,8 @@ to get a real page count.
 ## Track 4 — Release
 
 - [ ] Publish the Full-tier datasets to Kaggle and expose Core/Full through the loading API.
+      Six text classification datasets are done (see Track 1); the 16 remaining text members
+      and the whole image half are not.
 - [ ] Update this README with the two-tier description, dataset counts, and usage for both tiers.
 - [ ] Merge the consolidated analysis branch so every rebuttal number is reproducible from a
       single checkout of `master`.
