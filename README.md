@@ -184,8 +184,10 @@ Blocking track. The text side already has evaluation records; the image side is 
       `MULTABENCH_FULL_TEXT_EXTRA`; the 5 remaining passers are kept as `TEXT_FULL_NEAR_MISS`.
       Per-dataset decisions are committed in
       `multabench/leaderboard/results/analysis_curation_sensitivity/text_full_selection.csv`.
-      Still open: the 20 skew regression-heavy (16 REG / 3 MUL / 1 BIN) and lump on domains
-      (3 wine/alcohol, 2 used-car); swap against the reserve if the paper wants a flatter spread.
+      Target composition for the 20 extras is **10 classification / 10 regression**; they now
+      stand at 6 CLS + 14 REG, with the last 4 CLS to come from binning (below). Domains are
+      still lumpy (3 wine/alcohol, 2 used-car) — swap against `TEXT_FULL_NEAR_MISS` if the paper
+      wants a flatter spread.
 - [x] **Upload and verify the Full-tier text classification datasets.** All six non-Core text
       datasets that pass Joint Signal and are already classification tasks are curated, uploaded
       and re-verified on their own artifacts: Consumer Complaint, Hearthstone Cards, OSHA Injury,
@@ -196,18 +198,17 @@ Blocking track. The text side already has evaluation records; the image side is 
       the pool (4/5 and 3/5). Curation notes: Consumer Complaint is capped at 100K of its 1.28M
       rows, and Melbourne Airbnb drops three URL columns that would otherwise make it load as an
       image-tabular dataset.
-- [ ] **Decide the two reserve slots.** IMDB Genre and Melbourne Airbnb are uploaded and verified
-      but not in the selected 20, so the text half is at its 40 cap and they sit in
-      `tiers.MULTABENCH_FULL_TEXT_UPLOADED_RESERVE` (reported by `do_tier_status.py` as "uploaded
-      but in no tier"). Admitting them means displacing two pool-only members — the two
-      lowest-ranked are `REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE` and
-      `REG_TEXT_PROFESSIONAL_ML_DS_AI_JOBS_SALARIES` (both joint 4/5) — which would also move the
-      task mix from 16/3/1 to 14/4/2. Blocked on the regression-binning outcome below, which will
-      reshuffle the task types anyway.
-- [ ] **Rebalance the regression-heavy text half** by binning regression targets into
-      classification (one bin count per dataset sampled from {2, 3, 5, 10}), then re-running the
-      cheap three-state Joint Signal check on the binned targets and keeping the formulation that
-      passes.
+- [x] **Settle the reserve slots.** IMDB Genre and Melbourne Airbnb are admitted, displacing
+      `REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE` and `REG_TEXT_PROFESSIONAL_ML_DS_AI_JOBS_SALARIES`
+      (the only two selected members below unanimous agreement, and neither uploaded) into
+      `TEXT_FULL_NEAR_MISS`. Uploaded-artifact evidence outranks pool evidence, so the registry
+      now deliberately differs from `text_full_selection.py`'s pool ranking by these two swaps;
+      the module reports the difference rather than printing a snippet that would undo it.
+- [ ] **Convert 4 regression datasets to classification by binning**, to reach the 10/10 balance.
+      One bin count per dataset sampled from {2, 3, 5, 10} and frozen per dataset (not a grid),
+      then the cheap three-state Joint Signal check on the binned target; the 4 that pass best
+      get re-curated and uploaded as `MUL_TEXT_*` (task-type change means renaming the module,
+      the enum entry, and the `CuratedTarget`), leaving the other 10 as regression.
 - [ ] **Image-tabular Full (20 → 40).** The big lift: ~20 additional image-tabular datasets
       passing Joint Signal. Sources: the ~13 non-published image entries that already have
       `annotated/` curation modules, the 7 in `IMAGE_BENCHMARK_CANDIDATES`, the BagOfTricks set,
@@ -301,9 +302,10 @@ to get a real page count.
       `multabench-full-<name>` and, once uploaded, are re-verified on the uploaded artifact rather
       than the original source. Worth one sentence in §4 — it is what makes the growing tier
       auditable, and the six text classification datasets are the first evidence of it.
-- [ ] **Report the Full text half's task mix** (26 REG / 10 MUL / 4 BIN as it stands) and say
-      whether binned regression targets are used to flatten it. If they are, the binning rule
-      (one bin count per dataset, sampled from {2, 3, 5, 10}) has to be stated in the appendix.
+- [ ] **Report the Full text half's task mix** and how it was reached. The 20 extras target
+      10 classification / 10 regression, and 4 of the classification tasks are regression targets
+      reformulated by quantile binning — that is a curation decision the appendix has to state
+      outright, including the per-dataset bin count and why binning rather than re-targeting.
 - [ ] **Adopt the relaxed trimodal rule** in §4 and Appendix E: report **8 trimodal datasets**,
       keeping the strict-rule result (PetFinder, Amazon Packages) as a stricter sub-tier. Verify
       all 8 pass Joint Signal on both modalities before claiming it. Note that Full is expected
