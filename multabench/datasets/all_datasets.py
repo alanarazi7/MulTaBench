@@ -111,6 +111,15 @@ class MulTaBenchDatasetID(Enum):
     REG_TEXT_VIDEO_GAMES_SALES = "multabench-video-games-sales"
     REG_TEXT_ZOMATO_RESTAURANTS = "multabench-zomato-restaurants"
 
+    # MulTaBench-Full additions: classification datasets from the 56-dataset text pool that pass
+    # Joint Signal (they were kept out of Core because fine-tuning the encoder adds nothing).
+    MUL_TEXT_CONSUMER_COMPLAINT = "multabench-full-consumer-complaint"
+    MUL_TEXT_HEARTHSTONE_CARDS = "multabench-full-hearthstone-cards"
+    BIN_TEXT_OSHA_INJURY = "multabench-full-osha-injury"
+    MUL_TEXT_NEWS_CHANNEL = "multabench-full-news-channel"
+    BIN_TEXT_IMDB_GENRE = "multabench-full-imdb-genre"
+    MUL_TEXT_MELBOURNE_AIRBNB = "multabench-full-melbourne-airbnb"
+
 
 class UrlDatasetID(Enum):
     # Image Benchmark - Candidates
