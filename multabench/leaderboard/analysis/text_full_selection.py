@@ -33,6 +33,7 @@ from multabench.datasets.text_benchmarks import (
     TEXT_TAB_BENCH,
     VECTORIZING,
 )
+from multabench.datasets.tiers import MULTABENCH_FULL_TEXT_EXTRA, PROMOTED_FROM
 from multabench.datasets.utils import dataset_from_name
 from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, EXTRA_MODELS
 from multabench.leaderboard.analysis.pass_matrix import DELTA_DEFAULT, compute_deltas
@@ -114,6 +115,11 @@ def build_selection_table(df: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.
     ranks = {dataset: i + 1 for i, dataset in enumerate(selected)}
     table["selected_full"] = table["dataset"].isin(selected)
     table["rank"] = table["dataset"].map(ranks)
+    # What the registry actually ships, which can differ from this pool ranking: a dataset that
+    # has been uploaded is re-verified on its own artifact, and that evidence wins.
+    registry_sources = {PROMOTED_FROM.get(d, d) for d in MULTABENCH_FULL_TEXT_EXTRA}
+    registry_names = {d.name for d in registry_sources}
+    table["in_registry"] = table["dataset"].isin(registry_names)
     table["exclusion_reason"] = [
         "" if row.selected_full
         else "already in MulTaBench-Core" if row.in_core
@@ -134,7 +140,7 @@ def _print_report(table: pd.DataFrame) -> None:
     candidates = table[(~table["in_core"]) & table["joint_accept"]]
     print(f"\nNon-Core Joint-Signal passers: {len(candidates)} — selecting {N_TEXT_FULL_EXTRA}")
     cols = ["rank", "dataset", "domain", "joint_pass_5", "joint_pass_10", "awareness_pass_5",
-            "median_delta_joint", "selected_full", "source_paper"]
+            "median_delta_joint", "selected_full", "in_registry", "source_paper"]
     print(candidates[cols].to_string(index=False))
 
     selected = table[table["selected_full"]]
@@ -145,11 +151,23 @@ def _print_report(table: pd.DataFrame) -> None:
     print("\nTask types of the 20 selected: " + ", ".join(
         f"{task} {n}" for task, n in Counter(selected["task_type"]).most_common()))
 
-    print("\nRegistry snippet for MULTABENCH_FULL_TEXT_EXTRA in multabench/datasets/tiers.py:")
-    for row in selected.sort_values("rank").itertuples():
-        dataset_id = dataset_from_name(row.dataset)
-        print(f"    {type(dataset_id).__name__}.{dataset_id.name},"
-              f"  # joint {row.joint_pass_5}/5, {row.joint_pass_10}/10 — {row.source_paper}")
+    added = table[table["in_registry"] & ~table["selected_full"]]
+    dropped = table[table["selected_full"] & ~table["in_registry"]]
+    if len(added) or len(dropped):
+        print("\nThe registry deliberately differs from this pool ranking "
+              "(uploaded datasets are re-verified on their own artifacts, and that evidence wins):")
+        for row in added.itertuples():
+            print(f"  + {row.dataset}  (pool rank: below the top {N_TEXT_FULL_EXTRA}, "
+                  f"joint {row.joint_pass_5}/5)")
+        for row in dropped.itertuples():
+            print(f"  - {row.dataset}  (pool rank {int(row.rank)}, joint {row.joint_pass_5}/5)")
+        print("  See MULTABENCH_FULL_TEXT_EXTRA and TEXT_FULL_NEAR_MISS for the shipped lists.")
+    else:
+        print("\nRegistry snippet for MULTABENCH_FULL_TEXT_EXTRA in multabench/datasets/tiers.py:")
+        for row in selected.sort_values("rank").itertuples():
+            dataset_id = dataset_from_name(row.dataset)
+            print(f"    {type(dataset_id).__name__}.{dataset_id.name},"
+                  f"  # joint {row.joint_pass_5}/5, {row.joint_pass_10}/10 — {row.source_paper}")
 
 
 def main() -> None:
