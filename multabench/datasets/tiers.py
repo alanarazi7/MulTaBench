@@ -107,6 +107,10 @@ MULTABENCH_FULL_IMAGE_EXTRA: List[MultimodalDatasetID] = [
 # 3-of-5 curation models) and ranked by (joint_pass_5, joint_pass_10, median Delta_Joint); see
 # multabench/leaderboard/analysis/text_full_selection.py and text_full_selection.csv. These load
 # through their original source until they are re-hosted as curated multabench-* datasets.
+# Target balance for the 20 extras is 10 classification / 10 regression. Six are already
+# classification and uploaded; the remaining ten regression datasets stay regression, and four
+# more are to be reformulated as classification by binning their target (which renames them
+# REG_* -> MUL_*), leaving 10/10.
 MULTABENCH_FULL_TEXT_EXTRA: List[MultimodalDatasetID] = [
     KaggleDatasetID.REG_TEXT_FOOD_WINE_POLISH_MARKET_PRICES,             # joint 5/5, 10/10 — CARTE
     KaggleDatasetID.REG_TEXT_SOCIAL_KOREAN_DRAMA,                        # joint 5/5, 10/10 — CARTE
@@ -126,8 +130,8 @@ MULTABENCH_FULL_TEXT_EXTRA: List[MultimodalDatasetID] = [
     OpenMLDatasetID.REG_TEXT_CONSUMER_AMERICAN_EAGLE_PRICES,             # joint 5/5,  8/10 — AutoMLMultimodal
     KaggleDatasetID.REG_TEXT_HOUSES_AIRBNB_SEATTLE,                      # joint 5/5,  7/10 — TextTabBench
     MulTaBenchDatasetID.MUL_TEXT_NEWS_CHANNEL,                           # joint 5/5 uploaded — AutoMLMultimodal
-    KaggleDatasetID.REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE,              # joint 4/5,  8/10 — CARTE
-    UrlDatasetID.REG_TEXT_PROFESSIONAL_ML_DS_AI_JOBS_SALARIES,           # joint 4/5,  7/10 — CARTE
+    MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE,                             # joint 5/5 uploaded — AutoMLMultimodal
+    MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB,                       # joint 4/5 uploaded — AutoMLMultimodal
 ]
 
 MULTABENCH_CORE: List[MultimodalDatasetID] = MULTABENCH_CORE_IMAGE + MULTABENCH_CORE_TEXT
@@ -146,14 +150,6 @@ PROMOTED_FROM: Dict[MulTaBenchDatasetID, MultimodalDatasetID] = {
     MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB: OpenMLDatasetID.MUL_TEXT_HOUSES_MELBOURNE_AIRBNB,
 }
 
-# Uploaded and Joint-Signal-verified on their own artifacts, but not in the selected 20: both
-# ranked below the cut on the pool evidence (IMDB Genre 4/5, Melbourne Airbnb 3/5) and scored
-# better once re-hosted (5/5 and 4/5). Admitting them means displacing two pool-only members --
-# a composition decision, so they wait here rather than pushing the text half past 40.
-MULTABENCH_FULL_TEXT_UPLOADED_RESERVE: List[MulTaBenchDatasetID] = [
-    MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE,        # joint 5/5 uploaded (was 4/5 in the pool)
-    MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB,  # joint 4/5 uploaded (was 3/5 in the pool)
-]
 
 _TIER_LISTS = {Tier.CORE: MULTABENCH_CORE, Tier.FULL: MULTABENCH_FULL}
 _TIER_SETS = {tier: frozenset(datasets) for tier, datasets in _TIER_LISTS.items()}
@@ -247,8 +243,7 @@ assert len(MULTABENCH_FULL) <= 2 * FULL_PER_MODALITY, f"Full exceeds {2 * FULL_P
 _aliased = [d.name for d in MULTABENCH_FULL if len([o for o in MULTABENCH_FULL if o.value == d.value]) > 1]
 assert not _aliased, f"Full contains datasets sharing a source value: {_aliased}"
 
-assert set(PROMOTED_FROM) <= set(MULTABENCH_FULL) | set(MULTABENCH_FULL_TEXT_UPLOADED_RESERVE), \
-    "PROMOTED_FROM keys must be Full members or reserves"
+assert set(PROMOTED_FROM) <= set(MULTABENCH_FULL), "PROMOTED_FROM keys must be Full members"
 assert not set(PROMOTED_FROM.values()) & set(MULTABENCH_FULL), (
     "PROMOTED_FROM values are pre-promotion ids and must not also sit in a tier: "
     f"{[d.name for d in set(PROMOTED_FROM.values()) & set(MULTABENCH_FULL)]}"

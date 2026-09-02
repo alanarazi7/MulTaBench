@@ -150,16 +150,20 @@ assert len(set(ACCEPTED_TEXT_DATASETS) | set(REJECTED_TEXT_DATASETS)) == 56, (
 # nothing on most of them, which is what kept them out of Core.
 TEXT_FULL_EXTRA = MULTABENCH_FULL_TEXT_EXTRA
 
-# Passed Joint Signal too, but ranked below the top 20. Kept here as the documented reserve, in
-# selection-rank order, for swaps or if a selected dataset later has to be dropped. Two of them
-# (IMDB Genre, Melbourne Airbnb) have since been curated and uploaded, and scored better on their
-# own artifacts than in the pool -- see tiers.MULTABENCH_FULL_TEXT_UPLOADED_RESERVE.
+# Passed Joint Signal too, but not selected. Kept here as the documented reserve, in selection-rank
+# order, for swaps or if a selected dataset later has to be dropped.
+#
+# IMDB Genre and Melbourne Airbnb left this list: both were curated, uploaded and re-verified on
+# their own artifacts, where they scored better than in the pool (5/5 and 4/5 vs 4/5 and 3/5), and
+# the Full text half is targeting a 10/10 classification-regression balance that they help reach.
+# The two regression datasets they displaced come back here -- they were the only selected members
+# below unanimous agreement, and neither had been uploaded.
 TEXT_FULL_NEAR_MISS = [
+    KaggleDatasetID.REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE,          # joint 4/5, 8/10 (displaced)
     KaggleDatasetID.REG_TEXT_CONSUMER_LAPTOP_INDIAN_PRICES,          # joint 4/5, 7/10
-    OpenMLDatasetID.BIN_TEXT_SOCIAL_IMDB_GENRE_PREDICTION,           # joint 4/5, 7/10
+    UrlDatasetID.REG_TEXT_PROFESSIONAL_ML_DS_AI_JOBS_SALARIES,       # joint 4/5, 7/10 (displaced)
     KaggleDatasetID.REG_TEXT_SOCIAL_MUSEUMS_US_REVENUES,             # joint 3/5, 5/10
     KaggleDatasetID.REG_TEXT_HOUSES_SAN_FRANCISCO_PERMITS_APPLICATIONS,  # joint 3/5, 4/10
-    OpenMLDatasetID.MUL_TEXT_HOUSES_MELBOURNE_AIRBNB,                # joint 3/5, 4/10
 ]
 
 _TEXT_POOL = set(ACCEPTED_TEXT_DATASETS) | set(REJECTED_TEXT_DATASETS)
