@@ -136,7 +136,7 @@ def move_target_last(df: pd.DataFrame, target_col: str) -> pd.DataFrame:
     return df[feature_cols + [target_col]]
 
 
-_DATASETS_DIR = "multimodal/benchmark/datasets"
+_DATASETS_DIR = "multabench/benchmark/datasets"
 
 
 def save_dataset(df: pd.DataFrame, output_dir: str, target_col: str, dataset_id: str,
