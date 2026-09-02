@@ -1,5 +1,5 @@
 from multabench.datasets.all_datasets import KaggleDatasetID, UrlDatasetID, OpenMLDatasetID, MulTaBenchDatasetID
-from multabench.datasets.tiers import MULTABENCH_FULL_TEXT_EXTRA
+from multabench.datasets.tiers import MULTABENCH_FULL_TEXT_EXTRA, PROMOTED_FROM
 
 # The ACCEPTED/REJECTED lists below record the MulTaBench-Core curation decision over the
 # 56-dataset candidate pool: Joint Signal AND Tabular Awareness, 3 of 5 curation models at
@@ -151,7 +151,9 @@ assert len(set(ACCEPTED_TEXT_DATASETS) | set(REJECTED_TEXT_DATASETS)) == 56, (
 TEXT_FULL_EXTRA = MULTABENCH_FULL_TEXT_EXTRA
 
 # Passed Joint Signal too, but ranked below the top 20. Kept here as the documented reserve, in
-# selection-rank order, for swaps or if a selected dataset later has to be dropped.
+# selection-rank order, for swaps or if a selected dataset later has to be dropped. Two of them
+# (IMDB Genre, Melbourne Airbnb) have since been curated and uploaded, and scored better on their
+# own artifacts than in the pool -- see tiers.MULTABENCH_FULL_TEXT_UPLOADED_RESERVE.
 TEXT_FULL_NEAR_MISS = [
     KaggleDatasetID.REG_TEXT_CONSUMER_LAPTOP_INDIAN_PRICES,          # joint 4/5, 7/10
     OpenMLDatasetID.BIN_TEXT_SOCIAL_IMDB_GENRE_PREDICTION,           # joint 4/5, 7/10
@@ -161,15 +163,24 @@ TEXT_FULL_NEAR_MISS = [
 ]
 
 _TEXT_POOL = set(ACCEPTED_TEXT_DATASETS) | set(REJECTED_TEXT_DATASETS)
-assert set(TEXT_FULL_EXTRA) <= _TEXT_POOL, (
+
+
+def _pool_source(dataset_id):
+    """Once a Full member is re-hosted it carries a MulTaBenchDatasetID, which is not a pool id.
+    Resolve it back to the source it was promoted from so the pool check keeps working."""
+    return PROMOTED_FROM.get(dataset_id, dataset_id)
+
+
+_selected_sources = {_pool_source(d) for d in TEXT_FULL_EXTRA}
+assert _selected_sources <= _TEXT_POOL, (
     "Full-tier text datasets must come from the 56-dataset candidate pool: "
-    f"{[d.name for d in set(TEXT_FULL_EXTRA) - _TEXT_POOL]}"
+    f"{[d.name for d in _selected_sources - _TEXT_POOL]}"
 )
 assert set(TEXT_FULL_NEAR_MISS) <= _TEXT_POOL, (
     "Near-miss text datasets must come from the 56-dataset candidate pool: "
     f"{[d.name for d in set(TEXT_FULL_NEAR_MISS) - _TEXT_POOL]}"
 )
-assert not set(TEXT_FULL_EXTRA) & set(TEXT_FULL_NEAR_MISS), (
+assert not _selected_sources & set(TEXT_FULL_NEAR_MISS), (
     "A dataset cannot be both selected for Full and held in reserve: "
-    f"{[d.name for d in set(TEXT_FULL_EXTRA) & set(TEXT_FULL_NEAR_MISS)]}"
+    f"{[d.name for d in _selected_sources & set(TEXT_FULL_NEAR_MISS)]}"
 )

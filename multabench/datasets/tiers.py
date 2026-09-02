@@ -111,21 +111,21 @@ MULTABENCH_FULL_TEXT_EXTRA: List[MultimodalDatasetID] = [
     KaggleDatasetID.REG_TEXT_FOOD_WINE_POLISH_MARKET_PRICES,             # joint 5/5, 10/10 — CARTE
     KaggleDatasetID.REG_TEXT_SOCIAL_KOREAN_DRAMA,                        # joint 5/5, 10/10 — CARTE
     KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_SAUDI_ARABIA,       # joint 5/5, 10/10 — CARTE
-    KaggleDatasetID.BIN_TEXT_FINANCIAL_CONSUMER_COMPLAINT,               # joint 5/5, 10/10 — TextTabBench
-    KaggleDatasetID.MUL_TEXT_SOCIAL_HEARTHSTONE_CARD_GAME_WARCRAFT,      # joint 5/5, 10/10 — TextTabBench
+    MulTaBenchDatasetID.MUL_TEXT_CONSUMER_COMPLAINT,                     # joint 5/5 uploaded — TextTabBench
+    MulTaBenchDatasetID.MUL_TEXT_HEARTHSTONE_CARDS,                      # joint 5/5 uploaded — TextTabBench
     KaggleDatasetID.REG_TEXT_FOOD_WINE_VIVINO_SPAIN,                     # joint 5/5, 10/10 — CARTE
     KaggleDatasetID.REG_TEXT_FOOD_CHOCOLATE_BAR_RATINGS,                 # joint 5/5,  9/10 — CARTE
     KaggleDatasetID.REG_TEXT_SOCIAL_ANIME_PLANET_RATING,                 # joint 5/5,  9/10 — CARTE
     KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_PAKISTAN,           # joint 5/5,  9/10 — CARTE
     UrlDatasetID.REG_TEXT_SOCIAL_BOOKS_GOODREADS,                        # joint 5/5,  9/10 — Vectorizing
     KaggleDatasetID.REG_TEXT_FOOD_RAMEN_RATINGS_2022,                    # joint 5/5,  9/10 — CARTE+Vectorizing
-    KaggleDatasetID.BIN_TEXT_TRANSPORTATION_OSHA_ACCIDENT_INJURY_DATA,   # joint 5/5,  9/10 — TextTabBench
+    MulTaBenchDatasetID.BIN_TEXT_OSHA_INJURY,                            # joint 4/5 uploaded — TextTabBench
     OpenMLDatasetID.REG_TEXT_SPORTS_FIFA22_WAGES,                        # joint 5/5,  9/10 — CARTE
     OpenMLDatasetID.REG_TEXT_HOUSES_CALIFORNIA_PRICES_2020,              # joint 5/5,  9/10 — AutoMLMultimodal+TextTabBench
     KaggleDatasetID.REG_TEXT_FOOD_ALCOHOL_WIKILIQ_PRICES,                # joint 5/5,  8/10 — CARTE
     OpenMLDatasetID.REG_TEXT_CONSUMER_AMERICAN_EAGLE_PRICES,             # joint 5/5,  8/10 — AutoMLMultimodal
     KaggleDatasetID.REG_TEXT_HOUSES_AIRBNB_SEATTLE,                      # joint 5/5,  7/10 — TextTabBench
-    OpenMLDatasetID.MUL_TEXT_SOCIAL_NEWS_CHANNEL_CATEGORY,               # joint 5/5,  7/10 — AutoMLMultimodal
+    MulTaBenchDatasetID.MUL_TEXT_NEWS_CHANNEL,                           # joint 5/5 uploaded — AutoMLMultimodal
     KaggleDatasetID.REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE,              # joint 4/5,  8/10 — CARTE
     UrlDatasetID.REG_TEXT_PROFESSIONAL_ML_DS_AI_JOBS_SALARIES,           # joint 4/5,  7/10 — CARTE
 ]
@@ -137,7 +137,23 @@ MULTABENCH_FULL: List[MultimodalDatasetID] = MULTABENCH_FULL_IMAGE + MULTABENCH_
 
 # Curated MulTaBench id -> the original source id it was promoted from. The same dataset carries
 # two different enum names in the two namespaces, so provenance cannot be recovered from names.
-PROMOTED_FROM: Dict[MulTaBenchDatasetID, MultimodalDatasetID] = {}
+PROMOTED_FROM: Dict[MulTaBenchDatasetID, MultimodalDatasetID] = {
+    MulTaBenchDatasetID.MUL_TEXT_CONSUMER_COMPLAINT: KaggleDatasetID.BIN_TEXT_FINANCIAL_CONSUMER_COMPLAINT,
+    MulTaBenchDatasetID.MUL_TEXT_HEARTHSTONE_CARDS: KaggleDatasetID.MUL_TEXT_SOCIAL_HEARTHSTONE_CARD_GAME_WARCRAFT,
+    MulTaBenchDatasetID.BIN_TEXT_OSHA_INJURY: KaggleDatasetID.BIN_TEXT_TRANSPORTATION_OSHA_ACCIDENT_INJURY_DATA,
+    MulTaBenchDatasetID.MUL_TEXT_NEWS_CHANNEL: OpenMLDatasetID.MUL_TEXT_SOCIAL_NEWS_CHANNEL_CATEGORY,
+    MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE: OpenMLDatasetID.BIN_TEXT_SOCIAL_IMDB_GENRE_PREDICTION,
+    MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB: OpenMLDatasetID.MUL_TEXT_HOUSES_MELBOURNE_AIRBNB,
+}
+
+# Uploaded and Joint-Signal-verified on their own artifacts, but not in the selected 20: both
+# ranked below the cut on the pool evidence (IMDB Genre 4/5, Melbourne Airbnb 3/5) and scored
+# better once re-hosted (5/5 and 4/5). Admitting them means displacing two pool-only members --
+# a composition decision, so they wait here rather than pushing the text half past 40.
+MULTABENCH_FULL_TEXT_UPLOADED_RESERVE: List[MulTaBenchDatasetID] = [
+    MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE,        # joint 5/5 uploaded (was 4/5 in the pool)
+    MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB,  # joint 4/5 uploaded (was 3/5 in the pool)
+]
 
 _TIER_LISTS = {Tier.CORE: MULTABENCH_CORE, Tier.FULL: MULTABENCH_FULL}
 _TIER_SETS = {tier: frozenset(datasets) for tier, datasets in _TIER_LISTS.items()}
@@ -231,7 +247,8 @@ assert len(MULTABENCH_FULL) <= 2 * FULL_PER_MODALITY, f"Full exceeds {2 * FULL_P
 _aliased = [d.name for d in MULTABENCH_FULL if len([o for o in MULTABENCH_FULL if o.value == d.value]) > 1]
 assert not _aliased, f"Full contains datasets sharing a source value: {_aliased}"
 
-assert set(PROMOTED_FROM) <= set(MULTABENCH_FULL), "PROMOTED_FROM keys must be Full members"
+assert set(PROMOTED_FROM) <= set(MULTABENCH_FULL) | set(MULTABENCH_FULL_TEXT_UPLOADED_RESERVE), \
+    "PROMOTED_FROM keys must be Full members or reserves"
 assert not set(PROMOTED_FROM.values()) & set(MULTABENCH_FULL), (
     "PROMOTED_FROM values are pre-promotion ids and must not also sit in a tier: "
     f"{[d.name for d in set(PROMOTED_FROM.values()) & set(MULTABENCH_FULL)]}"
