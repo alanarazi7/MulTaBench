@@ -1,7 +1,8 @@
-"""Verifies MulTaBench-Full admission for the six uploaded text-tabular classification datasets.
+"""Verifies MulTaBench-Full admission for the 20 uploaded text-tabular datasets.
 
 Unlike the pool analyses, which read scores obtained from each dataset's ORIGINAL source, this
-reads the runs on the uploaded `multabench-full-*` Kaggle artifacts (results/text_full/). It is
+reads the runs on the uploaded `multabench-full-*` Kaggle artifacts (results/text_full/runs.csv).
+It is
 therefore an end-to-end check of the curation recipes AND the upload round-trip, not just of the
 datasets' statistical properties: a curation bug that silently dropped or corrupted a text column
 would show up here as a lost Joint Signal.
@@ -12,8 +13,7 @@ state is needed -- see pass_matrix.compute_joint_delta.
 Writes results/analysis_curation_sensitivity/text_full_uploaded_joint_signal.csv.
 Run standalone: `python -m multabench.leaderboard.analysis.text_full_verification`
 """
-from glob import glob
-from os.path import basename, dirname, join, splitext
+from os.path import dirname, join
 
 import pandas as pd
 
@@ -21,7 +21,7 @@ from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, _MOD
 from multabench.leaderboard.analysis.pass_matrix import DELTA_DEFAULT, compute_joint_delta
 
 _RESULTS = join(dirname(__file__), "..", "results")
-_RUNS_DIR = join(_RESULTS, "text_full")
+_RUNS_CSV = join(_RESULTS, "text_full", "runs.csv")
 _OUT_CSV = join(_RESULTS, "analysis_curation_sensitivity", "text_full_uploaded_joint_signal.csv")
 
 # Quorum: a dataset is admitted when a majority of the curation committee sees Joint Signal.
@@ -29,20 +29,24 @@ QUORUM = 3
 
 
 def load_runs() -> pd.DataFrame:
-    """The per-dataset wandb exports, normalised to the (model, dataset, state, fold, test_score)
-    schema the pass_matrix predicates expect."""
-    frames = []
-    for path in sorted(glob(join(_RUNS_DIR, "*.csv"))):
-        df = pd.read_csv(path)
-        assert (df["State"] == "finished").all(), f"Unfinished runs in {basename(path)}"
-        df["dataset"] = splitext(basename(path))[0]
-        df["model"] = df["model"].map(_MODEL_LABELS)
-        df["state"] = df["multimodal_state"]
-        frames.append(df[["model", "dataset", "state", "fold", "test_score"]])
-    runs = pd.concat(frames, ignore_index=True)
-    unmapped = runs["model"].isna().sum()
+    """The wandb export, normalised to the (model, dataset, state, fold, test_score) schema the
+    pass_matrix predicates expect.
+
+    The export carries no `multimodal_state` column, so the state is recovered from the run name,
+    which benchmark.py builds as f"{model}_{dataset}_{state}_{fold}". Stripping the known dataset
+    and fold leaves the state exactly, which is why this is a parse and not a guess -- the
+    assertion below fails loudly rather than silently admitting an unexpected state.
+    """
+    df = pd.read_csv(_RUNS_CSV)
+    assert (df["State"] == "finished").all(), f"Unfinished runs in {_RUNS_CSV}"
+    df["state"] = [name.split(f"{ds}_", 1)[-1].rsplit("_", 1)[0]
+                   for name, ds in zip(df["Name"], df["dataset"])]
+    unexpected = set(df["state"]) - {"no_text", "text_only", "all"}
+    assert not unexpected, f"Unparsed state(s) in run names: {sorted(unexpected)}"
+    df["model"] = df["model"].map(_MODEL_LABELS)
+    unmapped = df["model"].isna().sum()
     assert not unmapped, f"{unmapped} runs have a model label missing from _MODEL_LABELS"
-    return runs
+    return df[["model", "dataset", "state", "fold", "test_score"]]
 
 
 def verdict(runs: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
