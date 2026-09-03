@@ -1,6 +1,6 @@
 # MulTaBench
 
-Multimodal tabular benchmark with image and text modalities. Evaluates tabular learners on **MulTaBench-Core** (40 datasets: 20 image-tabular + 20 text-tabular), with optional DINO/E5 LoRA fine-tuning. **MulTaBench-Full** (80: 40 + 40) is in progress; see [Tiers](#tiers).
+Multimodal tabular benchmark with image and text modalities. Evaluates tabular learners on **MulTaBench-Core** and the broader **MulTaBench-Full**, with optional DINO/E5 LoRA fine-tuning. See [Tiers](#tiers).
 
 **Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616)  
 **Datasets**: [kaggle.com/chico89](https://www.kaggle.com/chico89/datasets)
@@ -77,55 +77,25 @@ Append `_opt` for hyperparameter-optimized variants (e.g. `light_opt`).
 
 ## Datasets
 
-The MulTaBench-Core 40 are hosted on Kaggle under `multabench-*` and download automatically via `kagglehub`. Datasets follow the naming convention `{TASK}_{MODALITY}_{NAME}` where task is `BIN`/`MUL`/`REG`. Full-tier datasets appear under the same `multabench-<name>` convention as they land; until then they load from their original source.
-
-**MulTaBench-Core, image** (20 datasets): celebrity attractiveness, hateful memes, mammography, CheXpert, CBIS-DDSM, glaucoma, CS:GO skins, flower bouquets, HuBMAP, Instagram engagement, PetFinder adoption, zooplankton, Amazon bestsellers, Amazon packages, H&M fashion, Khaadi clothes, Letterboxd movies, mango mass, photography bots, painting price.
+Datasets are hosted on Kaggle under `multabench-<name>` and download automatically via `kagglehub`. Names follow the `{TASK}_{MODALITY}_{NAME}` convention, where task is `BIN`/`MUL`/`REG`.
 
 ### Tiers
 
-| Tier | Datasets | Admission rule |
-|------|----------|----------------|
-| `MULTABENCH_CORE` | 40 (20 image + 20 text) | Joint Signal **and** Tabular Awareness — the published benchmark, frozen |
-| `MULTABENCH_FULL` | 80 target (40 + 40) | Joint Signal only — growing |
+| Tier | Admission rule |
+|------|----------------|
+| `MULTABENCH_CORE` | Joint Signal **and** Task-awareness |
+| `MULTABENCH_FULL` | Joint Signal only |
 
-Joint Signal means the joint frozen model beats both unimodal models
-(`Delta_Joint = all - max(no_text, text_only) > delta`); Tabular Awareness means fine-tuning the
-encoder beats freezing it (`Delta_Awareness = ft - all > delta`). Both at `delta = 0.001` with a
-3-of-5 curation-model committee — see `multabench/leaderboard/analysis/pass_matrix.py`.
+**MulTaBench-Core** is the original paper's benchmark: datasets that need both modalities *and*
+reward adapting the encoder to the tabular task. **MulTaBench-Full** expands it to 80 datasets
+under the relaxed rule, admitting datasets with genuine multimodal signal even where adapting the
+encoder adds nothing.
 
-The registry lives in `multabench/datasets/tiers.py`:
-
-```python
-from multabench.datasets.tiers import Tier, datasets_for_tier, get_tier, pending_upload
-
-datasets_for_tier(Tier.CORE)                    # 40 dataset ids, image half first
-datasets_for_tier("full", modality="text")      # the text half of Full
-get_tier(dataset_id)                            # narrowest tier, or None
-pending_upload(Tier.FULL)                       # Full members not yet hosted on Kaggle
-```
-
-Current composition, and which Full members still need uploading:
-
-```bash
-python -m multabench.scripts.do_tier_status
-python -m multabench.scripts.do_tier_status --candidates
-```
+Joint Signal means the joint frozen model beats both unimodal models; Task-awareness means
+fine-tuning the encoder beats freezing it. Both are decided by a majority of the curation models.
+The registry is `multabench/datasets/tiers.py`.
 
 ## Architecture
-
-```
-multabench/
-  datasets/       # dataset loading, curation, all_datasets enum
-  dino/           # DINO ViT image encoder + LoRA fine-tuning
-  e5/             # E5 text encoder + LoRA fine-tuning
-  preprocessing/  # feature detection, splits, PCA projection
-  finetune/       # training args for DINO/E5 fine-tuning
-  baselines/      # all model implementations + evaluation
-  benchmark/      # MulTaBench dataset loading (Kaggle-hosted)
-  leaderboard/    # Streamlit dashboard + result CSVs
-  scripts/        # standalone utility and figure scripts
-  utils/          # logging, I/O, metrics
-```
 
 - **Image encoder**: `facebook/dinov3-vits16-pretrain-lvd1689m` (ViT-S, 384-dim CLS token), optional LoRA on last N attention layers
 - **Text encoder**: `intfloat/e5-small-v2` (384-dim mean pool), columns formatted as `"passage: col_name: col_value"`
