@@ -1,5 +1,4 @@
 from multabench.datasets.all_datasets import KaggleDatasetID, MulTaBenchDatasetID, UrlDatasetID
-from multabench.datasets.tiers import MULTABENCH_CORE_IMAGE
 
 
 
@@ -14,9 +13,6 @@ IMAGE_BENCHMARK_CANDIDATES = [
 ]
 
 
-
-# Deprecated alias -- use multabench.datasets.tiers.MULTABENCH_CORE_IMAGE.
-PAPER_BENCHMARK = MULTABENCH_CORE_IMAGE
 
 # Datasets with detectable raw text columns (detect_text_features: >=100 unique OR >=80% unique ratio)
 FULLY_MULTIMODAL_DATASET_CANDIDATES = [
