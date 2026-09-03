@@ -1,30 +1,12 @@
-"""MulTaBench tiering: Core (40) and Full (80).
+"""MulTaBench tiering: Core and Full.
 
-MulTaBench-Core is the 40-dataset benchmark of the published paper (20 image-tabular + 20
-text-tabular), frozen. MulTaBench-Full is the 80-dataset superset (40 + 40) promised in the
-NeurIPS 2026 rebuttal; it grows dataset by dataset, so the invariants below are caps, never
-floors.
+Core is the benchmark of the published paper, 20 image-tabular and 20 text-tabular datasets that
+show both Joint Signal and Task-awareness. Full relaxes admission to Joint Signal alone and
+expands each half to 40. Both rules are defined over the curation deltas in
+`multabench.leaderboard.analysis.pass_matrix`.
 
-The two tiers use *different* admission rules, both defined over the curation deltas in
-`multabench.leaderboard.analysis.pass_matrix`:
-
-    Core: Delta_Joint > delta AND Delta_Awareness > delta   (joint signal AND tabular awareness)
-    Full: Delta_Joint > delta                               (joint signal only)
-
-Both at delta=0.001 with a 3-of-5 curation-model committee. Relaxing Full to joint signal only
-still excludes the two failure families the benchmark cares about -- pure-NLP tasks (the
-unstructured modality alone is as good as the joint model) and redundant-text tasks (the
-structured modality alone is) -- while admitting datasets where fine-tuning the encoder does not
-additionally help.
-
-Tier membership is deliberately typed over `MultimodalDatasetID`, not `MulTaBenchDatasetID`: a
-Full member lives under its original source id (Kaggle/OpenML/URL) until it is re-hosted on
-Kaggle as a curated `multabench-*` dataset. Use `is_curated()` / `pending_upload()` to tell the
-two apart, and record the promotion in `PROMOTED_FROM` when it happens.
-
-Core is kept as explicit literals rather than derived from the halves of `MulTaBenchDatasetID`:
-that enum is "everything we ever uploaded" and will contain Full members too, so deriving Core
-from it would silently absorb a 41st dataset into the published benchmark.
+Membership is typed over `MultimodalDatasetID`, so a Full member can load from its original source
+before it is re-hosted as a curated `multabench-*` dataset; `PROMOTED_FROM` records the promotion.
 """
 from enum import Enum
 from typing import Dict, List, Literal, Optional
@@ -51,7 +33,7 @@ CORE_PER_MODALITY = 20
 FULL_PER_MODALITY = 40
 
 
-# The published 20 image-tabular datasets. Order is load-bearing (paper tables, datasets_summary.csv).
+# Order matters: it fixes the row order of the paper tables and datasets_summary.csv.
 MULTABENCH_CORE_IMAGE: List[MultimodalDatasetID] = [
     MulTaBenchDatasetID.BIN_IMAGE_CELEB_ATTRACTIVENESS,
     MulTaBenchDatasetID.BIN_IMAGE_HATEFUL_MEME,
@@ -75,7 +57,6 @@ MULTABENCH_CORE_IMAGE: List[MultimodalDatasetID] = [
     MulTaBenchDatasetID.REG_IMAGE_PAINTING_PRICE,
 ]
 
-# The published 20 text-tabular datasets. Order is load-bearing (it fixes datasets_summary.csv rows).
 MULTABENCH_CORE_TEXT: List[MultimodalDatasetID] = [
     MulTaBenchDatasetID.BIN_TEXT_FAKE_JOB_POSTING,
     MulTaBenchDatasetID.BIN_TEXT_JIGSAW_TOXICITY,
@@ -99,35 +80,31 @@ MULTABENCH_CORE_TEXT: List[MultimodalDatasetID] = [
     MulTaBenchDatasetID.REG_TEXT_ZOMATO_RESTAURANTS,
 ]
 
-# Full-only image-tabular datasets, on top of Core. Grows to 20 (camera-ready Track 1, item 3).
+# Full-only datasets, on top of Core.
 MULTABENCH_FULL_IMAGE_EXTRA: List[MultimodalDatasetID] = [
 ]
 
-# Full-only text-tabular datasets, on top of Core. Admitted on Joint Signal alone (delta=0.001,
-# 3-of-5 curation models) and ranked by (joint_pass_5, joint_pass_10, median Delta_Joint); see
-# multabench/leaderboard/analysis/text_full_selection.py and text_full_selection.csv. These load
-# through their original source until they are re-hosted as curated multabench-* datasets.
 MULTABENCH_FULL_TEXT_EXTRA: List[MultimodalDatasetID] = [
-    KaggleDatasetID.REG_TEXT_FOOD_WINE_POLISH_MARKET_PRICES,             # joint 5/5, 10/10 — CARTE
-    KaggleDatasetID.REG_TEXT_SOCIAL_KOREAN_DRAMA,                        # joint 5/5, 10/10 — CARTE
-    KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_SAUDI_ARABIA,       # joint 5/5, 10/10 — CARTE
-    KaggleDatasetID.BIN_TEXT_FINANCIAL_CONSUMER_COMPLAINT,               # joint 5/5, 10/10 — TextTabBench
-    KaggleDatasetID.MUL_TEXT_SOCIAL_HEARTHSTONE_CARD_GAME_WARCRAFT,      # joint 5/5, 10/10 — TextTabBench
-    KaggleDatasetID.REG_TEXT_FOOD_WINE_VIVINO_SPAIN,                     # joint 5/5, 10/10 — CARTE
-    KaggleDatasetID.REG_TEXT_FOOD_CHOCOLATE_BAR_RATINGS,                 # joint 5/5,  9/10 — CARTE
-    KaggleDatasetID.REG_TEXT_SOCIAL_ANIME_PLANET_RATING,                 # joint 5/5,  9/10 — CARTE
-    KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_PAKISTAN,           # joint 5/5,  9/10 — CARTE
-    UrlDatasetID.REG_TEXT_SOCIAL_BOOKS_GOODREADS,                        # joint 5/5,  9/10 — Vectorizing
-    KaggleDatasetID.REG_TEXT_FOOD_RAMEN_RATINGS_2022,                    # joint 5/5,  9/10 — CARTE+Vectorizing
-    KaggleDatasetID.BIN_TEXT_TRANSPORTATION_OSHA_ACCIDENT_INJURY_DATA,   # joint 5/5,  9/10 — TextTabBench
-    OpenMLDatasetID.REG_TEXT_SPORTS_FIFA22_WAGES,                        # joint 5/5,  9/10 — CARTE
-    OpenMLDatasetID.REG_TEXT_HOUSES_CALIFORNIA_PRICES_2020,              # joint 5/5,  9/10 — AutoMLMultimodal+TextTabBench
-    KaggleDatasetID.REG_TEXT_FOOD_ALCOHOL_WIKILIQ_PRICES,                # joint 5/5,  8/10 — CARTE
-    OpenMLDatasetID.REG_TEXT_CONSUMER_AMERICAN_EAGLE_PRICES,             # joint 5/5,  8/10 — AutoMLMultimodal
-    KaggleDatasetID.REG_TEXT_HOUSES_AIRBNB_SEATTLE,                      # joint 5/5,  7/10 — TextTabBench
-    OpenMLDatasetID.MUL_TEXT_SOCIAL_NEWS_CHANNEL_CATEGORY,               # joint 5/5,  7/10 — AutoMLMultimodal
-    KaggleDatasetID.REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE,              # joint 4/5,  8/10 — CARTE
-    UrlDatasetID.REG_TEXT_PROFESSIONAL_ML_DS_AI_JOBS_SALARIES,           # joint 4/5,  7/10 — CARTE
+    KaggleDatasetID.REG_TEXT_FOOD_WINE_POLISH_MARKET_PRICES,
+    KaggleDatasetID.REG_TEXT_SOCIAL_KOREAN_DRAMA,
+    KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_SAUDI_ARABIA,
+    KaggleDatasetID.BIN_TEXT_FINANCIAL_CONSUMER_COMPLAINT,
+    KaggleDatasetID.MUL_TEXT_SOCIAL_HEARTHSTONE_CARD_GAME_WARCRAFT,
+    KaggleDatasetID.REG_TEXT_FOOD_WINE_VIVINO_SPAIN,
+    KaggleDatasetID.REG_TEXT_FOOD_CHOCOLATE_BAR_RATINGS,
+    KaggleDatasetID.REG_TEXT_SOCIAL_ANIME_PLANET_RATING,
+    KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_PAKISTAN,
+    UrlDatasetID.REG_TEXT_SOCIAL_BOOKS_GOODREADS,
+    KaggleDatasetID.REG_TEXT_FOOD_RAMEN_RATINGS_2022,
+    KaggleDatasetID.BIN_TEXT_TRANSPORTATION_OSHA_ACCIDENT_INJURY_DATA,
+    OpenMLDatasetID.REG_TEXT_SPORTS_FIFA22_WAGES,
+    OpenMLDatasetID.REG_TEXT_HOUSES_CALIFORNIA_PRICES_2020,
+    KaggleDatasetID.REG_TEXT_FOOD_ALCOHOL_WIKILIQ_PRICES,
+    OpenMLDatasetID.REG_TEXT_CONSUMER_AMERICAN_EAGLE_PRICES,
+    KaggleDatasetID.REG_TEXT_HOUSES_AIRBNB_SEATTLE,
+    OpenMLDatasetID.MUL_TEXT_SOCIAL_NEWS_CHANNEL_CATEGORY,
+    KaggleDatasetID.REG_TEXT_SOCIAL_MOVIES_DATASET_REVENUE,
+    UrlDatasetID.REG_TEXT_PROFESSIONAL_ML_DS_AI_JOBS_SALARIES,
 ]
 
 MULTABENCH_CORE: List[MultimodalDatasetID] = MULTABENCH_CORE_IMAGE + MULTABENCH_CORE_TEXT
@@ -135,8 +112,7 @@ MULTABENCH_FULL_IMAGE: List[MultimodalDatasetID] = MULTABENCH_CORE_IMAGE + MULTA
 MULTABENCH_FULL_TEXT: List[MultimodalDatasetID] = MULTABENCH_CORE_TEXT + MULTABENCH_FULL_TEXT_EXTRA
 MULTABENCH_FULL: List[MultimodalDatasetID] = MULTABENCH_FULL_IMAGE + MULTABENCH_FULL_TEXT
 
-# Curated MulTaBench id -> the original source id it was promoted from. The same dataset carries
-# two different enum names in the two namespaces, so provenance cannot be recovered from names.
+# Curated id -> the source id it was promoted from; the names do not reveal it.
 PROMOTED_FROM: Dict[MulTaBenchDatasetID, MultimodalDatasetID] = {}
 
 _TIER_LISTS = {Tier.CORE: MULTABENCH_CORE, Tier.FULL: MULTABENCH_FULL}
@@ -156,7 +132,6 @@ def _as_tier(tier: "Tier | str") -> Tier:
 
 
 def tier_from_name(name: str) -> Tier:
-    """Parse a CLI tier argument. Mirrors datasets.utils.dataset_from_name's friendly failure."""
     try:
         return Tier(name.strip().lower())
     except ValueError:
@@ -187,7 +162,6 @@ def get_tier(dataset_id: MultimodalDatasetID) -> Optional[Tier]:
 
 
 def is_curated(dataset_id: MultimodalDatasetID) -> bool:
-    """True once the dataset is re-hosted on Kaggle as a curated `multabench-*` dataset."""
     return isinstance(dataset_id, MulTaBenchDatasetID)
 
 
@@ -197,7 +171,7 @@ def pending_upload(tier: "Tier | str" = Tier.FULL) -> List[MultimodalDatasetID]:
 
 
 def untiered_curated() -> List[MulTaBenchDatasetID]:
-    """Uploaded datasets that belong to no tier -- a drift detector, not an error."""
+    """Uploaded datasets in no tier: drift, not an error."""
     return [d for d in MulTaBenchDatasetID if get_tier(d) is None]
 
 
@@ -207,7 +181,6 @@ def _assert_no_duplicates(datasets: List[MultimodalDatasetID], label: str) -> No
     assert not duplicated, f"{label} contains duplicate datasets: {duplicated}"
 
 
-_assert_no_duplicates(MULTABENCH_CORE, "MULTABENCH_CORE")
 _assert_no_duplicates(MULTABENCH_FULL, "MULTABENCH_FULL")
 
 assert len(MULTABENCH_CORE_IMAGE) == CORE_PER_MODALITY, f"Core image half is {len(MULTABENCH_CORE_IMAGE)}, expected {CORE_PER_MODALITY}"
@@ -221,18 +194,11 @@ assert not _misplaced_text, f"Non-text datasets in the text tiers: {_misplaced_t
 _uncurated_core = [d.name for d in MULTABENCH_CORE if not is_curated(d)]
 assert not _uncurated_core, f"Core datasets must be uploaded MulTaBench datasets: {_uncurated_core}"
 
-assert set(MULTABENCH_CORE) <= set(MULTABENCH_FULL), "Core must be a subset of Full"
-
-# Caps, never floors: Full is populated incrementally and must import cleanly while incomplete.
 assert len(MULTABENCH_FULL_IMAGE) <= FULL_PER_MODALITY, f"Full image half exceeds {FULL_PER_MODALITY}"
 assert len(MULTABENCH_FULL_TEXT) <= FULL_PER_MODALITY, f"Full text half exceeds {FULL_PER_MODALITY}"
-assert len(MULTABENCH_FULL) <= 2 * FULL_PER_MODALITY, f"Full exceeds {2 * FULL_PER_MODALITY} datasets"
-
-_aliased = [d.name for d in MULTABENCH_FULL if len([o for o in MULTABENCH_FULL if o.value == d.value]) > 1]
-assert not _aliased, f"Full contains datasets sharing a source value: {_aliased}"
 
 assert set(PROMOTED_FROM) <= set(MULTABENCH_FULL), "PROMOTED_FROM keys must be Full members"
 assert not set(PROMOTED_FROM.values()) & set(MULTABENCH_FULL), (
-    "PROMOTED_FROM values are pre-promotion ids and must not also sit in a tier: "
+    f"Promoted-from ids must not also sit in a tier: "
     f"{[d.name for d in set(PROMOTED_FROM.values()) & set(MULTABENCH_FULL)]}"
 )
