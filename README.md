@@ -146,16 +146,12 @@ Blocking track. The text side already has evaluation records; the image side is 
       original source id until it is re-hosted. `do_dataset_summary.py` and
       `do_multabench_audit.py` take `--tier`; `do_tier_status.py` reports composition and
       progress.
-- [x] **Text-tabular Full (20 → 40).** Done from committed evidence — no new runs.
-      `multabench/leaderboard/analysis/text_full_selection.py` splits the fused curation rule
-      into its two predicates and admits on Joint Signal alone: 45 of the 56 pool datasets pass
-      (vs 23 under the Core rule), i.e. 25 of the 36 non-selected. The 20 highest-ranked
-      (unanimous 5/5 first, then by 10-model agreement and median `Delta_Joint`) are wired into
-      `MULTABENCH_FULL_TEXT_EXTRA`; the 5 remaining passers are kept as `TEXT_FULL_NEAR_MISS`.
-      Per-dataset decisions are committed in
+- [x] **Text-tabular Full (20 → 40).** Done from committed evidence — no new runs. Admitting on
+      Joint Signal alone accepts 45 of the 56 pool datasets, versus 23 under the Core rule; the 20
+      highest-ranked are wired into `MULTABENCH_FULL_TEXT_EXTRA`. Per-dataset decisions are
+      committed in
       `multabench/leaderboard/results/analysis_curation_sensitivity/text_full_selection.csv`.
-      Still open: the 20 skew regression-heavy (16 REG / 2 MUL / 2 BIN) and lump on domains
-      (3 wine/alcohol, 2 used-car); swap against the reserve if the paper wants a flatter spread.
+      Still open: the 20 skew regression-heavy and lump on domains (3 wine/alcohol, 2 used-car).
 - [ ] **Image-tabular Full (20 → 40).** The big lift: ~20 additional image-tabular datasets
       passing Joint Signal. Sources: the ~13 non-published image entries that already have
       `annotated/` curation modules, the 7 in `IMAGE_BENCHMARK_CANDIDATES`, the BagOfTricks set,
