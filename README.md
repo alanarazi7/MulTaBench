@@ -1,6 +1,6 @@
 # MulTaBench
 
-Multimodal tabular benchmark with image and text modalities. Evaluates tabular learners on **MulTaBench-Core** (40 datasets: 20 image-tabular + 20 text-tabular), with optional DINO/E5 LoRA fine-tuning. **MulTaBench-Full** (80: 40 + 40) is in progress; see [Tiers](#tiers).
+Multimodal tabular benchmark with image and text modalities. Evaluates tabular learners on **MulTaBench-Core** (40 datasets: 20 image-tabular + 20 text-tabular), with optional DINO/E5 LoRA fine-tuning. **MulTaBench-Full** (80: 40 + 40) is in progress — the text half is complete at 40, the image half stands at 20; see [Tiers](#tiers).
 
 **Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616)  
 **Datasets**: [kaggle.com/chico89](https://www.kaggle.com/chico89/datasets)
@@ -86,7 +86,7 @@ The MulTaBench-Core 40 are hosted on Kaggle under `multabench-*` and download au
 | Tier | Datasets | Admission rule |
 |------|----------|----------------|
 | `MULTABENCH_CORE` | 40 (20 image + 20 text) | Joint Signal **and** Tabular Awareness — the published benchmark, frozen |
-| `MULTABENCH_FULL` | 80 target (40 + 40) | Joint Signal only — growing |
+| `MULTABENCH_FULL` | 80 target (40 image + 40 text); at 60 | Joint Signal only — text half closed, image half growing |
 
 Joint Signal means the joint frozen model beats both unimodal models
 (`Delta_Joint = all - max(no_text, text_only) > delta`); Tabular Awareness means fine-tuning the
@@ -185,7 +185,7 @@ Blocking track. The text side already has evaluation records; the image side is 
       Per-dataset decisions are committed in
       `multabench/leaderboard/results/analysis_curation_sensitivity/text_full_selection.csv`.
       Target composition for the 20 extras is **10 classification / 10 regression**; they now
-      stand at 6 CLS + 14 REG, with the last 4 CLS to come from binning (below). Domains are
+      landed at 10 CLS + 10 REG once the 4 converters were binned (below). Domains are
       still lumpy (3 wine/alcohol, 2 used-car) — swap against `TEXT_FULL_NEAR_MISS` if the paper
       wants a flatter spread.
 - [x] **Upload and verify the Full-tier text classification datasets.** All six non-Core text
@@ -204,11 +204,21 @@ Blocking track. The text side already has evaluation records; the image side is 
       `TEXT_FULL_NEAR_MISS`. Uploaded-artifact evidence outranks pool evidence, so the registry
       now deliberately differs from `text_full_selection.py`'s pool ranking by these two swaps;
       the module reports the difference rather than printing a snippet that would undo it.
-- [ ] **Convert 4 regression datasets to classification by binning**, to reach the 10/10 balance.
-      One bin count per dataset sampled from {2, 3, 5, 10} and frozen per dataset (not a grid),
-      then the cheap three-state Joint Signal check on the binned target; the 4 that pass best
-      get re-curated and uploaded as `MUL_TEXT_*` (task-type change means renaming the module,
-      the enum entry, and the `CuratedTarget`), leaving the other 10 as regression.
+- [x] **Convert 4 regression datasets to classification by binning**, reaching the 10/10 balance.
+      One bin count per dataset was sampled from {2, 3, 5, 10} and frozen in
+      `multabench/datasets/target_bins.py`; all 14 candidates kept Joint Signal once binned, so
+      the 4 converters were drawn rather than ranked — see `binned_selection.py`, which also
+      records that the draw was switched from uniform to stratified (one dataset per bin count)
+      *after* results were known, and why. The converters are California Prices (C=2 → `BIN_`),
+      Books Goodreads (C=3), American Eagle Prices (C=5) and Korean Drama (C=10 → `MUL_`); the
+      binning is applied at curation time, so the uploaded artifact already carries the
+      classification target and nothing needs binning at load time.
+- [x] **Upload and verify the remaining 14 Full-tier text datasets.** Recipes and annotations in
+      `multabench/benchmark/datasets/`, the 1,050 verification runs in
+      `multabench/leaderboard/results/text_full/` — **14 of 14 admitted**, so the text half is
+      **20 of 20** and MulTaBench-Full's text side is closed at 40. Note California Prices passes
+      unanimously but at +0.002 on every model, 2× δ at the reported 3-decimal precision: read
+      the sign, not the ranking.
 - [ ] **Image-tabular Full (20 → 40).** The big lift: ~20 additional image-tabular datasets
       passing Joint Signal. Sources: the ~13 non-published image entries that already have
       `annotated/` curation modules, the 7 in `IMAGE_BENCHMARK_CANDIDATES`, the BagOfTricks set,
