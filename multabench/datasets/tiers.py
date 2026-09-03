@@ -107,31 +107,32 @@ MULTABENCH_FULL_IMAGE_EXTRA: List[MultimodalDatasetID] = [
 # 3-of-5 curation models) and ranked by (joint_pass_5, joint_pass_10, median Delta_Joint); see
 # multabench/leaderboard/analysis/text_full_selection.py and text_full_selection.csv. These load
 # through their original source until they are re-hosted as curated multabench-* datasets.
-# Target balance for the 20 extras is 10 classification / 10 regression. Six are already
-# classification and uploaded; the remaining ten regression datasets stay regression, and four
-# more are to be reformulated as classification by binning their target (which renames them
-# REG_* -> MUL_*), leaving 10/10.
+# All 20 are uploaded as curated multabench-full-* artifacts, so they load through
+# MulTaBenchDatasetID; PROMOTED_FROM below records which source each came from.
+# The 20 extras balance 10 classification / 10 regression: six were already classification, and
+# four regression datasets were reformulated by binning their target at curation time (which is
+# why they appear here as BIN_/MUL_ while PROMOTED_FROM points at a REG_ source).
 MULTABENCH_FULL_TEXT_EXTRA: List[MultimodalDatasetID] = [
-    KaggleDatasetID.REG_TEXT_FOOD_WINE_POLISH_MARKET_PRICES,             # joint 5/5, 10/10 — CARTE
-    KaggleDatasetID.REG_TEXT_SOCIAL_KOREAN_DRAMA,                        # joint 5/5, 10/10 — CARTE
-    KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_SAUDI_ARABIA,       # joint 5/5, 10/10 — CARTE
-    MulTaBenchDatasetID.MUL_TEXT_CONSUMER_COMPLAINT,                     # joint 5/5 uploaded — TextTabBench
-    MulTaBenchDatasetID.MUL_TEXT_HEARTHSTONE_CARDS,                      # joint 5/5 uploaded — TextTabBench
-    KaggleDatasetID.REG_TEXT_FOOD_WINE_VIVINO_SPAIN,                     # joint 5/5, 10/10 — CARTE
-    KaggleDatasetID.REG_TEXT_FOOD_CHOCOLATE_BAR_RATINGS,                 # joint 5/5,  9/10 — CARTE
-    KaggleDatasetID.REG_TEXT_SOCIAL_ANIME_PLANET_RATING,                 # joint 5/5,  9/10 — CARTE
-    KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_PAKISTAN,           # joint 5/5,  9/10 — CARTE
-    UrlDatasetID.REG_TEXT_SOCIAL_BOOKS_GOODREADS,                        # joint 5/5,  9/10 — Vectorizing
-    KaggleDatasetID.REG_TEXT_FOOD_RAMEN_RATINGS_2022,                    # joint 5/5,  9/10 — CARTE+Vectorizing
-    MulTaBenchDatasetID.BIN_TEXT_OSHA_INJURY,                            # joint 4/5 uploaded — TextTabBench
-    OpenMLDatasetID.REG_TEXT_SPORTS_FIFA22_WAGES,                        # joint 5/5,  9/10 — CARTE
-    OpenMLDatasetID.REG_TEXT_HOUSES_CALIFORNIA_PRICES_2020,              # joint 5/5,  9/10 — AutoMLMultimodal+TextTabBench
-    KaggleDatasetID.REG_TEXT_FOOD_ALCOHOL_WIKILIQ_PRICES,                # joint 5/5,  8/10 — CARTE
-    OpenMLDatasetID.REG_TEXT_CONSUMER_AMERICAN_EAGLE_PRICES,             # joint 5/5,  8/10 — AutoMLMultimodal
-    KaggleDatasetID.REG_TEXT_HOUSES_AIRBNB_SEATTLE,                      # joint 5/5,  7/10 — TextTabBench
-    MulTaBenchDatasetID.MUL_TEXT_NEWS_CHANNEL,                           # joint 5/5 uploaded — AutoMLMultimodal
-    MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE,                             # joint 5/5 uploaded — AutoMLMultimodal
-    MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB,                       # joint 4/5 uploaded — AutoMLMultimodal
+    MulTaBenchDatasetID.REG_TEXT_WINE_POLISH_MARKET,    # joint 4/5 uploaded — CARTE
+    MulTaBenchDatasetID.MUL_TEXT_KOREAN_DRAMA,          # joint 5/5 uploaded — CARTE
+    MulTaBenchDatasetID.REG_TEXT_USED_CAR_SAUDI,        # joint 5/5 uploaded — CARTE
+    MulTaBenchDatasetID.MUL_TEXT_CONSUMER_COMPLAINT,    # joint 5/5 uploaded — TextTabBench
+    MulTaBenchDatasetID.MUL_TEXT_HEARTHSTONE_CARDS,     # joint 5/5 uploaded — TextTabBench
+    MulTaBenchDatasetID.REG_TEXT_WINE_VIVINO_SPAIN,     # joint 5/5 uploaded — CARTE
+    MulTaBenchDatasetID.REG_TEXT_CHOCOLATE_BAR_RATINGS, # joint 5/5 uploaded — CARTE
+    MulTaBenchDatasetID.REG_TEXT_ANIME_PLANET,          # joint 5/5 uploaded — CARTE
+    MulTaBenchDatasetID.REG_TEXT_USED_CAR_PAKISTAN,     # joint 5/5 uploaded — CARTE
+    MulTaBenchDatasetID.MUL_TEXT_BOOKS_GOODREADS,       # joint 5/5 uploaded — Vectorizing
+    MulTaBenchDatasetID.REG_TEXT_RAMEN_RATINGS,         # joint 5/5 uploaded — CARTE+Vectorizing
+    MulTaBenchDatasetID.BIN_TEXT_OSHA_INJURY,           # joint 4/5 uploaded — TextTabBench
+    MulTaBenchDatasetID.REG_TEXT_FIFA22_WAGES,          # joint 5/5 uploaded — CARTE
+    MulTaBenchDatasetID.BIN_TEXT_CALIFORNIA_PRICES,     # joint 5/5 uploaded — AutoMLMultimodal+TextTabBench
+    MulTaBenchDatasetID.REG_TEXT_WIKILIQ_PRICES,        # joint 5/5 uploaded — CARTE
+    MulTaBenchDatasetID.MUL_TEXT_AMERICAN_EAGLE_PRICES, # joint 4/5 uploaded — AutoMLMultimodal
+    MulTaBenchDatasetID.REG_TEXT_AIRBNB_SEATTLE,        # joint 4/5 uploaded — TextTabBench
+    MulTaBenchDatasetID.MUL_TEXT_NEWS_CHANNEL,          # joint 5/5 uploaded — AutoMLMultimodal
+    MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE,            # joint 5/5 uploaded — AutoMLMultimodal
+    MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB,      # joint 4/5 uploaded — AutoMLMultimodal
 ]
 
 MULTABENCH_CORE: List[MultimodalDatasetID] = MULTABENCH_CORE_IMAGE + MULTABENCH_CORE_TEXT
@@ -148,6 +149,20 @@ PROMOTED_FROM: Dict[MulTaBenchDatasetID, MultimodalDatasetID] = {
     MulTaBenchDatasetID.MUL_TEXT_NEWS_CHANNEL: OpenMLDatasetID.MUL_TEXT_SOCIAL_NEWS_CHANNEL_CATEGORY,
     MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE: OpenMLDatasetID.BIN_TEXT_SOCIAL_IMDB_GENRE_PREDICTION,
     MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB: OpenMLDatasetID.MUL_TEXT_HOUSES_MELBOURNE_AIRBNB,
+    MulTaBenchDatasetID.BIN_TEXT_CALIFORNIA_PRICES: OpenMLDatasetID.REG_TEXT_HOUSES_CALIFORNIA_PRICES_2020,
+    MulTaBenchDatasetID.MUL_TEXT_AMERICAN_EAGLE_PRICES: OpenMLDatasetID.REG_TEXT_CONSUMER_AMERICAN_EAGLE_PRICES,
+    MulTaBenchDatasetID.MUL_TEXT_BOOKS_GOODREADS: UrlDatasetID.REG_TEXT_SOCIAL_BOOKS_GOODREADS,
+    MulTaBenchDatasetID.MUL_TEXT_KOREAN_DRAMA: KaggleDatasetID.REG_TEXT_SOCIAL_KOREAN_DRAMA,
+    MulTaBenchDatasetID.REG_TEXT_AIRBNB_SEATTLE: KaggleDatasetID.REG_TEXT_HOUSES_AIRBNB_SEATTLE,
+    MulTaBenchDatasetID.REG_TEXT_ANIME_PLANET: KaggleDatasetID.REG_TEXT_SOCIAL_ANIME_PLANET_RATING,
+    MulTaBenchDatasetID.REG_TEXT_CHOCOLATE_BAR_RATINGS: KaggleDatasetID.REG_TEXT_FOOD_CHOCOLATE_BAR_RATINGS,
+    MulTaBenchDatasetID.REG_TEXT_FIFA22_WAGES: OpenMLDatasetID.REG_TEXT_SPORTS_FIFA22_WAGES,
+    MulTaBenchDatasetID.REG_TEXT_RAMEN_RATINGS: KaggleDatasetID.REG_TEXT_FOOD_RAMEN_RATINGS_2022,
+    MulTaBenchDatasetID.REG_TEXT_USED_CAR_PAKISTAN: KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_PAKISTAN,
+    MulTaBenchDatasetID.REG_TEXT_USED_CAR_SAUDI: KaggleDatasetID.REG_TEXT_TRANSPORTATION_USED_CAR_SAUDI_ARABIA,
+    MulTaBenchDatasetID.REG_TEXT_WIKILIQ_PRICES: KaggleDatasetID.REG_TEXT_FOOD_ALCOHOL_WIKILIQ_PRICES,
+    MulTaBenchDatasetID.REG_TEXT_WINE_POLISH_MARKET: KaggleDatasetID.REG_TEXT_FOOD_WINE_POLISH_MARKET_PRICES,
+    MulTaBenchDatasetID.REG_TEXT_WINE_VIVINO_SPAIN: KaggleDatasetID.REG_TEXT_FOOD_WINE_VIVINO_SPAIN,
 }
 
 
