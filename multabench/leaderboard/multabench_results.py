@@ -6,12 +6,12 @@ from multabench.leaderboard.data.keys import (
     DATASET, FOLD, MODEL, MODE, MM, TEST_SCORE,
     MODALITY, MODALITY_IMAGE, MODALITY_TEXT,
 )
-from multabench.datasets.image_benchmarks import PAPER_BENCHMARK
+from multabench.datasets.all_multabench_datasets import MULTABENCH_CORE_IMAGE
 from multabench.leaderboard.data.loading import load_multabench_data
 from multabench.leaderboard.plots import plot_dataset_performance, plot_ft_vs_all_normalized
 from multabench.leaderboard.utils import infer_modality, badge
 
-_PAPER_NAMES = {d.name for d in PAPER_BENCHMARK}
+_CORE_IMAGE_NAMES = {d.name for d in MULTABENCH_CORE_IMAGE}
 
 _MODE_MAP = {
     "all":       ALL_FEAT,
@@ -103,8 +103,8 @@ def _display_viewer(df: pd.DataFrame, summary: pd.DataFrame):
             caption = f"Finetuned > All: {ft_all}  |  All > No Image: {all_non}  |  All > Image Only: {all_uni}  |  {badge(all_three)} all three: {all_three}/5"
         st.caption(caption)
         passes = all_three >= 3
-        if dataset in _PAPER_NAMES and not passes:
-            st.error(f"INCONSISTENCY: {dataset} is in PAPER_BENCHMARK but only {all_three}/5 models satisfy all three conditions")
+        if dataset in _CORE_IMAGE_NAMES and not passes:
+            st.error(f"INCONSISTENCY: {dataset} is in MULTABENCH_CORE_IMAGE but only {all_three}/5 models satisfy all three conditions")
         df_ds = df[df[DATASET] == dataset]
         modality = infer_modality(dataset)
         conditions = _TEXT_CONDITIONS if modality == MODALITY_TEXT else _IMAGE_CONDITIONS
