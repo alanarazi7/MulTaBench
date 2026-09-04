@@ -11,12 +11,29 @@ import pandas as pd
 from PIL import Image, UnidentifiedImageError
 
 from multabench.datasets.description import get_dataset_description
+from multabench.preprocessing.discretize import discretize_numerical
 from multabench.benchmark.utils.constants import (
     BENCHMARK_NAME, IMAGES_DIR, KAGGLE_METADATA_JSON, METADATA_JSON, MULTABENCH_KAGGLE_OWNER,
 )
 
 TASK_REG = "reg"
 TASK_CLS = "cls"
+
+
+def bin_target(y: pd.Series, n_bins: int) -> pd.Series:
+    """Reformulate a regression target as n_bins equal-frequency classes.
+
+    Curation only: the four MulTaBench-Full converters upload an already-binned target, so the
+    benchmark's loading path reads what was uploaded and never bins.
+
+    Heavy ties make qcut drop edges, so the realised class count can be below the requested one.
+    """
+    binned = discretize_numerical(y, n_bins=n_bins)
+    binned.name = y.name
+    n_classes = binned.nunique()
+    assert n_classes >= 2, f"Binning '{y.name}' into {n_bins} collapsed to {n_classes} class(es)"
+    print(f"Binned '{y.name}' into {n_classes} classes (requested {n_bins})")
+    return binned
 
 
 def task_type_from_name(dataset_id: str) -> str:
@@ -75,13 +92,6 @@ def copy_images(df: pd.DataFrame, image_col: str, src_dir: str, dst_dir: str) ->
     return df
 
 
-def date_columns(df: pd.DataFrame) -> list:
-    """Columns the curation typed as dates. CSV cannot carry dtypes, so they are recorded in
-    metadata.json and re-parsed on load -- otherwise a date comes back as a string and gets
-    treated (and E5-encoded) as free text."""
-    return [c for c in df.columns if pd.api.types.is_datetime64_any_dtype(df[c])]
-
-
 def write_metadata(output_dir: str, slug: str, target_col: str,
                    image_col: str, task_type: str, df: pd.DataFrame) -> None:
     metadata = {
@@ -91,7 +101,6 @@ def write_metadata(output_dir: str, slug: str, target_col: str,
         "task_type": task_type,
         "num_rows": len(df),
         "num_features": len(df.columns) - 1,
-        "date_cols": date_columns(df),
     }
     if task_type != TASK_REG:
         metadata["num_classes"] = int(df[target_col].nunique())

@@ -56,7 +56,7 @@ import pandas as pd
 
 from multabench.datasets.all_datasets import OpenMLDatasetID
 from multabench.datasets.downloading import download_dataset
-from multabench.benchmark.utils.curation import save_dataset, task_type_from_name
+from multabench.benchmark.utils.curation import bin_target, save_dataset, task_type_from_name
 
 
 DATASET_ID = "BIN_TEXT_CALIFORNIA_PRICES"
@@ -67,9 +67,10 @@ TARGET_BINS = 2
 
 def curate(output_dir: str, slug: str) -> None:
     os.makedirs(output_dir, exist_ok=True)
-    dataset = download_dataset(OpenMLDatasetID.REG_TEXT_HOUSES_CALIFORNIA_PRICES_2020, target_bins=TARGET_BINS)
-    df = pd.concat([dataset.x, dataset.y], axis=1)
-    save_dataset(df=df, output_dir=output_dir, target_col=dataset.y.name, dataset_id=DATASET_ID,
+    dataset = download_dataset(OpenMLDatasetID.REG_TEXT_HOUSES_CALIFORNIA_PRICES_2020)
+    y = bin_target(dataset.y, n_bins=TARGET_BINS)
+    df = pd.concat([dataset.x, y], axis=1)
+    save_dataset(df=df, output_dir=output_dir, target_col=y.name, dataset_id=DATASET_ID,
                  slug=slug, task_type=task_type_from_name(DATASET_ID),
                  kaggle_source=KAGGLE_SOURCE)
 
