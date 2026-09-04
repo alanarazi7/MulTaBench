@@ -164,7 +164,3 @@ MULTIMODAL_FEATURES: Dict[MulTaBenchDatasetID, DatasetMultimodalFeatures] = {
 
 _missing_core = [d.name for d in MULTABENCH_CORE if d not in MULTIMODAL_FEATURES]
 assert not _missing_core, f"MULTIMODAL_FEATURES is missing MulTaBench-Core datasets: {_missing_core}"
-
-# Uploaded datasets not yet in the inventory -- reported, not asserted, so that uploading a
-# Full-tier dataset does not break every import until its features are annotated.
-UNAUDITED = [d for d in MulTaBenchDatasetID if d not in MULTIMODAL_FEATURES]
