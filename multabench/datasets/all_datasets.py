@@ -111,6 +111,34 @@ class MulTaBenchDatasetID(Enum):
     REG_TEXT_VIDEO_GAMES_SALES = "multabench-video-games-sales"
     REG_TEXT_ZOMATO_RESTAURANTS = "multabench-zomato-restaurants"
 
+    # MulTaBench-Full additions: classification datasets from the 56-dataset text pool that pass
+    # Joint Signal (they were kept out of Core because fine-tuning the encoder adds nothing).
+    MUL_TEXT_CONSUMER_COMPLAINT = "multabench-full-consumer-complaint"
+    MUL_TEXT_HEARTHSTONE_CARDS = "multabench-full-hearthstone-cards"
+    BIN_TEXT_OSHA_INJURY = "multabench-full-osha-injury"
+    MUL_TEXT_NEWS_CHANNEL = "multabench-full-news-channel"
+    BIN_TEXT_IMDB_GENRE = "multabench-full-imdb-genre"
+    MUL_TEXT_MELBOURNE_AIRBNB = "multabench-full-melbourne-airbnb"
+
+    # MulTaBench-Full: the 14 remaining text extras, completing the text half at 40. Four carry a
+    # target reformulated from regression into equal-frequency bins at curation time -- which is
+    # why their names are BIN_/MUL_ while their sources are REG_; each recipe's TARGET_BINS holds
+    # its bin count. Ten stay regression.
+    BIN_TEXT_CALIFORNIA_PRICES = "multabench-full-california-prices"
+    MUL_TEXT_BOOKS_GOODREADS = "multabench-full-books-goodreads"
+    MUL_TEXT_AMERICAN_EAGLE_PRICES = "multabench-full-american-eagle-prices"
+    MUL_TEXT_KOREAN_DRAMA = "multabench-full-korean-drama"
+    REG_TEXT_WIKILIQ_PRICES = "multabench-full-wikiliq-prices"
+    REG_TEXT_CHOCOLATE_BAR_RATINGS = "multabench-full-chocolate-bar-ratings"
+    REG_TEXT_RAMEN_RATINGS = "multabench-full-ramen-ratings"
+    REG_TEXT_WINE_POLISH_MARKET = "multabench-full-wine-polish-market"
+    REG_TEXT_WINE_VIVINO_SPAIN = "multabench-full-wine-vivino-spain"
+    REG_TEXT_AIRBNB_SEATTLE = "multabench-full-airbnb-seattle"
+    REG_TEXT_ANIME_PLANET = "multabench-full-anime-planet"
+    REG_TEXT_USED_CAR_PAKISTAN = "multabench-full-used-car-pakistan"
+    REG_TEXT_USED_CAR_SAUDI = "multabench-full-used-car-saudi"
+    REG_TEXT_FIFA22_WAGES = "multabench-full-fifa22-wages"
+
 
 class UrlDatasetID(Enum):
     # Image Benchmark - Candidates

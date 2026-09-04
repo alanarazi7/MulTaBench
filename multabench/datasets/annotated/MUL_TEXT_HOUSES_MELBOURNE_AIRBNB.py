@@ -133,7 +133,9 @@ CONTEXT = "Melbourne AirBnB Listings"
 TARGET = CuratedTarget(raw_name="price_label", task_type=SupervisedTask.MULTICLASS)
 COLS_TO_DROP = ["id", "listing_url", "scrape_id", "last_scraped", "calendar_last_scraped", "country",
                 "price", "weekly_price", "monthly_price", "security_deposit", "cleaning_fee",
-                "host_picture_url", ]
+                # URL columns: picture_url/host_thumbnail_url are detected as image features, which
+                # would make this load as an image-tabular dataset; host_url is a bare identifier URL.
+                "host_picture_url", "picture_url", "host_thumbnail_url", "host_url", ]
 FEATURES = [CuratedFeature(raw_name="host_since", feat_type=FeatureType.DATE),
             CuratedFeature(raw_name="first_review", feat_type=FeatureType.DATE),
             CuratedFeature(raw_name="last_review", feat_type=FeatureType.DATE),
