@@ -1,18 +1,53 @@
 """
-Source: https://www.openml.org/search?type=data&id=46669
+Dataset Name: BIN_TEXT_CALIFORNIA_PRICES
+====
+Examples: 37951
+====
+URL: https://www.openml.org/search?type=data&id=46669
+====
+Target Variable: Sold_Price (object, 2 distinct): ['Quantile 0-50%', 'Quantile 50-100%']
+====
+Features:
 
-California housing listings; predict whether the price is above the median.
-
-Target: reformulated from regression into 2 equal-frequency bins at curation time, so the
-uploaded artifact carries the binned target -- the bin count is frozen in
-multabench/datasets/target_bins.py and the dataset was drawn as a converter by
-multabench/datasets/binned_selection.py (stratified draw, seed 20260902).
-
-Produces:
-    <output_dir>/
-        data.csv          features + target
-        metadata.json     dataset info for MulTaBench loading
-        dataset-metadata.json   Kaggle API upload metadata
+Address (object, 37870 distinct): ['1 Appian Way', '400 Mariners Island Blvd', '2 Terminous Rd', '1035 Figueroa Ter APT 1', '2320 N Beverly Glen Blvd', '14841 Kitterman Dr', '743 Arguello Blvd APT 3', '3241 Mission St APT 8', '177 N El Camino Real', '246 Pleasant Valley Rd']
+Summary (object, 37453 distinct, 0.8% missing): ['Neighboring The Ace Hotel, 939 S. Broadway is the epitome of effort lessliving in Downtown Los Angeles. While the former Western Costume Building maintains its iconic exterior architecture, each residence has been renovated to feature the finest modern details. Stainless steel appliances and Quartz countertops add contemporary sophistication to the loft-style, industrial chic interiors. The original, towering windows, capture abundant natural light and reveal dynamic views of Downtown Los Angeles. One- and two-bedrooms ranging from 505 to 1,227 square feet, residences feature open-concept living and boast high ceilings. Providing generous gathering spaces, the interiors showcase the perfect balance of form and function. Amenities include rooftop pool/spa, cabanas, gym, in-unit stacked laundry, and high ceilings.', '-', '.', "BRAND NEW PROJECT! This is THE best adaptive re-use project in DTLA to date. 151 Live/Work units in the first historic condo building in South Park. Great variety of very attractive floor plans, with 11-14 ft ceilings, all with spectacular city views. LOWEST HOA'S IN DTLA. 1 COVERED PARKING SPACE INCLUDED in building across the street. Amazing amenities incl. rooftop sundeck w/ pool, spa, lounge chairs and cabanas, gym, and theater and media room on the basement floor, and beautiful historic lobby w/ security guard. Former home of the Western Costume Co est. 1924. Adjacent to the United Artists Theater (and now the Ace Hotel) 939 South Broadway was the largest costume rental house in the world, responsible for 99% of the costumes used in all Western movies in the early days of Hollywood. Bldg was the vision of big screen stars Mary Pickford, Charlie Chaplin and Douglas Fairbanks of the United Artists studio. AGENTS SEE PRIVATE AND SHOWING REMARKS!", 'Murieta Gardens is an all electric community offering 4 single-story new home designs in Rancho Murieta, CA. Live a relaxed lifestyle in a great school district with easy commute routes to Elk Grove, Downtown Sacramento and Folsom. Offered By: K. Hovnanian Homes Northern California, Inc.', '40 units remaining! Many floor plans available. BRAND NEW CONSTRUCTION! LARGE living rooms and LARGE bedrooms with great views of DTLA, Koreatown & Hollywood. Quartz Countertops, Thor Appliances, Hardwood Flooring & very spacious laundry rooms. Two assigned SIDE BY SIDE parking spaces in secured garage, bicycle storage & Electric vehicle charging stations. On-site fitness room, Pool, Lounge/Club Room, 2 courtyards and  20 guest parking. Conveniently located to Metro Station on Vermont and Wilshire. Plenty of restaurants and entertainment within walking distance. Minutes from DTLA. Pictures may be photos of a different unit. 3D  https://my.matterport.com/show/?m=T8XeseJaweX/  Sales Office OPEN DAILY from 11-5pm', '***STAY TUNED FOR MEGA OPEN HOUSE INFO, PICS, VIDEO TOUR AND DETAILS.***', 'Brand new townhouses in a gated community built in 2019. Contemporary Mediterranean design with many goodies; including granite and quartz counter-tops, glass tile back-splash, fireplace, skylight, central HVAC, tank-less water heater, private indoor laundry, walk-in closets, master suite, high ceilings, private patio, and much more. All units come equipped with stainless steel kitchen appliances including dishwasher, stove, refrigerator, range, and microwave. Community amenities include BBQ area, playground, spacious community building, remote entry, community garden, and more. This new development offers eligible buyers down payment assistance. All buyers but complete a new homebuyer education course. Please call for additional details.', 'This two-bedroom home features everything you need on one level. A den offers versatility and the stylish kitchen with center island enjoys an open layout that effortlessly flows into the dining area and family room. Both bedrooms flank the living area for added privacy and each one enjoys a walk-in closet, while the master features a luxurious bathroom and upper deck access.Virtual Tour', 'For Comp Purposes Only...']
+Type (object, 134 distinct): ['SingleFamily', 'Condo', 'Townhouse', 'Unknown', 'MultiFamily', 'MobileManufactured', 'VacantLand', 'Single Family', 'Apartment', 'Residential Lot']
+Year_built (float64, 160 distinct, 2.2% missing): ['1973.0', '2020.0', '1950.0', '2006.0', '1972.0', '1955.0', '1924.0', '1948.0', '1963.0', '1979.0']
+Heating (object, 1592 distinct, 14.6% missing): ['Central', 'Central Forced Air', 'Central Forced Air - Gas', 'Forced Air', 'Wall Furnace', 'Other', 'Forced air, Gas', 'Forced air', 'Central, Gas', 'Gas']
+Cooling (object, 471 distinct, 43.9% missing): ['Central Air', 'Central AC', 'Central', 'Ceiling Fan', 'Ceiling Fan, Central AC', 'Other', 'Wall/Window Unit(s)', 'Multi-Zone, Central AC', 'Window / Wall Unit', 'See Remarks']
+Parking (object, 4340 distinct, 2.9% missing): ['Garage, Garage - Attached, Covered', '0 spaces', 'Garage, Garage - Attached', 'Garage', 'Garage - Attached', 'Garage - Attached, Covered', 'Carport', 'Covered', 'Driveway', 'Garage, Garage - Detached, Covered']
+Lot (float64, 7317 distinct, 29.9% missing): ['2.2531', '2.2738', '2.2808', '2.3355', '2.1775', '2.2935', '2.2721', '2.458', '2.1773', '2.1978']
+Bedrooms (object, 248 distinct, 6.1% missing): ['3', '2', '4', '1', '5', 'Walk-in Closet', 'Master Suite / Retreat, Walk-in Closet', 'Master Suite / Retreat', 'Ground Floor Bedroom', '6']
+Bathrooms (float64, 23 distinct, 7.3% missing): ['2.0', '3.0', '1.0', '4.0', '5.0', '0.0', '6.0', '7.0', '8.0', '9.0']
+Full_bathrooms (float64, 16 distinct, 16.6% missing): ['2.0', '1.0', '3.0', '4.0', '5.0', '6.0', '7.0', '8.0', '9.0', '10.0']
+Total_interior_livable_area (float64, 4339 distinct, 5.3% missing): ['1200.0', '1440.0', '1000.0', '1400.0', '1300.0', '1800.0', '1500.0', '1100.0', '1040.0', '1600.0']
+Total_spaces (float64, 47 distinct, 1.9% missing): ['2.0', '0.0', '1.0', '3.0', '4.0', '6.0', '5.0', '8.0', '10.0', '7.0']
+Garage_spaces (float64, 43 distinct, 1.9% missing): ['2.0', '0.0', '1.0', '3.0', '4.0', '6.0', '5.0', '8.0', '10.0', '7.0']
+Region (object, 913 distinct, 0.0% missing): ['Los Angeles', 'San Jose', 'San Francisco', 'San Mateo', 'Sunnyvale', 'Santa Cruz', 'Santa Clara', 'Los Gatos', 'Morgan Hill', 'Mountain View']
+Elementary_School (object, 1655 distinct, 9.9% missing): ['Laurel', 'Daniel Webster', 'Sherman', 'Kenter Canyon', 'Cabrillo', 'Gardner Street', 'Warner Avenue', 'Rooftop', 'McKinley', 'Westwood Charter']
+Elementary_School_Score (float64, 10 distinct, 10.3% missing): ['5.0', '6.0', '4.0', '7.0', '8.0', '9.0', '3.0', '2.0', '1.0', '10.0']
+Elementary_School_Distance (float64, 233 distinct, 9.9% missing): ['0.3', '0.4', '0.2', '0.5', '0.6', '0.7', '0.1', '0.8', '0.9', '1.0']
+Middle_School (object, 481 distinct, 35.2% missing): ['Hubert Howe Bancroft Middle School', 'Mission Hill Middle School', 'Lick (James) Middle School', 'John Muir Middle School', 'Thomas Starr King Middle School', 'Willow Glen Middle School', 'Audubon Middle School', 'John Burroughs Middle School', 'C. T. English Middle School', 'Martin Murphy Middle School']
+Middle_School_Score (float64, 9 distinct, 35.2% missing): ['6.0', '3.0', '5.0', '7.0', '4.0', '8.0', '9.0', '2.0', '1.0']
+Middle_School_Distance (float64, 212 distinct, 35.2% missing): ['0.6', '0.8', '0.7', '0.5', '0.9', '0.4', '1.0', '0.3', '1.1', '1.2']
+High_School (object, 618 distinct, 10.6% missing): ['Fairfax Senior High School', 'University Senior High School Charter', 'Harbor High School', 'Independence High School', 'John Marshall Senior High School', 'Willow Glen High School', 'Santa Clara High School', 'Belmont Senior High School', 'Aptos High School', 'Menlo-Atherton High School']
+High_School_Score (float64, 10 distinct, 11.0% missing): ['7.0', '6.0', '8.0', '5.0', '4.0', '3.0', '9.0', '2.0', '10.0', '1.0']
+High_School_Distance (float64, 332 distinct, 10.6% missing): ['0.7', '0.8', '0.9', '0.6', '1.0', '0.5', '1.1', '1.2', '1.3', '0.4']
+Flooring (object, 1212 distinct, 24.5% missing): ['Wood', 'Hardwood', 'Laminate', 'Tile, Hardwood', 'Tile, Wood', 'Tile, Hardwood, Carpet', 'Wood, Tile', 'Carpet, Wood', 'Tile, Laminate', 'Tile, Carpet']
+Heating_features (object, 963 distinct, 16.4% missing): ['Forced air, Gas', 'Central', 'Forced air', 'Other', 'Wall Furnace', 'Forced Air', 'Forced air, Electric', 'Central, Gas', 'Radiant', 'Wall']
+Cooling_features (object, 275 distinct, 47.1% missing): ['Central', 'Central Air', 'Other', 'Wall', 'Wall/Window Unit(s)', 'Central, Solar', 'Evaporative', 'Central, Other', 'See Remarks', 'Central Air, Electric']
+Appliances_included (object, 3938 distinct, 28.7% missing): ['Dishwasher, Dryer, Garbage disposal, Microwave, Range / Oven, Refrigerator, Washer', 'Dishwasher, Dryer, Freezer, Garbage disposal, Microwave, Range / Oven, Refrigerator, Washer', 'Dryer, Washer', 'Dishwasher', 'Dishwasher, Garbage disposal, Microwave, Range / Oven, Refrigerator', 'Dishwasher, Dryer, Garbage disposal, Range / Oven, Refrigerator, Washer', 'Range / Oven', 'Dishwasher, Dryer, Microwave, Range / Oven, Refrigerator, Washer', 'Dishwasher, Garbage disposal, Range / Oven, Refrigerator', 'Dishwasher, Garbage disposal, Microwave, Range / Oven']
+Laundry_features (object, 1747 distinct, 30.7% missing): ['Inside', 'In Garage', 'Laundry Closet', 'Laundry Room', 'Washer / Dryer, Inside', 'Washer / Dryer', 'Inside Room', 'In Unit', 'In Garage, Washer / Dryer', 'Community']
+Parking_features (object, 4211 distinct, 10.1% missing): ['Garage, Garage - Attached, Covered', 'Garage, Garage - Attached', 'Garage', 'Garage - Attached', 'Garage - Attached, Covered', 'Carport', 'Covered', 'Garage, Garage - Detached, Covered', 'Driveway', 'Garage - Two Door']
+Tax_assessed_value (float64, 28580 distinct, 7.6% missing): ['2.7092', '2.6899', '2.686', '2.6675', '2.724', '2.7003', '2.6492', '2.6774', '2.7077', '2.7021']
+Annual_tax_amount (float64, 17117 distinct, 9.0% missing): ['2.1778', '2.1092', '2.1505', '2.1692', '2.2442', '2.177', '2.0973', '2.2285', '2.2541', '2.1802']
+Listed_On (datetime64[ns], 2248 distinct): ['2020-10-16 00:00:00', '2020-09-18 00:00:00', '2020-10-02 00:00:00', '2020-10-09 00:00:00', '2020-10-23 00:00:00', '2020-10-15 00:00:00', '2020-08-14 00:00:00', '2020-09-11 00:00:00', '2020-09-25 00:00:00', '2020-09-04 00:00:00']
+Listed_Price (float64, 4212 distinct): ['2.6181', '2.6094', '2.5995', '2.588', '2.6545', '2.6445', '2.6254', '2.6257', '2.6327', '2.6388']
+Last_Sold_On (datetime64[ns], 5764 distinct, 37.5% missing): ['2015-02-27 00:00:00', '2016-09-30 00:00:00', '2017-06-30 00:00:00', '2016-07-29 00:00:00', '2018-05-25 00:00:00', '2019-08-30 00:00:00', '2013-08-30 00:00:00', '2017-12-29 00:00:00', '2019-04-30 00:00:00', '2019-05-31 00:00:00']
+Last_Sold_Price (float64, 3569 distinct, 37.5% missing): ['650000.0', '850000.0', '500000.0', '600000.0', '550000.0', '450000.0', '300000.0', '350000.0', '1100000.0', '750000.0']
+City (object, 902 distinct): ['Los Angeles', 'San Jose', 'San Francisco', 'San Mateo', 'Santa Clara', 'Sunnyvale', 'Santa Cruz', 'Los Gatos', 'Morgan Hill', 'Redwood City']
+Zip (int64, 1206 distinct): ['95037', '95123', '95125', '95124', '95020', '90046', '95035', '94110', '95003', '90042']
+State (object, 2 distinct): ['CA', 'AZ']
 """
 
 import os

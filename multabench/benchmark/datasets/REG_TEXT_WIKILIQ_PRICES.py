@@ -1,13 +1,26 @@
 """
-Source: https://www.kaggle.com/datasets/limtis/wikiliq-dataset
+Dataset Name: REG_TEXT_WIKILIQ_PRICES
+====
+Examples: 12569
+====
+URL: https://www.kaggle.com/datasets/limtis/wikiliq-dataset
+====
+Target Variable: Price (float64, 2484 distinct): ['29.99', '19.99', '0.0', '39.99', '21.99', '24.99', '49.99', '32.99', '34.99', '12.99']
+====
+Features:
 
-WikiLiq spirits catalogue; predict the price.
-
-Produces:
-    <output_dir>/
-        data.csv          features + target
-        metadata.json     dataset info for MulTaBench loading
-        dataset-metadata.json   Kaggle API upload metadata
+Name (object, 12511 distinct): ['Crafthouse Southside Bottled Cocktail', 'Pucker Vodka Flavored Watermelon', 'Alize Coco Peach', 'BÉNÉDICTINE D.O.M Armagnac XO', 'Leroux Kirschwasser Flavored Brandy', 'Montezuma Blue Tequila', 'Select Aperitivo', 'Leroux Apricot Flavored Brandy', 'Leroux Brandy Flavored Cherry Brandy', 'Aguardiente Antioqueno Sugar Free']
+Country (object, 105 distinct, 0.2% missing): ['United States', 'Mexico', 'Scotland', 'France', 'Canada', 'United Kingdom', 'Italy', 'Ireland', 'Netherlands', 'Japan']
+Brand (object, 3934 distinct): ['DeKuyper Liqueur', 'Smirnoff Vodka', 'Bacardi Rum', 'Jack Daniels', 'Johnnie Walker', 'Jose Cuervo', 'Gordon  MacPhail', 'Absolut', 'Pinnacle', 'Highland Park']
+Categories (object, 150 distinct, 0.0% missing): ['Scotch Whisky, Whiskey', 'Vodka', 'Bourbon, Whiskey', 'Liqueur', 'Ready-to-Drink', 'Rye Whiskey, Whiskey', 'Mezcal', 'American Whiskey, Whiskey', 'Rum', 'Brandy, Cognac']
+Tasting Notes (object, 1595 distinct, 85.2% missing): ['Citrus', 'Smooth', 'Grapefruit', 'Apple', 'Fruity', 'Crisp, Smooth', 'Balanced, Dried Fruit, Rich, Round, Smoky, Smooth, Vanilla', 'Mint', 'Balanced, Smooth, Sweet', 'Citrus, Sweet']
+ABV (float64, 457 distinct, 16.7% missing): ['40.0', '35.0', '45.0', '43.0', '46.0', '30.0', '50.0', '15.0', '42.0', '20.0']
+Base Ingredient (object, 48 distinct, 90.2% missing): ['Corn', 'Barley', 'Desert Plant', 'Fruit', 'Barley, Corn, Rye', 'Sugar Cane', 'Sugar', 'Wheat', 'Rye', 'Potato']
+Years Aged (float64, 49 distinct, 88.7% missing): ['12.0', '10.0', '15.0', '5.0', '3.0', '2.0', '18.0', '4.0', '8.0', '21.0']
+Rating (float64, 17 distinct): ['5.0', '4.8', '4.9', '2.5', '4.7', '4.6', '4.5', '4.4', '3.3', '4.1']
+Rate Count (int64, 189 distinct): ['1', '2', '3', '4', '5', '6', '7', '10', '8', '9']
+Volume (object, 2 distinct, 99.6% missing): ['750ml', '1L']
+Description (object, 9583 distinct, 21.8% missing): ['Burnett’s Flavored Vodkas combine the quality of Burnett’s Vodka with all-natural flavors to deliver a superior taste.', '15 pack of 25 oz. prefilled shots', 'SKYY vodka is the first quadruple distilled, triple filtered premium American vodka created in San Francisco in 1992. \xa0SKYY has redefined vodka with flavor by carefully making vodka infused with real fruit.\xa0', 'BACARDÍ Ready to Serve Cocktails are convenient and ready to party. No need to mix, prepare or buy other ingredients, giving you more time to enjoy the moment. Made with BACARDÍ Rum, natural flavors, real ingredients (cane sugar, natural juices or concentrates), and no artificial sweeteners. Consistently high quality and always refreshing, fun and full-flavored at 12.5% ABV.', 'Matured for ten years in American oak ex-bourbon and ex-sherry casks. This award-winning Single Malt was born of Speyside’s natural elements, embodying the rich, fresh sweetness of the region.\n\nGOLD MEDAL | New York International Spirits Competition 2020\nGOLD MEDAL | San Francisco World Spirits Competition 2020\nGOLD MEDAL | San Francisco World Spirits Competition 2019', 'Fireball Cinnamon Whisky needs no introduction.  Just imagine what it feels like to stand face-to-face with a fire-breathing dragon who just ate a whisky barrel full of spicy cinnamon. Tastes like heaven, burns like hell. What happens next is up to you.\n\nWhat you have here is smooth whisky with a fiery kick of red hot cinnamon.  Fireball Whisky is best enjoyed straight up as an ice-cold shot. For another way to ignite your nite, try it with your favorite mixer – cola, ginger beer, hard cider, cranberry, etc.  Fireball makes anything taste good!', 'Shottys Party Ready Pre-Packaged Gelatin Shots. Made with Premium Alcohol, natural ingredients, natural flavors, nothing artificial, gluten free, at 12.5% abv, in a fun squeezable cup. Made in the USA!', 'Created in the early-twentieth century using secret family recipes from Europe, Arrow is the #3 best-selling cordial line in America. The product line includes a full array of flavored schnapps, sweet and sour Smackers and brandies, vodka, rum, as well as traditional cordials, liqueurs and creams.', 'A "Chacolo" is an enthusiastic, cheerful and friendly person, who loves to party and enjoys dancing. He spreads his joy, invites us to meet his people and to taste his mezcal. Because that is his pride. \n\nMy name is Marcario Partida Ramos, and I am part of a family dedicated to the art and passion of making mezcal. We are Chacolos.\nMy great-grandfather, my dad and I were young men in the taverns of Zapotitlán de Vadillo. We were in charge of fermenting and distilling mezcal in all the tabernas, that was our activity. Sometimes we paid rent there to be able to distill our own mezcal.\nThe whole family worked. Some were in charge of harvesting the agave, others of cooking it others of bringing firewood, other of fermenting and distilling and others in taking it on donkeys to Colima to sell it.\nThe tavern in which we currently produce mezcal was built in 2005 by my children and me. Fourteen years have passed already.\nI inherited the land from my father Philemon, to whom my grandfather Macario left it. They were the ones that began to collect different agaves from the region and bring them to our plot of land. I have continued the conservation and preservation of agave and have taught my children about the importance of biodiversity.\nIt will be my children\'s responsibility for continuing this tradition and then passing it to our descendants, who will be tasked to keep it alive.\nThat will be their legacy.\n\nLong live the family, long live the tradition, long live the taverns of Zapotitlán and long live mezcal!', 'Each year as part of the Parker’s Heritage Collection, Heaven Hill selects a special whiskey to be released in the name of late Master Distiller, Parker Beam. The barrels selected for this series include Bourbon, rye and wheat whiskeys, among others, and are some of the finest and most diverse whiskeys ever produced. They are a fitting tribute to the expertise of Parker Beam.']
 """
 
 import os
