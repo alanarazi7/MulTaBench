@@ -77,9 +77,16 @@ Append `_opt` for hyperparameter-optimized variants (e.g. `light_opt`).
 
 ## Datasets
 
-20 image benchmark datasets hosted on Kaggle under `multabench-*`. Downloads are automatic via `kagglehub`. Datasets follow the naming convention `{TASK}_{MODALITY}_{NAME}` where task is `BIN`/`MUL`/`REG`.
+60 datasets hosted on Kaggle under `multabench-*`, downloaded automatically via `kagglehub`.
+Names follow `{TASK}_{MODALITY}_{NAME}` where task is `BIN`/`MUL`/`REG`. The registry is
+`MulTaBenchDatasetID` (`multabench/datasets/all_datasets.py`); the benchmark lists live in
+`multabench/datasets/all_multabench_datasets.py`.
 
-**Image benchmark** (20 datasets): celebrity attractiveness, hateful memes, mammography, CheXpert, CBIS-DDSM, glaucoma, CS:GO skins, flower bouquets, HuBMAP, Instagram engagement, PetFinder adoption, zooplankton, Amazon bestsellers, Amazon packages, H&M fashion, Khaadi clothes, Letterboxd movies, mango mass, photography bots, painting price.
+**`MULTABENCH_CORE_IMAGE`** (20): celebrity attractiveness, hateful memes, mammography, CheXpert, CBIS-DDSM, glaucoma, CS:GO skins, flower bouquets, HuBMAP, Instagram engagement, PetFinder adoption, zooplankton, Amazon bestsellers, Amazon packages, H&M fashion, Khaadi clothes, Letterboxd movies, mango mass, photography bots, painting price.
+
+**`MULTABENCH_CORE_TEXT`** (20): fake job postings, Jigsaw toxicity, Kickstarter, data scientist salary, Michelin guide, product sentiment, Spotify genres, US accidents, wine reviews, women's clothing, baby products, book price, book readability, Mercari, Montgomery salaries, Rotten Tomatoes, SciMago, Vancouver salaries, video game sales, Zomato.
+
+**`MULTABENCH_FULL_TEXT_EXTRA`** (20): the Full-tier text additions, uploaded as `multabench-full-*`. Four ship a quantile-binned target, which is why their names are `BIN_`/`MUL_` while their sources are `REG_`.
 
 ## Architecture
 
@@ -134,18 +141,15 @@ trimodal criterion is adopted. Sequencing is datasets-first.
 
 ## Track 1 — Datasets (start first; longest lead time)
 
-Blocking track. The text side already has evaluation records; the image side is the real work.
+Blocking track. The text half is closed; the image side is the real work.
 
-- [ ] **Define the Core/Full tiering in the registry.** No `core`/`full` concept exists today —
-      only the flat 40-entry `MulTaBenchDatasetID` in `multabench/datasets/all_datasets.py`, plus
-      `PAPER_BENCHMARK` (`multabench/datasets/image_benchmarks.py`) and `TEXT_PAPER_BENCHMARK`
-      (currently defined locally in `scripts/do_dataset_summary.py`; should move into the
-      registry). Add `MULTABENCH_CORE` (40) and `MULTABENCH_FULL` (80).
-- [ ] **Text-tabular Full (20 → 40).** Select the extra 20 from the 36 non-selected candidates in
-      the 56-dataset pool, keeping only those passing **Joint Signal** (drop Joint-Signal
-      failures: pure-NLP tasks and redundant-text tasks). Accept/reject lists already exist in
-      `multabench/datasets/text_benchmarks.py`; results exist under
-      `multabench/leaderboard/results/text_source/` and `.../tabstar_corpus/`.
+- [x] **Name the benchmark lists in the registry.** `MULTABENCH_CORE_IMAGE`, `MULTABENCH_CORE_TEXT`
+      and `MULTABENCH_FULL_TEXT_EXTRA` live in `multabench/datasets/all_multabench_datasets.py`
+      (#18, #21). No `Tier` enum or accessor API: the lists carry the membership.
+- [x] **Text-tabular Full (20 → 40).** The 20 extras are curated, uploaded as `multabench-full-*`,
+      registered, and verified on their uploaded artifacts — 20 of 20 admitted on Joint Signal
+      (#20, #21). Four ship a quantile-binned target. Reproduce with
+      `python -m multabench.leaderboard.analysis.text_full_verification`.
 - [ ] **Image-tabular Full (20 → 40).** The big lift: ~20 additional image-tabular datasets
       passing Joint Signal. Sources: the ~13 non-published image entries that already have
       `annotated/` curation modules, the BagOfTricks set, and fresh Kaggle curation. Each
@@ -153,8 +157,8 @@ Blocking track. The text side already has evaluation records; the image side is 
 - [ ] **Record the image-tabular rejected pool.** There is no image analogue of
       `REJECTED_TEXT_DATASETS`, and no committed results CSVs for any rejected image candidate.
       Needed both for the Full tier and to close the symmetry gap in the curation appendix.
-- [ ] **Run curation evaluation on every new candidate** (4 conditions × 5 curation learners ×
-      5 folds) so Joint Signal is decided on evidence. Sweeps created locally; single-agent
+- [ ] **Run curation evaluation on every new image candidate** (4 conditions × 5 curation learners
+      × 5 folds) so Joint Signal is decided on evidence. Sweeps created locally; single-agent
       warmup per newly uploaded dataset before fanning out.
 - [ ] **Upload all new image datasets to Kaggle** under the unified API (`multabench-<name>`
       slugs under `chico89`; flat `images/` + `data.csv` + `metadata.json`), validating with
@@ -168,11 +172,12 @@ Blocking track. The text side already has evaluation records; the image side is 
 Most of this already exists; the job is to get it into one place, make it runnable, and commit
 its outputs. Two items are genuine gaps.
 
-- [ ] **Consolidate all rebuttal analysis code onto one branch.** Today it is split across
-      branches and repos: `elo_leaderboard.py` only on `elo-leaderboard`; `model_agreement.py`
-      only on `master`; the ρ-sweep (`threshold_grid.py`, `curation_accept.py`, `delta_sweep.py`)
-      only on `neurips-rebuttal-sensitivity`; the paired t-test and the TabArena comparison only
-      in the private `internal-MulTaBench`. **No single checkout reproduces the rebuttal.**
+- [ ] **Consolidate all rebuttal analysis code onto `master`.** Still split: `elo_leaderboard.py`
+      only on `elo-leaderboard`; the ρ-sweep (`threshold_grid.py`, `curation_accept.py`,
+      `delta_sweep.py`) and 22 result CSVs only on `neurips-rebuttal-sensitivity`;
+      `model_agreement.py` only on `master`; the paired t-test and the TabArena comparison only
+      in the private `internal-MulTaBench`. **No single checkout reproduces the rebuttal**, and
+      five analysis CSVs on `master` have no generating code here.
 - [ ] **Fix `model_agreement.py`** — it fails on import as committed (`build_pass_matrix` moved
       from `committee_pool.py` to `pass_matrix.py`), and it persists no CSV. Commit the agreement
       matrix as a CSV alongside the two currently-untracked PNGs.
@@ -195,13 +200,55 @@ its outputs. Two items are genuine gaps.
 - [ ] **Elo — already complete** (`elo_frozen_vs_tar.csv`, 27 competitors, RandomForest Frozen
       anchored at 1000). Fix the stale "23 competitors" docstring and merge.
 
-## Track 3 — Paper (`paper-multabench` repo)
+## Track 3 — Release
+
+- [x] **Publish the Full-tier text datasets to Kaggle** and load them through the unified API
+      (#20). The image half is still pending.
+- [ ] Publish the Full-tier image datasets and update this README's dataset counts to 80.
+- [ ] Merge the consolidated analysis branch so every rebuttal number is reproducible from a
+      single checkout of `master`.
+- [ ] Switch the paper's code URL from the anonymous repo to this one.
+
+## Protected branches
+
+Two branches hold work that exists nowhere else. **Do not delete them** until their content is
+merged or explicitly abandoned:
+
+| branch | what only lives there |
+|--------|-----------------------|
+| `neurips-rebuttal-sensitivity` | the rebuttal sensitivity analyses and 22 result CSVs |
+| `elo-leaderboard` | `elo_leaderboard.py` and the two Elo CSVs |
+
+---
+
+# Paper TODOs (`paper-multabench` repo)
+
+Nothing here has been written yet — the paper is untouched. Everything below is a paper-side
+consequence of work that has landed in this repo, or a commitment from the rebuttal.
 
 Main-text body is currently over the 10-page camera-ready limit, so every addition needs a
 matching trim. Switch `neurips_2026.tex` from `[preprint]` to `[eandd, final]` and compile early
 to get a real page count.
 
-### New main-text section (Curation Robustness)
+## From the Full text half
+
+- [ ] **Report the text half at 40** and describe how the 20 extras were admitted: Joint Signal
+      alone (δ=0.001, quorum 3 of 5), measured on the *uploaded* artifacts rather than on the
+      pool's original sources.
+- [ ] **Describe the four binned datasets** in the curation appendix: their targets are cut into
+      equal-frequency quantile bins at curation time, so a `BIN_`/`MUL_` dataset can have a `REG_`
+      source. Name them and give their bin counts.
+- [ ] **Say that membership was decided on the uploaded artifacts, not the pool ranking.** Two
+      datasets differ from the pool-ranked draft: IMDB Genre and Melbourne Airbnb are in, Movies
+      Revenue and ML/DS/AI Salaries are out.
+- [ ] **Carry the California Prices caveat.** It is admitted on all five models but at +0.002 on
+      each — 2× δ at the reported 3-decimal precision. Read the sign, not the ranking.
+- [ ] **Note the non-unanimous admissions**: five of the 20 pass 4 of 5 rather than 5 of 5.
+- [ ] **Record the two curation deviations** that change what a reader would compute from the
+      source: Consumer Complaint is capped at 100K rows, and Melbourne Airbnb drops its URL
+      columns (they would otherwise be detected as image features).
+
+## New main-text section (Curation Robustness)
 
 - [ ] **Move the δ/ρ threshold discussion from Appendix A into the main text** — explicitly
       promised to both 2eKq and jcEc.
@@ -213,7 +260,7 @@ to get a real page count.
 - [ ] One-sentence mention of the **per-dataset significance** result (37/40), pointing to the
       appendix.
 
-### Positioning and framing
+## Positioning and framing
 
 - [ ] State plainly that MulTaBench is a **diagnostic benchmark for TAR, not a neutral ranking
       benchmark**: a true multimodal tabular architecture should excel on MulTaBench while
@@ -227,7 +274,7 @@ to get a real page count.
       are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
       as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
 
-### Core/Full and trimodal
+## Core/Full and trimodal
 
 - [ ] Introduce **MulTaBench-Core** (40) and **MulTaBench-Full** (80) in the abstract and §4.
 - [ ] **Update every dataset count** across `neurips_2026.tex`, `appendix.tex` (including the
@@ -240,7 +287,7 @@ to get a real page count.
 - [ ] Answer veTL's framing question explicitly: we do **not** treat MMTL as two separate bimodal
       problems.
 
-### New appendix material
+## New appendix material
 
 - [ ] Elo / Bradley–Terry leaderboard table (27 competitors) plus a method description.
 - [ ] Per-dataset paired t-test with BH-FDR, naming the 3 non-significant datasets.
@@ -249,7 +296,7 @@ to get a real page count.
 - [ ] MulTaBench-Full dataset table and its curation record, including the image-tabular
       rejected pool.
 
-### Small fixes found while mapping the paper
+## Small fixes found while mapping the paper
 
 - [ ] The trimodal cross-reference in §3 points at `par:text_tabular_curation`; it should be
       `par:image_tabular_curation`.
@@ -263,11 +310,3 @@ to get a real page count.
       hand-edited `.tex`, so regenerating will clobber caption edits. Note also that
       `_get_datasets_table_latex()` reads the dataset table *back out of* `appendix.tex`, so that
       one table flows paper → script.
-
-## Track 4 — Release
-
-- [ ] Publish the Full-tier datasets to Kaggle and expose Core/Full through the loading API.
-- [ ] Update this README with the two-tier description, dataset counts, and usage for both tiers.
-- [ ] Merge the consolidated analysis branch so every rebuttal number is reproducible from a
-      single checkout of `master`.
-- [ ] Switch the paper's code URL from the anonymous repo to this one.
