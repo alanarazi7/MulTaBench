@@ -84,7 +84,10 @@ def load_multabench_dataset(dataset_id, multimodal_state: Optional[MultimodalSta
     with open(join(dir_path, METADATA_JSON)) as f:
         meta = json.load(f)
 
-    df = pd.read_csv(join(dir_path, DATA_CSV))
+    # date_cols is absent from datasets prepared before it was recorded; those keep the old
+    # behaviour of reading every column as-is.
+    date_cols = meta.get("date_cols") or None
+    df = pd.read_csv(join(dir_path, DATA_CSV), parse_dates=date_cols)
 
     target_col = meta["target"]
     image_col = meta["image_col"]

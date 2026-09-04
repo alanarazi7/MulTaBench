@@ -75,6 +75,13 @@ def copy_images(df: pd.DataFrame, image_col: str, src_dir: str, dst_dir: str) ->
     return df
 
 
+def date_columns(df: pd.DataFrame) -> list:
+    """Columns the curation typed as dates. CSV cannot carry dtypes, so they are recorded in
+    metadata.json and re-parsed on load -- otherwise a date comes back as a string and gets
+    treated (and E5-encoded) as free text."""
+    return [c for c in df.columns if pd.api.types.is_datetime64_any_dtype(df[c])]
+
+
 def write_metadata(output_dir: str, slug: str, target_col: str,
                    image_col: str, task_type: str, df: pd.DataFrame) -> None:
     metadata = {
@@ -84,6 +91,7 @@ def write_metadata(output_dir: str, slug: str, target_col: str,
         "task_type": task_type,
         "num_rows": len(df),
         "num_features": len(df.columns) - 1,
+        "date_cols": date_columns(df),
     }
     if task_type != TASK_REG:
         metadata["num_classes"] = int(df[target_col].nunique())
@@ -114,10 +122,15 @@ def write_kaggle_metadata(output_dir: str, slug: str, dataset_id: str, task_type
     base = slug.removeprefix(f"{BENCHMARK_NAME.lower()}-")
     for suffix in ("-img-cls", "-img-reg", "-txt-cls", "-txt-reg"):
         base = base.removesuffix(suffix)
+    # A `full-` slug prefix marks a MulTaBench-Full dataset; Core datasets carry no tier prefix.
+    tier_name = BENCHMARK_NAME
+    if base.startswith("full-"):
+        base = base.removeprefix("full-")
+        tier_name = f"{BENCHMARK_NAME}-Full"
     readable = base.replace("-", " ").title()
     modality = _modality_from_id(dataset_id)
     task_label = "Reg" if task_type == TASK_REG else "Cls"
-    title = f"{BENCHMARK_NAME}: {readable} [{modality}, {task_label}]"
+    title = f"{tier_name}: {readable} [{modality}, {task_label}]"
     kaggle_metadata = {
         "title": title,
         "id": f"{MULTABENCH_KAGGLE_OWNER}/{slug}",
@@ -136,7 +149,7 @@ def move_target_last(df: pd.DataFrame, target_col: str) -> pd.DataFrame:
     return df[feature_cols + [target_col]]
 
 
-_DATASETS_DIR = "multimodal/benchmark/datasets"
+_DATASETS_DIR = "multabench/benchmark/datasets"
 
 
 def save_dataset(df: pd.DataFrame, output_dir: str, target_col: str, dataset_id: str,
