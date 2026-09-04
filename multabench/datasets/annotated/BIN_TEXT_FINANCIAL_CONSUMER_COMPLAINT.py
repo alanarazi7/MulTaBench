@@ -64,9 +64,7 @@ Timely response? (object, 2 distinct): ['Yes', 'No']
 Consumer disputed? (object, 2 distinct): ['No', 'Yes']
 '''
 
-# The raw complaint database has 1.28M rows, an order of magnitude more than any other
-# MulTaBench dataset (the largest is Spotify Genres at 114K). Sampled down at load time, so the
-# uploaded artifact and the raw-source path agree.
+# The raw complaint database has 1.28M rows; sampled at load time so the upload matches.
 MAX_ROWS = 100_000
 
 

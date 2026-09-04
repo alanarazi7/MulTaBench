@@ -111,9 +111,7 @@ class MulTaBenchDatasetID(Enum):
     REG_TEXT_VIDEO_GAMES_SALES = "multabench-video-games-sales"
     REG_TEXT_ZOMATO_RESTAURANTS = "multabench-zomato-restaurants"
 
-    # MulTaBench-Full text datasets: the 20 text extras beyond Core. Four ship a target binned
-    # from regression at curation time, which is why their names are BIN_/MUL_ while their
-    # sources are REG_; each recipe's TARGET_BINS holds its bin count.
+    # MulTaBench-Full text datasets: the 20 text extras beyond Core.
     MUL_TEXT_CONSUMER_COMPLAINT = "multabench-full-consumer-complaint"
     MUL_TEXT_HEARTHSTONE_CARDS = "multabench-full-hearthstone-cards"
     BIN_TEXT_OSHA_INJURY = "multabench-full-osha-injury"

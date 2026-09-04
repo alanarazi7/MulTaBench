@@ -21,13 +21,7 @@ TASK_CLS = "cls"
 
 
 def bin_target(y: pd.Series, n_bins: int) -> pd.Series:
-    """Reformulate a regression target as n_bins equal-frequency classes.
-
-    Curation only: the four MulTaBench-Full converters upload an already-binned target, so the
-    benchmark's loading path reads what was uploaded and never bins.
-
-    Heavy ties make qcut drop edges, so the realised class count can be below the requested one.
-    """
+    """Reformulate a regression target as n_bins equal-frequency classes. Curation only."""
     binned = discretize_numerical(y, n_bins=n_bins)
     binned.name = y.name
     n_classes = binned.nunique()
@@ -131,7 +125,6 @@ def write_kaggle_metadata(output_dir: str, slug: str, dataset_id: str, task_type
     base = slug.removeprefix(f"{BENCHMARK_NAME.lower()}-")
     for suffix in ("-img-cls", "-img-reg", "-txt-cls", "-txt-reg"):
         base = base.removesuffix(suffix)
-    # A `full-` slug prefix marks a MulTaBench-Full dataset; Core datasets carry no tier prefix.
     tier_name = BENCHMARK_NAME
     if base.startswith("full-"):
         base = base.removeprefix("full-")
