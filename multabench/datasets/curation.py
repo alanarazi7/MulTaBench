@@ -37,7 +37,8 @@ class MultimodalDataset:
 def curate_dataset(x: DataFrame | DatasetDict | None, y: Series | None,
                    dataset_id: MultimodalDatasetID, dir_path: str | None = None,
                    multimodal_state: MultimodalState | None = None,
-                   target_override: str | None = None) -> MultimodalDataset:
+                   target_override: str | None = None,
+                   target_bins: int | None = None) -> MultimodalDataset:
     curation = get_curated(dataset_id)
     if x is None:
         x = curation.loading_func(dir_path=dir_path)
@@ -53,6 +54,8 @@ def curate_dataset(x: DataFrame | DatasetDict | None, y: Series | None,
         task_type = curation.target.task_type
         y = curate_target_values(y=y, target=curation.target, task_type=task_type)
         y.name = curation.target.new_name
+    if target_bins is not None:
+        y, task_type = bin_regression_target(y=y, task_type=task_type, n_bins=target_bins)
     x = curate_feature_values(x=x, curation=curation)
     x = curate_column_names(x=x, curation=curation)
     x, y = remove_missing_target_rows(x=x, y=y)
@@ -64,6 +67,28 @@ def curate_dataset(x: DataFrame | DatasetDict | None, y: Series | None,
     if task_type == SupervisedTask.REGRESSION:
         check_extreme_outliers(y=y)
     return dataset
+
+
+def bin_regression_target(y: Series, task_type: SupervisedTask, n_bins: int) -> tuple[Series, SupervisedTask]:
+    """Turn a regression target into a MULTICLASS one of n_bins equal-frequency quantile bins.
+
+    Fewer bins than requested come out when the target has heavy ties (pd.qcut drops duplicate
+    edges), so callers should report the realised class count, not the requested one.
+    """
+    assert task_type == SupervisedTask.REGRESSION, f"Only a regression target can be binned, got {task_type}"
+    assert n_bins >= 2, f"n_bins must be at least 2, got {n_bins}"
+    name = y.name
+    binned = discretize_numerical(y, n_bins=n_bins)
+    binned.name = name
+    # Realised, not requested: heavy ties collapse bins. Two classes is BINARY, matching
+    # _infer_task's convention -- calling it MULTICLASS would pick the wrong metric and
+    # stratification for the four datasets assigned 2 bins.
+    n_classes = binned.nunique()
+    assert n_classes >= 2, f"Binning '{name}' into {n_bins} collapsed to {n_classes} class(es)"
+    binned_task = SupervisedTask.BINARY if n_classes == 2 else SupervisedTask.MULTICLASS
+    print(f"[target_bins] Binned '{name}' into {n_classes} classes (requested {n_bins}) "
+          f"-> {binned_task.name}")
+    return binned, binned_task
 
 
 def _infer_task(y: Series) -> SupervisedTask:

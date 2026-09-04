@@ -58,6 +58,10 @@ if __name__ == "__main__":
                                  "txt", "non_txt", "ft-txt", "ft-img-ft-txt"],
                         default="all")
     parser.add_argument('--target', type=str, default=None, help='Override target column. Append _discrete to discretize a numeric column into bins (multiclass).')
+    parser.add_argument('--target_bins', type=str, default=None,
+                        help="Reformulate a regression target as classification with this many "
+                             "equal-frequency bins. 'auto' uses the per-dataset assignment in "
+                             "multabench/datasets/target_bins.py.")
     parser.add_argument('--project', type=str, default='multimodal_benchmark_filtering_attempts_0224')
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
@@ -150,6 +154,7 @@ if __name__ == "__main__":
             e5_train_kwargs=e5_train_kwargs,
             e5_model_name=E5_MODEL_NAMES.get(args.e5_model, args.e5_model),
             target_override=args.target,
+            target_bins=args.target_bins,
             pca_components=args.pca_components,
             no_pca=no_pca,
         )
