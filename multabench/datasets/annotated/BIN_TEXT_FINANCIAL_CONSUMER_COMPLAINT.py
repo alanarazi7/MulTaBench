@@ -1,6 +1,7 @@
 from os.path import join
 
 from pandas import DataFrame, read_csv
+from tabstar.constants import SEED
 
 from multabench.datasets.curation_objects import CuratedTarget, CuratedFeature
 from multabench.datasets.objects import SupervisedTask, FeatureType
@@ -63,9 +64,15 @@ Timely response? (object, 2 distinct): ['Yes', 'No']
 Consumer disputed? (object, 2 distinct): ['No', 'Yes']
 '''
 
+# The raw complaint database has 1.28M rows; sampled at load time so the upload matches.
+MAX_ROWS = 100_000
+
+
 def load_df(dir_path: str) -> DataFrame:
     df_path = join(dir_path, "rows.csv")
     df = read_csv(df_path)
+    if len(df) > MAX_ROWS:
+        df = df.sample(n=MAX_ROWS, random_state=SEED).reset_index(drop=True)
     return df
 
 

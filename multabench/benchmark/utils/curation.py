@@ -11,12 +11,23 @@ import pandas as pd
 from PIL import Image, UnidentifiedImageError
 
 from multabench.datasets.description import get_dataset_description
+from multabench.preprocessing.discretize import discretize_numerical
 from multabench.benchmark.utils.constants import (
     BENCHMARK_NAME, IMAGES_DIR, KAGGLE_METADATA_JSON, METADATA_JSON, MULTABENCH_KAGGLE_OWNER,
 )
 
 TASK_REG = "reg"
 TASK_CLS = "cls"
+
+
+def bin_target(y: pd.Series, n_bins: int) -> pd.Series:
+    """Reformulate a regression target as n_bins equal-frequency classes. Curation only."""
+    binned = discretize_numerical(y, n_bins=n_bins)
+    binned.name = y.name
+    n_classes = binned.nunique()
+    assert n_classes >= 2, f"Binning '{y.name}' into {n_bins} collapsed to {n_classes} class(es)"
+    print(f"Binned '{y.name}' into {n_classes} classes (requested {n_bins})")
+    return binned
 
 
 def task_type_from_name(dataset_id: str) -> str:
@@ -114,10 +125,14 @@ def write_kaggle_metadata(output_dir: str, slug: str, dataset_id: str, task_type
     base = slug.removeprefix(f"{BENCHMARK_NAME.lower()}-")
     for suffix in ("-img-cls", "-img-reg", "-txt-cls", "-txt-reg"):
         base = base.removesuffix(suffix)
+    tier_name = BENCHMARK_NAME
+    if base.startswith("full-"):
+        base = base.removeprefix("full-")
+        tier_name = f"{BENCHMARK_NAME}-Full"
     readable = base.replace("-", " ").title()
     modality = _modality_from_id(dataset_id)
     task_label = "Reg" if task_type == TASK_REG else "Cls"
-    title = f"{BENCHMARK_NAME}: {readable} [{modality}, {task_label}]"
+    title = f"{tier_name}: {readable} [{modality}, {task_label}]"
     kaggle_metadata = {
         "title": title,
         "id": f"{MULTABENCH_KAGGLE_OWNER}/{slug}",
@@ -136,7 +151,7 @@ def move_target_last(df: pd.DataFrame, target_col: str) -> pd.DataFrame:
     return df[feature_cols + [target_col]]
 
 
-_DATASETS_DIR = "multimodal/benchmark/datasets"
+_DATASETS_DIR = "multabench/benchmark/datasets"
 
 
 def save_dataset(df: pd.DataFrame, output_dir: str, target_col: str, dataset_id: str,

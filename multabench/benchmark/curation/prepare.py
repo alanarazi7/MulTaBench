@@ -21,7 +21,7 @@ from multabench.baselines.preprocessing.feature_types import detect_image_featur
 from multabench.benchmark.utils.constants import IMAGES_DIR, DATA_CSV
 from multabench.benchmark.utils.curation import copy_images, write_metadata, write_kaggle_metadata, task_type_from_name, generate_kaggle_description
 
-_DATASETS_DIR = "multimodal/benchmark/datasets"
+_DATASETS_DIR = "multabench/benchmark/datasets"
 
 
 def _get_image_col(x: DataFrame) -> str:

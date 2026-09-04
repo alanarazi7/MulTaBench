@@ -1,0 +1,51 @@
+"""
+Dataset Name: MUL_TEXT_KOREAN_DRAMA
+====
+Examples: 1647
+====
+URL: https://www.kaggle.com/datasets/noorrizki/top-korean-drama-list-1500
+====
+Target Variable: Score (object, 10 distinct): ['Quantile 20-30%', 'Quantile 70-80%', 'Quantile 50-60%', 'Quantile 0-10%', 'Quantile 10-20%', 'Quantile 90-100%', 'Quantile 30-40%', 'Quantile 80-90%', 'Quantile 60-70%', 'Quantile 40-50%']
+====
+Features:
+
+Name (object, 1642 distinct): ['Hyena', 'Crazy Love', 'Hero', 'Trap', 'Once Again', "Let's Only Walk The Flower Road", 'Sometoon 2020', 'Love Returns', 'Conspiracy in the Court', 'Gourmet']
+Year (int64, 26 distinct): ['2022', '2019', '2021', '2020', '2018', '2017', '2016', '2015', '2014', '2013']
+Genre (object, 584 distinct): ['Comedy, Romance, Drama', 'Romance, Drama, Melodrama', 'Comedy, Romance', 'Romance, Drama', 'Comedy, Romance, Life, Drama', 'Romance', 'Comedy, Romance, Youth, Drama', 'Business, Comedy, Romance, Drama', 'Romance, Youth, Drama', 'Comedy, Romance, Drama, Fantasy']
+Main Cast (object, 1639 distinct): ['Jo Jung Suk, Yoo Yeon Seok, Jung Kyung Ho, Kim Dae Myung, Jeon Mi Do, Shin Hyun Bin', 'Yim Si Wan, Son Hyun Joo, Go Ah Sung, Park Yong Woo, Jeon Ik Ryung, Moon Won Ju', 'Kim Ji Soo, Jung Chae Yeon, Jung Jin Young, Choi Ri, Kang Tae Oh, Hong Ji Yoon', 'Park Si Young, Choi Hyun Wook, Lee Won Jung, Heo Won Seo, Park Ji Young, Kim Do Ah', 'Sung Hoon, Lee Ga Ryeong, Lee Tae Gon, Park Joo Mi, Jeon Soo Kyung, Jeon Noh Min', 'Sung Hoon, Kwon Yu Ri, Shim Hye Jin, Joo Jin Mo, Tae Hang Ho, Ji Soo Won', 'Yoo Ji Tae, Park Hae Soo, Jeon Jong Seo, Lee Won Jong, Kim Ji Hoon, Jang Yoon Ju', 'Song Hye Kyo, Lee Do Hyun, Im Ji Yeon, Yeom Hye Ran, Park Sung Hoon, Jung Sung Il', 'Go So Young, Sung Joon, Yoon Sang Hyun, Cho Yeo Jung, Kim Bo Min, Kim Jung Nan', 'Moon Byul, Seulgi, Kim So Hee, D.ana, YooA, Ryu Soo Jung']
+Sinopsis (object, 1640 distinct, 0.3% missing): ['Do you remember when we met for the first time? Hyun Jin - a girl who finally meets her coveted guy. Hee Jin - a girl that is still in love. Ha Seul - a girl who is a childhood friend. ,', 'Thieves overtake the mint of a unified Korea. With hostages trapped inside, the police must stop them — as well as the shadowy mastermind behind it all. Remake of the Spanish TV series "Money Heist" (La Casa de Papel) 2017. ,', '"Shim Jae Bok has always believed she lived life to the fullest. But, misfortunes never come singly. Her beloved husband ends up cheating on her. Whats worse, her benefactor stabs her in the back. Things are closing in on her, but shes not the type of person who gives up. Lets find out how she comes up against the harsh reality of life! ",', 'A drama tells the story of 7 idol trainees and their daily hardships. ,', 'Yoo Tan is the leader and vocalist of an indie band called One More Time, a band he started with his childhood friends ten years ago. The indie band flourished for a while even boldly refusing to succumb to the establishment at one point. But Tan is getting older, the popularity of his band is dwindling, and life isn’t getting any easier financially, so he eventually signs with a music label. While enduring the difficult conditions inherent at a major music label, an unforeseeable event takes place sweeping Tan up in it: An unwanted time leap which allows him to journey back in time to regain his girlfriend., enduring the difficult conditions inherent at a major music label, an unforeseeable event takes place sweeping Tan up in it: An unwanted time leap which allows him to journey back in time to regain his girlfriend.', 'It is the love triangle romance that takes place when Ye Jin goes to search for her long-time online friend named "Sweet Brick". She does not know if he is a member of her craftwork class named No Woon or the man she often meets by chance named Cha Ian. Adapted partially from the webtoon "Sometoon x OH MY GIRL". ,', 'The drama follows the life a woman who ends up losing everything after living a turbulent life. When she starts anew from the bottom, ironically, her life blossoms. The value that holds us together is not blood nor law, but rather love and affection between us. ,', 'Lee Na Young was trained to be an assassin after being rescued from servitude when her high ranking father was convicted of treason. Her childhood sweetheart Park Sang Kyu who had returned from studying abroad and worked as a government official was looking all over for her. So did her former servant Yang Man Oh who had become the leader of the merchant group. The three got entangled in a conspiracy against the Emperor who was determined to carry out reforms to create a new Korea whereby the class system would be eliminated. (DW), the Emperor who was determined to carry out reforms to create a new Korea whereby the class system would be eliminated. (DW)', 'Talented chefs Bong Joo and Sung Chan were raised like brothers after Sung Chan was orphaned and taken in by Bong Joo\\s family. Bong Joo\\s family owns a famous traditional Korean restaurant and claims descent from the last royal chef of the Joseon Dynasty. Bong Joo assumes that as the eldest, he will be the one to take over his family\\s restaurant and marry Joo Hee when his father makes a surprising announcement about a special cooking contest! Sung Chan is seen as a threat by some because of his youth, talent, creativity and non-conforming ways. Feeling sorry for him, Joo Hee tries to help him. Discovering the truth about their great-grandfather causes a crisis for Bong Joo, but he later becomes even more determined to be a success while Sung Chan decides to leave. Sung Chan becomes a food peddler, specializing in the freshest and best ingredients in traditional Korean cuisine. Will he ever become a chef again? Will they ever become united as "brothers"?, announcement about a special cooking contest! Sung Chan is seen as a threat by some because of his youth, talent, creativity and non-conforming ways. Feeling sorry for him, Joo Hee tries to help him. Discovering the truth about their great-grandfather causes a crisis for Bong Joo, but he later becomes even more determined to be a success while Sung Chan decides to leave. Sung Chan becomes a food peddler, specializing in the freshest and best ingredients in traditional Korean cuisine. Will he ever become a chef again? Will they ever become united as "brothers"?', 'What makes a young boy grow up to become a legendary fighter? Lee Jung Woo has always had a short temper and doesn’t like to be messed with. Growing up in Busan, he learns to fight back when he is bullied by other kids and ends up becoming a local legend and the top street fighter of Busan. His best friend is Kwon Doo Hyun, who always lives under the shadow of Jung Woo. “Tong: Memories” is a South Korean web movie. It is considered to be the prequel to the popular webtoon “Tong.”, Jung Woo. “Tong: Memories” is a South Korean web movie. It is considered to be the prequel to the popular webtoon “Tong.”']
+Content Rating (object, 6 distinct): ['15+ - Teens 15 or older', 'Not Yet Rated', '13+ - Teens 13 or older', '18+ Restricted (violence & profanity)', 'G - All Ages', 'R - Restricted Screening (nudity & violence)']
+Tags (object, 1622 distinct, 1.2% missing): ['Soap Opera', 'Adapted From A Manhwa', 'Miniseries', 'Short Length Series,, Miniseries,, Web Series', 'Orphan Female Lead,, Weak Female Lead,, Enemies To Lovers,, Love Square,, Second Chance,, First Love,, Filmed Abroad,, Spring Setting,, "Childhood Friends Relationship,", Pianist Male Lead', 'Eunuch Supporting Character,, Eunuch Male Lead,, Queen Supporting Character,, Queen Female Lead,, Historical Fiction,, Strong Male Lead,, Multiple Mains,, Tearjerker,, Joseon Dynasty', 'Student Female Lead,, Student Male Lead,, School Setting,, "Childhood Friends Relationship,", Teenager Female Lead,, Teenager Male Lead,, Short Length Series,, Reverse-Harem,, Multiple Mains,, Miniseries', 'Dark Fiction,, Femme Fatale,, Historical Fiction,, Qing Dynasty,, Antihero,, Harem,, Joseon Dynasty', 'Calm Male Lead,, Poor Male Lead,, "Childhood Friends Relationship,", Found Family,, Orphan Male Lead,, Love Triangle,, Family,, Friendship', 'Writer Female Lead,, Short Length Series,, Miniseries,, Web Series,, Seaside Setting,, Photographer Male Lead,, Photography,, Height Difference,, Friendship,, Young Adult Female Lead']
+Network (object, 373 distinct): ['Viki', 'Netflix', 'Apple TV, Viki', 'KBS World', 'SBS World, Viki', 'Viki, Netflix', 'WeTV', 'iQIYI, Viki', 'Viki, WeTV', 'iQIYI']
+Number of Episodes (float64, 97 distinct): ['16.0', '20.0', '12.0', '8.0', '10.0', '32.0', '6.0', '24.0', '4.0', '18.0']
+"""
+
+import os
+
+import pandas as pd
+
+from multabench.datasets.all_datasets import KaggleDatasetID
+from multabench.datasets.downloading import download_dataset
+from multabench.benchmark.utils.curation import bin_target, save_dataset, task_type_from_name
+
+
+DATASET_ID = "MUL_TEXT_KOREAN_DRAMA"
+SLUG_BASE = "multabench-full-korean-drama"
+KAGGLE_SOURCE = "https://www.kaggle.com/datasets/noorrizki/top-korean-drama-list-1500"
+TARGET_BINS = 10
+
+
+def curate(output_dir: str, slug: str) -> None:
+    os.makedirs(output_dir, exist_ok=True)
+    dataset = download_dataset(KaggleDatasetID.REG_TEXT_SOCIAL_KOREAN_DRAMA)
+    y = bin_target(dataset.y, n_bins=TARGET_BINS)
+    df = pd.concat([dataset.x, y], axis=1)
+    save_dataset(df=df, output_dir=output_dir, target_col=y.name, dataset_id=DATASET_ID,
+                 slug=slug, task_type=task_type_from_name(DATASET_ID),
+                 kaggle_source=KAGGLE_SOURCE)
+
+
+if __name__ == "__main__":
+    from multabench.benchmark.utils.curation import parse_curation_args
+    args = parse_curation_args(SLUG_BASE, description="Curate MUL_TEXT_KOREAN_DRAMA for MulTaBench-Full")
+    curate(output_dir=args.output_dir, slug=args.slug)
