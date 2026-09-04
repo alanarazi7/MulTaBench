@@ -148,8 +148,8 @@ Blocking track. The text side already has evaluation records; the image side is 
       `multabench/leaderboard/results/text_source/` and `.../tabstar_corpus/`.
 - [ ] **Image-tabular Full (20 → 40).** The big lift: ~20 additional image-tabular datasets
       passing Joint Signal. Sources: the ~13 non-published image entries that already have
-      `annotated/` curation modules, the 7 in `IMAGE_BENCHMARK_CANDIDATES`, the BagOfTricks set,
-      and fresh Kaggle curation. Each needs curate → validate → upload → evaluate.
+      `annotated/` curation modules, the BagOfTricks set, and fresh Kaggle curation. Each
+      needs curate → validate → upload → evaluate.
 - [ ] **Record the image-tabular rejected pool.** There is no image analogue of
       `REJECTED_TEXT_DATASETS`, and no committed results CSVs for any rejected image candidate.
       Needed both for the Full tier and to close the symmetry gap in the curation appendix.
