@@ -23,7 +23,6 @@ from multabench.baselines.preprocessing.feature_types import detect_image_featur
 from multabench.preprocessing.feat_types import detect_text_features
 
 _RESULTS_DIR = join(dirname(abspath(__file__)), "..", "leaderboard", "results")
-# Kept as a module-level symbol: leaderboard/paper_production.py imports it.
 _SUMMARY_CSV = join(_RESULTS_DIR, "datasets_summary.csv")
 _FULL_SUMMARY_CSV = join(_RESULTS_DIR, "datasets_summary_full.csv")
 
@@ -78,7 +77,7 @@ _FRIENDLY_NAMES = {
 def summarize_all(tier: Tier = Tier.CORE) -> pd.DataFrame:
     """Load every dataset of the tier and return a summary DataFrame."""
     image_set = set(datasets_for_tier(tier, modality="image"))
-    # Text first, then image: this order is load-bearing, it fixes the summary CSV's row order.
+    # Text first, then image: this sets the summary CSV's row order.
     all_datasets = datasets_for_tier(tier, modality="text") + datasets_for_tier(tier, modality="image")
     rows = []
     for ds_id in all_datasets:
