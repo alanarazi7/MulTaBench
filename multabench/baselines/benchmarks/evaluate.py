@@ -10,7 +10,6 @@ from multabench.datasets.curation import MultimodalDataset
 from multabench.baselines.abstract_model import TabularModel
 from multabench.datasets.downloading import download_dataset
 from multabench.datasets.multimodal import MultimodalState
-from multabench.datasets.objects import SupervisedTask
 from multabench.baselines.preprocessing.sampling import subsample_dataset
 from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
@@ -21,10 +20,6 @@ from multabench.utils.profiling import PeakMemoryTracker
 DOWNSTREAM_EXAMPLES = 10_000
 FOLDS = 10
 MEMORY = "32G"
-
-# The three-letter codes the results CSVs and the dataset naming convention already use.
-_TASK_CODES = {SupervisedTask.BINARY: "BIN", SupervisedTask.MULTICLASS: "MUL",
-               SupervisedTask.REGRESSION: "REG"}
 
 
 def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
@@ -65,8 +60,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         "git": get_current_commit_hash(),
         "model": model_cls.MODEL_NAME,
         "dataset": dataset_id.name,
-        # The task actually fit, which a --target override can change.
-        "task_type": _TASK_CODES[dataset.task_type],
+        "task_type": str(dataset_id.name)[:3],
         "train_type": "benchmark",
         "fold": fold,
         "train_examples": train_examples,
@@ -82,7 +76,6 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         'e5_model_name': e5_model_name,
         'multimodal_state': multimodal_state,
         'target_override': target_override,
-        'n_classes': int(y.nunique()) if is_cls else None,
         'pca_components': pca_components,
         'no_pca': no_pca,
         "best_val_loss": getattr(model, "best_val_loss", None),

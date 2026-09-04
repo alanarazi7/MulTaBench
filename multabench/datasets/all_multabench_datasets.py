@@ -60,27 +60,26 @@ MULTABENCH_CORE_TEXT = [
     MulTaBenchDatasetID.REG_TEXT_ZOMATO_RESTAURANTS,
 ]
 
-# Text-tabular datasets beyond the core 20, verified on their uploaded artifacts
-# (multabench.leaderboard.analysis.text_full_verification).
+# MulTaBench-Full text datasets: the 20 text extras beyond Core.
 MULTABENCH_FULL_TEXT_EXTRA = [
-    MulTaBenchDatasetID.REG_TEXT_WINE_POLISH_MARKET,    # joint 4/5 uploaded — CARTE
-    MulTaBenchDatasetID.MUL_TEXT_KOREAN_DRAMA,          # joint 5/5 uploaded — CARTE
-    MulTaBenchDatasetID.REG_TEXT_USED_CAR_SAUDI,        # joint 5/5 uploaded — CARTE
-    MulTaBenchDatasetID.MUL_TEXT_CONSUMER_COMPLAINT,    # joint 5/5 uploaded — TextTabBench
-    MulTaBenchDatasetID.MUL_TEXT_HEARTHSTONE_CARDS,     # joint 5/5 uploaded — TextTabBench
-    MulTaBenchDatasetID.REG_TEXT_WINE_VIVINO_SPAIN,     # joint 5/5 uploaded — CARTE
-    MulTaBenchDatasetID.REG_TEXT_CHOCOLATE_BAR_RATINGS, # joint 5/5 uploaded — CARTE
-    MulTaBenchDatasetID.REG_TEXT_ANIME_PLANET,          # joint 5/5 uploaded — CARTE
-    MulTaBenchDatasetID.REG_TEXT_USED_CAR_PAKISTAN,     # joint 5/5 uploaded — CARTE
-    MulTaBenchDatasetID.MUL_TEXT_BOOKS_GOODREADS,       # joint 5/5 uploaded — Vectorizing
-    MulTaBenchDatasetID.REG_TEXT_RAMEN_RATINGS,         # joint 5/5 uploaded — CARTE+Vectorizing
-    MulTaBenchDatasetID.BIN_TEXT_OSHA_INJURY,           # joint 4/5 uploaded — TextTabBench
-    MulTaBenchDatasetID.REG_TEXT_FIFA22_WAGES,          # joint 5/5 uploaded — CARTE
-    MulTaBenchDatasetID.BIN_TEXT_CALIFORNIA_PRICES,     # joint 5/5 uploaded — AutoMLMultimodal+TextTabBench
-    MulTaBenchDatasetID.REG_TEXT_WIKILIQ_PRICES,        # joint 5/5 uploaded — CARTE
-    MulTaBenchDatasetID.MUL_TEXT_AMERICAN_EAGLE_PRICES, # joint 4/5 uploaded — AutoMLMultimodal
-    MulTaBenchDatasetID.REG_TEXT_AIRBNB_SEATTLE,        # joint 4/5 uploaded — TextTabBench
-    MulTaBenchDatasetID.MUL_TEXT_NEWS_CHANNEL,          # joint 5/5 uploaded — AutoMLMultimodal
-    MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE,            # joint 5/5 uploaded — AutoMLMultimodal
-    MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB,      # joint 4/5 uploaded — AutoMLMultimodal
+    MulTaBenchDatasetID.REG_TEXT_WINE_POLISH_MARKET,
+    MulTaBenchDatasetID.MUL_TEXT_KOREAN_DRAMA,
+    MulTaBenchDatasetID.REG_TEXT_USED_CAR_SAUDI,
+    MulTaBenchDatasetID.MUL_TEXT_CONSUMER_COMPLAINT,
+    MulTaBenchDatasetID.MUL_TEXT_HEARTHSTONE_CARDS,
+    MulTaBenchDatasetID.REG_TEXT_WINE_VIVINO_SPAIN,
+    MulTaBenchDatasetID.REG_TEXT_CHOCOLATE_BAR_RATINGS,
+    MulTaBenchDatasetID.REG_TEXT_ANIME_PLANET,
+    MulTaBenchDatasetID.REG_TEXT_USED_CAR_PAKISTAN,
+    MulTaBenchDatasetID.MUL_TEXT_BOOKS_GOODREADS,
+    MulTaBenchDatasetID.REG_TEXT_RAMEN_RATINGS,
+    MulTaBenchDatasetID.BIN_TEXT_OSHA_INJURY,
+    MulTaBenchDatasetID.REG_TEXT_FIFA22_WAGES,
+    MulTaBenchDatasetID.BIN_TEXT_CALIFORNIA_PRICES,
+    MulTaBenchDatasetID.REG_TEXT_WIKILIQ_PRICES,
+    MulTaBenchDatasetID.MUL_TEXT_AMERICAN_EAGLE_PRICES,
+    MulTaBenchDatasetID.REG_TEXT_AIRBNB_SEATTLE,
+    MulTaBenchDatasetID.MUL_TEXT_NEWS_CHANNEL,
+    MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE,
+    MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB,
 ]
