@@ -140,6 +140,8 @@ class MulTaBenchDatasetID(Enum):
     REG_IMAGE_FLIPKART_RATIO = "multabench-full-flipkart-ratio"
     REG_IMAGE_LAHAINA_AUCTION = "multabench-full-lahaina-auction"
     REG_IMAGE_SOCAL_HOUSES = "multabench-full-socal-houses"
+    MUL_IMAGE_REDDIT_MEMES = "multabench-full-reddit-memes"
+    MUL_IMAGE_POKEMON_HEIGHT = "multabench-full-pokemon-height"
 
 
 class UrlDatasetID(Enum):
