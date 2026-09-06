@@ -113,7 +113,7 @@ if __name__ == "__main__":
     device = get_device(device=DEVICE)
     if is_invalid_model_dataset_pair(model_name=args.model, dataset_id=dataset):
         exit()
-    exp_name = f"{args.model}_{dataset.name}_{args.fold}"
+    exp_name = f"{args.model}_{dataset.name}_{args.multimodal_state}_{args.fold}"
     wandb_run(exp_name=exp_name, project=args.project)
     dino_train_kwargs = dict(
         lora_rank=args.dino_rank,

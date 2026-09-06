@@ -83,3 +83,15 @@ MULTABENCH_FULL_TEXT_EXTRA = [
     MulTaBenchDatasetID.BIN_TEXT_IMDB_GENRE,
     MulTaBenchDatasetID.MUL_TEXT_MELBOURNE_AIRBNB,
 ]
+
+
+# MulTaBench-Full image datasets, admitted on Joint Signal over the uploaded Kaggle artifacts.
+# See leaderboard/analysis/image_full_verification.py.
+MULTABENCH_FULL_IMAGE_EXTRA = [
+    MulTaBenchDatasetID.MUL_IMAGE_MINECRAFT,
+    MulTaBenchDatasetID.BIN_IMAGE_OASIS_ALZHEIMERS,
+    MulTaBenchDatasetID.REG_IMAGE_SOCAL_HOUSES,
+    MulTaBenchDatasetID.REG_IMAGE_LAHAINA_AUCTION,
+    MulTaBenchDatasetID.REG_IMAGE_FLIPKART_RATIO,
+    MulTaBenchDatasetID.REG_IMAGE_DVM_CAR,
+]
