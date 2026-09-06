@@ -19,6 +19,9 @@ _SCORES_CSV = join(_RESULTS, "pool_scores_long.csv")
 _MATRIX_CSV = join(_RESULTS, "pass_matrix.csv")
 
 _STATES = ("no_text", "text_only", "all", "ft")
+
+# The image side names its unimodal conditions `non` and `img`.
+IMAGE_JOINT_STATES = ("non", "img", "all")
 _FOLDS = range(5)
 
 # The ONE known, genuine gap in the raw source data (a single dropped/failed wandb run),
@@ -78,14 +81,16 @@ def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
     return float(delta_joint), float(delta_awareness)
 
 
-def compute_joint_delta(scores: pd.DataFrame) -> float:
+def compute_joint_delta(scores: pd.DataFrame, states: tuple = _JOINT_STATES) -> float:
     """Delta_Joint alone, from the 3 states it needs -- no `ft` runs required.
 
     Identical arithmetic to compute_deltas()[0], but usable on experiments that never fine-tune
-    an encoder (fine-tuning is what makes a curation sweep expensive).
+    an encoder (fine-tuning is what makes a curation sweep expensive). Pass IMAGE_JOINT_STATES
+    for the image side, whose unimodal conditions are named `non` and `img`.
     """
-    means = state_means(scores, states=_JOINT_STATES)
-    return float(means["all"] - max(means["no_text"], means["text_only"]))
+    structured, unstructured, joint = states
+    means = state_means(scores, states=states)
+    return float(means[joint] - max(means[structured], means[unstructured]))
 
 
 def joint_signal_passes(scores: pd.DataFrame, delta: float = DELTA_DEFAULT) -> bool:
