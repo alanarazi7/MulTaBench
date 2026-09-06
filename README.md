@@ -274,6 +274,25 @@ to get a real page count.
       are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
       as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
 
+## Concurrent work — VT-Bench
+
+- [ ] **MUST ADDRESS: cite and differentiate VT-Bench** (`https://arxiv.org/pdf/2605.08146`,
+      ICML 2026): a visual-tabular benchmark published after our submission, aggregating 14
+      datasets across 9 domains and 756K samples. It is the closest concurrent work to the image
+      half and the camera-ready cannot ignore it.
+- [ ] **State the overlap honestly.** Seven of its eleven discriminative datasets are ones we
+      also considered: Skin Cancer (PAD-UFES-20), DVM-Car, CelebA, PetFinder Adoption, Breast
+      Cancer, Pawpularity and Anime (MyAnimeList). Two are already in Core, one is admitted to
+      Full, one we curated independently, and two we rejected as duplicates of Core entries.
+- [ ] **Draw the distinction on curation, not on size.** VT-Bench aggregates datasets and
+      measures fusion; MulTaBench *screens* them, admitting only where the joint signal exceeds
+      each unimodal baseline, and Core additionally requires task-awareness. A dataset an
+      aggregating benchmark keeps is one we may reject for having no multimodal signal to
+      measure — that is the diagnostic-versus-ranking argument, applied to dataset selection.
+- [ ] **Note what it has that we do not:** a cardiology/infarction set (44K) and three
+      MIMIC-IV + MIMIC-CXR derived tasks. The MIMIC ones need PhysioNet credentialing, which is a
+      redistribution constraint worth stating as a reason our benchmark is openly downloadable.
+
 ## Core/Full and trimodal
 
 - [ ] Introduce **MulTaBench-Core** (40) and **MulTaBench-Full** (80) in the abstract and §4.
