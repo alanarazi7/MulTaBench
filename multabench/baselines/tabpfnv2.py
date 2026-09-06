@@ -25,7 +25,7 @@ class TabPFNv2(TabularModel):
     MAX_COLS = 500
 
     def initialize_model(self) -> None:
-        os.environ["HF_TOKEN"] = HF_TOKEN
+        os.environ["HF_TOKEN"] = HF_TOKEN or ""
 
     def fit_model(self, x_train: DataFrame, y_train: Series, x_val: DataFrame, y_val: Series):
         if len(x_train) > self.MAX_ROWS:

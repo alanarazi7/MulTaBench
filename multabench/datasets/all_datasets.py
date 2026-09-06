@@ -133,6 +133,14 @@ class MulTaBenchDatasetID(Enum):
     REG_TEXT_USED_CAR_SAUDI = "multabench-full-used-car-saudi"
     REG_TEXT_FIFA22_WAGES = "multabench-full-fifa22-wages"
 
+    # MulTaBench-Full image extras
+    BIN_IMAGE_OASIS_ALZHEIMERS = "multabench-full-oasis-alzheimers"
+    MUL_IMAGE_MINECRAFT = "multabench-full-minecraft"
+    REG_IMAGE_DVM_CAR = "multabench-full-dvm-car"
+    REG_IMAGE_FLIPKART_RATIO = "multabench-full-flipkart-ratio"
+    REG_IMAGE_LAHAINA_AUCTION = "multabench-full-lahaina-auction"
+    REG_IMAGE_SOCAL_HOUSES = "multabench-full-socal-houses"
+
 
 class UrlDatasetID(Enum):
     # Image Benchmark - Candidates

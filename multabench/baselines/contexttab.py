@@ -18,7 +18,7 @@ class ConTextTab(TabularModel):
     USE_TARGET_ENCODER = False
 
     def initialize_model(self) -> SAP_RPT_OSS_Classifier | SAP_RPT_OSS_Regressor:
-        os.environ["HF_TOKEN"] = HF_TOKEN
+        os.environ["HF_TOKEN"] = HF_TOKEN or ""
         model_cls = SAP_RPT_OSS_Classifier if self.is_cls else SAP_RPT_OSS_Regressor
         # Initialize the regressor, 8k context and 8-fold bagging gives best performance, reduce if running out of memory
         model = model_cls(max_context_size=8192, bagging=8)
