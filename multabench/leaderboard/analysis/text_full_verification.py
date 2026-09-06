@@ -1,14 +1,19 @@
 """Verifies MulTaBench-Full admission for the 20 uploaded text-tabular datasets.
 
 Unlike the pool analyses, which read scores obtained from each dataset's ORIGINAL source, this
-reads the runs on the uploaded `multabench-full-*` Kaggle artifacts (results/text_full/runs.csv).
-It is
+reads the runs on the uploaded `multabench-full-*` Kaggle artifacts (results/text_full/runs.csv, a
+verbatim wandb export -- do not hand-edit it or reconstruct rows, re-export instead). It is
 therefore an end-to-end check of the curation recipes AND the upload round-trip, not just of the
 datasets' statistical properties: a curation bug that silently dropped or corrupted a text column
 would show up here as a lost Joint Signal.
 
 Admission is Joint Signal only (delta = 0.001, quorum 3 of the 5 curation models), so no `ft`
 state is needed -- see pass_matrix.compute_joint_delta.
+
+The export carries no `Sweep` column and the runs came from three sources: sweeps `zzlutjez` and
+`asuqv7o0`, plus a sharded driver for 57 TabPFN-2.5 cells the second sweep left missing when one
+host had no cached copy of the licence-gated checkpoint. Those gaps were not a cartesian product,
+which a grid sweep cannot express.
 
 Writes results/analysis_curation_sensitivity/text_full_uploaded_joint_signal.csv.
 Run standalone: `python -m multabench.leaderboard.analysis.text_full_verification`
