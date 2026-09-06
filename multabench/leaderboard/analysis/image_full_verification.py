@@ -1,9 +1,11 @@
 """Verifies MulTaBench-Full admission for the uploaded image-tabular datasets.
 
 The image counterpart of text_full_verification.py. It reads runs on the uploaded
-`multabench-full-*` Kaggle artifacts (results/image_full/runs.csv, a verbatim wandb export -- do
-not hand-edit it or reconstruct rows, re-export instead), so it checks the curation recipes and
-the upload round-trip together, not just the datasets' statistical properties.
+`multabench-full-*` Kaggle artifacts (results/image_full/runs.csv), so it checks the curation
+recipes and the upload round-trip together, not just the datasets' statistical properties.
+
+runs.csv is a wandb export with the rejected candidates dropped, and nothing else: never
+hand-edit a score or reconstruct a row from run logs, re-export instead.
 
 Admission is Joint Signal only (delta = 0.001, quorum 3 of the 5 curation models), so no `ft`
 state is needed -- see pass_matrix.compute_joint_delta.
