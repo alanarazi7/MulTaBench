@@ -113,7 +113,6 @@ class MulTaBenchDatasetID(Enum):
 
     # MulTaBench-Full text datasets: the 20 text extras beyond Core.
     MUL_TEXT_CONSUMER_COMPLAINT = "multabench-full-consumer-complaint"
-    MUL_IMAGE_HEARTHSTONE_CLASS = "multabench-full-hearthstone-class"
     MUL_TEXT_BOX_OFFICE = "multabench-full-box-office"
     BIN_TEXT_OSHA_INJURY = "multabench-full-osha-injury"
     MUL_TEXT_NEWS_CHANNEL = "multabench-full-news-channel"
@@ -144,6 +143,7 @@ class MulTaBenchDatasetID(Enum):
     MUL_IMAGE_REDDIT_MEMES = "multabench-full-reddit-memes"
     MUL_IMAGE_POKEMON_HEIGHT = "multabench-full-pokemon-height"
     MUL_IMAGE_PAD_UFES_LESION = "multabench-full-pad-ufes-lesion"
+    MUL_IMAGE_HEARTHSTONE_CLASS = "multabench-full-hearthstone-class"
 
 
 class UrlDatasetID(Enum):
