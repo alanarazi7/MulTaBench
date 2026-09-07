@@ -113,7 +113,7 @@ class MulTaBenchDatasetID(Enum):
 
     # MulTaBench-Full text datasets: the 20 text extras beyond Core.
     MUL_TEXT_CONSUMER_COMPLAINT = "multabench-full-consumer-complaint"
-    MUL_TEXT_HEARTHSTONE_CARDS = "multabench-full-hearthstone-cards"
+    MUL_IMAGE_HEARTHSTONE_CLASS = "multabench-full-hearthstone-class"
     BIN_TEXT_OSHA_INJURY = "multabench-full-osha-injury"
     MUL_TEXT_NEWS_CHANNEL = "multabench-full-news-channel"
     BIN_TEXT_IMDB_GENRE = "multabench-full-imdb-genre"

@@ -81,14 +81,17 @@ def main() -> None:
 
     summary = (df.groupby("dataset")
                  .agg(joint_pass_5=("joint_pass_5", "first"),
+                      n_models=("model", "nunique"),
                       median_delta=("delta_joint", "median"),
                       min_delta=("delta_joint", "min"),
                       admitted=("admitted", "first"))
                  .sort_values(["joint_pass_5", "median_delta"], ascending=False))
     print(f"{'dataset':<34}{'pass':>7}{'median':>10}{'min':>10}   verdict")
     for dataset, row in summary.iterrows():
+        # A dataset a curation model cannot run is scored out of the models that did, so say so.
+        scored = "" if row.n_models == len(CURATION_MODELS) else f"  ({int(row.n_models)} models ran)"
         print(f"{dataset:<34}{int(row.joint_pass_5):>5}/5{row.median_delta:>+10.4f}"
-              f"{row.min_delta:>+10.4f}   {'ADMIT' if row.admitted else 'REJECT'}")
+              f"{row.min_delta:>+10.4f}   {'ADMIT' if row.admitted else 'REJECT'}{scored}")
     print(f"\n{int(summary.admitted.sum())} of {len(summary)} admitted to MulTaBench-Full "
           f"(Joint Signal, delta={DELTA_DEFAULT}, quorum {QUORUM}/{len(CURATION_MODELS)})")
 
