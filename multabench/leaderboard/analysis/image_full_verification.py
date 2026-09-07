@@ -27,6 +27,7 @@ _RUNS_CSV = join(_RESULTS, "image_full", "runs.csv")
 _OUT_CSV = join(_RESULTS, "analysis_curation_sensitivity",
                 "image_full_uploaded_joint_signal.csv")
 
+# Quorum: a dataset is admitted when a majority of the curation committee sees Joint Signal.
 QUORUM = 3
 
 JOINT_SIGNAL_STATES = {"non", "img", "all"}
