@@ -289,6 +289,9 @@ to get a real page count.
       each unimodal baseline, and Core additionally requires task-awareness. A dataset an
       aggregating benchmark keeps is one we may reject for having no multimodal signal to
       measure — that is the diagnostic-versus-ranking argument, applied to dataset selection.
+- [ ] **Mine its dataset table for candidates.** Its eleven discriminative datasets are the
+      closest thing to a curated shortlist anyone has published for this problem, and four of
+      them we have never evaluated. Worth working through before another blind Kaggle sweep.
 - [ ] **Note what it has that we do not:** a cardiology/infarction set (44K) and three
       MIMIC-IV + MIMIC-CXR derived tasks. The MIMIC ones need PhysioNet credentialing, which is a
       redistribution constraint worth stating as a reason our benchmark is openly downloadable.
