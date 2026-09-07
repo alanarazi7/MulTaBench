@@ -144,6 +144,7 @@ class MulTaBenchDatasetID(Enum):
     MUL_IMAGE_POKEMON_HEIGHT = "multabench-full-pokemon-height"
     MUL_IMAGE_PAD_UFES_LESION = "multabench-full-pad-ufes-lesion"
     MUL_IMAGE_HEARTHSTONE_CLASS = "multabench-full-hearthstone-class"
+    REG_IMAGE_WATCH_TIER = "multabench-full-watch-tier"
 
 
 class UrlDatasetID(Enum):
