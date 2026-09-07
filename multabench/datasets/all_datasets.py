@@ -142,6 +142,7 @@ class MulTaBenchDatasetID(Enum):
     REG_IMAGE_SOCAL_HOUSES = "multabench-full-socal-houses"
     MUL_IMAGE_REDDIT_MEMES = "multabench-full-reddit-memes"
     MUL_IMAGE_POKEMON_HEIGHT = "multabench-full-pokemon-height"
+    MUL_IMAGE_PAD_UFES_LESION = "multabench-full-pad-ufes-lesion"
 
 
 class UrlDatasetID(Enum):

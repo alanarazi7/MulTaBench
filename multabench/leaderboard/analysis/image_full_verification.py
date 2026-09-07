@@ -27,7 +27,11 @@ _RUNS_CSV = join(_RESULTS, "image_full", "runs.csv")
 _OUT_CSV = join(_RESULTS, "analysis_curation_sensitivity",
                 "image_full_uploaded_joint_signal.csv")
 
-QUORUM = 3
+# The criterion is a 3-of-5 quorum. Admissions are held to 4 by preference rather than by rule:
+# every dataset in the text half already clears 4, and a candidate scraping exactly 3 has been
+# worth a second look at its curation instead. Lower it to CRITERION_QUORUM to see those.
+CRITERION_QUORUM = 3
+ADMISSION_QUORUM = 4
 
 JOINT_SIGNAL_STATES = {"non", "img", "all"}
 
@@ -46,7 +50,24 @@ def load_runs() -> pd.DataFrame:
     df["model"] = df["model"].map(_MODEL_LABELS)
     unmapped_models = df["model"].isna().sum()
     assert not unmapped_models, f"{unmapped_models} runs have a model label missing from _MODEL_LABELS"
-    return df[["model", "dataset", "state", "fold", "test_score"]]
+    return drop_unpaired_folds(df[["model", "dataset", "state", "fold", "test_score"]])
+
+
+def drop_unpaired_folds(df: pd.DataFrame) -> pd.DataFrame:
+    """Keep only folds where all three states ran, so Delta_Joint compares like with like.
+
+    A crashed run leaves a fold with, say, `all` and `non` but no `img`. Averaging over whatever
+    survived would compare states measured on different splits, which can move a mean by more
+    than delta on its own.
+    """
+    per_fold = df.groupby(["dataset", "model", "fold"])["state"].transform("nunique")
+    paired = df[per_fold == len(JOINT_SIGNAL_STATES)]
+    dropped = len(df) - len(paired)
+    if dropped:
+        gaps = (df[per_fold < len(JOINT_SIGNAL_STATES)]
+                .groupby(["dataset", "model"])["fold"].apply(lambda f: sorted(set(f))).to_dict())
+        print(f"Dropped {dropped} run(s) in folds that did not run all three states: {gaps}")
+    return paired
 
 
 def verdict(runs: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
@@ -54,7 +75,9 @@ def verdict(runs: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
     rows = []
     for (dataset, model), scores in runs.groupby(["dataset", "model"]):
         assert model in CURATION_MODELS, f"{model} is not a curation model"
-        delta_joint = compute_joint_delta(scores, states=IMAGE_JOINT_STATES)
+        # The paired filter may have removed a fold, so expect exactly the folds that survived.
+        delta_joint = compute_joint_delta(scores, states=IMAGE_JOINT_STATES,
+                                          folds=sorted(scores["fold"].unique()))
         means = scores.groupby("state")["test_score"].mean().round(3)
         rows.append({
             "dataset": dataset, "model": model,
@@ -64,7 +87,7 @@ def verdict(runs: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
     df = pd.DataFrame(rows)
     per_dataset = df.groupby("dataset")["joint_pass"].sum().rename("joint_pass_5")
     df = df.merge(per_dataset, on="dataset")
-    df["admitted"] = df["joint_pass_5"] >= QUORUM
+    df["admitted"] = df["joint_pass_5"] >= ADMISSION_QUORUM
     return df.sort_values(["joint_pass_5", "dataset", "model"], ascending=[False, True, True])
 
 
@@ -89,7 +112,8 @@ def main() -> None:
         print(f"{dataset:<34}{int(row.joint_pass_5):>5}/5{row.median_delta:>+10.4f}"
               f"{row.min_delta:>+10.4f}   {'ADMIT' if row.admitted else 'REJECT'}")
     print(f"\n{int(summary.admitted.sum())} of {len(summary)} admitted to MulTaBench-Full "
-          f"(Joint Signal, delta={DELTA_DEFAULT}, quorum {QUORUM}/{len(CURATION_MODELS)})")
+          f"(Joint Signal, delta={DELTA_DEFAULT}, quorum {ADMISSION_QUORUM}/{len(CURATION_MODELS)}; "
+          f"the published criterion is {CRITERION_QUORUM}/{len(CURATION_MODELS)})")
 
 
 if __name__ == "__main__":

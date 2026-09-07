@@ -38,7 +38,8 @@ DELTA_DEFAULT = 0.001
 _JOINT_STATES = ("no_text", "text_only", "all")
 
 
-def state_means(scores: pd.DataFrame, states: tuple = _STATES) -> pd.Series:
+def state_means(scores: pd.DataFrame, states: tuple = _STATES,
+                folds: "Iterable[int] | None" = None) -> pd.Series:
     """The per-state mean score of ONE model on ONE dataset, rounded to 3 decimals (the paper's
     reported precision) before any differencing.
 
@@ -46,6 +47,10 @@ def state_means(scores: pd.DataFrame, states: tuple = _STATES) -> pd.Series:
     pair over `states` -- no missing rows beyond the one known gap, no duplicates/extras --
     since silently computing a mean over fewer folds would understate variance and bias the
     decision without any visible signal.
+
+    `folds` narrows the expectation to a chosen subset. Pass it only when folds were dropped
+    deliberately and identically across every state -- otherwise the states are averaged over
+    different splits, which is the bias this assertion exists to catch.
     """
     models, datasets = scores["model"].unique(), scores["dataset"].unique()
     assert len(models) == 1 and len(datasets) == 1, (
@@ -54,7 +59,8 @@ def state_means(scores: pd.DataFrame, states: tuple = _STATES) -> pd.Series:
     )
     model, dataset = models[0], datasets[0]
 
-    expected_rows = {(model, dataset, s, f) for s in states for f in _FOLDS}
+    expected_rows = {(model, dataset, s, f)
+                     for s in states for f in (_FOLDS if folds is None else folds)}
     actual_rows = {r for r in zip(scores["model"], scores["dataset"], scores["state"], scores["fold"])
                    if r[2] in states}
     missing = expected_rows - actual_rows - _KNOWN_MISSING_ROWS
@@ -81,7 +87,8 @@ def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
     return float(delta_joint), float(delta_awareness)
 
 
-def compute_joint_delta(scores: pd.DataFrame, states: tuple = _JOINT_STATES) -> float:
+def compute_joint_delta(scores: pd.DataFrame, states: tuple = _JOINT_STATES,
+                        folds: "Iterable[int] | None" = None) -> float:
     """Delta_Joint alone, from the 3 states it needs -- no `ft` runs required.
 
     Identical arithmetic to compute_deltas()[0], but usable on experiments that never fine-tune
@@ -89,7 +96,7 @@ def compute_joint_delta(scores: pd.DataFrame, states: tuple = _JOINT_STATES) -> 
     for the image side, whose unimodal conditions are named `non` and `img`.
     """
     structured, unstructured, joint = states
-    means = state_means(scores, states=states)
+    means = state_means(scores, states=states, folds=folds)
     return float(means[joint] - max(means[structured], means[unstructured]))
 
 
