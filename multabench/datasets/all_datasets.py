@@ -146,6 +146,7 @@ class MulTaBenchDatasetID(Enum):
     MUL_IMAGE_HEARTHSTONE_CLASS = "multabench-full-hearthstone-class"
     REG_IMAGE_WATCH_TIER = "multabench-full-watch-tier"
     MUL_IMAGE_HAM10000_LESION = "multabench-full-ham10000-lesion"
+    REG_IMAGE_GOIAS_HOUSES = "multabench-full-goias-houses"
 
 
 class UrlDatasetID(Enum):
