@@ -69,6 +69,15 @@ def state_means(scores: pd.DataFrame, states: tuple = _STATES) -> pd.Series:
     return scores[scores["state"].isin(states)].groupby("state")["test_score"].mean().round(3)
 
 
+def _exact(delta: float) -> float:
+    """A delta between 3-decimal means is a multiple of 0.001, so bring it back to one.
+
+    Left as raw float subtraction, 0.251 - 0.250 is 0.0010000000000000009, and a tie at delta
+    passes a `> delta` test that the criterion says it should fail.
+    """
+    return round(float(delta), 6)
+
+
 def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
     """(Delta_Joint, Delta_Awareness) for ONE model on ONE dataset, over all 4 states.
 
@@ -76,9 +85,9 @@ def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
         Delta_Awareness = mean(ft)  - mean(all)
     """
     means = state_means(scores)
-    delta_joint = means["all"] - max(means["no_text"], means["text_only"])
-    delta_awareness = means["ft"] - means["all"]
-    return float(delta_joint), float(delta_awareness)
+    delta_joint = _exact(means["all"] - max(means["no_text"], means["text_only"]))
+    delta_awareness = _exact(means["ft"] - means["all"])
+    return delta_joint, delta_awareness
 
 
 def compute_joint_delta(scores: pd.DataFrame, states: tuple = _JOINT_STATES) -> float:
@@ -90,7 +99,7 @@ def compute_joint_delta(scores: pd.DataFrame, states: tuple = _JOINT_STATES) -> 
     """
     structured, unstructured, joint = states
     means = state_means(scores, states=states)
-    return float(means[joint] - max(means[structured], means[unstructured]))
+    return _exact(means[joint] - max(means[structured], means[unstructured]))
 
 
 def joint_signal_passes(scores: pd.DataFrame, delta: float = DELTA_DEFAULT) -> bool:
