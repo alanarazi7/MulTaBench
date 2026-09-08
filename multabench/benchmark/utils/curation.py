@@ -2,6 +2,8 @@
 import argparse
 import json
 import os
+import re
+from hashlib import md5
 import shutil
 from datetime import datetime
 from os.path import exists, join
@@ -60,14 +62,29 @@ def is_valid_curation_image(path: str) -> bool:
         return False
 
 
+def _safe_filename(path: str) -> str:
+    """A flat name a filesystem and a zip reader will both accept.
+
+    Image URLs often carry a query string, and a name holding ? & = uploads fine but cannot be
+    unpacked on the other side, so the dataset silently never appears.
+    """
+    return re.sub(r"[^A-Za-z0-9._-]", "_", path)
+
+
 def copy_images(df: pd.DataFrame, image_col: str, src_dir: str, dst_dir: str) -> pd.DataFrame:
     """Copy images to a flat dst_dir and rewrite image_col paths to images/<filename>.
     Rows with truncated or unreadable images are dropped."""
     os.makedirs(dst_dir, exist_ok=True)
     new_paths = []
     bad_indices = []
+    taken: dict[str, str] = {}
     for idx, img_path in enumerate(df[image_col]):
-        flat_name = str(img_path).replace("/", "_").replace(os.sep, "_")
+        flat_name = _safe_filename(str(img_path))
+        # Two different sources can sanitise to one name; keep them apart.
+        if taken.setdefault(flat_name, str(img_path)) != str(img_path):
+            stem, dot, ext = flat_name.rpartition(".")
+            digest = md5(str(img_path).encode()).hexdigest()[:8]
+            flat_name = f"{stem or flat_name}_{digest}{dot}{ext}"
         src = join(src_dir, str(img_path))
         if not is_valid_curation_image(src):
             print(f"  ⚠️  Skipping truncated/invalid image: {flat_name}")
