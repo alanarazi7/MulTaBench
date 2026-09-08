@@ -66,9 +66,10 @@ def _safe_filename(path: str) -> str:
     """A flat name a filesystem and a zip reader will both accept.
 
     Image URLs often carry a query string, and a name holding ? & = uploads fine but cannot be
-    unpacked on the other side, so the dataset silently never appears.
+    unpacked on the other side, so the dataset silently never appears. The query is dropped rather
+    than escaped, which also keeps the file extension at the end where it belongs.
     """
-    return re.sub(r"[^A-Za-z0-9._-]", "_", path)
+    return re.sub(r"[^A-Za-z0-9._-]", "_", path.split("?")[0])
 
 
 def copy_images(df: pd.DataFrame, image_col: str, src_dir: str, dst_dir: str) -> pd.DataFrame:
