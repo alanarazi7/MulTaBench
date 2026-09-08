@@ -148,6 +148,7 @@ class MulTaBenchDatasetID(Enum):
     MUL_IMAGE_HAM10000_LESION = "multabench-full-ham10000-lesion"
     REG_IMAGE_GOIAS_HOUSES = "multabench-full-goias-houses"
     REG_IMAGE_TOKOPEDIA_WEIGHT = "multabench-full-tokopedia-weight"
+    REG_IMAGE_KAMERNET_SIZE = "multabench-full-kamernet-size"
 
 
 class UrlDatasetID(Enum):
