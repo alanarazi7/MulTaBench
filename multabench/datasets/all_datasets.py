@@ -150,6 +150,7 @@ class MulTaBenchDatasetID(Enum):
     REG_IMAGE_TOKOPEDIA_WEIGHT = "multabench-full-tokopedia-weight"
     REG_IMAGE_KAMERNET_SIZE = "multabench-full-kamernet-size"
     REG_IMAGE_SAO_PAULO_HOUSES = "multabench-full-sao-paulo-houses"
+    REG_IMAGE_ROMANIA_PRICE = "multabench-full-romania-price"
 
 
 class UrlDatasetID(Enum):
