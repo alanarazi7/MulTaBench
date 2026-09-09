@@ -141,7 +141,7 @@ trimodal criterion is adopted. Sequencing is datasets-first.
 
 ## Track 1 — Datasets (start first; longest lead time)
 
-Blocking track. The text half is closed; the image side is the real work.
+Both halves are closed. MulTaBench-Full is complete at 80 datasets.
 
 - [x] **Name the benchmark lists in the registry.** `MULTABENCH_CORE_IMAGE`, `MULTABENCH_CORE_TEXT`
       and `MULTABENCH_FULL_TEXT_EXTRA` live in `multabench/datasets/all_multabench_datasets.py`
@@ -150,19 +150,21 @@ Blocking track. The text half is closed; the image side is the real work.
       registered, and verified on their uploaded artifacts — 20 of 20 admitted on Joint Signal
       (#20, #21). Four ship a quantile-binned target. Reproduce with
       `python -m multabench.leaderboard.analysis.text_full_verification`.
-- [ ] **Image-tabular Full (20 → 40).** The big lift: ~20 additional image-tabular datasets
-      passing Joint Signal. Sources: the ~13 non-published image entries that already have
-      `annotated/` curation modules, the BagOfTricks set, and fresh Kaggle curation. Each
-      needs curate → validate → upload → evaluate.
-- [ ] **Record the image-tabular rejected pool.** There is no image analogue of
-      `REJECTED_TEXT_DATASETS`, and no committed results CSVs for any rejected image candidate.
-      Needed both for the Full tier and to close the symmetry gap in the curation appendix.
-- [ ] **Run curation evaluation on every new image candidate** (4 conditions × 5 curation learners
-      × 5 folds) so Joint Signal is decided on evidence. Sweeps created locally; single-agent
-      warmup per newly uploaded dataset before fanning out.
-- [ ] **Upload all new image datasets to Kaggle** under the unified API (`multabench-<name>`
-      slugs under `chico89`; flat `images/` + `data.csv` + `metadata.json`), validating with
-      `compare_df_summaries()` first and dropping truncated or corrupt images.
+- [x] **Image-tabular Full (20 → 40) — done.** All 20 additional image-tabular datasets are
+      curated, uploaded, registered, and verified on their uploaded artifacts — 20 of 20
+      admitted on Joint Signal (#30–#38). Reproduce with
+      `python -m multabench.leaderboard.analysis.image_full_verification`.
+      MulTaBench-Full is complete at **80 datasets**: image 40 (20 CLS / 20 REG), text 40
+      (20 CLS / 20 REG).
+- [x] **Record the image-tabular rejected pool — done, internally.** Every candidate considered,
+      admitted or rejected, is recorded with its evidence in `curation_pool/` (not synced to
+      this repo: we release the datasets, not the pool). Rejected candidates keep their runs in
+      `results/image_full/runs.csv`, and the verification table lists them as REJECT beside the
+      admissions.
+- [x] **Run curation evaluation on every new image candidate — done.** 3 conditions × 5 curation
+      learners × 5 folds per candidate, decided on the uploaded artifacts.
+- [x] **Upload all new image datasets to Kaggle — done.** 80 artifacts under `chico89`, one per
+      shipped dataset and nothing else.
 - [ ] **Extend the trimodal group toward ~15** (the rebuttal estimate for Full) by detecting text
       columns on the new image-tabular datasets.
 - [ ] **Regenerate `datasets_summary.csv`** and the appendix dataset table for 80 datasets.
@@ -204,7 +206,7 @@ its outputs. Two items are genuine gaps.
 
 - [x] **Publish the Full-tier text datasets to Kaggle** and load them through the unified API
       (#20). The image half is still pending.
-- [ ] Publish the Full-tier image datasets and update this README's dataset counts to 80.
+- [x] Publish the Full-tier image datasets — done; this README's counts now read 80.
 - [ ] Merge the consolidated analysis branch so every rebuttal number is reproducible from a
       single checkout of `master`.
 - [ ] Switch the paper's code URL from the anonymous repo to this one.
