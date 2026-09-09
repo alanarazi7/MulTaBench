@@ -153,6 +153,7 @@ class MulTaBenchDatasetID(Enum):
     REG_IMAGE_ROMANIA_PRICE = "multabench-full-romania-price"
     BIN_IMAGE_PINTEREST_POPULAR = "multabench-full-pinterest-popular"
     REG_IMAGE_ZEPTO_PRICE = "multabench-full-zepto-price"
+    REG_IMAGE_AIRBNB_NYC = "multabench-full-airbnb-nyc"
 
 
 class UrlDatasetID(Enum):
