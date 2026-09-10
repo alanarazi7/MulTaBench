@@ -21,6 +21,9 @@ from multabench.datasets.text_benchmarks import (
     TEXT_TAB_BENCH_ACCEPTED, TEXT_TAB_BENCH_REJECTED,
     ACCEPTED_TEXT_DATASETS, REJECTED_TEXT_DATASETS,
 )
+from multabench.datasets.all_multabench_datasets import (
+    MULTABENCH_FULL_IMAGE_EXTRA, MULTABENCH_FULL_TEXT_EXTRA,
+)
 
 from multabench.leaderboard.main_paper.curation_example import make_fig        as _make_curation_example_fig
 from multabench.leaderboard.text_results                import compute_curation_grid, _load_pool_corpus_data
@@ -101,6 +104,53 @@ _DATASET_LABELS = {
     "REG_TEXT_ZOMATO_RESTAURANTS":     "Zomato Restaurants",
 }
 
+# Display names for the datasets released alongside MulTaBench. Membership itself comes
+# from MULTABENCH_FULL_IMAGE_EXTRA and MULTABENCH_FULL_TEXT_EXTRA.
+_EXTRA_DATASET_LABELS = {
+    # image
+    "BIN_IMAGE_OASIS_ALZHEIMERS":     "OASIS Alzheimer's",
+    "BIN_IMAGE_PINTEREST_POPULAR":    "Pinterest Repins",
+    "MUL_IMAGE_HAM10000_LESION":      "HAM10000 Lesions",
+    "MUL_IMAGE_HEARTHSTONE_CLASS":    "Hearthstone Class",
+    "MUL_IMAGE_MINECRAFT":            "Minecraft Mobs",
+    "MUL_IMAGE_PAD_UFES_LESION":      "PAD-UFES Lesions",
+    "MUL_IMAGE_POKEMON_HEIGHT":       "Pokemon Height",
+    "MUL_IMAGE_REDDIT_MEMES":         "Reddit Memes",
+    "REG_IMAGE_AIRBNB_NYC":           "Airbnb NYC",
+    "REG_IMAGE_DVM_CAR":              "DVM Car Prices",
+    "REG_IMAGE_FLIPKART_RATIO":       "Flipkart Discount",
+    "REG_IMAGE_GOIAS_HOUSES":         "Goias Apartments",
+    "REG_IMAGE_KAMERNET_SIZE":        "Kamernet Room Size",
+    "REG_IMAGE_LAHAINA_AUCTION":      "Lahaina Art Auction",
+    "REG_IMAGE_ROMANIA_PRICE":        "eMAG Products",
+    "REG_IMAGE_SAO_PAULO_HOUSES":     "Sao Paulo Apartments",
+    "REG_IMAGE_SOCAL_HOUSES":         "SoCal Houses",
+    "REG_IMAGE_TOKOPEDIA_WEIGHT":     "Tokopedia Weight",
+    "REG_IMAGE_WATCH_TIER":           "Watch Tier",
+    "REG_IMAGE_ZEPTO_PRICE":          "Zepto Groceries",
+    # text
+    "BIN_TEXT_CALIFORNIA_PRICES":     "California Prices",
+    "BIN_TEXT_IMDB_GENRE":            "IMDB Genre",
+    "BIN_TEXT_OSHA_INJURY":           "OSHA Injury",
+    "MUL_TEXT_AMERICAN_EAGLE_PRICES": "American Eagle",
+    "MUL_TEXT_BOOKS_GOODREADS":       "Goodreads Books",
+    "MUL_TEXT_BOX_OFFICE":            "Box Office",
+    "MUL_TEXT_CONSUMER_COMPLAINT":    "Consumer Complaints",
+    "MUL_TEXT_KOREAN_DRAMA":          "Korean Drama",
+    "MUL_TEXT_MELBOURNE_AIRBNB":      "Airbnb Melbourne",
+    "MUL_TEXT_NEWS_CHANNEL":          "News Channel",
+    "REG_TEXT_AIRBNB_SEATTLE":        "Airbnb Seattle",
+    "REG_TEXT_ANIME_PLANET":          "Anime Planet",
+    "REG_TEXT_CHOCOLATE_BAR_RATINGS": "Chocolate Bars",
+    "REG_TEXT_FIFA22_WAGES":          "FIFA22 Wages",
+    "REG_TEXT_RAMEN_RATINGS":         "Ramen Ratings",
+    "REG_TEXT_USED_CAR_PAKISTAN":     "Used Cars Pakistan",
+    "REG_TEXT_USED_CAR_SAUDI":        "Used Cars Saudi",
+    "REG_TEXT_WIKILIQ_PRICES":        "WikiLiq Spirits",
+    "REG_TEXT_WINE_POLISH_MARKET":    "Wine Poland",
+    "REG_TEXT_WINE_VIVINO_SPAIN":     "Wine Vivino Spain",
+}
+
 _COSTS_ROOT = join(_RESULTS_ROOT, "costs")
 _COSTS_FILES = {
     ("IMAGE", "small"): "image_all.csv",
@@ -121,6 +171,12 @@ _AMAZON_TRI_CSV    = join(_RESULTS_ROOT, "tabular_image_text/REG_IMAGE_AMAZON_PA
 _AMAZON_COL_ORDER  = ["img", "txt", "non_txt", "non", "all", "ft", "ft-txt", "ft-img-ft-txt"]
 _AMAZON_COL_LABELS = ["I",   "T",   "S+I",    "S+T", "S+I+T", "S+I_TAR+T", "S+I+T_TAR", "S+I_TAR+T_TAR"]
 _AMAZON_MODEL_ORDER = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]
+
+_EXTRA_MEMBERS = {"IMAGE": MULTABENCH_FULL_IMAGE_EXTRA, "TEXT": MULTABENCH_FULL_TEXT_EXTRA}
+_EXTRA_JOINT_CSVS = {
+    "IMAGE": join(_RESULTS_ROOT, "analysis_curation_sensitivity/image_full_uploaded_joint_signal.csv"),
+    "TEXT":  join(_RESULTS_ROOT, "analysis_curation_sensitivity/text_full_uploaded_joint_signal.csv"),
+}
 
 
 # ---------------------------------------------------------------------------
@@ -658,6 +714,49 @@ def _to_latex_text_curation_rates(tbl: pd.DataFrame) -> str:
     return header + body + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
 
 
+def _make_extra_datasets_table(modality: str) -> pd.DataFrame:
+    names = {d.name for d in _EXTRA_MEMBERS[modality]}
+    df = pd.read_csv(_EXTRA_JOINT_CSVS[modality])
+    missing = names - set(df["dataset"])
+    assert not missing, f"{modality}: no joint-signal scores for {sorted(missing)}"
+    tbl = (df[df["dataset"].isin(names)].groupby("dataset")
+           .agg(delta=("delta_joint", "median"), passes=("joint_pass", "sum"))
+           .reset_index())
+    tbl["Dataset"] = tbl["dataset"].map(_EXTRA_DATASET_LABELS)
+    unlabeled = sorted(tbl.loc[tbl["Dataset"].isna(), "dataset"])
+    assert not unlabeled, f"{modality}: no display label for {unlabeled}"
+    tbl["Task"] = ["REG" if d.startswith("REG_") else "CLS" for d in tbl["dataset"]]
+    tbl = tbl.rename(columns={"delta": "Delta_Joint", "passes": "Pass"})
+    tbl["Pass"] = tbl["Pass"].astype(int)
+    return (tbl[["Dataset", "Task", "Delta_Joint", "Pass"]]
+            .sort_values("Delta_Joint", ascending=False).reset_index(drop=True))
+
+
+def _to_latex_extra_datasets(tbl_img: pd.DataFrame, tbl_txt: pd.DataFrame) -> str:
+    assert len(tbl_img) == len(tbl_txt), "The two panels sit side by side"
+    header = (
+        "\\begin{table*}[h]\n\\centering\n"
+        "\\caption{Datasets released alongside MulTaBench, admitted on \\textit{Joint Signal} "
+        "alone. $\\Delta_{\\text{Joint}}$ is the median over the 5 curation learners; Pass counts "
+        "the learners for which it exceeds $\\delta$. The \\textit{Task-awareness} condition was "
+        "not evaluated for these datasets.}\n"
+        "\\label{tab:extra_datasets}\n"
+        "\\setlength{\\tabcolsep}{4pt}\\small\n"
+        "\\begin{tabular}{l c r c l c r c}\n\\toprule\n"
+        "\\multicolumn{4}{c}{\\textit{Image-Tabular}} & "
+        "\\multicolumn{4}{c}{\\textit{Text-Tabular}} \\\\\n"
+        "\\cmidrule(lr){1-4}\\cmidrule(lr){5-8}\n"
+        "\\textbf{Dataset} & Task & $\\Delta_{\\text{Joint}}$ & Pass & "
+        "\\textbf{Dataset} & Task & $\\Delta_{\\text{Joint}}$ & Pass \\\\\n\\midrule\n"
+    )
+    rows = [
+        f"{a['Dataset']} & {a['Task']} & {a['Delta_Joint']:.3f} & {a['Pass']}/5 & "
+        f"{b['Dataset']} & {b['Task']} & {b['Delta_Joint']:.3f} & {b['Pass']}/5 \\\\"
+        for (_, a), (_, b) in zip(tbl_img.iterrows(), tbl_txt.iterrows())
+    ]
+    return header + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n\\end{table*}"
+
+
 # ---------------------------------------------------------------------------
 # Streamlit display
 # ---------------------------------------------------------------------------
@@ -846,6 +945,21 @@ def display_paper_production():
                      use_container_width=True)
         with st.expander("📋 LaTeX source"):
             st.code(_to_latex_amazon_packages(amz_tbl), language="latex")
+        st.divider()
+
+        st.subheader("Table — Additional Released Datasets (appendix Tab. extra_datasets)")
+        extra_img = _make_extra_datasets_table("IMAGE")
+        extra_txt = _make_extra_datasets_table("TEXT")
+        st.caption("Image-tabular")
+        st.dataframe(extra_img, use_container_width=True, hide_index=True)
+        st.caption("Text-tabular")
+        st.dataframe(extra_txt, use_container_width=True, hide_index=True)
+        for _label, _tbl in [("image", extra_img), ("text", extra_txt)]:
+            st.caption(f"{_label}: {len(_tbl)} datasets, "
+                       f"median delta {_tbl['Delta_Joint'].median():.3f}, "
+                       f"{int((_tbl['Pass'] == 5).sum())} unanimous")
+        with st.expander("📋 LaTeX source"):
+            st.code(_to_latex_extra_datasets(extra_img, extra_txt), language="latex")
         st.divider()
 
         _APP_PLOTS = [
