@@ -714,47 +714,60 @@ def _to_latex_text_curation_rates(tbl: pd.DataFrame) -> str:
     return header + body + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
 
 
+_EXTRA_CONDITION_COLS = {"IMAGE": ("non", "img"), "TEXT": ("no_text", "text_only")}
+
+
 def _make_extra_datasets_table(modality: str) -> pd.DataFrame:
+    """Per-dataset admission record: condition means over the curation learners, and the vote."""
     names = {d.name for d in _EXTRA_MEMBERS[modality]}
+    structured, unstructured = _EXTRA_CONDITION_COLS[modality]
     df = pd.read_csv(_EXTRA_JOINT_CSVS[modality])
     missing = names - set(df["dataset"])
     assert not missing, f"{modality}: no joint-signal scores for {sorted(missing)}"
     tbl = (df[df["dataset"].isin(names)].groupby("dataset")
-           .agg(delta=("delta_joint", "median"), passes=("joint_pass", "sum"))
+           .agg(Structured=(structured, "mean"), Unstructured=(unstructured, "mean"),
+                Joint=("all", "mean"), Delta_Joint=("delta_joint", "median"),
+                Pass=("joint_pass", "sum"), Learners=("model", "size"))
            .reset_index())
     tbl["Dataset"] = tbl["dataset"].map(_EXTRA_DATASET_LABELS)
     unlabeled = sorted(tbl.loc[tbl["Dataset"].isna(), "dataset"])
     assert not unlabeled, f"{modality}: no display label for {unlabeled}"
     tbl["Task"] = ["REG" if d.startswith("REG_") else "CLS" for d in tbl["dataset"]]
-    tbl = tbl.rename(columns={"delta": "Delta_Joint", "passes": "Pass"})
-    tbl["Pass"] = tbl["Pass"].astype(int)
-    return (tbl[["Dataset", "Task", "Delta_Joint", "Pass"]]
-            .sort_values("Delta_Joint", ascending=False).reset_index(drop=True))
+    tbl[["Pass", "Learners"]] = tbl[["Pass", "Learners"]].astype(int)
+    cols = ["Dataset", "Task", "Structured", "Unstructured", "Joint", "Delta_Joint", "Pass", "Learners"]
+    return tbl[cols].sort_values("Delta_Joint", ascending=False).reset_index(drop=True)
 
 
 def _to_latex_extra_datasets(tbl_img: pd.DataFrame, tbl_txt: pd.DataFrame) -> str:
-    assert len(tbl_img) == len(tbl_txt), "The two panels sit side by side"
     header = (
-        "\\begin{table*}[h]\n\\centering\n"
+        "\\begin{table*}[p]\n\\centering\n"
         "\\caption{Datasets released alongside MulTaBench, admitted on \\textit{Joint Signal} "
-        "alone. $\\Delta_{\\text{Joint}}$ is the median over the 5 curation learners; Pass counts "
-        "the learners for which it exceeds $\\delta$. The \\textit{Task-awareness} condition was "
-        "not evaluated for these datasets.}\n"
+        "alone. Structured, Unstructured and Joint are the mean score over the curation learners "
+        "under each condition, AUC for classification and $R^2$ for regression. "
+        "$\\Delta_{\\text{Joint}}$ is the median of Joint minus the better unimodal condition, and "
+        "Pass counts the learners for which it exceeds $\\delta$, out of those evaluated. The "
+        "\\textit{Task-awareness} condition was not evaluated for these datasets.}\n"
         "\\label{tab:extra_datasets}\n"
-        "\\setlength{\\tabcolsep}{4pt}\\small\n"
-        "\\begin{tabular}{l c r c l c r c}\n\\toprule\n"
-        "\\multicolumn{4}{c}{\\textit{Image-Tabular}} & "
-        "\\multicolumn{4}{c}{\\textit{Text-Tabular}} \\\\\n"
-        "\\cmidrule(lr){1-4}\\cmidrule(lr){5-8}\n"
-        "\\textbf{Dataset} & Task & $\\Delta_{\\text{Joint}}$ & Pass & "
-        "\\textbf{Dataset} & Task & $\\Delta_{\\text{Joint}}$ & Pass \\\\\n\\midrule\n"
+        "\\setlength{\\tabcolsep}{5pt}\\small\n"
+        "\\begin{tabular}{l c r r r r c}\n\\toprule\n"
+        "\\textbf{Dataset} & Task & Structured & Unstructured & Joint & "
+        "$\\Delta_{\\text{Joint}}$ & Pass \\\\\n"
     )
-    rows = [
-        f"{a['Dataset']} & {a['Task']} & {a['Delta_Joint']:.3f} & {a['Pass']}/5 & "
-        f"{b['Dataset']} & {b['Task']} & {b['Delta_Joint']:.3f} & {b['Pass']}/5 \\\\"
-        for (_, a), (_, b) in zip(tbl_img.iterrows(), tbl_txt.iterrows())
-    ]
-    return header + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n\\end{table*}"
+
+    def section(title: str, tbl: pd.DataFrame) -> str:
+        rows = [
+            f"{r['Dataset']} & {r['Task']} & {r['Structured']:.3f} & {r['Unstructured']:.3f} & "
+            f"{r['Joint']:.3f} & {r['Delta_Joint']:.3f} & {r['Pass']}/{r['Learners']} \\\\"
+            for _, r in tbl.iterrows()
+        ]
+        mean = (f"\\textit{{Mean}} & & {tbl['Structured'].mean():.3f} & "
+                f"{tbl['Unstructured'].mean():.3f} & {tbl['Joint'].mean():.3f} & "
+                f"{tbl['Delta_Joint'].median():.3f} & \\\\")
+        return (f"\\midrule\n\\multicolumn{{7}}{{c}}{{\\textit{{{title}}}}} \\\\\n\\midrule\n"
+                + "\n".join(rows) + "\n\\cmidrule(lr){3-6}\n" + mean)
+
+    return (header + section("Image-Tabular", tbl_img) + "\n" + section("Text-Tabular", tbl_txt)
+            + "\n\\bottomrule\n\\end{tabular}\n\\end{table*}")
 
 
 # ---------------------------------------------------------------------------
@@ -955,9 +968,13 @@ def display_paper_production():
         st.caption("Text-tabular")
         st.dataframe(extra_txt, use_container_width=True, hide_index=True)
         for _label, _tbl in [("image", extra_img), ("text", extra_txt)]:
+            _partial = _tbl.loc[_tbl["Learners"] < 5, "Dataset"].tolist()
             st.caption(f"{_label}: {len(_tbl)} datasets, "
                        f"median delta {_tbl['Delta_Joint'].median():.3f}, "
-                       f"{int((_tbl['Pass'] == 5).sum())} unanimous")
+                       f"{int((_tbl['Pass'] == _tbl['Learners']).sum())} unanimous, "
+                       f"{int(((_tbl['Pass'] == 4) & (_tbl['Learners'] == 5)).sum())} on 4 of 5, "
+                       f"{int(((_tbl['Pass'] == 3) & (_tbl['Learners'] == 5)).sum())} on 3 of 5"
+                       + (f" | fewer than 5 learners run: {_partial}" if _partial else ""))
         with st.expander("📋 LaTeX source"):
             st.code(_to_latex_extra_datasets(extra_img, extra_txt), language="latex")
         st.divider()
