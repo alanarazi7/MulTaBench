@@ -305,3 +305,43 @@ to get a real page count.
 
 - [ ] `checklist.tex` new-assets answer begins `Justification: Justification:`. Fix on the next
       paper branch.
+
+---
+
+# Alan's Manual TODOs
+
+- [ ] Clarify we are maybe not a pure benchmark: "We would like to emphasize its purpose:
+      MulTaBench is not intended as a neutral ranking benchmark for arbitrary multimodal tabular
+      models, but is better framed as a diagnostic benchmark for studying tasks where fusion of
+      modality-based representations is required and target-aware unstructured representations
+      are necessary." This could be intro/discussion material. "Our work establishes the need for
+      Target-Aware Representations (TAR), providing a dedicated benchmark to evaluate solutions
+      for it. A true multimodal tabular architecture should excel on MulTaBench while remaining
+      strong on simpler MMTL tasks." -> supports the same, and thus we also release extended.
+- [ ] Add STRABLE reference to the paper, as well as BeyondArena. Both should be considered
+      concurrent work for text-tabular. Similarly, VT-Bench for images.
+- [ ] Make a clear justification for the release of new datasets. Consider the phrasing such as
+      "Datasets where Target-Aware Representations do not outperform Joint Frozen remain valuable,
+      as they represent settings in which frozen encoders already provide sufficient task-relevant
+      information and the main challenge lies in multimodal fusion rather than encoder adaptation."
+      somewhere.
+- [ ] Add analysis of voting correlations between pairs of learners. [Reviewer 1, Weakness #2 +
+      Question #2]
+- [ ] Add committee analysis - "committee simulation" - % acceptance had we used 5 different
+      models.
+- [ ] "The acceptance threshold appears somewhat arbitrary" -> show robustness analysis to
+      Performance margin threshold and to Voting Consensus Threshold
+- [ ] Effect Size (Weakness #1 + Question #1) -> consider mentioning the effect size analysis
+      somewhere. I think it should appear in the results.
+- [ ] For Table 9, how many image-tabular datasets have an individually significant TAR>Frozen
+      gain (per-dataset CIs)? Given the +0.022 mean? ---> same, significance should appear in main
+      results+appendix.
+- [ ] ELO Rating (Question #3) --> add Elos to appendix.
+- [ ] Bimodal vs Trimodal (Weakness #2 + Question #1) --> emphasize more trimodality. Consider
+      relaxing the writing / condition for it, and even make it more clear in the intro. "In
+      hindsight, these criteria may have been overly restrictive; for instance, while our original
+      setup required both text and images to show Task-Awareness gains, requiring Task-Awareness
+      in just one unstructured modality would yield a broader trimodal collection. In fact, for
+      all 8 of these datasets, both modalities pass the Joint Signal criteria, while the images
+      alone satisfy the Task-Awareness criterion. Such relaxation could allow us to declare that
+      MulTaBench already features 8 Trimodal datasets."
