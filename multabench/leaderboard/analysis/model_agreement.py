@@ -4,8 +4,8 @@ Model committee agreement analysis @ δ=0.001
 Computes pairwise agreement on pass/fail decisions across the 56-dataset text-tabular pool.
 Agreement is measured as the percentage of datasets where two models agree on whether
 both conditions hold:
-  - Delta_Joint     = mean(all) - max(mean(no_text), mean(text_only)) > δ
-  - Delta_Awareness = mean(ft) - mean(all) > δ
+  - Delta_Joint     = mean(all) - max(mean(no_text), mean(text_only)) >= δ
+  - Delta_Awareness = mean(ft) - mean(all) >= δ
 
 Run standalone: `python -m multabench.leaderboard.analysis.model_agreement`
 """

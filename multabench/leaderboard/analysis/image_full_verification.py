@@ -19,7 +19,7 @@ import pandas as pd
 
 from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, _MODEL_LABELS
 from multabench.leaderboard.analysis.pass_matrix import (
-    DELTA_DEFAULT, IMAGE_JOINT_STATES, compute_joint_delta,
+    DELTA_DEFAULT, IMAGE_JOINT_STATES, compute_joint_delta, passes_delta,
 )
 
 _RESULTS = join(dirname(__file__), "..", "results")
@@ -60,7 +60,7 @@ def verdict(runs: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
         rows.append({
             "dataset": dataset, "model": model,
             "non": means["non"], "img": means["img"], "all": means["all"],
-            "delta_joint": round(delta_joint, 4), "joint_pass": delta_joint > delta,
+            "delta_joint": round(delta_joint, 4), "joint_pass": passes_delta(delta_joint, delta),
         })
     df = pd.DataFrame(rows)
     per_dataset = df.groupby("dataset")["joint_pass"].sum().rename("joint_pass_5")

@@ -18,13 +18,12 @@ from os.path import dirname, join
 import pandas as pd
 
 from multabench.leaderboard.analysis.committee_panel_pass_rates import panel_pass_rates
-from multabench.leaderboard.analysis.pass_matrix import build_pass_matrix
+from multabench.leaderboard.analysis.pass_matrix import DELTA_DEFAULT, build_pass_matrix
 
 _SCORES_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity", "pool_scores_long.csv")
 _OUT_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity", "committee_delta_sweep.csv")
 
-DELTA_DEFAULT = 0.001
-DELTAS = [0.0, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05]
+DELTAS = [0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05]
 
 
 def delta_sweep(df: pd.DataFrame, deltas=DELTAS) -> pd.DataFrame:

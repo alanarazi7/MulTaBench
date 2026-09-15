@@ -72,10 +72,18 @@ def state_means(scores: pd.DataFrame, states: tuple = _STATES) -> pd.Series:
 def _exact(delta: float) -> float:
     """A delta between 3-decimal means is a multiple of 0.001, so bring it back to one.
 
-    Left as raw float subtraction, 0.251 - 0.250 is 0.0010000000000000009, and a tie at delta
-    passes a `> delta` test that the criterion says it should fail.
+    Left as raw float subtraction, 0.251 - 0.250 is 0.0010000000000000009 and 0.502 - 0.501 is
+    0.0009999999999999454, so a tie at delta would be decided by binary representation.
     """
     return round(float(delta), 6)
+
+
+def passes_delta(value: float, delta: float = DELTA_DEFAULT) -> bool:
+    """The single comparison behind every acceptance decision: a condition passes once its Delta
+    reaches delta. Means are rounded to 3 decimals, so an exact tie at delta is the smallest
+    improvement the criterion can express and counts as a pass.
+    """
+    return bool(_exact(value) >= delta)
 
 
 def compute_deltas(scores: pd.DataFrame) -> tuple[float, float]:
@@ -107,22 +115,22 @@ def joint_signal_passes(scores: pd.DataFrame, delta: float = DELTA_DEFAULT) -> b
     MulTaBench-Full admission condition -- it rejects pure-NLP tasks (the unstructured modality
     suffices) and redundant-text tasks (the structured modality suffices)."""
     delta_joint, _ = compute_deltas(scores)
-    return delta_joint > delta
+    return passes_delta(delta_joint, delta)
 
 
 def awareness_passes(scores: pd.DataFrame, delta: float = DELTA_DEFAULT) -> bool:
     """Tabular Awareness: fine-tuning the encoder inside the joint model beats freezing it."""
     _, delta_awareness = compute_deltas(scores)
-    return delta_awareness > delta
+    return passes_delta(delta_awareness, delta)
 
 
 def passes(scores: pd.DataFrame, delta: float = DELTA_DEFAULT) -> bool:
     """MulTaBench-Core admission for one (model, dataset): Joint Signal AND Awareness.
 
-        passes <=> Delta_Joint > delta AND Delta_Awareness > delta
+        passes <=> Delta_Joint >= delta AND Delta_Awareness >= delta
     """
     delta_joint, delta_awareness = compute_deltas(scores)
-    return bool(delta_joint > delta and delta_awareness > delta)
+    return passes_delta(delta_joint, delta) and passes_delta(delta_awareness, delta)
 
 
 def build_pass_matrix(df: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:

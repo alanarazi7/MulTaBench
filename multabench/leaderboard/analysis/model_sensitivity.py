@@ -7,7 +7,7 @@ curation learners?
   accept vote, across all 56 pool datasets. Directly answers "could TabPFNv2 and TabPFN-2.5
   vote as a bloc?".
 - Extended-model generalization: using the 12-model Frozen/TAR-only pool data, check whether
-  Delta_Awareness > delta holds for models beyond the original 5 (task-awareness half only --
+  Delta_Awareness >= delta holds for models beyond the original 5 (task-awareness half only --
   no Delta_Joint data exists for these models on the pool).
 
 Run standalone: `python -m multabench.leaderboard.analysis.model_sensitivity`
@@ -23,6 +23,7 @@ from multabench.leaderboard.analysis.curation_accept import (
     CURATION_MODELS, DELTA_DEFAULT, EXTRA_MODELS, RHO_DEFAULT,
     accept_set, compute_deltas, load_pool_10model, load_pool_5model, per_model_pass,
 )
+from multabench.leaderboard.analysis.pass_matrix import passes_delta
 
 _OUT_DIR = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity")
 
@@ -182,14 +183,14 @@ def real_per_model_accept_rate(deltas: pd.DataFrame, delta: float = DELTA_DEFAUL
 
 
 def extended_model_awareness(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
-    """Fraction of pool datasets with Delta_Awareness > delta alone, per model -- isolates the
+    """Fraction of pool datasets with Delta_Awareness >= delta alone, per model -- isolates the
     task-awareness property specifically, decoupled from joint signal. A distinct diagnostic
     from real_per_model_accept_rate() (which requires both conditions)."""
     rows = []
     for model in sorted(deltas["model"].unique()):
         sub = deltas[deltas["model"] == model]
         n = len(sub)
-        n_pass = (sub["delta_awareness"] > delta).sum()
+        n_pass = sum(passes_delta(v, delta) for v in sub["delta_awareness"])
         rows.append({
             "model": model,
             "is_curation_model": model in CURATION_MODELS,
@@ -348,7 +349,7 @@ def main():
 
     extended = extended_model_awareness(deltas_10)
     extended.to_csv(join(_OUT_DIR, "model_extended_awareness.csv"), index=False)
-    print("\n=== Extended-model task-awareness generalization (Delta_Awareness > delta only) ===")
+    print("\n=== Extended-model task-awareness generalization (Delta_Awareness >= delta only) ===")
     print(extended.to_string(index=False))
 
     real_alt = real_alternative_panel(deltas_10)

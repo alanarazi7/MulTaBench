@@ -2,7 +2,7 @@
 
     Delta_Joint(m)     = S_m(Joint Frozen) - max(S_m(UnimodalStructured), S_m(UnimodalUnstructured))
     Delta_Awareness(m) = S_m(Joint TAR) - S_m(Joint Frozen)
-    Accept(D) <=> |{m in M : Delta_Joint(m) > delta AND Delta_Awareness(m) > delta}| >= rho * |M|
+    Accept(D) <=> |{m in M : Delta_Joint(m) >= delta AND Delta_Awareness(m) >= delta}| >= rho * |M|
 
 Used by the three sensitivity-analysis scripts and by the leaderboard's Sensitivity tab.
 """
@@ -11,6 +11,8 @@ from os.path import dirname, join
 from typing import Iterable
 
 import pandas as pd
+
+from multabench.leaderboard.analysis.pass_matrix import DELTA_DEFAULT, passes_delta
 
 _RESULTS = join(dirname(__file__), "..", "results")
 _CORPUS_CSV = join(_RESULTS, "tabstar_corpus", "text_50_datasets.csv")
@@ -64,7 +66,6 @@ _CONDITION_MAP = {"no_text": "UnimodalStructured", "text_only": "UnimodalUnstruc
                    "all": "JointFrozen", "ft": "JointTAR"}
 _AWARENESS_ONLY_MAP = {"all": "JointFrozen", "ft": "JointTAR"}
 
-DELTA_DEFAULT = 0.001
 RHO_DEFAULT = 3 / 5
 
 
@@ -222,9 +223,10 @@ def compute_deltas_awareness_only(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def per_model_pass(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
-    """[dataset, model, passes] -- passes iff both deltas exceed delta."""
+    """[dataset, model, passes] -- passes iff both deltas reach delta."""
     out = deltas.copy()
-    out["passes"] = (out["delta_joint"] > delta) & (out["delta_awareness"] > delta)
+    out["passes"] = [passes_delta(j, delta) and passes_delta(a, delta)
+                     for j, a in zip(out["delta_joint"], out["delta_awareness"])]
     return out[["dataset", "model", "passes"]]
 
 

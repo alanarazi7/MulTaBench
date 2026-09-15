@@ -17,9 +17,11 @@ from multabench.leaderboard.analysis.curation_accept import (
 
 _OUT_DIR = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity")
 
-DELTAS = [0.0, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1]
+# Starts at the loosest threshold the criterion can express: means are rounded to 3 decimals,
+# so delta=0 would accept a joint model that merely ties its unimodal best.
+DELTAS = [0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1]
 # Fine-grained range used only to locate each dataset's flip point.
-_BORDERLINE_RANGE = [i / 10000 for i in range(0, 101)]  # 0.0000 .. 0.0100 step 0.0001
+_BORDERLINE_RANGE = [i / 10000 for i in range(1, 101)]  # 0.0001 .. 0.0100 step 0.0001
 
 
 def _jaccard(a: set, b: set) -> float:
