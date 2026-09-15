@@ -1,8 +1,8 @@
 # MulTaBench
 
-Multimodal tabular benchmark with image and text modalities. MulTaBench is 20 image-tabular and
-20 text-tabular datasets; 40 further datasets are released alongside it, for 80 in total.
-Evaluates tabular learners with optional DINO/E5 LoRA fine-tuning.
+Multimodal tabular benchmark with image and text modalities: 20 image-tabular and 20 text-tabular
+datasets, with 40 further datasets released alongside them, 80 in total. Evaluates tabular
+learners with optional DINO/E5 LoRA fine-tuning.
 
 **Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616)  
 **Datasets**: [kaggle.com/chico89](https://www.kaggle.com/chico89/datasets)
@@ -12,124 +12,52 @@ Evaluates tabular learners with optional DINO/E5 LoRA fine-tuning.
 ```bash
 source init.sh           # installs Python 3.11, creates .venv, installs deps via uv
 source .venv/bin/activate
-cp .env.example .env     # fill in your credentials
+cp .env.example .env     # WANDB_API_KEY, WANDB_ENTITY, HF_TOKEN, KAGGLE_USERNAME, KAGGLE_KEY
 ```
 
-Credentials (`.env`):
-```
-WANDB_API_KEY=...
-WANDB_ENTITY=...
-HF_TOKEN=...
-KAGGLE_USERNAME=...
-KAGGLE_KEY=...
-```
-
-## Running the Benchmark
+## Running the benchmark
 
 ```bash
-python benchmark.py \
-    --model light \
-    --dataset_name MUL_IMAGE_PETFINDER \
-    --fold 0 \
-    --multimodal_state "all"
+python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --multimodal_state all
 ```
 
-With LoRA fine-tuning:
-```bash
-python benchmark.py \
-    --model tabm \
-    --dataset_name MUL_IMAGE_PETFINDER \
-    --fold 0 \
-    --multimodal_state "all 🔥" \
-    --tune_dino yes --dino_lr 0.001 --dino_rank 16 --dino_img_layers 3 \
-    --tune_e5 yes --e5_lr 1e-4 --e5_rank 16 --e5_text_layers 3
-```
+`--model`: `light` (LightGBM), `cat`, `xgb`, `rf`, `realmlp`, `tabm`, `tabicl`, `tabdpt`,
+`tabpfnv2`, `tabstar`, `autogluon`, `contexttab`. Append `_opt` for the tuned variant.
 
-### `--model` options
-
-| Key | Model |
-|-----|-------|
-| `light` | LightGBM |
-| `cat` | CatBoost |
-| `xgb` | XGBoost |
-| `rf` | Random Forest |
-| `realmlp` | RealMLP |
-| `tabm` | TabM |
-| `tabicl` | TabICL v2 |
-| `tabdpt` | TabDPT |
-| `tabpfnv2` | TabPFN v2 |
-| `tabstar` | TabSTAR |
-| `autogluon` | AutoGluon Multimodal |
-| `contexttab` | ConTextTab |
-
-Append `_opt` for hyperparameter-optimized variants (e.g. `light_opt`).
-
-### `--multimodal_state` options
-
-| Value | Features used |
-|-------|---------------|
-| `all` | tabular + image + text |
-| `non` | tabular + text only |
-| `img` | image only |
-| `txt` | text only |
-| `no_img` | tabular only (no image) |
-| `no_txt` | tabular + image only |
-| `all 🔥` | all features + fine-tuned encoders |
-| `ft` | tabular + fine-tuned image + fine-tuned text |
+`--multimodal_state` picks which features are active: `all` (tabular + image + text), `non`
+(tabular + text), `img`, `txt`, `no_img`, `no_txt`, `ft` (tabular + fine-tuned encoders), `all 🔥`
+(all features + fine-tuned encoders). Fine-tuning is configured with `--tune_dino yes --dino_lr
+--dino_rank --dino_img_layers` and the matching `--tune_e5` flags.
 
 ## Datasets
 
-80 datasets hosted on Kaggle under `multabench-*`, downloaded automatically via `kagglehub`.
-Names follow `{TASK}_{MODALITY}_{NAME}` where task is `BIN`/`MUL`/`REG`. The registry is
-`MulTaBenchDatasetID` (`multabench/datasets/all_datasets.py`); the benchmark lists live in
-`multabench/datasets/all_multabench_datasets.py`.
+Downloaded automatically via `kagglehub` from the `chico89` Kaggle account. Core datasets use the
+slug `multabench-<name>`, the 40 released alongside use `multabench-full-<name>`; a dataset's
+exact slug is its `SLUG_BASE` in `multabench/benchmark/datasets/<DATASET_ID>.py`.
 
-**`MULTABENCH_CORE_IMAGE`** (20): celebrity attractiveness, hateful memes, mammography, CheXpert, CBIS-DDSM, glaucoma, CS:GO skins, flower bouquets, HuBMAP, Instagram engagement, PetFinder adoption, zooplankton, Amazon bestsellers, Amazon packages, H&M fashion, Khaadi clothes, Letterboxd movies, mango mass, photography bots, painting price.
+| What | Where |
+|------|-------|
+| Dataset registry (`MulTaBenchDatasetID`, `{TASK}_{MODALITY}_{NAME}`) | `multabench/datasets/all_datasets.py` |
+| Membership lists, 20 each: `MULTABENCH_CORE_IMAGE`, `MULTABENCH_CORE_TEXT`, `MULTABENCH_FULL_IMAGE_EXTRA`, `MULTABENCH_FULL_TEXT_EXTRA` | `multabench/datasets/all_multabench_datasets.py` |
+| Curation recipe per dataset (target, features, loading) | `multabench/datasets/annotated/` |
+| Per-dataset properties (rows, classes, feature counts) | `multabench/leaderboard/results/datasets_summary{,_extra}.csv` |
 
-**`MULTABENCH_CORE_TEXT`** (20): fake job postings, Jigsaw toxicity, Kickstarter, data scientist salary, Michelin guide, product sentiment, Spotify genres, US accidents, wine reviews, women's clothing, baby products, book price, book readability, Mercari, Montgomery salaries, Rotten Tomatoes, SciMago, Vancouver salaries, video game sales, Zomato.
-
-The two `*_EXTRA` lists are the 40 datasets released alongside the benchmark. They are admitted on
+The two `*_EXTRA` lists are the datasets released alongside the benchmark. They are admitted on
 *Joint Signal* alone; the *Task-awareness* condition was never run on them, so their scores must
-not be pooled with the 40 MulTaBench datasets. They carry no tier name of their own.
-
-**`MULTABENCH_FULL_TEXT_EXTRA`** (20): uploaded as `multabench-full-*`. Polish wine, Korean drama, Saudi used cars, consumer complaints, Vivino Spain wine, chocolate bars, Anime-Planet, Pakistani used cars, Goodreads books, ramen ratings, OSHA injury, FIFA22 wages, California prices, WikiLiq spirits, American Eagle, Seattle Airbnb, news channel, IMDB genre, Melbourne Airbnb, box office. Four ship a quantile-binned target, which is why their names are `BIN_`/`MUL_` while their sources are `REG_`.
-
-**`MULTABENCH_FULL_IMAGE_EXTRA`** (20): OASIS Alzheimer's, Pinterest repins, HAM10000, Hearthstone, Minecraft mobs, PAD-UFES lesions, Pokemon height, Reddit memes, Airbnb NYC, DVM car prices, Flipkart discount, Goias apartments, Kamernet room size, Lahaina art auction, eMAG products, Sao Paulo apartments, SoCal houses, Tokopedia weight, watch tier, Zepto groceries.
+not be pooled with the 40 MulTaBench datasets, and they carry no tier name of their own. Four of
+them ship a quantile-binned target, so a `BIN_`/`MUL_` name can have a `REG_` source.
 
 ## Architecture
 
-```
-multabench/
-  datasets/       # dataset loading, curation, all_datasets enum
-  dino/           # DINO ViT image encoder + LoRA fine-tuning
-  e5/             # E5 text encoder + LoRA fine-tuning
-  preprocessing/  # feature detection, splits, PCA projection
-  finetune/       # training args for DINO/E5 fine-tuning
-  baselines/      # all model implementations + evaluation
-  benchmark/      # MulTaBench dataset loading (Kaggle-hosted)
-  leaderboard/    # Streamlit dashboard + result CSVs
-  scripts/        # standalone utility and figure scripts
-  utils/          # logging, I/O, metrics
-```
-
-- **Image encoder**: `facebook/dinov3-vits16-pretrain-lvd1689m` (ViT-S, 384-dim CLS token), optional LoRA on last N attention layers
+- **Image encoder**: `facebook/dinov3-vits16-pretrain-lvd1689m` (ViT-S, 384-dim CLS token), optional LoRA on the last N attention layers
 - **Text encoder**: `intfloat/e5-small-v2` (384-dim mean pool), columns formatted as `"passage: col_name: col_value"`
 - **PCA**: both encoders reduced to 30 components by default
 - **Splits**: 90/10 train/test (stratified for classification), max 2000 test examples
 
-## Scripts (`multabench/scripts/`)
-
-| Script | Purpose |
-|--------|---------|
-| `do_leaderboard.py` | Streamlit leaderboard dashboard |
-| `do_finetune_save.py` | Fine-tune and save DINO checkpoint |
-| `do_attention.py` | DINO attention map visualization |
-| `do_tagging.py` | Interactive dataset annotation tool |
-| `do_kaggle_prepare.py` | Prepare dataset for Kaggle upload |
-| `do_kaggle_upload.py` | Upload curated dataset to Kaggle |
-| `do_multabench_audit.py` | Validate all benchmark datasets |
-| `do_dataset_summary.py` | Dataset statistics summary |
-| `do_paper.py` | Paper figure production |
+Code lives under `multabench/`: `datasets/` and `benchmark/` (loading, curation, Kaggle upload),
+`dino/` `e5/` `finetune/` (encoders and LoRA), `preprocessing/`, `baselines/` (models and
+evaluation), `leaderboard/` (Streamlit dashboard and result CSVs), `scripts/` (`do_*.py`
+utilities, entry point `do_leaderboard.py`), `utils/`.
 
 ---
 
