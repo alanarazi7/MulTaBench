@@ -92,7 +92,7 @@ The two `*_EXTRA` lists are the 40 datasets released alongside the benchmark. Th
 *Joint Signal* alone; the *Task-awareness* condition was never run on them, so their scores must
 not be pooled with the 40 MulTaBench datasets. They carry no tier name of their own.
 
-**`MULTABENCH_FULL_TEXT_EXTRA`** (20): uploaded as `multabench-full-*`. Four ship a quantile-binned target, which is why their names are `BIN_`/`MUL_` while their sources are `REG_`.
+**`MULTABENCH_FULL_TEXT_EXTRA`** (20): uploaded as `multabench-full-*`. Polish wine, Korean drama, Saudi used cars, consumer complaints, Vivino Spain wine, chocolate bars, Anime-Planet, Pakistani used cars, Goodreads books, ramen ratings, OSHA injury, FIFA22 wages, California prices, WikiLiq spirits, American Eagle, Seattle Airbnb, news channel, IMDB genre, Melbourne Airbnb, box office. Four ship a quantile-binned target, which is why their names are `BIN_`/`MUL_` while their sources are `REG_`.
 
 **`MULTABENCH_FULL_IMAGE_EXTRA`** (20): OASIS Alzheimer's, Pinterest repins, HAM10000, Hearthstone, Minecraft mobs, PAD-UFES lesions, Pokemon height, Reddit memes, Airbnb NYC, DVM car prices, Flipkart discount, Goias apartments, Kamernet room size, Lahaina art auction, eMAG products, Sao Paulo apartments, SoCal houses, Tokopedia weight, watch tier, Zepto groceries.
 
@@ -151,14 +151,25 @@ main-text section carries the δ/ρ sensitivity and the repositioning, while Elo
 per-dataset significance tables go to the appendix. The relaxed trimodal criterion is adopted.
 Sequencing is datasets-first.
 
-## Track 1 — Datasets (start first; longest lead time)
+## Track 1 — Datasets (done, except the trimodal extension)
 
 Both halves are closed: 40 MulTaBench datasets plus 40 released alongside them, 80 in total,
-image 40 (20 CLS / 20 REG) and text 40 (20 CLS / 20 REG).
+image 40 (20 CLS / 20 REG) and text 40 (20 CLS / 20 REG). The 40 released alongside are now
+documented end to end, which was the longest-lead item on this list:
+
+- `datasets_summary.csv` and `datasets_summary_extra.csv` are regenerated (#43), with date
+  columns kept out of the text features, so the reported text counts match what the pipeline
+  actually encodes.
+- `paper_production.py` emits all three appendix property tables (core, additional joint signal,
+  additional properties) rather than leaving them hand-maintained (#39, #43).
+- All 80 datasets have a per-dataset description in the paper appendix, each a high-level
+  summary with no row or feature counts (`paper-multabench` #4 and #6; #7 is open for the
+  regenerated core table).
+
+One item remains:
 
 - [ ] **Extend the trimodal group toward ~15** (the rebuttal estimate for Full) by detecting text
       columns on the new image-tabular datasets.
-- [ ] **Regenerate `datasets_summary.csv`** and the appendix dataset table for 80 datasets.
 
 ## Track 2 — Analyses (consolidate what exists; fill the two real gaps)
 
@@ -266,15 +277,23 @@ to get a real page count.
 
 ## Core/Full and trimodal
 
-- [ ] **Update the remaining dataset counts** in `appendix.tex`: the per-dataset description
-      subsections and the dataset/results tables still describe 40. The main text, the abstract
-      and `checklist.tex` are done.
 - [ ] **Adopt the relaxed trimodal rule** in §4 and Appendix E: report **8 trimodal datasets**,
       keeping the strict-rule result (PetFinder, Amazon Packages) as a stricter sub-tier. Verify
       all 8 pass Joint Signal on both modalities before claiming it. Note that Full is expected
       to reach ~15.
 - [ ] Answer veTL's framing question explicitly: we do **not** treat MMTL as two separate bimodal
       problems.
+- [ ] **Reconcile the 9-vs-8 text-column mismatch.** Table 3 in the appendix counts **9**
+      image-tabular datasets with a text feature; §4 and Appendix E say **8**, and
+      `FULLY_MULTIMODAL_DATASET_CANDIDATES` lists 8. The ninth is **HubMAP HPA**. Its only
+      text-typed column is `rle`, the run-length encoded segmentation mask carried over from the
+      source segmentation competition: strings of integer pairs, missing for most tiles. The
+      semantic feature detector sees a high-cardinality object column and types it as text, so it
+      reaches the table but was never a trimodal candidate. Two ways out, neither taken yet:
+      qualify the prose (say 9 columns are typed as text, 8 of which are language), or drop `rle`
+      in the HubMAP curation, which would change that dataset's feature counts and so needs a
+      re-run. **Nothing about this is in the paper yet** — the paper still says 8 with no
+      explanation of the ninth.
 
 ## New appendix material
 
@@ -282,8 +301,6 @@ to get a real page count.
 - [ ] Per-dataset paired t-test with BH-FDR, naming the 3 non-significant datasets.
 - [ ] Pairwise model agreement matrix.
 - [ ] Committee simulation detail and the ρ / δ sweep tables.
-- [ ] A concise description per released dataset for the 40 companion datasets, matching the
-      per-dataset appendix that MulTaBench's 40 already have.
 - [ ] The image-tabular rejected pool, as a curation record.
 
 ## Small fixes found while mapping the paper
@@ -293,9 +310,6 @@ to get a real page count.
 - [ ] `\subsection{Computation Costs}` carries a `tab:costs` label; rename to `app:costs` (it is
       never referenced, and it collides conceptually with `tab:compute_costs`).
 - [ ] `checklist.tex` hardcodes "Section 7" for limitations; this goes stale once a section is added.
-- [ ] The appendix dataset table counts 9 image datasets with text columns while the prose says 8
-      (`FULLY_MULTIMODAL_DATASET_CANDIDATES` has 8, using a stricter text-column detector).
-      Reconcile the two definitions.
 - [ ] `paper_production.py` regenerates tables whose captions have since drifted from the
       hand-edited `.tex`, so regenerating will clobber caption edits. Note also that
       `_get_datasets_table_latex()` reads the dataset table *back out of* `appendix.tex`, so that
