@@ -1,63 +1,42 @@
 # MulTaBench
 
-Multimodal tabular benchmark with image and text modalities: 20 image-tabular and 20 text-tabular
-datasets, with 40 further datasets released alongside them, 80 in total. Evaluates tabular
-learners with optional DINO/E5 LoRA fine-tuning.
+A benchmark for multimodal tabular learning: tables whose columns include images or free text, not
+just numbers and categories. It is 20 image-tabular and 20 text-tabular curated datasets, with 40
+further datasets released alongside them, 80 in total. The benchmark evaluates tabular learners
+under a target-aware setting, where the image and text encoders are fine-tuned on the task rather
+than used frozen.
 
 **Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616)  
 **Datasets**: [kaggle.com/chico89](https://www.kaggle.com/chico89/datasets)
 
-## Setup
+## Getting started
 
 ```bash
-source init.sh           # installs Python 3.11, creates .venv, installs deps via uv
-source .venv/bin/activate
-cp .env.example .env     # WANDB_API_KEY, WANDB_ENTITY, HF_TOKEN, KAGGLE_USERNAME, KAGGLE_KEY
-```
+source init.sh && source .venv/bin/activate
+cp .env.example .env     # Weights & Biases, Hugging Face and Kaggle credentials
 
-## Running the benchmark
-
-```bash
 python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --multimodal_state all
 ```
 
-`--model`: `light` (LightGBM), `cat`, `xgb`, `rf`, `realmlp`, `tabm`, `tabicl`, `tabdpt`,
-`tabpfnv2`, `tabstar`, `autogluon`, `contexttab`. Append `_opt` for the tuned variant.
-
-`--multimodal_state` picks which features are active: `all` (tabular + image + text), `non`
-(tabular + text), `img`, `txt`, `no_img`, `no_txt`, `ft` (tabular + fine-tuned encoders), `all 🔥`
-(all features + fine-tuned encoders). Fine-tuning is configured with `--tune_dino yes --dino_lr
---dino_rank --dino_img_layers` and the matching `--tune_e5` flags.
+`benchmark.py` is the single entry point: it evaluates one model on one dataset and logs the
+result to Weights & Biases. `--help` lists the available models and the feature combinations each
+run can use, from tabular-only through fully multimodal with fine-tuned encoders.
 
 ## Datasets
 
-Downloaded automatically via `kagglehub` from the `chico89` Kaggle account. Core datasets use the
-slug `multabench-<name>`, the 40 released alongside use `multabench-full-<name>`; a dataset's
-exact slug is its `SLUG_BASE` in `multabench/benchmark/datasets/<DATASET_ID>.py`.
+Every dataset is hosted on the [`chico89`](https://www.kaggle.com/chico89/datasets) Kaggle account
+and downloaded on demand; the benchmark datasets are slugged `multabench-<name>` and the ones
+released alongside them `multabench-full-<name>`.
 
-| What | Where |
-|------|-------|
-| Dataset registry (`MulTaBenchDatasetID`, `{TASK}_{MODALITY}_{NAME}`) | `multabench/datasets/all_datasets.py` |
-| Membership lists, 20 each: `MULTABENCH_CORE_IMAGE`, `MULTABENCH_CORE_TEXT`, `MULTABENCH_FULL_IMAGE_EXTRA`, `MULTABENCH_FULL_TEXT_EXTRA` | `multabench/datasets/all_multabench_datasets.py` |
-| Curation recipe per dataset (target, features, loading) | `multabench/datasets/annotated/` |
-| Per-dataset properties (rows, classes, feature counts) | `multabench/leaderboard/results/datasets_summary{,_extra}.csv` |
+| What you are looking for | Where it is |
+|--------------------------|-------------|
+| Which datasets are in the benchmark | `multabench/datasets/all_multabench_datasets.py` |
+| A dataset's Kaggle slug and source | `multabench/benchmark/datasets/` |
+| How a dataset was curated | `multabench/datasets/annotated/` |
+| Size, task and feature counts per dataset | `multabench/leaderboard/results/datasets_summary{,_extra}.csv` |
 
-The two `*_EXTRA` lists are the datasets released alongside the benchmark. They are admitted on
-*Joint Signal* alone; the *Task-awareness* condition was never run on them, so their scores must
-not be pooled with the 40 MulTaBench datasets, and they carry no tier name of their own. Four of
-them ship a quantile-binned target, so a `BIN_`/`MUL_` name can have a `REG_` source.
-
-## Architecture
-
-- **Image encoder**: `facebook/dinov3-vits16-pretrain-lvd1689m` (ViT-S, 384-dim CLS token), optional LoRA on the last N attention layers
-- **Text encoder**: `intfloat/e5-small-v2` (384-dim mean pool), columns formatted as `"passage: col_name: col_value"`
-- **PCA**: both encoders reduced to 30 components by default
-- **Splits**: 90/10 train/test (stratified for classification), max 2000 test examples
-
-Code lives under `multabench/`: `datasets/` and `benchmark/` (loading, curation, Kaggle upload),
-`dino/` `e5/` `finetune/` (encoders and LoRA), `preprocessing/`, `baselines/` (models and
-evaluation), `leaderboard/` (Streamlit dashboard and result CSVs), `scripts/` (`do_*.py`
-utilities, entry point `do_leaderboard.py`), `utils/`.
+The 40 datasets released alongside the benchmark were admitted on a weaker criterion and carry no
+tier name of their own, so their scores must not be pooled with the 40 MulTaBench datasets.
 
 ---
 
