@@ -1,0 +1,11 @@
+model,n_pass,n_datasets,frac_pass,is_curation_model
+LightGBM,30,56,0.536,True
+TabPFNv2,28,54,0.519,True
+CatBoost,28,56,0.5,True
+XGBoost,28,56,0.5,False
+TabDPT,27,56,0.482,False
+RandomForest,26,56,0.464,False
+RealMLP,26,56,0.464,False
+TabM,25,56,0.446,True
+TabICLv2,23,56,0.411,False
+TabPFN-2.5,18,54,0.333,True

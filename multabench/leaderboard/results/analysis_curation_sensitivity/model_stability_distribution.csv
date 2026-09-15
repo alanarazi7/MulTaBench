@@ -1,0 +1,7 @@
+frac_subsets_accept,n_datasets
+0% (always rejected),13
+1-25%,20
+26-50%,0
+51-75%,5
+76-99%,7
+100% (always accepted),11
