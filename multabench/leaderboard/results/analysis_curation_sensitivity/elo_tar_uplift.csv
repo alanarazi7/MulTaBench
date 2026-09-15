@@ -1,0 +1,13 @@
+model,type,elo_frozen,elo_tar,tar_uplift
+RandomForest,embedding,1000,1319,319
+XGBoost,embedding,1009,1278,269
+CatBoost,embedding,1363,1622,259
+LightGBM,embedding,1197,1449,252
+TabM,embedding,1509,1714,205
+TabPFNv2,embedding,1495,1698,203
+TabSTAR (Image),e2e,1306,1498,192
+TabPFN-2.5,embedding,1727,1916,189
+RealMLP,embedding,1288,1468,180
+ConTextTab (Image),e2e,1476,1640,164
+TabICLv2,embedding,1774,1910,136
+TabDPT,embedding,1438,1566,128

@@ -20,11 +20,11 @@ Design choices (all easy to revise):
 Two leaderboards are produced:
 - TAR-only (elo_leaderboard.csv): each of the 13 models once, at its default config -- the
   clean "which model is best" ranking.
-- Frozen-vs-TAR variants (elo_frozen_vs_tar.csv): the 10 embedding models each split into a
-  "(Frozen)" and a "(TAR)" competitor, plus the 3 E2E models as single entries (23 total),
-  anchored to RandomForest (Frozen) = 1000. This expresses the paper's core claim in Elo
-  terms -- every embedding model's TAR variant outranks its own Frozen variant -- and reports
-  the per-model TAR uplift in Elo points.
+- Frozen-vs-TAR variants (elo_frozen_vs_tar.csv): each embedding model split into a
+  "(Frozen)" and a "(TAR)" competitor, TabSTAR and ConTextTab split by modality as well, and
+  AutoGluon-MM as a single entry, anchored to RandomForest (Frozen) = 1000. This expresses the
+  paper's core claim in Elo terms: every embedding model's TAR variant outranks its own Frozen
+  variant. The per-model uplift in Elo points is written to elo_tar_uplift.csv.
 
 Run standalone: `python -m multabench.leaderboard.analysis.elo_leaderboard`
 """
@@ -40,6 +40,7 @@ from sklearn.linear_model import LogisticRegression
 _RES = join(dirname(__file__), "..", "results")
 _OUT_CSV = join(_RES, "analysis_curation_sensitivity", "elo_leaderboard.csv")
 _OUT_VARIANT_CSV = join(_RES, "analysis_curation_sensitivity", "elo_frozen_vs_tar.csv")
+_OUT_UPLIFT_CSV = join(_RES, "analysis_curation_sensitivity", "elo_tar_uplift.csv")
 
 MODEL_LABELS = {
     "LightGBM 💡": "LightGBM", "CatBoost 😸": "CatBoost", "TabM Ⓜ️": "TabM",
@@ -266,6 +267,7 @@ def main():
         _print(lb)
         if label == "combined":
             up = tar_uplift(lb)
+            up.to_csv(_OUT_UPLIFT_CSV, index=False)
             print("\n  TAR uplift (Elo TAR - Elo Frozen), per model:")
             print(up.to_string(index=False))
             embedding_only = up[up["type"] == "embedding"]
