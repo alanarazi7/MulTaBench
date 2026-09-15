@@ -5,6 +5,11 @@ it of the 40 released Core datasets, image and text together, which is the quant
 reports. Same rule, same 5 curation learners, same Delta definitions; only the denominator
 differs.
 
+The scores come from the final benchmark runs, which are separate executions from the
+curation-phase runs the admission decisions were made on, so the baseline row is also a
+replication check on those decisions: benchmark_baseline_replication.csv records, per
+dataset, how many learners still vote to accept.
+
 The quorum is taken over the learners that actually ran on a dataset, so the two datasets
 TabPFNv2 and TabPFN-2.5 cannot handle are judged by their 3 eligible learners rather than
 being disqualified at rho = 1.
@@ -25,6 +30,7 @@ _RESULTS = join(dirname(__file__), "..", "results")
 _OUT_DIR = join(_RESULTS, "analysis_curation_sensitivity")
 _GRID_CSV = join(_OUT_DIR, "benchmark_threshold_grid.csv")
 _DELTAS_CSV = join(_OUT_DIR, "benchmark_deltas.csv")
+_REPLICATION_CSV = join(_OUT_DIR, "benchmark_baseline_replication.csv")
 
 # The image side names its unimodal conditions `non` and `img`; map them onto the text side's
 # names so one Delta computation serves both subsets.
@@ -71,6 +77,26 @@ def surviving(deltas: pd.DataFrame, delta: float, rho: float) -> set:
     return {d for d, (n_pass, n_eligible) in tally.iterrows() if n_pass >= rho * n_eligible}
 
 
+def baseline_replication(deltas: pd.DataFrame, delta: float = DELTA_DEFAULT,
+                         rho: float = 3 / 5) -> pd.DataFrame:
+    """[dataset, subset, n_pass, n_eligible, margin, accepted]: whether each released dataset
+    still clears the quorum on the benchmark runs, and by how much the closest non-voting
+    learner missed."""
+    rows = []
+    for (subset, dataset), sub in deltas.groupby(["subset", "dataset"]):
+        votes = [passes_delta(j, delta) and passes_delta(a, delta)
+                 for j, a in zip(sub["delta_joint"], sub["delta_awareness"])]
+        shortfalls = [min(j, a) for j, a, v in zip(sub["delta_joint"], sub["delta_awareness"], votes)
+                      if not v]
+        rows.append({
+            "dataset": dataset, "subset": subset,
+            "n_pass": sum(votes), "n_eligible": len(votes),
+            "closest_miss": round(max(shortfalls), 3) if shortfalls else None,
+            "accepted": sum(votes) >= rho * len(votes),
+        })
+    return pd.DataFrame(rows).sort_values(["subset", "n_pass", "dataset"]).reset_index(drop=True)
+
+
 def threshold_grid(deltas: pd.DataFrame, delta_values=DELTAS, rhos=RHOS) -> pd.DataFrame:
     rows = []
     for subset in ["image", "text", "all"]:
@@ -89,6 +115,13 @@ def main():
     deltas.to_csv(_DELTAS_CSV, index=False)
     print(f"Wrote {len(deltas)} (dataset, learner) deltas over "
           f"{deltas['dataset'].nunique()} datasets to {_DELTAS_CSV}")
+
+    replication = baseline_replication(deltas)
+    replication.to_csv(_REPLICATION_CSV, index=False)
+    n_ok = int(replication["accepted"].sum())
+    print(f"Wrote {len(replication)} replication rows to {_REPLICATION_CSV}")
+    print(f"Baseline (delta={DELTA_DEFAULT}, rho=3/5) reproduces {n_ok}/{len(replication)} admissions; "
+          f"misses: {replication.loc[~replication['accepted'], 'dataset'].tolist()}")
 
     grid = threshold_grid(deltas, rhos=sorted(set(RHOS) | set(RHO_HEADLINE)))
     grid.to_csv(_GRID_CSV, index=False)
