@@ -25,8 +25,7 @@ _SENSITIVITY_DIR = join(_RESULTS, "sensitivity")
 # more_baselines/*.csv covering the accepted-20 with Frozen/TAR (i.e. non-end-to-end models
 # that fit the frozen-embedding-vs-TAR framework). Excludes autogluon_mm.csv, contexttab.csv,
 # tabstar.csv -- those are end-to-end models with only a single 'all' condition, no separate
-# TAR variant, so they can't contribute a Delta_Awareness signal. tabfm.csv/tabpfnv3.csv were
-# removed upstream (models dropped from the panel, not in the paper).
+# TAR variant, so they can't contribute a Delta_Awareness signal.
 _MORE_BASELINES_NON_E2E_FILES = [
     "realmlp.csv", "tabdpt.csv", "xgboost.csv", "random_forest.csv", "tabiclv2.csv",
 ]
