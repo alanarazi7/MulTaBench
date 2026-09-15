@@ -1,0 +1,41 @@
+Dataset,Modality,Task,Classes,N,Struct.,Text cols,Img.
+California Prices,Text,CLS,2.0,37951,21,18,0
+IMDB Genre,Text,CLS,2.0,800,7,4,0
+OSHA Injury,Text,CLS,2.0,4847,13,3,0
+American Eagle,Text,CLS,5.0,22662,8,5,0
+Goodreads Books,Text,CLS,3.0,3967,6,8,0
+Box Office,Text,CLS,5.0,7408,10,9,0
+Consumer Complaints,Text,CLS,8.0,100000,11,5,0
+Korean Drama,Text,CLS,10.0,1647,3,6,0
+Airbnb Melbourne,Text,CLS,10.0,18316,68,20,0
+News Channel,Text,CLS,6.0,20284,16,1,0
+Airbnb Seattle,Text,REG,,3818,51,14,0
+Anime Planet,Text,REG,,14391,7,7,0
+Chocolate Bars,Text,REG,,1795,5,3,0
+FIFA22 Wages,Text,REG,,19178,27,1,0
+Ramen Ratings,Text,REG,,4105,2,2,0
+Used Cars Pakistan,Text,REG,,72655,6,3,0
+Used Cars Saudi,Text,REG,,8035,11,1,0
+WikiLiq Spirits,Text,REG,,12569,6,6,0
+Wine Poland,Text,REG,,2247,13,5,0
+Wine Vivino Spain,Text,REG,,8650,5,2,0
+OASIS Alzheimer's,Image,CLS,2.0,436,7,0,1
+Pinterest Repins,Image,CLS,2.0,1504,15,0,1
+HAM10000 Lesions,Image,CLS,7.0,7470,3,0,1
+Hearthstone Class,Image,CLS,11.0,4281,11,4,1
+Minecraft Mobs,Image,CLS,7.0,6089,7,0,1
+PAD-UFES Lesions,Image,CLS,6.0,1641,21,0,1
+Pokemon Height,Image,CLS,10.0,1077,27,4,1
+Reddit Memes,Image,CLS,7.0,4821,6,0,1
+Airbnb NYC,Image,REG,,16780,46,3,1
+DVM Car Prices,Image,REG,,100000,14,1,1
+Flipkart Discount,Image,REG,,60900,1,2,1
+Goias Apartments,Image,REG,,9830,73,1,1
+Kamernet Room Size,Image,REG,,1638,20,4,1
+Lahaina Art Auction,Image,REG,,968,6,2,1
+eMAG Products,Image,REG,,38294,2,0,1
+Sao Paulo Apartments,Image,REG,,23432,28,1,1
+SoCal Houses,Image,REG,,15474,4,2,1
+Tokopedia Weight,Image,REG,,1197,13,2,1
+Watch Tier,Image,REG,,1260,1,1,1
+Zepto Groceries,Image,REG,,13345,5,2,1

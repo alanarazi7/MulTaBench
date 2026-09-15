@@ -4,7 +4,7 @@ Generates paper-quality figures (PNG/PDF) and LaTeX tables from live data.
 """
 import io
 from os import listdir
-from os.path import dirname, join, expanduser
+from os.path import dirname, exists, join
 
 import matplotlib
 matplotlib.use("Agg")
@@ -13,16 +13,18 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from multabench.scripts.do_dataset_summary import _SUMMARY_CSV
+from multabench.scripts.do_dataset_summary import (
+    _SUMMARY_CSV,
+    _SUMMARY_EXTRA_CSV,
+    _FRIENDLY_NAMES_EXTRA_IMAGE,
+    _FRIENDLY_NAMES_EXTRA_TEXT,
+)
 from multabench.datasets.text_benchmarks import (
     AUTOML_MULTIMODAL_ACCEPTED, AUTOML_MULTIMODAL_REJECTED,
     VECTORIZING_ACCEPTED, VECTORIZING_REJECTED,
     CARTE_ACCEPTED, CARTE_REJECTED,
     TEXT_TAB_BENCH_ACCEPTED, TEXT_TAB_BENCH_REJECTED,
     ACCEPTED_TEXT_DATASETS, REJECTED_TEXT_DATASETS,
-)
-from multabench.datasets.all_multabench_datasets import (
-    MULTABENCH_FULL_IMAGE_EXTRA, MULTABENCH_FULL_TEXT_EXTRA,
 )
 
 from multabench.leaderboard.main_paper.curation_example import make_fig        as _make_curation_example_fig
@@ -104,53 +106,6 @@ _DATASET_LABELS = {
     "REG_TEXT_ZOMATO_RESTAURANTS":     "Zomato Restaurants",
 }
 
-# Display names for the datasets released alongside MulTaBench. Membership itself comes
-# from MULTABENCH_FULL_IMAGE_EXTRA and MULTABENCH_FULL_TEXT_EXTRA.
-_EXTRA_DATASET_LABELS = {
-    # image
-    "BIN_IMAGE_OASIS_ALZHEIMERS":     "OASIS Alzheimer's",
-    "BIN_IMAGE_PINTEREST_POPULAR":    "Pinterest Repins",
-    "MUL_IMAGE_HAM10000_LESION":      "HAM10000 Lesions",
-    "MUL_IMAGE_HEARTHSTONE_CLASS":    "Hearthstone Class",
-    "MUL_IMAGE_MINECRAFT":            "Minecraft Mobs",
-    "MUL_IMAGE_PAD_UFES_LESION":      "PAD-UFES Lesions",
-    "MUL_IMAGE_POKEMON_HEIGHT":       "Pokemon Height",
-    "MUL_IMAGE_REDDIT_MEMES":         "Reddit Memes",
-    "REG_IMAGE_AIRBNB_NYC":           "Airbnb NYC",
-    "REG_IMAGE_DVM_CAR":              "DVM Car Prices",
-    "REG_IMAGE_FLIPKART_RATIO":       "Flipkart Discount",
-    "REG_IMAGE_GOIAS_HOUSES":         "Goias Apartments",
-    "REG_IMAGE_KAMERNET_SIZE":        "Kamernet Room Size",
-    "REG_IMAGE_LAHAINA_AUCTION":      "Lahaina Art Auction",
-    "REG_IMAGE_ROMANIA_PRICE":        "eMAG Products",
-    "REG_IMAGE_SAO_PAULO_HOUSES":     "Sao Paulo Apartments",
-    "REG_IMAGE_SOCAL_HOUSES":         "SoCal Houses",
-    "REG_IMAGE_TOKOPEDIA_WEIGHT":     "Tokopedia Weight",
-    "REG_IMAGE_WATCH_TIER":           "Watch Tier",
-    "REG_IMAGE_ZEPTO_PRICE":          "Zepto Groceries",
-    # text
-    "BIN_TEXT_CALIFORNIA_PRICES":     "California Prices",
-    "BIN_TEXT_IMDB_GENRE":            "IMDB Genre",
-    "BIN_TEXT_OSHA_INJURY":           "OSHA Injury",
-    "MUL_TEXT_AMERICAN_EAGLE_PRICES": "American Eagle",
-    "MUL_TEXT_BOOKS_GOODREADS":       "Goodreads Books",
-    "MUL_TEXT_BOX_OFFICE":            "Box Office",
-    "MUL_TEXT_CONSUMER_COMPLAINT":    "Consumer Complaints",
-    "MUL_TEXT_KOREAN_DRAMA":          "Korean Drama",
-    "MUL_TEXT_MELBOURNE_AIRBNB":      "Airbnb Melbourne",
-    "MUL_TEXT_NEWS_CHANNEL":          "News Channel",
-    "REG_TEXT_AIRBNB_SEATTLE":        "Airbnb Seattle",
-    "REG_TEXT_ANIME_PLANET":          "Anime Planet",
-    "REG_TEXT_CHOCOLATE_BAR_RATINGS": "Chocolate Bars",
-    "REG_TEXT_FIFA22_WAGES":          "FIFA22 Wages",
-    "REG_TEXT_RAMEN_RATINGS":         "Ramen Ratings",
-    "REG_TEXT_USED_CAR_PAKISTAN":     "Used Cars Pakistan",
-    "REG_TEXT_USED_CAR_SAUDI":        "Used Cars Saudi",
-    "REG_TEXT_WIKILIQ_PRICES":        "WikiLiq Spirits",
-    "REG_TEXT_WINE_POLISH_MARKET":    "Wine Poland",
-    "REG_TEXT_WINE_VIVINO_SPAIN":     "Wine Vivino Spain",
-}
-
 _COSTS_ROOT = join(_RESULTS_ROOT, "costs")
 _COSTS_FILES = {
     ("IMAGE", "small"): "image_all.csv",
@@ -171,12 +126,6 @@ _AMAZON_TRI_CSV    = join(_RESULTS_ROOT, "tabular_image_text/REG_IMAGE_AMAZON_PA
 _AMAZON_COL_ORDER  = ["img", "txt", "non_txt", "non", "all", "ft", "ft-txt", "ft-img-ft-txt"]
 _AMAZON_COL_LABELS = ["I",   "T",   "S+I",    "S+T", "S+I+T", "S+I_TAR+T", "S+I+T_TAR", "S+I_TAR+T_TAR"]
 _AMAZON_MODEL_ORDER = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]
-
-_EXTRA_MEMBERS = {"IMAGE": MULTABENCH_FULL_IMAGE_EXTRA, "TEXT": MULTABENCH_FULL_TEXT_EXTRA}
-_EXTRA_JOINT_CSVS = {
-    "IMAGE": join(_RESULTS_ROOT, "analysis_curation_sensitivity/image_full_uploaded_joint_signal.csv"),
-    "TEXT":  join(_RESULTS_ROOT, "analysis_curation_sensitivity/text_full_uploaded_joint_signal.csv"),
-}
 
 
 # ---------------------------------------------------------------------------
@@ -585,13 +534,152 @@ def _make_datasets_table() -> pd.DataFrame:
     return df
 
 
+_PROPERTIES_CAPTION = (
+    "\\caption{{All {n} {what} Properties. \\textit{{Task}}: Classification (CLS) or "
+    "Regression (REG). \\textit{{Classes}}: number of target classes (for CLS). "
+    "\\textit{{N}}: total examples. \\textit{{Struct.}}: numerical + categorical features. "
+    "\\textit{{Text}}: free-text features. \\textit{{Img.}}: image features.}}"
+)
+
+
+def _escape_latex(name: str) -> str:
+    return name.replace("&", "\\&")
+
+
+def _properties_rows(df: pd.DataFrame, name_width: int) -> list[str]:
+    df = df.assign(_sort=df["Task"].map({"CLS": 0, "REG": 1}),
+                   _key=df["Dataset"].str.lower()).sort_values(["_sort", "_key"])
+    rows = []
+    for r in df.to_dict("records"):
+        rows.append(
+            f"{_escape_latex(r['Dataset']):<{name_width}} & {r['Task']} & "
+            f"{r['Classes']:>3} & {r['N']:>7,} & {r['Struct.']:>3} & "
+            f"{r['Text cols']:>2} & {r['Img.']} \\\\"
+        )
+    return rows
+
+
+def _to_latex_properties(df: pd.DataFrame, label: str, what: str, float_spec: str = "") -> str:
+    name_width = max(len(_escape_latex(n)) for n in df["Dataset"])
+    body = []
+    for modality, panel in (("Image", "Image-Tabular"), ("Text", "Text-Tabular")):
+        sub = df[df["Modality"] == modality]
+        if sub.empty:
+            continue
+        if body:
+            body.append("\\midrule")
+        body.append(f"\\multicolumn{{7}}{{l}}{{\\textit{{{panel} ({len(sub)} datasets)}}}} \\\\")
+        body.append("\\midrule")
+        body.extend(_properties_rows(sub, name_width))
+    return "\n".join([
+        f"\\begin{{table*}}{float_spec}",
+        "\\centering",
+        _PROPERTIES_CAPTION.format(n=len(df), what=what),
+        f"\\label{{{label}}}",
+        "\\footnotesize",
+        "\\begin{tabular}{llrrrrr}",
+        "\\toprule",
+        "Dataset & Task & Classes & $N$ & Struct. & Text & Img. \\\\",
+        "\\midrule",
+        *body,
+        "\\bottomrule",
+        "\\end{tabular}",
+        "\\end{table*}",
+    ])
+
+
 def _get_datasets_table_latex() -> str:
-    tex_path = expanduser("~/tabstar/paper-multabench/appendix.tex")
-    with open(tex_path) as f:
-        content = f.read()
-    start = content.find("\\begin{table*}")
-    end   = content.find("\\end{table*}") + len("\\end{table*}")
-    return content[start:end]
+    return _to_latex_properties(_make_datasets_table(), "tab:multabench_datasets",
+                                "MulTaBench Datasets")
+
+
+_EXTRA_JOINT_DIR = join(_RESULTS_ROOT, "analysis_curation_sensitivity")
+_EXTRA_JOINT_FILES = {
+    "Image": ("image_full_uploaded_joint_signal.csv", ("non", "img"), _FRIENDLY_NAMES_EXTRA_IMAGE),
+    "Text":  ("text_full_uploaded_joint_signal.csv", ("no_text", "text_only"), _FRIENDLY_NAMES_EXTRA_TEXT),
+}
+
+_EXTRA_RESULTS_CAPTION = (
+    "\\caption{Datasets released alongside MulTaBench, admitted on \\textit{Joint Signal}. "
+    "Structured, Unstructured and Joint are the mean score over the curation learners under each "
+    "condition, AUC for classification and $R^2$ for regression. $\\Delta_{\\text{Joint}}$ is the "
+    "median of Joint minus the better unimodal condition, and Pass counts the learners for which "
+    "it exceeds $\\delta$, out of those evaluated.}"
+)
+
+
+@st.cache_data
+def _make_extra_results_table() -> pd.DataFrame:
+    rows = []
+    for modality, (fname, (struct_col, unstruct_col), friendly) in _EXTRA_JOINT_FILES.items():
+        df = pd.read_csv(join(_EXTRA_JOINT_DIR, fname))
+        df = df[df["dataset"].isin(friendly)]
+        for ds_id, g in df.groupby("dataset"):
+            n_pass = int(g["joint_pass"].sum())
+            rows.append({
+                "Dataset":      friendly[ds_id],
+                "Modality":     modality,
+                "Task":         "REG" if ds_id.startswith("REG_") else "CLS",
+                "Structured":   round(g[struct_col].mean(), 3),
+                "Unstructured": round(g[unstruct_col].mean(), 3),
+                "Joint":        round(g["all"].mean(), 3),
+                "Delta":        round(g["delta_joint"].median(), 3),
+                "Pass":         f"{n_pass}/{len(g)}",
+                "_n_pass":      n_pass,
+            })
+    return pd.DataFrame(rows).sort_values(["Modality", "Delta", "_n_pass", "Dataset"],
+                                          ascending=[True, False, False, True])
+
+
+def _to_latex_extra_results(df: pd.DataFrame) -> str:
+    name_width = max(len(_escape_latex(n)) for n in df["Dataset"])
+    body = []
+    for modality, panel in (("Image", "Image-Tabular"), ("Text", "Text-Tabular")):
+        sub = df[df["Modality"] == modality]
+        if sub.empty:
+            continue
+        body.append("\\midrule")
+        body.append(f"\\multicolumn{{7}}{{c}}{{\\textit{{{panel}}}}} \\\\")
+        body.append("\\midrule")
+        for r in sub.to_dict("records"):
+            body.append(
+                f"{_escape_latex(r['Dataset']):<{name_width}} & {r['Task']} & "
+                f"{r['Structured']:.3f} & {r['Unstructured']:.3f} & {r['Joint']:.3f} & "
+                f"{r['Delta']:.3f} & {r['Pass']} \\\\"
+            )
+        body.append("\\cmidrule(lr){3-6}")
+        mean_label = "\\textit{Mean}".ljust(name_width)
+        body.append(
+            f"{mean_label} & & {sub['Structured'].mean():.3f} & "
+            f"{sub['Unstructured'].mean():.3f} & {sub['Joint'].mean():.3f} & "
+            f"{sub['Delta'].median():.3f} & \\\\"
+        )
+    return "\n".join([
+        "\\begin{table*}[p]",
+        "\\centering",
+        _EXTRA_RESULTS_CAPTION,
+        "\\label{tab:extra_datasets}",
+        "\\setlength{\\tabcolsep}{5pt}\\small",
+        "\\begin{tabular}{l c r r r r c}",
+        "\\toprule",
+        "\\textbf{Dataset} & Task & Structured & Unstructured & Joint & $\\Delta_{\\text{Joint}}$ & Pass \\\\",
+        *body,
+        "\\bottomrule",
+        "\\end{tabular}",
+        "\\end{table*}",
+    ])
+
+
+@st.cache_data
+def _make_extra_datasets_table() -> pd.DataFrame:
+    df = pd.read_csv(_SUMMARY_EXTRA_CSV)
+    df["Classes"] = df["Classes"].apply(lambda x: str(int(x)) if pd.notna(x) else "--")
+    return df
+
+
+def _get_extra_datasets_table_latex() -> str:
+    return _to_latex_properties(_make_extra_datasets_table(), "tab:extra_datasets_properties",
+                                "Additional Released Datasets", float_spec="[p]")
 
 
 def _to_latex_win_rate(tbl: pd.DataFrame) -> str:
@@ -712,49 +800,6 @@ def _to_latex_text_curation_rates(tbl: pd.DataFrame) -> str:
             rows.append(f"{name} & {cand} & {acc} & {rate_tex} \\\\")
     body = "\n".join(rows[:4]) + "\n\\midrule\n" + rows[4]
     return header + body + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
-
-
-def _make_extra_datasets_table(modality: str) -> pd.DataFrame:
-    names = {d.name for d in _EXTRA_MEMBERS[modality]}
-    df = pd.read_csv(_EXTRA_JOINT_CSVS[modality])
-    missing = names - set(df["dataset"])
-    assert not missing, f"{modality}: no joint-signal scores for {sorted(missing)}"
-    tbl = (df[df["dataset"].isin(names)].groupby("dataset")
-           .agg(delta=("delta_joint", "median"), passes=("joint_pass", "sum"))
-           .reset_index())
-    tbl["Dataset"] = tbl["dataset"].map(_EXTRA_DATASET_LABELS)
-    unlabeled = sorted(tbl.loc[tbl["Dataset"].isna(), "dataset"])
-    assert not unlabeled, f"{modality}: no display label for {unlabeled}"
-    tbl["Task"] = ["REG" if d.startswith("REG_") else "CLS" for d in tbl["dataset"]]
-    tbl = tbl.rename(columns={"delta": "Delta_Joint", "passes": "Pass"})
-    tbl["Pass"] = tbl["Pass"].astype(int)
-    return (tbl[["Dataset", "Task", "Delta_Joint", "Pass"]]
-            .sort_values("Delta_Joint", ascending=False).reset_index(drop=True))
-
-
-def _to_latex_extra_datasets(tbl_img: pd.DataFrame, tbl_txt: pd.DataFrame) -> str:
-    assert len(tbl_img) == len(tbl_txt), "The two panels sit side by side"
-    header = (
-        "\\begin{table*}[h]\n\\centering\n"
-        "\\caption{Datasets released alongside MulTaBench, admitted on \\textit{Joint Signal} "
-        "alone. $\\Delta_{\\text{Joint}}$ is the median over the 5 curation learners; Pass counts "
-        "the learners for which it exceeds $\\delta$. The \\textit{Task-awareness} condition was "
-        "not evaluated for these datasets.}\n"
-        "\\label{tab:extra_datasets}\n"
-        "\\setlength{\\tabcolsep}{4pt}\\small\n"
-        "\\begin{tabular}{l c r c l c r c}\n\\toprule\n"
-        "\\multicolumn{4}{c}{\\textit{Image-Tabular}} & "
-        "\\multicolumn{4}{c}{\\textit{Text-Tabular}} \\\\\n"
-        "\\cmidrule(lr){1-4}\\cmidrule(lr){5-8}\n"
-        "\\textbf{Dataset} & Task & $\\Delta_{\\text{Joint}}$ & Pass & "
-        "\\textbf{Dataset} & Task & $\\Delta_{\\text{Joint}}$ & Pass \\\\\n\\midrule\n"
-    )
-    rows = [
-        f"{a['Dataset']} & {a['Task']} & {a['Delta_Joint']:.3f} & {a['Pass']}/5 & "
-        f"{b['Dataset']} & {b['Task']} & {b['Delta_Joint']:.3f} & {b['Pass']}/5 \\\\"
-        for (_, a), (_, b) in zip(tbl_img.iterrows(), tbl_txt.iterrows())
-    ]
-    return header + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n\\end{table*}"
 
 
 # ---------------------------------------------------------------------------
@@ -893,6 +938,25 @@ def display_paper_production():
             st.code(datasets_latex, language="latex")
         st.divider()
 
+        st.subheader("Table 8 — Additional Released Datasets, Joint Signal")
+        extra_results_df = _make_extra_results_table()
+        st.dataframe(extra_results_df.drop(columns="_n_pass"),
+                     use_container_width=True, hide_index=True)
+        with st.expander("📋 LaTeX source"):
+            st.code(_to_latex_extra_results(extra_results_df), language="latex")
+        st.divider()
+
+        st.subheader("Table 9 — Additional Released Datasets Properties")
+        if exists(_SUMMARY_EXTRA_CSV):
+            extra_df = _make_extra_datasets_table()
+            st.dataframe(extra_df, use_container_width=True, hide_index=True)
+            with st.expander("📋 LaTeX source"):
+                st.code(_get_extra_datasets_table_latex(), language="latex")
+        else:
+            st.info("Run `python multabench/scripts/do_dataset_summary.py` to generate "
+                    "`datasets_summary_extra.csv`.")
+        st.divider()
+
         st.subheader("Table — Text Curation Grid (56 datasets × 5 models)")
         _pool_df = _load_pool_corpus_data()
         from multabench.leaderboard.text_results import single_variant_name
@@ -945,21 +1009,6 @@ def display_paper_production():
                      use_container_width=True)
         with st.expander("📋 LaTeX source"):
             st.code(_to_latex_amazon_packages(amz_tbl), language="latex")
-        st.divider()
-
-        st.subheader("Table — Additional Released Datasets (appendix Tab. extra_datasets)")
-        extra_img = _make_extra_datasets_table("IMAGE")
-        extra_txt = _make_extra_datasets_table("TEXT")
-        st.caption("Image-tabular")
-        st.dataframe(extra_img, use_container_width=True, hide_index=True)
-        st.caption("Text-tabular")
-        st.dataframe(extra_txt, use_container_width=True, hide_index=True)
-        for _label, _tbl in [("image", extra_img), ("text", extra_txt)]:
-            st.caption(f"{_label}: {len(_tbl)} datasets, "
-                       f"median delta {_tbl['Delta_Joint'].median():.3f}, "
-                       f"{int((_tbl['Pass'] == 5).sum())} unanimous")
-        with st.expander("📋 LaTeX source"):
-            st.code(_to_latex_extra_datasets(extra_img, extra_txt), language="latex")
         st.divider()
 
         _APP_PLOTS = [
