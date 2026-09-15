@@ -1,135 +1,42 @@
 # MulTaBench
 
-Multimodal tabular benchmark with image and text modalities. MulTaBench is 20 image-tabular and
-20 text-tabular datasets; 40 further datasets are released alongside it, for 80 in total.
-Evaluates tabular learners with optional DINO/E5 LoRA fine-tuning.
+A benchmark for multimodal tabular learning: tables whose columns include images or free text, not
+just numbers and categories. It is 20 image-tabular and 20 text-tabular curated datasets, with 40
+further datasets released alongside them, 80 in total. The benchmark evaluates tabular learners
+under a target-aware setting, where the image and text encoders are fine-tuned on the task rather
+than used frozen.
 
 **Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616)  
 **Datasets**: [kaggle.com/chico89](https://www.kaggle.com/chico89/datasets)
 
-## Setup
+## Getting started
 
 ```bash
-source init.sh           # installs Python 3.11, creates .venv, installs deps via uv
-source .venv/bin/activate
-cp .env.example .env     # fill in your credentials
+source init.sh && source .venv/bin/activate
+cp .env.example .env     # Weights & Biases, Hugging Face and Kaggle credentials
+
+python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --multimodal_state all
 ```
 
-Credentials (`.env`):
-```
-WANDB_API_KEY=...
-WANDB_ENTITY=...
-HF_TOKEN=...
-KAGGLE_USERNAME=...
-KAGGLE_KEY=...
-```
-
-## Running the Benchmark
-
-```bash
-python benchmark.py \
-    --model light \
-    --dataset_name MUL_IMAGE_PETFINDER \
-    --fold 0 \
-    --multimodal_state "all"
-```
-
-With LoRA fine-tuning:
-```bash
-python benchmark.py \
-    --model tabm \
-    --dataset_name MUL_IMAGE_PETFINDER \
-    --fold 0 \
-    --multimodal_state "all 🔥" \
-    --tune_dino yes --dino_lr 0.001 --dino_rank 16 --dino_img_layers 3 \
-    --tune_e5 yes --e5_lr 1e-4 --e5_rank 16 --e5_text_layers 3
-```
-
-### `--model` options
-
-| Key | Model |
-|-----|-------|
-| `light` | LightGBM |
-| `cat` | CatBoost |
-| `xgb` | XGBoost |
-| `rf` | Random Forest |
-| `realmlp` | RealMLP |
-| `tabm` | TabM |
-| `tabicl` | TabICL v2 |
-| `tabdpt` | TabDPT |
-| `tabpfnv2` | TabPFN v2 |
-| `tabstar` | TabSTAR |
-| `autogluon` | AutoGluon Multimodal |
-| `contexttab` | ConTextTab |
-
-Append `_opt` for hyperparameter-optimized variants (e.g. `light_opt`).
-
-### `--multimodal_state` options
-
-| Value | Features used |
-|-------|---------------|
-| `all` | tabular + image + text |
-| `non` | tabular + text only |
-| `img` | image only |
-| `txt` | text only |
-| `no_img` | tabular only (no image) |
-| `no_txt` | tabular + image only |
-| `all 🔥` | all features + fine-tuned encoders |
-| `ft` | tabular + fine-tuned image + fine-tuned text |
+`benchmark.py` is the single entry point: it evaluates one model on one dataset and logs the
+result to Weights & Biases. `--help` lists the available models and the feature combinations each
+run can use, from tabular-only through fully multimodal with fine-tuned encoders.
 
 ## Datasets
 
-80 datasets hosted on Kaggle under `multabench-*`, downloaded automatically via `kagglehub`.
-Names follow `{TASK}_{MODALITY}_{NAME}` where task is `BIN`/`MUL`/`REG`. The registry is
-`MulTaBenchDatasetID` (`multabench/datasets/all_datasets.py`); the benchmark lists live in
-`multabench/datasets/all_multabench_datasets.py`.
+Every dataset is hosted on the [`chico89`](https://www.kaggle.com/chico89/datasets) Kaggle account
+and downloaded on demand; the benchmark datasets are slugged `multabench-<name>` and the ones
+released alongside them `multabench-full-<name>`.
 
-**`MULTABENCH_CORE_IMAGE`** (20): celebrity attractiveness, hateful memes, mammography, CheXpert, CBIS-DDSM, glaucoma, CS:GO skins, flower bouquets, HuBMAP, Instagram engagement, PetFinder adoption, zooplankton, Amazon bestsellers, Amazon packages, H&M fashion, Khaadi clothes, Letterboxd movies, mango mass, photography bots, painting price.
+| What you are looking for | Where it is |
+|--------------------------|-------------|
+| Which datasets are in the benchmark | `multabench/datasets/all_multabench_datasets.py` |
+| A dataset's Kaggle slug and source | `multabench/benchmark/datasets/` |
+| How a dataset was curated | `multabench/datasets/annotated/` |
+| Size, task and feature counts per dataset | `multabench/leaderboard/results/datasets_summary{,_extra}.csv` |
 
-**`MULTABENCH_CORE_TEXT`** (20): fake job postings, Jigsaw toxicity, Kickstarter, data scientist salary, Michelin guide, product sentiment, Spotify genres, US accidents, wine reviews, women's clothing, baby products, book price, book readability, Mercari, Montgomery salaries, Rotten Tomatoes, SciMago, Vancouver salaries, video game sales, Zomato.
-
-The two `*_EXTRA` lists are the 40 datasets released alongside the benchmark. They are admitted on
-*Joint Signal* alone; the *Task-awareness* condition was never run on them, so their scores must
-not be pooled with the 40 MulTaBench datasets. They carry no tier name of their own.
-
-**`MULTABENCH_FULL_TEXT_EXTRA`** (20): uploaded as `multabench-full-*`. Four ship a quantile-binned target, which is why their names are `BIN_`/`MUL_` while their sources are `REG_`.
-
-**`MULTABENCH_FULL_IMAGE_EXTRA`** (20): OASIS Alzheimer's, Pinterest repins, HAM10000, Hearthstone, Minecraft mobs, PAD-UFES lesions, Pokemon height, Reddit memes, Airbnb NYC, DVM car prices, Flipkart discount, Goias apartments, Kamernet room size, Lahaina art auction, eMAG products, Sao Paulo apartments, SoCal houses, Tokopedia weight, watch tier, Zepto groceries.
-
-## Architecture
-
-```
-multabench/
-  datasets/       # dataset loading, curation, all_datasets enum
-  dino/           # DINO ViT image encoder + LoRA fine-tuning
-  e5/             # E5 text encoder + LoRA fine-tuning
-  preprocessing/  # feature detection, splits, PCA projection
-  finetune/       # training args for DINO/E5 fine-tuning
-  baselines/      # all model implementations + evaluation
-  benchmark/      # MulTaBench dataset loading (Kaggle-hosted)
-  leaderboard/    # Streamlit dashboard + result CSVs
-  scripts/        # standalone utility and figure scripts
-  utils/          # logging, I/O, metrics
-```
-
-- **Image encoder**: `facebook/dinov3-vits16-pretrain-lvd1689m` (ViT-S, 384-dim CLS token), optional LoRA on last N attention layers
-- **Text encoder**: `intfloat/e5-small-v2` (384-dim mean pool), columns formatted as `"passage: col_name: col_value"`
-- **PCA**: both encoders reduced to 30 components by default
-- **Splits**: 90/10 train/test (stratified for classification), max 2000 test examples
-
-## Scripts (`multabench/scripts/`)
-
-| Script | Purpose |
-|--------|---------|
-| `do_leaderboard.py` | Streamlit leaderboard dashboard |
-| `do_finetune_save.py` | Fine-tune and save DINO checkpoint |
-| `do_attention.py` | DINO attention map visualization |
-| `do_tagging.py` | Interactive dataset annotation tool |
-| `do_kaggle_prepare.py` | Prepare dataset for Kaggle upload |
-| `do_kaggle_upload.py` | Upload curated dataset to Kaggle |
-| `do_multabench_audit.py` | Validate all benchmark datasets |
-| `do_dataset_summary.py` | Dataset statistics summary |
-| `do_paper.py` | Paper figure production |
+The 40 datasets released alongside the benchmark were admitted on a weaker criterion and carry no
+tier name of their own, so their scores must not be pooled with the 40 MulTaBench datasets.
 
 ---
 
@@ -151,14 +58,25 @@ main-text section carries the δ/ρ sensitivity and the repositioning, while Elo
 per-dataset significance tables go to the appendix. The relaxed trimodal criterion is adopted.
 Sequencing is datasets-first.
 
-## Track 1 — Datasets (start first; longest lead time)
+## Track 1 — Datasets (done, except the trimodal extension)
 
 Both halves are closed: 40 MulTaBench datasets plus 40 released alongside them, 80 in total,
-image 40 (20 CLS / 20 REG) and text 40 (20 CLS / 20 REG).
+image 40 (20 CLS / 20 REG) and text 40 (20 CLS / 20 REG). The 40 released alongside are now
+documented end to end, which was the longest-lead item on this list:
+
+- `datasets_summary.csv` and `datasets_summary_extra.csv` are regenerated (#43), with date
+  columns kept out of the text features, so the reported text counts match what the pipeline
+  actually encodes.
+- `paper_production.py` emits all three appendix property tables (core, additional joint signal,
+  additional properties) rather than leaving them hand-maintained (#39, #43).
+- All 80 datasets have a per-dataset description in the paper appendix, each a high-level
+  summary with no row or feature counts (`paper-multabench` #4 and #6; #7 is open for the
+  regenerated core table).
+
+One item remains:
 
 - [ ] **Extend the trimodal group toward ~15** (the rebuttal estimate for Full) by detecting text
       columns on the new image-tabular datasets.
-- [ ] **Regenerate `datasets_summary.csv`** and the appendix dataset table for 80 datasets.
 
 ## Track 2 — Analyses (consolidate what exists; fill the two real gaps)
 
@@ -266,15 +184,23 @@ to get a real page count.
 
 ## Core/Full and trimodal
 
-- [ ] **Update the remaining dataset counts** in `appendix.tex`: the per-dataset description
-      subsections and the dataset/results tables still describe 40. The main text, the abstract
-      and `checklist.tex` are done.
 - [ ] **Adopt the relaxed trimodal rule** in §4 and Appendix E: report **8 trimodal datasets**,
       keeping the strict-rule result (PetFinder, Amazon Packages) as a stricter sub-tier. Verify
       all 8 pass Joint Signal on both modalities before claiming it. Note that Full is expected
       to reach ~15.
 - [ ] Answer veTL's framing question explicitly: we do **not** treat MMTL as two separate bimodal
       problems.
+- [ ] **Reconcile the 9-vs-8 text-column mismatch.** Table 3 in the appendix counts **9**
+      image-tabular datasets with a text feature; §4 and Appendix E say **8**, and
+      `FULLY_MULTIMODAL_DATASET_CANDIDATES` lists 8. The ninth is **HubMAP HPA**. Its only
+      text-typed column is `rle`, the run-length encoded segmentation mask carried over from the
+      source segmentation competition: strings of integer pairs, missing for most tiles. The
+      semantic feature detector sees a high-cardinality object column and types it as text, so it
+      reaches the table but was never a trimodal candidate. Two ways out, neither taken yet:
+      qualify the prose (say 9 columns are typed as text, 8 of which are language), or drop `rle`
+      in the HubMAP curation, which would change that dataset's feature counts and so needs a
+      re-run. **Nothing about this is in the paper yet** — the paper still says 8 with no
+      explanation of the ninth.
 
 ## New appendix material
 
@@ -282,8 +208,6 @@ to get a real page count.
 - [ ] Per-dataset paired t-test with BH-FDR, naming the 3 non-significant datasets.
 - [ ] Pairwise model agreement matrix.
 - [ ] Committee simulation detail and the ρ / δ sweep tables.
-- [ ] A concise description per released dataset for the 40 companion datasets, matching the
-      per-dataset appendix that MulTaBench's 40 already have.
 - [ ] The image-tabular rejected pool, as a curation record.
 
 ## Small fixes found while mapping the paper
@@ -293,9 +217,6 @@ to get a real page count.
 - [ ] `\subsection{Computation Costs}` carries a `tab:costs` label; rename to `app:costs` (it is
       never referenced, and it collides conceptually with `tab:compute_costs`).
 - [ ] `checklist.tex` hardcodes "Section 7" for limitations; this goes stale once a section is added.
-- [ ] The appendix dataset table counts 9 image datasets with text columns while the prose says 8
-      (`FULLY_MULTIMODAL_DATASET_CANDIDATES` has 8, using a stricter text-column detector).
-      Reconcile the two definitions.
 - [ ] `paper_production.py` regenerates tables whose captions have since drifted from the
       hand-edited `.tex`, so regenerating will clobber caption edits. Note also that
       `_get_datasets_table_latex()` reads the dataset table *back out of* `appendix.tex`, so that
