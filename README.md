@@ -78,32 +78,29 @@ One item remains:
 - [ ] **Extend the trimodal group toward ~15** (the rebuttal estimate for Full) by detecting text
       columns on the new image-tabular datasets.
 
-## Track 2 — Analyses (consolidate what exists; fill the remaining gap)
+## Track 2 — Analyses (done, pending merge)
 
-Most of this already exists; the job is to get it into one place, make it runnable, and commit
-its outputs. One item is a genuine gap.
+Everything is consolidated on the `curation-robustness` branch: one checkout of it runs every
+rebuttal analysis end to end, and each committed CSV regenerates byte-identically.
 
-- [ ] **Consolidate all rebuttal analysis code onto `master`.** Still split: `elo_leaderboard.py`
-      only on `elo-leaderboard`; the ρ-sweep (`threshold_grid.py`, `curation_accept.py`,
-      `delta_sweep.py`) and 22 result CSVs only on `neurips-rebuttal-sensitivity`;
-      `model_agreement.py` only on `master`; the TabArena comparison only in the private
-      `internal-MulTaBench`. **No single checkout reproduces the rebuttal**, and five analysis
-      CSVs on `master` have no generating code here.
-- [ ] **Fix `model_agreement.py`** — it fails on import as committed (`build_pass_matrix` moved
-      from `committee_pool.py` to `pass_matrix.py`), and it persists no CSV. Commit the agreement
-      matrix as a CSV alongside the two currently-untracked PNGs.
-- [ ] **GAP — the "of 40" δ/ρ sensitivity numbers have no generating code.** Everything committed
-      is denominated in the 56-dataset *text* pool, but the rebuttal quotes 32/40, 30/40, 34/40,
-      30/40 and 20/40 over the full benchmark. The image-side sweep does not exist
-      (`committee_pool.py` is hard-wired to `no_text`/`text_only`). Build the image pool CSV and
-      pass matrix, then re-derive the combined numbers — **verify the rebuttal figures reproduce
-      before they go into the paper.**
-- [ ] **Add the four committee-consensus bucket counts to code** (full consensus 33/56, near
-      consensus 45/56, strong majority 52/56, borderline 4/56). They reproduce from
-      `committee_delta_sweep.csv`, but no script prints them — the framing currently exists only
-      in rebuttal prose.
-- [ ] **Elo — already complete** (`elo_frozen_vs_tar.csv`, 27 competitors, RandomForest Frozen
-      anchored at 1000). Fix the stale "23 competitors" docstring and merge.
+- [x] **Consolidate all rebuttal analysis code.** `elo_leaderboard.py`, the ρ-sweep
+      (`threshold_grid.py`, `curation_accept.py`, `delta_sweep.py`) and the committee analyses now
+      sit together under `multabench/leaderboard/analysis/`, each with its outputs committed. The
+      earlier duplicate of the committee analysis was dropped; `committee_sensitivity.py` is the
+      single script the paper's tables read from.
+- [x] **Fix `model_agreement.py`** — import repaired and the agreement matrix committed as a CSV
+      alongside the two PNGs.
+- [x] **GAP closed — the "of 40" δ/ρ sensitivity.** `benchmark_threshold_sweep.py` builds the
+      image side and re-derives the combined numbers over the 40 released datasets. The published
+      setting re-admits 38 of 40, and the δ × ρ grid reproduces the appendix table.
+- [x] **Committee-consensus buckets** are printed and committed by `committee_sensitivity.py`
+      (`committee_consensus_buckets.csv`).
+- [x] **Elo** — `elo_leaderboard.py` merged in with its CSVs, stale competitor count corrected.
+- [x] **Paper figure** — `main_paper/curation_robustness.py` renders the two-panel curation
+      robustness figure and is wired into `paper_production.py`.
+
+The TabArena effect-size contextualization stays paper-side: it compares against numbers reported
+in that paper, so there is nothing to generate here.
 
 ## Track 3 — Release
 
@@ -113,8 +110,8 @@ its outputs. One item is a genuine gap.
 
 ## Protected branches
 
-Two branches hold work that exists nowhere else. **Do not delete them** until their content is
-merged or explicitly abandoned:
+Both are now carried by `curation-robustness`, but hold off until that branch is merged to
+`master`. **Do not delete them** before then:
 
 | branch | what only lives there |
 |--------|-----------------------|
@@ -159,8 +156,9 @@ to get a real page count.
 - [ ] Add the δ and ρ sensitivity results, framing the need for TAR as a **spectrum, not a strict
       binary condition**.
 - [ ] Summarize the **committee simulation** (C(10,5) = 252 panels) and the **pairwise model
-      agreement** result showing the two TabPFN variants are not a voting bloc (78% agreement,
-      identical to RandomForest↔TabPFN-2.5; average 70%, range 59–82%).
+      agreement** result showing the two TabPFN variants are not a voting bloc. The rebuttal
+      quoted raw agreement percentages; the committed analysis reports Cohen's κ, which corrects
+      for chance agreement and supports the same conclusion.
 
 ## Positioning and framing
 
