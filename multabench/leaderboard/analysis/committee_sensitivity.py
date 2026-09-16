@@ -23,9 +23,11 @@ import pandas as pd
 from sklearn.metrics import cohen_kappa_score
 
 from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, EXTRA_MODELS
+from multabench.leaderboard.analysis.pass_matrix import DELTA_DEFAULT
 
-_MATRIX_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity", "pass_matrix.csv")
 _OUT_DIR = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity")
+_MATRIX_CSV = join(_OUT_DIR, "pass_matrix.csv")
+_PANEL_RATES_CSV = join(_OUT_DIR, "committee_delta_sweep.csv")
 
 ALL_MODELS = CURATION_MODELS + EXTRA_MODELS
 RHO = 3 / 5
@@ -136,6 +138,26 @@ def drop_or_keep_only_tabpfn(matrix: pd.DataFrame, rho: float = RHO) -> pd.DataF
     return pd.DataFrame(rows)
 
 
+# Widths of the agreement bands around unanimity, as a share of the panels that admit a
+# candidate. The panel counts are C(10,5)=252 or C(8,5)=56, so the reachable rates are
+# discrete and these cuts fall in the gaps between them.
+_CONSENSUS_BANDS = [("Full consensus", 0.0), ("Near consensus", 10.0),
+                    ("Strong majority", 30.0), ("Borderline", 50.0)]
+
+
+def consensus_buckets(delta: float = DELTA_DEFAULT) -> pd.DataFrame:
+    """How decided each pool candidate is: the share of five-model panels admitting it, bucketed
+    by distance from unanimity. Cumulative, so each band contains the tighter ones."""
+    rates = pd.read_csv(_PANEL_RATES_CSV)
+    rates = rates[rates["delta"] == delta]["pct_pass_ge3"]
+    rows = []
+    for label, band in _CONSENSUS_BANDS:
+        decided = (rates <= band) | (rates >= 100 - band)
+        rows.append({"bucket": label, "band_pct": band, "n_datasets": int(decided.sum()),
+                     "n_pool": len(rates)})
+    return pd.DataFrame(rows)
+
+
 def main():
     matrix = load_matrix()
 
@@ -171,10 +193,17 @@ def main():
     print(f"\n=== All C(10,5)={len(all_panels)} possible panels ===")
     print(f"n_accepted: min={all_panels['n_accepted'].min()} mean={all_panels['n_accepted'].mean():.1f} "
           f"max={all_panels['n_accepted'].max()}")
+    print(f"n_accepted std: {all_panels['n_accepted'].std():.1f}")
     print(f"jaccard vs. baseline: min={all_panels['jaccard_vs_baseline'].min():.3f} "
-          f"mean={all_panels['jaccard_vs_baseline'].mean():.3f} max={all_panels['jaccard_vs_baseline'].max():.3f}")
+          f"median={all_panels['jaccard_vs_baseline'].median():.3f} "
+          f"max={all_panels['jaccard_vs_baseline'].max():.3f}")
     print("\nMean by # curation models in panel:")
     print(all_panels.groupby("n_curation_models")[["n_accepted", "jaccard_vs_baseline"]].mean().round(3))
+
+    buckets = consensus_buckets()
+    buckets.to_csv(join(_OUT_DIR, "committee_consensus_buckets.csv"), index=False)
+    print("\n=== Per-candidate panel agreement (cumulative) ===")
+    print(buckets.to_string(index=False))
 
 
 if __name__ == "__main__":
