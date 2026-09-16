@@ -3,8 +3,7 @@
 Builds one clean, long-format CSV of raw fold-level scores for the 10 non-end-to-end models
 across the full 56-dataset text-tabular pool, all 4 Table-1 conditions -- the single source of
 truth this and the other two rebuttal analyses (effect-size threshold, quorum size) will read
-from. Does not touch curation_accept.py / model_sensitivity.py / threshold_grid.py /
-delta_sweep.py.
+from. Does not touch curation_accept.py / threshold_grid.py / delta_sweep.py.
 
 Sources (read fresh from the raw per-run CSVs, not the earlier aggregated loaders):
 - 5 curation models (LightGBM, CatBoost, TabM, TabPFNv2, TabPFN-2.5), all 4 states:
