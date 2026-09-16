@@ -78,17 +78,17 @@ One item remains:
 - [ ] **Extend the trimodal group toward ~15** (the rebuttal estimate for Full) by detecting text
       columns on the new image-tabular datasets.
 
-## Track 2 — Analyses (consolidate what exists; fill the two real gaps)
+## Track 2 — Analyses (consolidate what exists; fill the remaining gap)
 
 Most of this already exists; the job is to get it into one place, make it runnable, and commit
-its outputs. Two items are genuine gaps.
+its outputs. One item is a genuine gap.
 
 - [ ] **Consolidate all rebuttal analysis code onto `master`.** Still split: `elo_leaderboard.py`
       only on `elo-leaderboard`; the ρ-sweep (`threshold_grid.py`, `curation_accept.py`,
       `delta_sweep.py`) and 22 result CSVs only on `neurips-rebuttal-sensitivity`;
-      `model_agreement.py` only on `master`; the paired t-test and the TabArena comparison only
-      in the private `internal-MulTaBench`. **No single checkout reproduces the rebuttal**, and
-      five analysis CSVs on `master` have no generating code here.
+      `model_agreement.py` only on `master`; the TabArena comparison only in the private
+      `internal-MulTaBench`. **No single checkout reproduces the rebuttal**, and five analysis
+      CSVs on `master` have no generating code here.
 - [ ] **Fix `model_agreement.py`** — it fails on import as committed (`build_pass_matrix` moved
       from `committee_pool.py` to `pass_matrix.py`), and it persists no CSV. Commit the agreement
       matrix as a CSV alongside the two currently-untracked PNGs.
@@ -98,11 +98,6 @@ its outputs. Two items are genuine gaps.
       (`committee_pool.py` is hard-wired to `no_text`/`text_only`). Build the image pool CSV and
       pass matrix, then re-derive the combined numbers — **verify the rebuttal figures reproduce
       before they go into the paper.**
-- [x] **Per-dataset significance — done** (#46, #48). `analysis/dataset_significance.py` pairs
-      every learner-fold TAR run against its Frozen twin, applies a one-sided paired t-test and
-      corrects all 40 datasets as one BH family, writing `dataset_significance.csv`. Reproduces
-      37/40 significant (18/20 image, 19/20 text); the exceptions are Painting Price, CS:GO Skins
-      and Fake Job Postings. `paper_production.py` joins `p_bh` onto both per-dataset tables.
 - [ ] **Add the four committee-consensus bucket counts to code** (full consensus 33/56, near
       consensus 45/56, strong majority 52/56, borderline 4/56). They reproduce from
       `committee_delta_sweep.csv`, but no script prints them — the framing currently exists only
@@ -166,8 +161,6 @@ to get a real page count.
 - [ ] Summarize the **committee simulation** (C(10,5) = 252 panels) and the **pairwise model
       agreement** result showing the two TabPFN variants are not a voting bloc (78% agreement,
       identical to RandomForest↔TabPFN-2.5; average 70%, range 59–82%).
-- [x] One-sentence mention of the **per-dataset significance** result (37/40), pointing to the
-      appendix. Done: folded into the leaderboard paragraph's opening sentence.
 
 ## Positioning and framing
 
@@ -228,8 +221,6 @@ to get a real page count.
 ## New appendix material
 
 - [ ] Elo / Bradley–Terry leaderboard table (27 competitors) plus a method description.
-- [x] Per-dataset paired t-test with BH-FDR, naming the 3 non-significant datasets. Done: a
-      `p_BH` column in both per-dataset results tables rather than a table of its own.
 - [ ] Pairwise model agreement matrix.
 - [ ] Committee simulation detail and the ρ / δ sweep tables.
 - [ ] The image-tabular rejected pool, as a curation record.
@@ -279,9 +270,6 @@ to get a real page count.
 - [ ] Effect Size (Weakness #1 + Question #1) -> consider mentioning the effect size analysis
       somewhere. I think it should appear in the results. Note: Cohen's d was deliberately dropped
       from both the paper and the CSV (#48), so this is still open.
-- [x] For Table 9, how many image-tabular datasets have an individually significant TAR>Frozen
-      gain (per-dataset CIs)? ---> 18 of 20; the `p_BH` column now carries this in both appendix
-      tables. The stale Mean rows were corrected at the same time (image +0.022 to +0.027).
 - [ ] ELO Rating (Question #3) --> add Elos to appendix.
 - [ ] Bimodal vs Trimodal (Weakness #2 + Question #1) --> emphasize more trimodality. Consider
       relaxing the writing / condition for it, and even make it more clear in the intro. "In
