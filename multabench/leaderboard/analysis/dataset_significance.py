@@ -75,7 +75,7 @@ def load_paired_scores() -> pd.DataFrame:
 
 
 def dataset_significance(scores: pd.DataFrame) -> pd.DataFrame:
-    """[dataset, subset, n_pairs, n_wins, mean_gain, cohens_d, t, p_raw, p_bh, significant],
+    """[dataset, subset, n_pairs, n_wins, mean_gain, t, p_raw, p_bh, significant],
     one row per dataset, corrected across all datasets as a single family."""
     rows = []
     for (subset, dataset), sub in scores.groupby(["subset", "dataset"]):
@@ -89,7 +89,6 @@ def dataset_significance(scores: pd.DataFrame) -> pd.DataFrame:
             "dataset": dataset, "subset": subset,
             "n_pairs": len(gains), "n_wins": int((gains > 0).sum()),
             "mean_gain": round(gains.mean(), 4),
-            "cohens_d": round(gains.mean() / gains.std(), 3) if gains.std() > 0 else 0.0,
             "t": round(float(t), 3), "p_raw": float(p),
         })
     df = pd.DataFrame(rows)
@@ -109,7 +108,7 @@ def main():
     for subset, sub in df.groupby("subset"):
         print(f"  {subset}: {int(sub['significant'].sum())}/{len(sub)}")
 
-    shown = ["dataset", "subset", "n_pairs", "n_wins", "mean_gain", "cohens_d", "p_raw", "p_bh"]
+    shown = ["dataset", "subset", "n_pairs", "n_wins", "mean_gain", "p_raw", "p_bh"]
     print("\n=== Not significant ===")
     print(df[~df["significant"]][shown].to_string(index=False))
 
