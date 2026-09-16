@@ -148,6 +148,12 @@ def _load_dir(subdir: str) -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
 
 
+def _load_significance() -> pd.Series:
+    """BH-corrected p-value per dataset, from dataset_significance.py."""
+    path = join(_RESULTS_ROOT, "analysis_curation_sensitivity", "dataset_significance.csv")
+    return pd.read_csv(path).set_index("dataset")["p_bh"]
+
+
 @st.cache_data
 def _load_core_results(modality: str) -> pd.DataFrame:
     subdir = "images" if modality == "IMAGE" else "text"
@@ -465,8 +471,13 @@ def _make_results_table(modality: str) -> pd.DataFrame:
     })
     tbl["Gain"] = (tbl["FT"] - tbl["Frozen"]).round(3)
     tbl[["Frozen", "FT"]] = tbl[["Frozen", "FT"]].round(3)
+    tbl["p_BH"] = _load_significance().reindex(avg.index).to_numpy()
     tbl.attrs["n_models"] = n_models
     return tbl.sort_values("Gain", ascending=False).reset_index(drop=True)
+
+
+def _fmt_p(p: float) -> str:
+    return "$<$0.001" if p < 0.001 else f"{p:.3f}"
 
 
 def _to_latex(tbl: pd.DataFrame, label: str, caption: str) -> str:
@@ -475,8 +486,8 @@ def _to_latex(tbl: pd.DataFrame, label: str, caption: str) -> str:
         f"\\caption{{{caption}}}\n"
         f"\\label{{{label}}}\n"
         "\\small\n"
-        "\\begin{tabular}{llccc}\n\\toprule\n"
-        "Dataset & Task & Frozen & Contextualized & Gain \\\\\n"
+        "\\begin{tabular}{llcccc}\n\\toprule\n"
+        "Dataset & Task & Frozen & Contextualized & Gain & $p_{\\text{BH}}$ \\\\\n"
         "\\midrule\n"
     )
     rows = []
@@ -484,12 +495,12 @@ def _to_latex(tbl: pd.DataFrame, label: str, caption: str) -> str:
         gain_str = f"$+${r['Gain']:.3f}" if r['Gain'] >= 0 else f"$-${abs(r['Gain']):.3f}"
         rows.append(
             f"{r['Dataset']} & {r['Task']} & {r['Frozen']:.3f}"
-            f" & {r['FT']:.3f} & {gain_str} \\\\"
+            f" & {r['FT']:.3f} & {gain_str} & {_fmt_p(r['p_BH'])} \\\\"
         )
     mean_row = (
         f"\\midrule\n"
         f"\\textit{{Mean}} & & {tbl['Frozen'].mean():.3f}"
-        f" & {tbl['FT'].mean():.3f} & $+${tbl['Gain'].mean():.3f} \\\\"
+        f" & {tbl['FT'].mean():.3f} & $+${tbl['Gain'].mean():.3f} & \\\\"
     )
     return header + "\n".join(rows) + "\n" + mean_row + "\n\\bottomrule\n\\end{tabular}\n\\end{table*}"
 
@@ -888,7 +899,9 @@ def display_paper_production():
                 "Contextualized: structured + fine-tuned DINO-v3 embeddings. "
                 "Gain: Contextualized $-$ Frozen. "
                 "AUROC for classification ($\\uparrow$), $R^2$ for regression ($\\uparrow$). "
-                "$R^2$ clipped at $-0.1$.",
+                "$R^2$ clipped at $-0.1$. "
+                "$p_{\\text{BH}}$: Benjamini-Hochberg adjusted $p$-value of a one-sided paired "
+                "$t$-test on the per-learner-fold gains, corrected across all 40 datasets as one family.",
                 "tab:app_results_image",
             ),
             "TEXT": (
@@ -898,7 +911,9 @@ def display_paper_production():
                 "Contextualized: structured + fine-tuned E5-Small embeddings. "
                 "Gain: Contextualized $-$ Frozen. "
                 "AUROC for classification ($\\uparrow$), $R^2$ for regression ($\\uparrow$). "
-                "$R^2$ clipped at $-0.1$.",
+                "$R^2$ clipped at $-0.1$. "
+                "$p_{\\text{BH}}$: Benjamini-Hochberg adjusted $p$-value of a one-sided paired "
+                "$t$-test on the per-learner-fold gains, corrected across all 40 datasets as one family.",
                 "tab:app_results_text",
             ),
         }
@@ -906,7 +921,8 @@ def display_paper_production():
             st.subheader(title)
             tbl = _make_results_table(modality)
             st.dataframe(tbl.style.background_gradient(subset=["Gain"], cmap="RdYlGn")
-                         .format({"Frozen": "{:.3f}", "FT": "{:.3f}", "Gain": "{:+.3f}"}),
+                         .format({"Frozen": "{:.3f}", "FT": "{:.3f}", "Gain": "{:+.3f}",
+                                 "p_BH": "{:.4f}"}),
                          use_container_width=True)
             caption, label = _APP_CAPTIONS[modality]
             latex = _to_latex(tbl, label, caption)
