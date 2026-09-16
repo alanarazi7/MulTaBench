@@ -23,7 +23,9 @@ from os.path import dirname, join
 import pandas as pd
 
 from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, _MODEL_LABELS
-from multabench.leaderboard.analysis.pass_matrix import DELTA_DEFAULT, compute_joint_delta
+from multabench.leaderboard.analysis.pass_matrix import (
+    DELTA_DEFAULT, compute_joint_delta, passes_delta,
+)
 
 _RESULTS = join(dirname(__file__), "..", "results")
 _RUNS_CSV = join(_RESULTS, "text_full", "runs.csv")
@@ -64,7 +66,7 @@ def verdict(runs: pd.DataFrame, delta: float = DELTA_DEFAULT) -> pd.DataFrame:
         rows.append({
             "dataset": dataset, "model": model,
             "no_text": means["no_text"], "text_only": means["text_only"], "all": means["all"],
-            "delta_joint": round(delta_joint, 4), "joint_pass": delta_joint > delta,
+            "delta_joint": round(delta_joint, 4), "joint_pass": passes_delta(delta_joint, delta),
         })
     df = pd.DataFrame(rows)
     per_dataset = df.groupby("dataset")["joint_pass"].sum().rename("joint_pass_5")

@@ -92,12 +92,13 @@ its outputs. One item is a genuine gap.
 - [ ] **Fix `model_agreement.py`** — it fails on import as committed (`build_pass_matrix` moved
       from `committee_pool.py` to `pass_matrix.py`), and it persists no CSV. Commit the agreement
       matrix as a CSV alongside the two currently-untracked PNGs.
-- [ ] **GAP — the "of 40" δ/ρ sensitivity numbers have no generating code.** Everything committed
-      is denominated in the 56-dataset *text* pool, but the rebuttal quotes 32/40, 30/40, 34/40,
-      30/40 and 20/40 over the full benchmark. The image-side sweep does not exist
-      (`committee_pool.py` is hard-wired to `no_text`/`text_only`). Build the image pool CSV and
-      pass matrix, then re-derive the combined numbers — **verify the rebuttal figures reproduce
-      before they go into the paper.**
+- [x] **GAP closed — the "of 40" δ/ρ sensitivity now has generating code.**
+      `benchmark_threshold_sweep.py` builds the image side and sweeps δ × ρ over the 40 released
+      datasets. The published setting (δ=0.001, ρ=3/5) re-admits 38 of 40; the two misses are
+      `BIN_IMAGE_MAMMOGRAPHY_CMMD` and `BIN_TEXT_FAKE_JOB_POSTING`. The pool-level sweeps
+      (`threshold_grid.py`, `curation_accept.py`, `delta_sweep.py`) came over from
+      `neurips-rebuttal-sensitivity` alongside it, so that part of the consolidation item is done
+      too; the committee, Elo and agreement analyses are still to come.
 - [ ] **Add the four committee-consensus bucket counts to code** (full consensus 33/56, near
       consensus 45/56, strong majority 52/56, borderline 4/56). They reproduce from
       `committee_delta_sweep.csv`, but no script prints them — the framing currently exists only
