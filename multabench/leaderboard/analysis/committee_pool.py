@@ -3,8 +3,7 @@
 Builds one clean, long-format CSV of raw fold-level scores for the 10 non-end-to-end models
 across the full 56-dataset text-tabular pool, all 4 Table-1 conditions -- the single source of
 truth this and the other two rebuttal analyses (effect-size threshold, quorum size) will read
-from. Does not touch curation_accept.py / model_sensitivity.py / threshold_grid.py /
-delta_sweep.py.
+from.
 
 Sources (read fresh from the raw per-run CSVs, not the earlier aggregated loaders):
 - 5 curation models (LightGBM, CatBoost, TabM, TabPFNv2, TabPFN-2.5), all 4 states:
@@ -17,8 +16,7 @@ Sources (read fresh from the raw per-run CSVs, not the earlier aggregated loader
     originally-accepted ones).
 
 Dataset names are translated to a single canonical (long, post-rename) namespace throughout,
-via the same short-to-long resolution used by curation_accept.py (token-subset matching + 2
-manual overrides for a typo and a pluralization mismatch).
+by token-subset matching plus 2 manual overrides for a typo and a pluralization mismatch.
 
 Run standalone: `python -m multabench.leaderboard.analysis.committee_pool`
 """

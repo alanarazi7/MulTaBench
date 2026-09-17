@@ -24,7 +24,7 @@ _SCORES_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensit
 _OUT_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity", "committee_delta_sweep.csv")
 
 DELTA_DEFAULT = 0.001
-DELTAS = [0.0, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05]
+DELTAS = [0.0, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05]
 
 
 def delta_sweep(df: pd.DataFrame, deltas=DELTAS) -> pd.DataFrame:

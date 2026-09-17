@@ -83,12 +83,11 @@ One item remains:
 Most of this already exists; the job is to get it into one place, make it runnable, and commit
 its outputs. One item is a genuine gap.
 
-- [ ] **Consolidate all rebuttal analysis code onto `master`.** The ρ-sweep
-      (`threshold_grid.py`, `curation_accept.py`, `delta_sweep.py`) and
-      `benchmark_threshold_sweep.py` have landed. Still split: `elo_leaderboard.py` only on
-      `elo-leaderboard`, and the TabArena comparison only in the private `internal-MulTaBench`.
-      **No single checkout reproduces the rebuttal**, and five analysis CSVs on `master` have no
-      generating code here.
+- [ ] **Consolidate all rebuttal analysis code onto `master`.** `benchmark_threshold_sweep.py`
+      has landed; the candidate-pool δ/ρ sweeps it superseded are gone. Still split:
+      `elo_leaderboard.py` only on `elo-leaderboard`, and the TabArena comparison only in the
+      private `internal-MulTaBench`. **No single checkout reproduces the rebuttal**, and five
+      analysis CSVs on `master` have no generating code here.
 - [ ] **Fix `model_agreement.py`** — it fails on import as committed (`build_pass_matrix` moved
       from `committee_pool.py` to `pass_matrix.py`), and it persists no CSV. Commit the agreement
       matrix as a CSV alongside the two currently-untracked PNGs.
