@@ -94,8 +94,11 @@ its outputs. One item is a genuine gap.
       matrix as a CSV alongside the two currently-untracked PNGs.
 - [x] **GAP closed — the "of 40" δ/ρ sensitivity now has generating code.**
       `benchmark_threshold_sweep.py` builds the image side and sweeps δ × ρ over the 40 released
-      datasets. The published setting (δ=0.001, ρ=3/5) re-admits 38 of 40; the two misses are
-      `BIN_IMAGE_MAMMOGRAPHY_CMMD` and `BIN_TEXT_FAKE_JOB_POSTING`. The pool-level sweeps
+      datasets. The published setting (δ=0.001, ρ=3/5) admits 38 of 40; the two misses are
+      `BIN_IMAGE_MAMMOGRAPHY_CMMD` and `BIN_TEXT_FAKE_JOB_POSTING`. These are not a replication
+      of the curation decisions: the scores come from the benchmark runs, not the curation-phase
+      runs the admissions were made on. The appendix reads both, plus `REG_IMAGE_KHAADI_CLOTHES`
+      (which clears the quorum exactly), as the weakest admissions rather than as failures. The pool-level sweeps
       (`threshold_grid.py`, `curation_accept.py`, `delta_sweep.py`) came over from
       `neurips-rebuttal-sensitivity` alongside it, so that part of the consolidation item is done
       too; the committee, Elo and agreement analyses are still to come.
@@ -155,13 +158,18 @@ to get a real page count.
 
 ## New main-text section (Curation Robustness)
 
-- [ ] **Move the δ/ρ threshold discussion from Appendix A into the main text** — explicitly
-      promised to both 2eKq and jcEc.
-- [ ] Add the δ and ρ sensitivity results, framing the need for TAR as a **spectrum, not a strict
-      binary condition**.
-- [ ] Summarize the **committee simulation** (C(10,5) = 252 panels) and the **pairwise model
-      agreement** result showing the two TabPFN variants are not a voting bloc (78% agreement,
-      identical to RandomForest↔TabPFN-2.5; average 70%, range 59–82%).
+- [x] **Move the δ/ρ threshold discussion from Appendix A into the main text** — explicitly
+      promised to both 2eKq and jcEc. Landed as the `Curation Pipeline Sensitivity` paragraph in
+      §Results, pointing at `app:threshold_sensitivity` and `app:curation_committee`.
+- [x] Add the δ and ρ sensitivity results, framing the need for TAR as a **spectrum, not a strict
+      binary condition**. `tab:threshold_grid` sweeps δ × ρ per subset;
+      `fig:curation_robustness`(a) traces the decay.
+- [x] Summarize the **committee simulation** (C(10,5) = 252 panels) in `app:curation_committee`:
+      accepted-set size 24.4 ± 1.9, Jaccard median 0.81, and the disjoint panel at 24 / Jaccard
+      0.74.
+- [ ] **Still missing: the pairwise model agreement** result showing the two TabPFN variants are
+      not a voting bloc (78% agreement, identical to RandomForest↔TabPFN-2.5; average 70%, range
+      59–82%). Nothing in the paper carries it yet, and `model_agreement.py` persists no CSV.
 
 ## Positioning and framing
 
