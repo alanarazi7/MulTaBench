@@ -5,10 +5,10 @@ it of the 40 released Core datasets, image and text together, which is the quant
 reports. Same rule, same 5 curation learners, same Delta definitions; only the denominator
 differs.
 
-The scores come from the final benchmark runs, which are separate executions from the
-curation-phase runs the admission decisions were made on, so the baseline row is also a
-replication check on those decisions: benchmark_baseline_replication.csv records, per
-dataset, how many learners still vote to accept.
+The scores come from the final benchmark runs, not from the curation-phase runs the
+admission decisions were made on, so the baseline row is not a replication of those
+decisions: benchmark_baseline_replication.csv records, per dataset, how many learners
+vote to accept on these scores.
 
 The quorum is taken over the learners that actually ran on a dataset, so the two datasets
 TabPFNv2 and TabPFN-2.5 cannot handle are judged by their 3 eligible learners rather than
