@@ -83,25 +83,15 @@ One item remains:
 Most of this already exists; the job is to get it into one place, make it runnable, and commit
 its outputs. One item is a genuine gap.
 
-- [ ] **Consolidate all rebuttal analysis code onto `master`.** Still split: `elo_leaderboard.py`
-      only on `elo-leaderboard`; the ρ-sweep (`threshold_grid.py`, `curation_accept.py`,
-      `delta_sweep.py`) and 22 result CSVs only on `neurips-rebuttal-sensitivity`;
-      `model_agreement.py` only on `master`; the TabArena comparison only in the private
-      `internal-MulTaBench`. **No single checkout reproduces the rebuttal**, and five analysis
-      CSVs on `master` have no generating code here.
+- [ ] **Consolidate all rebuttal analysis code onto `master`.** The ρ-sweep
+      (`threshold_grid.py`, `curation_accept.py`, `delta_sweep.py`) and
+      `benchmark_threshold_sweep.py` have landed. Still split: `elo_leaderboard.py` only on
+      `elo-leaderboard`, and the TabArena comparison only in the private `internal-MulTaBench`.
+      **No single checkout reproduces the rebuttal**, and five analysis CSVs on `master` have no
+      generating code here.
 - [ ] **Fix `model_agreement.py`** — it fails on import as committed (`build_pass_matrix` moved
       from `committee_pool.py` to `pass_matrix.py`), and it persists no CSV. Commit the agreement
       matrix as a CSV alongside the two currently-untracked PNGs.
-- [x] **GAP closed — the "of 40" δ/ρ sensitivity now has generating code.**
-      `benchmark_threshold_sweep.py` builds the image side and sweeps δ × ρ over the 40 released
-      datasets. The published setting (δ=0.001, ρ=3/5) admits 38 of 40; the two misses are
-      `BIN_IMAGE_MAMMOGRAPHY_CMMD` and `BIN_TEXT_FAKE_JOB_POSTING`. These are not a replication
-      of the curation decisions: the scores come from the benchmark runs, not the curation-phase
-      runs the admissions were made on. The appendix reads both, plus `REG_IMAGE_KHAADI_CLOTHES`
-      (which clears the quorum exactly), as the weakest admissions rather than as failures. The pool-level sweeps
-      (`threshold_grid.py`, `curation_accept.py`, `delta_sweep.py`) came over from
-      `neurips-rebuttal-sensitivity` alongside it, so that part of the consolidation item is done
-      too; the committee, Elo and agreement analyses are still to come.
 - [ ] **Add the four committee-consensus bucket counts to code** (full consensus 33/56, near
       consensus 45/56, strong majority 52/56, borderline 4/56). They reproduce from
       `committee_delta_sweep.csv`, but no script prints them — the framing currently exists only
@@ -158,15 +148,6 @@ to get a real page count.
 
 ## New main-text section (Curation Robustness)
 
-- [x] **Move the δ/ρ threshold discussion from Appendix A into the main text** — explicitly
-      promised to both 2eKq and jcEc. Landed as the `Curation Pipeline Sensitivity` paragraph in
-      §Results, pointing at `app:threshold_sensitivity` and `app:curation_committee`.
-- [x] Add the δ and ρ sensitivity results, framing the need for TAR as a **spectrum, not a strict
-      binary condition**. `tab:threshold_grid` sweeps δ × ρ per subset;
-      `fig:curation_robustness`(a) traces the decay.
-- [x] Summarize the **committee simulation** (C(10,5) = 252 panels) in `app:curation_committee`:
-      accepted-set size 24.4 ± 1.9, Jaccard median 0.81, and the disjoint panel at 24 / Jaccard
-      0.74.
 - [ ] **Still missing: the pairwise model agreement** result showing the two TabPFN variants are
       not a voting bloc (78% agreement, identical to RandomForest↔TabPFN-2.5; average 70%, range
       59–82%). Nothing in the paper carries it yet, and `model_agreement.py` persists no CSV.
