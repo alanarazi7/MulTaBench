@@ -2,7 +2,7 @@
 
 Full 10x10 matrix over the 56-dataset text pool, the only subset where all 10 learners have
 every condition. Each cell is the share of candidates on which the two learners cast the same
-vote. Agreement can in principle run from 0 to 100, so the colour scale spans that full range.
+vote. The colour scale starts at 50 to keep the observed spread legible.
 """
 import os
 
@@ -16,7 +16,7 @@ _SENSITIVITY = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "r
                             "analysis_curation_sensitivity")
 _AGREEMENT_CSV = os.path.join(_SENSITIVITY, "model_agreement_percent.csv")
 
-_PCT_MIN, _PCT_MAX = 0, 100
+_PCT_MIN, _PCT_MAX = 50, 100
 _DIAGONAL_COLOR = "#E8E8E8"
 
 _FS_LABEL = 12
@@ -69,7 +69,7 @@ def make_figure():
     im = _draw_agreement(ax, agreement)
 
     bar = fig.colorbar(im, ax=ax, fraction=0.045, pad=0.03,
-                       ticks=[0, 20, 40, 60, 80, 100])
+                       ticks=[50, 60, 70, 80, 90, 100])
     bar.set_label("Agreement (%)", fontsize=_FS_LABEL)
     bar.ax.tick_params(labelsize=_FS_TICK)
 
