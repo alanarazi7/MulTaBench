@@ -29,6 +29,10 @@ from multabench.datasets.text_benchmarks import (
 
 from multabench.leaderboard.main_paper.curation_example import make_fig        as _make_curation_example_fig
 from multabench.leaderboard.text_results                import compute_curation_grid, _load_pool_corpus_data
+from multabench.leaderboard.analysis.benchmark_threshold_sweep import (
+    RHO_HEADLINE, benchmark_deltas, load_benchmark_scores, threshold_grid,
+)
+from multabench.leaderboard.analysis.pass_matrix       import DELTA_DEFAULT
 from multabench.leaderboard.main_paper.text_pool        import make_joint_tar_figure   as _make_text_pool_joint_tar_fig
 from multabench.leaderboard.main_paper.text_pool        import make_tfidf_figure       as _make_text_pool_tfidf_fig
 from multabench.leaderboard.main_paper.text_pool        import make_struct_unstruct_figure as _make_text_pool_struct_fig
@@ -814,6 +818,40 @@ def _to_latex_text_curation_rates(tbl: pd.DataFrame) -> str:
     return header + body + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
 
 
+def _make_threshold_grid_table() -> pd.DataFrame:
+    """MulTaBench datasets still admitted when the acceptance rule is re-applied to the final
+    benchmark runs at each (delta, rho). Rows where no dataset survives are dropped."""
+    deltas = benchmark_deltas(load_benchmark_scores())
+    grid = threshold_grid(deltas, rhos=RHO_HEADLINE)
+    grid = grid[grid["subset"] == "all"]
+    tbl = grid.pivot(index="delta", columns="rho", values="n_surviving")
+    tbl.columns = [f"rho={int(round(r * 5))}/5" for r in tbl.columns]
+    tbl = tbl[tbl.sum(axis=1) > 0].reset_index()
+    tbl.attrs["n_total"] = int(grid["n_total"].iloc[0])
+    return tbl
+
+
+def _to_latex_threshold_grid(tbl: pd.DataFrame) -> str:
+    n_total = tbl.attrs["n_total"]
+    header = (
+        "\\begin{table}[ht]\n\\centering\n"
+        "\\caption{Threshold sensitivity over MulTaBench. Datasets still admitted when the "
+        f"acceptance rule is re-applied to the final benchmark runs at each $(\\delta, \\rho)$, "
+        f"out of {n_total}. The published setting is in bold.}}\n"
+        "\\label{tab:threshold_grid}\n\\small\n"
+        "\\begin{tabular}{lccc}\n\\toprule\n"
+        "$\\delta$ & $\\rho{=}3/5$ & $\\rho{=}4/5$ & $\\rho{=}5/5$ \\\\\n"
+        "\\midrule\n"
+    )
+    rows = []
+    for _, r in tbl.iterrows():
+        cells = [f"{r['delta']:g}"] + [str(int(r[c])) for c in tbl.columns[1:]]
+        if r["delta"] == DELTA_DEFAULT:
+            cells = [f"\\textbf{{{c}}}" for c in cells]
+        rows.append(" & ".join(cells) + " \\\\")
+    return header + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
+
+
 # ---------------------------------------------------------------------------
 # Streamlit display
 # ---------------------------------------------------------------------------
@@ -986,6 +1024,13 @@ def display_paper_production():
         _grid_latex = _make_curation_grid_latex(_grid_df)
         with st.expander("📋 LaTeX source (longtable)"):
             st.code(_grid_latex, language="latex")
+        st.divider()
+
+        st.subheader("Table — Threshold Sensitivity (appendix Tab. threshold_grid)")
+        thresh_df = _make_threshold_grid_table()
+        st.dataframe(thresh_df, use_container_width=True, hide_index=True)
+        with st.expander("📋 LaTeX source"):
+            st.code(_to_latex_threshold_grid(thresh_df), language="latex")
         st.divider()
 
         st.subheader("Table — Text Curation Acceptance Rates")

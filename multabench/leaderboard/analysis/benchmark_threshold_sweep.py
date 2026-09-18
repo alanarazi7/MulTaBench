@@ -1,14 +1,12 @@
 """How much of MulTaBench survives a stricter acceptance bar?
 
-delta_sweep.py and threshold_grid.py ask this of the 56-dataset text candidate pool. This asks
-it of the 40 released Core datasets, image and text together, which is the quantity the paper
-reports. Same rule, same 5 curation learners, same Delta definitions; only the denominator
-differs.
+Asks it of the 40 released Core datasets, image and text together. Same rule and same 5
+curation learners the paper curated with, re-applied at each (delta, rho).
 
-The scores come from the final benchmark runs, which are separate executions from the
-curation-phase runs the admission decisions were made on, so the baseline row is also a
-replication check on those decisions: benchmark_baseline_replication.csv records, per
-dataset, how many learners still vote to accept.
+The scores come from the final benchmark runs, not from the curation-phase runs the
+admission decisions were made on, so the baseline row is not a replication of those
+decisions: benchmark_baseline_replication.csv records, per dataset, how many learners
+vote to accept on these scores.
 
 The quorum is taken over the learners that actually ran on a dataset, so the two datasets
 TabPFNv2 and TabPFN-2.5 cannot handle are judged by their 3 eligible learners rather than
@@ -22,9 +20,7 @@ from os.path import dirname, join
 import pandas as pd
 
 from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, _MODEL_LABELS
-from multabench.leaderboard.analysis.delta_sweep import DELTAS
 from multabench.leaderboard.analysis.pass_matrix import DELTA_DEFAULT, compute_deltas, passes_delta
-from multabench.leaderboard.analysis.threshold_grid import RHOS
 
 _RESULTS = join(dirname(__file__), "..", "results")
 _OUT_DIR = join(_RESULTS, "analysis_curation_sensitivity")
@@ -36,6 +32,10 @@ _REPLICATION_CSV = join(_OUT_DIR, "benchmark_baseline_replication.csv")
 # names so one Delta computation serves both subsets.
 _IMAGE_STATE_ALIASES = {"non": "no_text", "img": "text_only"}
 
+# The published margin is also the smallest the criterion can express: fold means are rounded
+# to 3 decimals, so anything below it accepts a joint model that merely ties its unimodal best.
+DELTAS = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1]
+RHOS = [0.51, 0.6, 0.7, 0.8, 0.9, 1.0]
 RHO_HEADLINE = [3 / 5, 4 / 5, 5 / 5]
 
 

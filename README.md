@@ -56,53 +56,30 @@ analysis stays denominated in those 40, since the *Joint TAR* condition was neve
 other 40 and the two must not be pooled. The camera-ready gets one extra page (10 total): a new
 main-text section carries the δ/ρ sensitivity and the repositioning, while Elo and the
 per-dataset significance tables go to the appendix. The relaxed trimodal criterion is adopted.
-Sequencing is datasets-first.
 
-## Track 1 — Datasets (done, except the trimodal extension)
-
-Both halves are closed: 40 MulTaBench datasets plus 40 released alongside them, 80 in total,
-image 40 (20 CLS / 20 REG) and text 40 (20 CLS / 20 REG). The 40 released alongside are now
-documented end to end, which was the longest-lead item on this list:
-
-- `datasets_summary.csv` and `datasets_summary_extra.csv` are regenerated (#43), with date
-  columns kept out of the text features, so the reported text counts match what the pipeline
-  actually encodes.
-- `paper_production.py` emits all three appendix property tables (core, additional joint signal,
-  additional properties) rather than leaving them hand-maintained (#39, #43).
-- All 80 datasets have a per-dataset description in the paper appendix, each a high-level
-  summary with no row or feature counts (`paper-multabench` #4 and #6; #7 is open for the
-  regenerated core table).
-
-One item remains:
-
-- [ ] **Extend the trimodal group toward ~15** (the rebuttal estimate for Full) by detecting text
-      columns on the new image-tabular datasets.
-
-## Track 2 — Analyses (done, pending merge)
+## Track 1 — Analyses (done, pending merge)
 
 Everything is consolidated on the `curation-robustness` branch: one checkout of it runs every
 rebuttal analysis end to end, and each committed CSV regenerates byte-identically.
 
-- [x] **Consolidate all rebuttal analysis code.** `elo_leaderboard.py`, the ρ-sweep
-      (`threshold_grid.py`, `curation_accept.py`, `delta_sweep.py`) and the committee analyses now
-      sit together under `multabench/leaderboard/analysis/`, each with its outputs committed. The
-      earlier duplicate of the committee analysis was dropped; `committee_sensitivity.py` is the
-      single script the paper's tables read from.
-- [x] **Fix `model_agreement.py`** — import repaired and the agreement matrix committed as a CSV
-      alongside the two PNGs.
-- [x] **GAP closed — the "of 40" δ/ρ sensitivity.** `benchmark_threshold_sweep.py` builds the
-      image side and re-derives the combined numbers over the 40 released datasets. The published
-      setting re-admits 38 of 40, and the δ × ρ grid reproduces the appendix table.
+- [x] **Consolidate all rebuttal analysis code onto `master`.** `elo_leaderboard.py` and the
+      committee analyses now sit alongside `benchmark_threshold_sweep.py` under
+      `multabench/leaderboard/analysis/`, each with its outputs committed. The duplicate committee
+      analysis kept on `neurips-rebuttal-sensitivity` was dropped; `committee_sensitivity.py` is
+      the single script the paper's tables read from.
+- [x] **Fix `model_agreement.py`** — the import is repaired and the agreement matrix is committed
+      as a CSV alongside the two PNGs.
 - [x] **Committee-consensus buckets** are printed and committed by `committee_sensitivity.py`
       (`committee_consensus_buckets.csv`).
-- [x] **Elo** — `elo_leaderboard.py` merged in with its CSVs, stale competitor count corrected.
+- [x] **Elo** — `elo_leaderboard.py` brought over with its CSVs and the stale competitor count
+      corrected.
 - [x] **Paper figure** — `main_paper/curation_robustness.py` renders the two-panel curation
       robustness figure and is wired into `paper_production.py`.
 
 The TabArena effect-size contextualization stays paper-side: it compares against numbers reported
 in that paper, so there is nothing to generate here.
 
-## Track 3 — Release
+## Track 2 — Release
 
 - [ ] Merge the consolidated analysis branch so every rebuttal number is reproducible from a
       single checkout of `master`.
@@ -110,13 +87,13 @@ in that paper, so there is nothing to generate here.
 
 ## Protected branches
 
-Both are now carried by `curation-robustness`, but hold off until that branch is merged to
-`master`. **Do not delete them** before then:
+`curation-robustness` carries everything from `elo-leaderboard` and everything from
+`neurips-rebuttal-sensitivity` that ships. **Do not delete either** until that branch is merged:
 
 | branch | what only lives there |
 |--------|-----------------------|
-| `neurips-rebuttal-sensitivity` | the rebuttal sensitivity analyses and 22 result CSVs |
-| `elo-leaderboard` | `elo_leaderboard.py` and the two Elo CSVs |
+| `neurips-rebuttal-sensitivity` | `model_sensitivity.py` and its `model_*.csv` outputs, the second computation of the committee results that was dropped in favour of `committee_sensitivity.py` |
+| `elo-leaderboard` | nothing beyond what `curation-robustness` carries |
 
 ---
 
@@ -200,8 +177,9 @@ to get a real page count.
 
 - [ ] **Adopt the relaxed trimodal rule** in §4 and Appendix E: report **8 trimodal datasets**,
       keeping the strict-rule result (PetFinder, Amazon Packages) as a stricter sub-tier. Verify
-      all 8 pass Joint Signal on both modalities before claiming it. Note that Full is expected
-      to reach ~15.
+      all 8 pass Joint Signal on both modalities before claiming it. Full is expected to reach
+      ~15; getting the group there means detecting text columns on the new image-tabular
+      datasets.
 - [ ] Answer veTL's framing question explicitly: we do **not** treat MMTL as two separate bimodal
       problems.
 - [ ] **Reconcile the 9-vs-8 text-column mismatch.** Table 3 in the appendix counts **9**
@@ -220,7 +198,6 @@ to get a real page count.
 
 - [ ] Elo / Bradley–Terry leaderboard table (27 competitors) plus a method description.
 - [ ] Pairwise model agreement matrix.
-- [ ] Committee simulation detail and the ρ / δ sweep tables.
 - [ ] The image-tabular rejected pool, as a curation record.
 
 ## Small fixes found while mapping the paper
@@ -234,11 +211,6 @@ to get a real page count.
       hand-edited `.tex`, so regenerating will clobber caption edits. Note also that
       `_get_datasets_table_latex()` reads the dataset table *back out of* `appendix.tex`, so that
       one table flows paper → script.
-
-## Known defect on `main`
-
-- [ ] `checklist.tex` new-assets answer begins `Justification: Justification:`. Fix on the next
-      paper branch.
 
 ---
 
@@ -263,8 +235,6 @@ to get a real page count.
       Question #2]
 - [ ] Add committee analysis - "committee simulation" - % acceptance had we used 5 different
       models.
-- [ ] "The acceptance threshold appears somewhat arbitrary" -> show robustness analysis to
-      Performance margin threshold and to Voting Consensus Threshold
 - [ ] Effect Size (Weakness #1 + Question #1) -> consider mentioning the effect size analysis
       somewhere. I think it should appear in the results. Note: Cohen's d was deliberately dropped
       from both the paper and the CSV (#48), so this is still open.
