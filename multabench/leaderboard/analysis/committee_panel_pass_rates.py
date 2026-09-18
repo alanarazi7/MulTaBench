@@ -24,6 +24,7 @@ Run standalone (prints only, does not write a CSV):
 from itertools import combinations
 from os.path import dirname, join
 
+import numpy as np
 import pandas as pd
 
 from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, EXTRA_MODELS
@@ -34,6 +35,8 @@ from multabench.leaderboard.main_paper.text_pool import _MULTABENCH_POOL_NAMES
 _OUT_DIR = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity")
 _MATRIX_CSV = join(_OUT_DIR, "pass_matrix.csv")
 _DELTA_SWEEP_CSV = join(_OUT_DIR, "committee_delta_sweep.csv")
+
+_RELEASED, _HELD_OUT, _REJECTED = "released", "held out", "rejected"
 
 ALL_MODELS = CURATION_MODELS + EXTRA_MODELS
 PANEL_SIZE = 5
@@ -104,17 +107,18 @@ def panel_pass_rates(matrix: pd.DataFrame) -> pd.DataFrame:
 
 def pass_rate_table(delta: float = DELTA_DEFAULT) -> pd.DataFrame:
     """The persisted per-candidate rates at one delta, named as the paper's dataset tables
-    name them, ordered from the most-accepted candidate down."""
+    name them, ordered from the most-accepted candidate down. Status is what the published panel
+    decided, with accepted candidates split by whether they made the released benchmark."""
     rates = pd.read_csv(_DELTA_SWEEP_CSV)
     rates = rates[rates["delta"] == delta].copy()
     unnamed = set(rates["dataset"]) - set(POOL_DISPLAY_NAMES)
     assert not unnamed, f"no display name for {sorted(unnamed)}"
+    accepted = rates["original_decision"] == "accept"
     out = pd.DataFrame({
         "Dataset": rates["dataset"].map(POOL_DISPLAY_NAMES),
-        "Accepted": rates["original_decision"] == "accept",
-        "Benchmark": rates["in_multabench"],
+        "Status": np.where(~accepted, _REJECTED,
+                           np.where(rates["in_multabench"], _RELEASED, _HELD_OUT)),
         "Rate": rates["pct_pass_ge3"],
-        "Panels": rates["n_panels"],
     })
     return out.sort_values(["Rate", "Dataset"], ascending=[False, True]).reset_index(drop=True)
 
