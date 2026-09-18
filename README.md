@@ -62,15 +62,6 @@ per-dataset significance tables go to the appendix. The relaxed trimodal criteri
 Each committed CSV under `results/analysis_curation_sensitivity/` regenerates byte-identically
 from the script that wrote it.
 
-- [x] **Committee sensitivity** — `committee_sensitivity.py` sits alongside
-      `benchmark_threshold_sweep.py` under `multabench/leaderboard/analysis/` and writes all six
-      committee CSVs, including the consensus buckets. The duplicate computation kept on
-      `neurips-rebuttal-sensitivity` was dropped; this is the single script the paper's committee
-      tables read from.
-- [x] **Fix `model_agreement.py`** — the import is repaired and the agreement matrix is committed
-      as a CSV alongside the two PNGs.
-- [x] **Paper figure** — `main_paper/curation_robustness.py` renders the two-panel curation
-      robustness figure and is wired into `paper_production.py`.
 - [ ] **Elo** — `elo_leaderboard.py` and its three CSVs are still only on the `elo-leaderboard`
       branch. Bring them over in their own PR.
 
@@ -125,10 +116,6 @@ to get a real page count.
 
 ## New main-text section (Curation Robustness)
 
-- [ ] **Move the δ/ρ threshold discussion from Appendix A into the main text** — explicitly
-      promised to both 2eKq and jcEc.
-- [ ] Add the δ and ρ sensitivity results, framing the need for TAR as a **spectrum, not a strict
-      binary condition**.
 - [ ] Summarize the **committee simulation** (C(10,5) = 252 panels) and the **pairwise model
       agreement** result showing the two TabPFN variants are not a voting bloc. The rebuttal
       quoted raw agreement percentages; the committed analysis reports Cohen's κ, which corrects
