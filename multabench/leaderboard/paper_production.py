@@ -41,7 +41,6 @@ from multabench.leaderboard.main_paper.leaderboard      import make_figure      
 from multabench.leaderboard.main_paper.leaderboard      import load_for_overview
 from multabench.leaderboard.main_paper.encoder_scale    import make_figure      as _make_encoder_scale_fig
 from multabench.leaderboard.main_paper.pca              import make_figure      as _make_pca_fig
-from multabench.leaderboard.main_paper.curation_robustness import make_figure  as _make_curation_robustness_fig
 from multabench.leaderboard.main_paper.model_agreement import make_figure  as _make_model_agreement_fig
 
 # ---------------------------------------------------------------------------
@@ -865,24 +864,22 @@ _PASS_RATE_CAPTION = (
     "text-tabular pool at $\\delta = 0.001$ and $\\rho = 3/5$. "
     "\\textit{Rate}: share of the $\\binom{10}{5} = 252$ committees drawable from the "
     "10-learner pool that admit the dataset. "
-    "\\textit{Acc.}: the decision the published panel reached. "
-    "\\textit{Bench.}: membership in the released benchmark; 3 accepted candidates were left "
-    "out to match the image subset's size. "
-    "$^{\\dagger}$TabPFN cannot run on these two, so their rate is over the "
-    "$\\binom{8}{5} = 56$ committees of eligible learners."
+    "\\textit{Acc.}: the decision the published panel reached, where $\\checkmark$ is accepted "
+    "and released, $(\\checkmark)$ accepted but held out to match the image subset's size, and "
+    "$\\times$ rejected."
 )
+
+_PASS_RATE_MARKS = {"released": "$\\checkmark$", "held out": "$(\\checkmark)$",
+                    "rejected": "$\\times$"}
 
 
 def _to_latex_panel_pass_rates(tbl: pd.DataFrame) -> str:
     def cells(r) -> str:
-        star = "$^{\\dagger}$" if r["Panels"] != 252 else ""
-        acc = "$\\checkmark$" if r["Accepted"] else "$\\times$"
-        bench = "$\\checkmark$" if r["Benchmark"] else ""
-        return f"{r['Dataset']}{star} & {acc} & {bench} & {r['Rate']:.1f}\\%"
+        return f"{r['Dataset']} & {_PASS_RATE_MARKS[r['Status']]} & {r['Rate']:.1f}\\%"
 
     half = (len(tbl) + 1) // 2
     left, right = tbl.iloc[:half], tbl.iloc[half:]
-    head = "Dataset & Acc. & Bench. & Rate"
+    head = "Dataset & Acc. & Rate"
     rows = [f"{cells(a)} & {cells(b)} \\\\"
             for (_, a), (_, b) in zip(left.iterrows(), right.iterrows())]
     return (
@@ -890,7 +887,7 @@ def _to_latex_panel_pass_rates(tbl: pd.DataFrame) -> str:
         f"\\caption{{{_PASS_RATE_CAPTION}}}\n"
         "\\label{tab:panel_pass_rates}\n"
         "\\scriptsize\n\\setlength{\\tabcolsep}{4pt}\n"
-        "\\begin{tabular}{lccr@{\\hskip 16pt}lccr}\n\\toprule\n"
+        "\\begin{tabular}{lcr@{\\hskip 16pt}lcr}\n\\toprule\n"
         f"{head} & {head} \\\\\n\\midrule\n"
         + "\n".join(rows)
         + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
@@ -922,9 +919,7 @@ def display_paper_production():
              lambda: _make_encoder_scale_fig("all"),                "encoder_scale"),
             ("Figure 6", "PCA Projection Dimensions",               "figure",
              _make_pca_fig,                                         "pca"),
-            ("Figure 7", "Curation Robustness",                     "figure",
-             _make_curation_robustness_fig,                         "curation_robustness"),
-            ("Figure 8", "Committee Agreement (appendix)",           "figure",
+            ("Figure 7", "Committee Agreement (appendix)",           "figure",
              _make_model_agreement_fig,                             "model_agreement"),
         ]
 
