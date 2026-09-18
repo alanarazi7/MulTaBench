@@ -321,9 +321,9 @@ def _to_latex_costs(tbl_img: pd.DataFrame, tbl_txt: pd.DataFrame) -> str:
 
     header = (
         "\\begin{table*}[h]\n\\centering\n"
-        "\\caption{Computation costs runs. "
+        "\\caption{Computation costs per run. "
         "Median Runtime in seconds and Median Peak GPU memory in GB. "
-        "Partition by tabular learners, modality and encoder size.}\n"
+        "Partitioned by tabular learners, modality and encoder size.}\n"
         "\\label{tab:compute_costs}\n"
         "\\setlength{\\tabcolsep}{4pt}\\small\n"
         "\\begin{tabular}{l rr rr rr rr}\n"
