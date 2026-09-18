@@ -60,19 +60,21 @@ per-dataset significance tables go to the appendix. The relaxed trimodal criteri
 ## Track 1 — Analyses
 
 Each committed CSV under `results/analysis_curation_sensitivity/` regenerates byte-identically
-from the script that wrote it.
+from the script that wrote it. The committee simulation, the per-candidate pass rates, the
+pairwise agreement figure and the δ/ρ threshold grid are all on `master` and all in the paper.
 
 - [ ] **Elo** — `elo_leaderboard.py` and its three CSVs are still only on the `elo-leaderboard`
-      branch. Bring them over in their own PR.
+      branch. Bring them over in their own PR; the paper's Elo appendix stays commented out until
+      they land.
 
 The TabArena effect-size contextualization stays paper-side: it compares against numbers reported
 in that paper, so there is nothing to generate here.
 
 ## Track 2 — Release
 
-- [ ] Merge the remaining analysis branches so every rebuttal number is reproducible from a
-      single checkout of `master`.
-- [ ] Switch the paper's code URL from the anonymous repo to this one.
+- [ ] Merge `elo-leaderboard`, the last analysis branch whose numbers are not reproducible from a
+      single checkout of `master`. The other analysis branches are squash-merged, so `git branch
+      --no-merged` still lists them; compare contents, not the merge flag, before deleting any.
 
 ## Protected branches
 
@@ -87,48 +89,42 @@ in that paper, so there is nothing to generate here.
 
 # Paper TODOs (`paper-multabench` repo)
 
-The companion-release framing has landed on `main` (abstract, §4, §8, checklist) and the
-appendix section plus its admission table are on the `core-full-framing` branch. Everything
-below is what remains: a paper-side consequence of work that has landed in this repo, or a
-commitment from the rebuttal.
-
 Main-text body is currently over the 10-page camera-ready limit, so every addition needs a
 matching trim. Switch `neurips_2026.tex` from `[preprint]` to `[eandd, final]` and compile early
 to get a real page count.
 
 ## From the Full text half
 
+The admission table (`tab:extra_datasets`) now reports each dataset's margin and its pass count,
+so the numbers behind these are printed; what is missing is the prose that tells a reader how to
+read them.
+
 - [ ] **Say that admission was measured on the *uploaded* artifacts**, not on the pool's original
-      sources. The δ=0.001 / ρ=3-of-5 rule is already stated in the new appendix section; this
-      qualifier is not.
-- [ ] **Describe the four binned datasets** in the curation appendix: their targets are cut into
-      equal-frequency quantile bins at curation time, so a `BIN_`/`MUL_` dataset can have a `REG_`
-      source. Name them and give their bin counts.
+      sources. The δ=0.001 / ρ=3-of-5 rule is stated in the curation appendix; this qualifier is
+      not.
 - [ ] **Say that membership was decided on the uploaded artifacts, not the pool ranking.** Two
       datasets differ from the pool-ranked draft: IMDB Genre and Melbourne Airbnb are in, Movies
-      Revenue and ML/DS/AI Salaries are out.
-- [ ] **Carry the California Prices caveat.** It is admitted on all five models but at +0.002 on
-      each — 2× δ at the reported 3-decimal precision. Read the sign, not the ranking.
-- [ ] **Note the non-unanimous admissions**: five of the 20 pass 4 of 5 rather than 5 of 5.
+      Revenue and ML/DS/AI Salaries are out. As it stands the pool table rejects both of the
+      first two with no word on why they are released.
+- [ ] **Carry the California Prices caveat.** The table shows +0.002 on 5 of 5, which is 2× δ at
+      the reported 3-decimal precision. Read the sign, not the ranking.
 - [ ] **Record the two curation deviations** that change what a reader would compute from the
-      source: Consumer Complaint is capped at 100K rows, and Melbourne Airbnb drops its URL
-      columns (they would otherwise be detected as image features).
-
-## New main-text section (Curation Robustness)
-
-- [ ] Summarize the **committee simulation** (C(10,5) = 252 panels) and the **pairwise model
-      agreement** result showing the two TabPFN variants are not a voting bloc. The rebuttal
-      quoted raw agreement percentages; the committed analysis reports Cohen's κ, which corrects
-      for chance agreement and supports the same conclusion.
+      source: Consumer Complaints is capped at 100K rows (the properties table prints 100,000
+      with no note), and Melbourne Airbnb drops its URL columns (they would otherwise be detected
+      as image features).
+- [ ] **Name the fourth binned dataset.** The image curation appendix lists quantile binning for
+      CS:GO Skins (10), PetFinder (8) and HubMAP HPA (10), explicitly as a non-exhaustive list.
+      Either name the fourth or keep the list honest.
 
 ## Positioning and framing
 
 - [ ] State plainly that MulTaBench is a **diagnostic benchmark for TAR, not a neutral ranking
       benchmark**: a true multimodal tabular architecture should excel on MulTaBench while
-      remaining strong on simpler MMTL tasks.
+      remaining strong on simpler MMTL tasks. §6 gets close ("our objective is not to establish
+      the SOTA") but only as an aside about selection bias.
 - [ ] Frame MulTaBench as a **living benchmark** (TabArena analogy) built on an open pipeline.
 - [ ] **Strengthen the novelty framing** (veTL): 15 genuinely new image-tabular datasets, screened
-      from 1000+ Kaggle datasets down to a 100+ candidate pool; surface the Appendix D
+      from 1000+ Kaggle datasets down to a 100+ candidate pool; surface the image-curation
       engineering work (corrupt images, task formulation, directory standardization) into the
       narrative; present the unified API as the reusable community contribution.
 - [ ] **Contextualize the effect size** for the +0.022 mean gain: TabArena's TFM-vs-XGBoost gaps
@@ -137,19 +133,21 @@ to get a real page count.
 
 ## Concurrent work — VT-Bench
 
+Not cited anywhere yet.
+
 - [ ] **MUST ADDRESS: cite and differentiate VT-Bench** (`https://arxiv.org/pdf/2605.08146`,
       ICML 2026): a visual-tabular benchmark published after our submission, aggregating 14
       datasets across 9 domains and 756K samples. It is the closest concurrent work to the image
       half and the camera-ready cannot ignore it.
 - [ ] **State the overlap honestly.** Seven of its eleven discriminative datasets are ones we
       also considered: Skin Cancer (PAD-UFES-20), DVM-Car, CelebA, PetFinder Adoption, Breast
-      Cancer, Pawpularity and Anime (MyAnimeList). Two are already in Core, one is admitted to
-      Full, one we curated independently, and two we rejected as duplicates of Core entries.
+      Cancer, Pawpularity and Anime (MyAnimeList). Two are already in MulTaBench, one is among
+      the released extras, one we curated independently, and two we rejected as duplicates.
 - [ ] **Draw the distinction on curation, not on size.** VT-Bench aggregates datasets and
       measures fusion; MulTaBench *screens* them, admitting only where the joint signal exceeds
-      each unimodal baseline, and Core additionally requires task-awareness. A dataset an
-      aggregating benchmark keeps is one we may reject for having no multimodal signal to
-      measure — that is the diagnostic-versus-ranking argument, applied to dataset selection.
+      each unimodal baseline, and additionally requires task-awareness. A dataset an aggregating
+      benchmark keeps is one we may reject for having no multimodal signal to measure — that is
+      the diagnostic-versus-ranking argument, applied to dataset selection.
 - [ ] **Mine its dataset table for candidates.** Its eleven discriminative datasets are the
       closest thing to a curated shortlist anyone has published for this problem, and four of
       them we have never evaluated. Worth working through before another blind Kaggle sweep.
@@ -157,32 +155,32 @@ to get a real page count.
       MIMIC-IV + MIMIC-CXR derived tasks. The MIMIC ones need PhysioNet credentialing, which is a
       redistribution constraint worth stating as a reason our benchmark is openly downloadable.
 
-## Core/Full and trimodal
+## Trimodal
 
-- [ ] **Adopt the relaxed trimodal rule** in §4 and Appendix E: report **8 trimodal datasets**,
-      keeping the strict-rule result (PetFinder, Amazon Packages) as a stricter sub-tier. Verify
-      all 8 pass Joint Signal on both modalities before claiming it. Full is expected to reach
-      ~15; getting the group there means detecting text columns on the new image-tabular
-      datasets.
+- [ ] **Adopt the relaxed trimodal rule.** §4 and Appendix~E still report **2** trimodal datasets
+      (PetFinder, Amazon Packages) under the strict rule, and the appendix only floats relaxation
+      as future work. The scope decision is to report **8** and keep the strict pair as a stricter
+      sub-tier. Verify all 8 pass Joint Signal on both modalities before claiming it.
 - [ ] Answer veTL's framing question explicitly: we do **not** treat MMTL as two separate bimodal
       problems.
-- [ ] **Reconcile the 9-vs-8 text-column mismatch.** Table 3 in the appendix counts **9**
-      image-tabular datasets with a text feature; §4 and Appendix E say **8**, and
+- [ ] **Reconcile the 9-vs-8 text-column mismatch**, still live. `tab:multabench_datasets` gives a
+      non-zero text count to **9** image-tabular datasets; §4 and Appendix~E say **8**, and
       `FULLY_MULTIMODAL_DATASET_CANDIDATES` lists 8. The ninth is **HubMAP HPA**. Its only
       text-typed column is `rle`, the run-length encoded segmentation mask carried over from the
       source segmentation competition: strings of integer pairs, missing for most tiles. The
       semantic feature detector sees a high-cardinality object column and types it as text, so it
-      reaches the table but was never a trimodal candidate. Two ways out, neither taken yet:
-      qualify the prose (say 9 columns are typed as text, 8 of which are language), or drop `rle`
-      in the HubMAP curation, which would change that dataset's feature counts and so needs a
-      re-run. **Nothing about this is in the paper yet** — the paper still says 8 with no
-      explanation of the ninth.
+      reaches the table but was never a trimodal candidate. Two ways out, neither taken: qualify
+      the prose (say 9 columns are typed as text, 8 of which are language), or drop `rle` in the
+      HubMAP curation, which would change that dataset's feature counts and so needs a re-run.
 
-## New appendix material
+## Elo
 
-- [ ] Elo / Bradley–Terry leaderboard table (27 competitors) plus a method description.
-- [ ] Pairwise model agreement matrix.
-- [ ] The image-tabular rejected pool, as a curation record.
+The appendix subsection and its table are written but commented out in `appendix.tex` (the block
+above `\section{MulTaBench Datasets}`), because the numbers are not reproducible from `master`.
+
+- [ ] Bring `elo_leaderboard.py` and its CSVs over from the `elo-leaderboard` branch (Track 1).
+- [ ] Uncomment the appendix subsection once they are on `master`, and check the 27-competitor
+      table against the regenerated numbers.
 
 ## Small fixes found while mapping the paper
 
@@ -190,11 +188,22 @@ to get a real page count.
       `par:image_tabular_curation`.
 - [ ] `\subsection{Computation Costs}` carries a `tab:costs` label; rename to `app:costs` (it is
       never referenced, and it collides conceptually with `tab:compute_costs`).
-- [ ] `checklist.tex` hardcodes "Section 7" for limitations; this goes stale once a section is added.
 - [ ] `paper_production.py` regenerates tables whose captions have since drifted from the
       hand-edited `.tex`, so regenerating will clobber caption edits. Note also that
       `_get_datasets_table_latex()` reads the dataset table *back out of* `appendix.tex`, so that
       one table flows paper → script.
+
+## Settled, no action
+
+- **Curation robustness.** Committee simulation, per-candidate pass rates and pairwise agreement
+  are all in the paper. Agreement is reported raw, not as Cohen's κ, which was dropped from the
+  analysis in #54.
+- **Pairwise agreement matrix.** In the appendix as `figures/model_agreement.pdf`.
+- **Non-unanimous admissions.** The admission table's Pass column carries them per dataset, which
+  is stronger than the "five of 20 pass 4 of 5" sentence we had planned.
+- **The image-tabular rejected pool** is deliberately not reported at text-tabular detail: the
+  appendix states we could not assure faithful curation of the failures, and says so.
+- **The curation-robustness figure** was cut from the paper, and its generator deleted here (#56).
 
 ---
 
@@ -215,14 +224,11 @@ to get a real page count.
       as they represent settings in which frozen encoders already provide sufficient task-relevant
       information and the main challenge lies in multimodal fusion rather than encoder adaptation."
       somewhere.
-- [ ] Add analysis of voting correlations between pairs of learners. [Reviewer 1, Weakness #2 +
-      Question #2]
-- [ ] Add committee analysis - "committee simulation" - % acceptance had we used 5 different
-      models.
 - [ ] Effect Size (Weakness #1 + Question #1) -> consider mentioning the effect size analysis
       somewhere. I think it should appear in the results. Note: Cohen's d was deliberately dropped
       from both the paper and the CSV (#48), so this is still open.
-- [ ] ELO Rating (Question #3) --> add Elos to appendix.
+- [ ] ELO Rating (Question #3) --> add Elos to appendix. The subsection and table are drafted in
+      `appendix.tex` but commented out until the code lands on `master`.
 - [ ] Bimodal vs Trimodal (Weakness #2 + Question #1) --> emphasize more trimodality. Consider
       relaxing the writing / condition for it, and even make it more clear in the intro. "In
       hindsight, these criteria may have been overly restrictive; for instance, while our original
