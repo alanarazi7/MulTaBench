@@ -37,15 +37,3 @@ released alongside them `multabench-full-<name>`.
 
 The 40 datasets released alongside the benchmark were admitted on a weaker criterion and carry no
 tier name of their own, so their scores must not be pooled with the 40 MulTaBench datasets.
-
----
-
-# Paper TODOs (`paper-multabench` repo)
-
-Main-text body is currently over the 10-page camera-ready limit, so every addition needs a
-matching trim. Switch `neurips_2026.tex` from `[preprint]` to `[eandd, final]` and compile early
-to get a real page count.
-
-- [ ] **Contextualize the effect size** for the +0.022 mean gain: TabArena's TFM-vs-XGBoost gaps
-      are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
-      as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
