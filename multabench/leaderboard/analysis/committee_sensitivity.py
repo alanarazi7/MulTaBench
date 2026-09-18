@@ -9,7 +9,7 @@ Answers, from the rebuttal:
     "The paper does not sufficiently establish the robustness of the retained dataset set to
     the ... choice of curation learners." -> leave_one_out(), all_5_of_10_panels()
     "I do not understand why the authors chose two TabPFN variants ... could they effectively
-    vote as a bloc under the 3-out-of-5 rule?" -> pairwise_agreement(), drop_or_keep_only()
+    vote as a bloc under the 3-out-of-5 rule?" -> drop_or_keep_only(), and model_agreement.py
     "we could also just switch the panel" -> panel_swap()
 
 Run standalone: `python -m multabench.leaderboard.analysis.committee_sensitivity`
@@ -18,7 +18,6 @@ from itertools import combinations
 from os.path import dirname, join
 
 import pandas as pd
-from sklearn.metrics import cohen_kappa_score
 
 from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, EXTRA_MODELS
 from multabench.leaderboard.analysis.pass_matrix import DELTA_DEFAULT
@@ -103,20 +102,6 @@ def all_5_of_10_panels(matrix: pd.DataFrame, rho: float = RHO) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def pairwise_agreement(matrix: pd.DataFrame, models=CURATION_MODELS) -> pd.DataFrame:
-    """Cohen's kappa between each pair of models' individual pass/fail vote -- directly tests
-    whether TabPFNv2 and TabPFN-2.5 vote as a correlated bloc."""
-    kappa = pd.DataFrame(index=models, columns=models, dtype=float)
-    for m1 in models:
-        for m2 in models:
-            if m1 == m2:
-                kappa.loc[m1, m2] = 1.0
-            else:
-                pair = matrix[[m1, m2]].dropna().astype(bool)
-                kappa.loc[m1, m2] = round(cohen_kappa_score(pair[m1], pair[m2]), 3)
-    return kappa
-
-
 def drop_or_keep_only_tabpfn(matrix: pd.DataFrame, rho: float = RHO) -> pd.DataFrame:
     """Stronger bloc-vote test than leave-one-out: drop BOTH TabPFN variants at once, and
     the mirror case of keeping ONLY the TabPFN family."""
@@ -166,15 +151,6 @@ def main():
     loo.to_csv(join(_OUT_DIR, "committee_leave_one_out.csv"), index=False)
     print("=== Leave-one-model-out ===")
     print(loo[["dropped_model", "n_accepted", "jaccard_vs_baseline"]].to_string(index=False))
-
-    agreement = pairwise_agreement(matrix)
-    agreement.to_csv(join(_OUT_DIR, "committee_pairwise_kappa.csv"))
-    print("\n=== Pairwise kappa (5 curation models) ===")
-    print(agreement)
-    other_pairs = [agreement.loc[m1, m2] for m1, m2 in combinations(CURATION_MODELS, 2)
-                   if {m1, m2} != {"TabPFNv2", "TabPFN-2.5"}]
-    print(f"TabPFNv2 x TabPFN-2.5: {agreement.loc['TabPFNv2', 'TabPFN-2.5']:.3f}  "
-          f"(avg of other 9 pairs: {sum(other_pairs) / len(other_pairs):.3f})")
 
     bloc = drop_or_keep_only_tabpfn(matrix)
     bloc.to_csv(join(_OUT_DIR, "committee_tabpfn_bloc.csv"), index=False)
