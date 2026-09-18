@@ -22,19 +22,10 @@ _DIAGONAL_COLOR = "#E8E8E8"
 _FS_LABEL = 12
 _FS_TICK = 11
 _FS_CELL = 10
-_FS_XTICK = 9.5
 
 
 def _load_agreement() -> pd.DataFrame:
     return pd.read_csv(_AGREEMENT_CSV, index_col=0)
-
-
-def _wrap(model: str) -> str:
-    """Two-line x labels so the names stay horizontal without colliding."""
-    return {"LightGBM": "Light\nGBM", "CatBoost": "Cat\nBoost", "TabPFNv2": "TabPFN\nv2",
-            "TabPFN-2.5": "TabPFN\n2.5", "RandomForest": "Random\nForest",
-            "RealMLP": "Real\nMLP", "TabICLv2": "TabICL\nv2",
-            "XGBoost": "XG\nBoost"}.get(model, model)
 
 
 def _draw_agreement(ax, agreement: pd.DataFrame):
@@ -53,7 +44,7 @@ def _draw_agreement(ax, agreement: pd.DataFrame):
 
     ax.set_xticks(range(n))
     ax.set_yticks(range(n))
-    ax.set_xticklabels([_wrap(m) for m in models], fontsize=_FS_XTICK)
+    ax.set_xticklabels(models, rotation=90, fontsize=_FS_TICK)
     ax.set_yticklabels(models, fontsize=_FS_TICK)
     ax.tick_params(length=0)
     for side in ax.spines.values():
@@ -64,7 +55,7 @@ def _draw_agreement(ax, agreement: pd.DataFrame):
 def make_figure():
     agreement = _load_agreement()
 
-    fig, ax = plt.subplots(figsize=(9.0, 6.2))
+    fig, ax = plt.subplots(figsize=(8.2, 6.4))
     fig.subplots_adjust(left=0.19, right=0.88, top=0.99, bottom=0.22)
     im = _draw_agreement(ax, agreement)
 
