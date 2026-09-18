@@ -57,41 +57,31 @@ other 40 and the two must not be pooled. The camera-ready gets one extra page (1
 main-text section carries the δ/ρ sensitivity and the repositioning, while Elo and the
 per-dataset significance tables go to the appendix. The relaxed trimodal criterion is adopted.
 
-## Track 1 — Analyses (consolidate what exists; fill the remaining gap)
+## Track 1 — Analyses
 
-Most of this already exists; the job is to get it into one place, make it runnable, and commit
-its outputs. One item is a genuine gap.
+Each committed CSV under `results/analysis_curation_sensitivity/` regenerates byte-identically
+from the script that wrote it.
 
-- [ ] **Consolidate all rebuttal analysis code onto `master`.** `benchmark_threshold_sweep.py`
-      has landed; the candidate-pool δ/ρ sweeps it superseded are gone, and every CSV under
-      `analysis_curation_sensitivity/` now has a generator here. Still split: `elo_leaderboard.py`
-      only on `elo-leaderboard`, and the TabArena comparison only in the private
-      `internal-MulTaBench`, so **no single checkout reproduces the rebuttal**.
-- [ ] **Fix `model_agreement.py`** — it fails on import as committed (`build_pass_matrix` moved
-      from `committee_pool.py` to `pass_matrix.py`), and it persists no CSV. Commit the agreement
-      matrix as a CSV alongside the two currently-untracked PNGs.
-- [ ] **Add the four committee-consensus bucket counts to code** (full consensus 33/56, near
-      consensus 45/56, strong majority 52/56, borderline 4/56). They reproduce from
-      `committee_delta_sweep.csv`, but no script prints them — the framing currently exists only
-      in rebuttal prose.
-- [ ] **Elo — already complete** (`elo_frozen_vs_tar.csv`, 27 competitors, RandomForest Frozen
-      anchored at 1000). Fix the stale "23 competitors" docstring and merge.
+- [ ] **Elo** — `elo_leaderboard.py` and its three CSVs are still only on the `elo-leaderboard`
+      branch. Bring them over in their own PR.
+
+The TabArena effect-size contextualization stays paper-side: it compares against numbers reported
+in that paper, so there is nothing to generate here.
 
 ## Track 2 — Release
 
-- [ ] Merge the consolidated analysis branch so every rebuttal number is reproducible from a
+- [ ] Merge the remaining analysis branches so every rebuttal number is reproducible from a
       single checkout of `master`.
 - [ ] Switch the paper's code URL from the anonymous repo to this one.
 
 ## Protected branches
 
-Two branches hold work that exists nowhere else. **Do not delete them** until their content is
-merged or explicitly abandoned:
+**Do not delete these**, even though `master` now carries the analyses they were opened for:
 
 | branch | what only lives there |
 |--------|-----------------------|
-| `neurips-rebuttal-sensitivity` | the rebuttal sensitivity analyses and 22 result CSVs |
-| `elo-leaderboard` | `elo_leaderboard.py` and the two Elo CSVs |
+| `neurips-rebuttal-sensitivity` | `model_sensitivity.py` and its `model_*.csv` outputs: a second computation of the committee results, dropped in favour of `committee_sensitivity.py`, which it agreed with exactly |
+| `elo-leaderboard` | `elo_leaderboard.py` and its three Elo CSVs |
 
 ---
 
@@ -126,9 +116,10 @@ to get a real page count.
 
 ## New main-text section (Curation Robustness)
 
-- [ ] **Still missing: the pairwise model agreement** result showing the two TabPFN variants are
-      not a voting bloc (78% agreement, identical to RandomForest↔TabPFN-2.5; average 70%, range
-      59–82%). Nothing in the paper carries it yet, and `model_agreement.py` persists no CSV.
+- [ ] Summarize the **committee simulation** (C(10,5) = 252 panels) and the **pairwise model
+      agreement** result showing the two TabPFN variants are not a voting bloc. The rebuttal
+      quoted raw agreement percentages; the committed analysis reports Cohen's κ, which corrects
+      for chance agreement and supports the same conclusion.
 
 ## Positioning and framing
 

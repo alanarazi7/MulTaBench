@@ -4,17 +4,21 @@ Model committee agreement analysis @ δ=0.001
 Computes pairwise agreement on pass/fail decisions across the 56-dataset text-tabular pool.
 Agreement is measured as the percentage of datasets where two models agree on whether
 both conditions hold:
-  - Delta_Joint     = mean(all) - max(mean(no_text), mean(text_only)) > δ
-  - Delta_Awareness = mean(ft) - mean(all) > δ
+  - Delta_Joint     = mean(all) - max(mean(no_text), mean(text_only)) >= δ
+  - Delta_Awareness = mean(ft) - mean(all) >= δ
 
 Run standalone: `python -m multabench.leaderboard.analysis.model_agreement`
 """
-from pathlib import Path
+from os.path import dirname, join
 
 import pandas as pd
 import numpy as np
 
-from multabench.leaderboard.analysis.committee_pool import build_long_csv, build_pass_matrix
+from multabench.leaderboard.analysis.committee_pool import build_long_csv
+from multabench.leaderboard.analysis.pass_matrix import build_pass_matrix
+
+_RESULTS = join(dirname(dirname(__file__)), "results", "analysis_curation_sensitivity")
+_AGREEMENT_CSV = join(_RESULTS, "model_agreement_percent.csv")
 
 
 def compute_pairwise_agreement(delta: float = 0.001) -> pd.DataFrame:
@@ -125,10 +129,10 @@ if __name__ == "__main__":
     for rank, (m1, m2, agreement) in enumerate(pairs[:10], 1):
         print(f"{rank:2d}. {m1:15s} ↔ {m2:15s}  {agreement:6.1f}%")
 
-    # Plot outputs
-    results_dir = Path(__file__).parent.parent.parent / "results" / "analysis_curation_sensitivity"
-    results_dir.mkdir(parents=True, exist_ok=True)
-    plot_agreement_matrix(agreement_df, str(results_dir / "model_agreement_full.png"),
+    agreement_df.round(1).to_csv(_AGREEMENT_CSV)
+    print(f"\nWrote {agreement_df.shape[0]}x{agreement_df.shape[1]} agreement matrix to {_AGREEMENT_CSV}")
+
+    plot_agreement_matrix(agreement_df, join(_RESULTS, "model_agreement_full.png"),
                          diagonal_only=False)
-    plot_agreement_matrix(agreement_df, str(results_dir / "model_agreement_diagonal.png"),
+    plot_agreement_matrix(agreement_df, join(_RESULTS, "model_agreement_diagonal.png"),
                          diagonal_only=True)

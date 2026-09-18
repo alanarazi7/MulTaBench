@@ -40,6 +40,7 @@ from multabench.leaderboard.main_paper.leaderboard      import make_figure      
 from multabench.leaderboard.main_paper.leaderboard      import load_for_overview
 from multabench.leaderboard.main_paper.encoder_scale    import make_figure      as _make_encoder_scale_fig
 from multabench.leaderboard.main_paper.pca              import make_figure      as _make_pca_fig
+from multabench.leaderboard.main_paper.curation_robustness import make_figure  as _make_curation_robustness_fig
 
 # ---------------------------------------------------------------------------
 # Constants (for appendix tables only)
@@ -876,6 +877,8 @@ def display_paper_production():
              lambda: _make_encoder_scale_fig("all"),                "encoder_scale"),
             ("Figure 6", "PCA Projection Dimensions",               "figure",
              _make_pca_fig,                                         "pca"),
+            ("Figure 7", "Curation Robustness",                     "figure",
+             _make_curation_robustness_fig,                         "curation_robustness"),
         ]
 
         def _show_agg(agg_data):

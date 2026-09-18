@@ -1,0 +1,5 @@
+bucket,band_pct,n_datasets,n_pool
+Full consensus,0.0,33,56
+Near consensus,10.0,45,56
+Strong majority,30.0,52,56
+Borderline,50.0,56,56
