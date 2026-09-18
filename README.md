@@ -40,22 +40,6 @@ tier name of their own, so their scores must not be pooled with the 40 MulTaBenc
 
 ---
 
-# Protected branches
-
-**Do not delete these**, even though `master` now carries the analyses they were opened for:
-
-| branch | what only lives there |
-|--------|-----------------------|
-| `neurips-rebuttal-sensitivity` | `model_sensitivity.py` and its `model_*.csv` outputs: a second computation of the committee results, dropped in favour of `committee_sensitivity.py`, which it agreed with exactly |
-
-- [ ] Merge `elo-leaderboard`, the last analysis branch whose numbers are not reproducible from a
-      single checkout of `master`.
-
-The other analysis branches are squash-merged, so `git branch --no-merged` still lists them;
-compare contents, not the merge flag, before deleting any.
-
----
-
 # Paper TODOs (`paper-multabench` repo)
 
 Main-text body is currently over the 10-page camera-ready limit, so every addition needs a
