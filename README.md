@@ -46,12 +46,6 @@ Main-text body is currently over the 10-page camera-ready limit, so every additi
 matching trim. Switch `neurips_2026.tex` from `[preprint]` to `[eandd, final]` and compile early
 to get a real page count.
 
-## From the Full text half
-
-- [ ] **Name the fourth binned dataset.** The image curation appendix lists quantile binning for
-      CS:GO Skins (10), PetFinder (8) and HubMAP HPA (10), explicitly as a non-exhaustive list.
-      Either name the fourth or keep the list honest.
-
 ## Positioning and framing
 
 - [ ] State plainly that MulTaBench is a **diagnostic benchmark for TAR, not a neutral ranking
@@ -61,24 +55,6 @@ to get a real page count.
 - [ ] **Contextualize the effect size** for the +0.022 mean gain: TabArena's TFM-vs-XGBoost gaps
       are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
       as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
-
-## Trimodal
-
-- [ ] **Adopt the relaxed trimodal rule.** §4 and Appendix~E still report **2** trimodal datasets
-      (PetFinder, Amazon Packages) under the strict rule, and the appendix only floats relaxation
-      as future work. The scope decision is to report **8** and keep the strict pair as a stricter
-      sub-tier. Verify all 8 pass Joint Signal on both modalities before claiming it.
-- [ ] Answer veTL's framing question explicitly: we do **not** treat MMTL as two separate bimodal
-      problems.
-- [ ] **Reconcile the 9-vs-8 text-column mismatch**, still live. `tab:multabench_datasets` gives a
-      non-zero text count to **9** image-tabular datasets; §4 and Appendix~E say **8**, and
-      `FULLY_MULTIMODAL_DATASET_CANDIDATES` lists 8. The ninth is **HubMAP HPA**. Its only
-      text-typed column is `rle`, the run-length encoded segmentation mask carried over from the
-      source segmentation competition: strings of integer pairs, missing for most tiles. The
-      semantic feature detector sees a high-cardinality object column and types it as text, so it
-      reaches the table but was never a trimodal candidate. Two ways out, neither taken: qualify
-      the prose (say 9 columns are typed as text, 8 of which are language), or drop `rle` in the
-      HubMAP curation, which would change that dataset's feature counts and so needs a re-run.
 
 ## Small fixes found while mapping the paper
 
@@ -104,11 +80,3 @@ to get a real page count.
       as they represent settings in which frozen encoders already provide sufficient task-relevant
       information and the main challenge lies in multimodal fusion rather than encoder adaptation."
       somewhere.
-- [ ] Bimodal vs Trimodal (Weakness #2 + Question #1) --> emphasize more trimodality. Consider
-      relaxing the writing / condition for it, and even make it more clear in the intro. "In
-      hindsight, these criteria may have been overly restrictive; for instance, while our original
-      setup required both text and images to show Task-Awareness gains, requiring Task-Awareness
-      in just one unstructured modality would yield a broader trimodal collection. In fact, for
-      all 8 of these datasets, both modalities pass the Joint Signal criteria, while the images
-      alone satisfy the Task-Awareness criterion. Such relaxation could allow us to declare that
-      MulTaBench already features 8 Trimodal datasets."
