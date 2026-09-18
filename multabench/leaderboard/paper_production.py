@@ -42,6 +42,7 @@ from multabench.leaderboard.main_paper.leaderboard      import load_for_overview
 from multabench.leaderboard.main_paper.encoder_scale    import make_figure      as _make_encoder_scale_fig
 from multabench.leaderboard.main_paper.pca              import make_figure      as _make_pca_fig
 from multabench.leaderboard.main_paper.model_agreement import make_figure  as _make_model_agreement_fig
+from multabench.leaderboard.main_paper.elo             import make_figure      as _make_elo_fig
 
 # ---------------------------------------------------------------------------
 # Constants (for appendix tables only)
@@ -921,6 +922,8 @@ def display_paper_production():
              _make_pca_fig,                                         "pca"),
             ("Figure 7", "Committee Agreement (appendix)",           "figure",
              _make_model_agreement_fig,                             "model_agreement"),
+            ("Figure 8", "Elo Leaderboard (appendix)",               "figure",
+             _make_elo_fig,                                         "elo"),
         ]
 
         def _show_agg(agg_data):
