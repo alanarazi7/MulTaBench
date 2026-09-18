@@ -163,18 +163,6 @@ above `\section{MulTaBench Datasets}`), because the numbers are not reproducible
       `_get_datasets_table_latex()` reads the dataset table *back out of* `appendix.tex`, so that
       one table flows paper → script.
 
-## Settled, no action
-
-- **Curation robustness.** Committee simulation, per-candidate pass rates and pairwise agreement
-  are all in the paper. Agreement is reported raw, not as Cohen's κ, which was dropped from the
-  analysis in #54.
-- **Pairwise agreement matrix.** In the appendix as `figures/model_agreement.pdf`.
-- **Non-unanimous admissions.** The admission table's Pass column carries them per dataset, which
-  is stronger than the "five of 20 pass 4 of 5" sentence we had planned.
-- **The image-tabular rejected pool** is deliberately not reported at text-tabular detail: the
-  appendix states we could not assure faithful curation of the failures, and says so.
-- **The curation-robustness figure** was cut from the paper, and its generator deleted here (#56).
-
 ---
 
 # Alan's Manual TODOs
@@ -194,9 +182,6 @@ above `\section{MulTaBench Datasets}`), because the numbers are not reproducible
       as they represent settings in which frozen encoders already provide sufficient task-relevant
       information and the main challenge lies in multimodal fusion rather than encoder adaptation."
       somewhere.
-- [ ] Effect Size (Weakness #1 + Question #1) -> consider mentioning the effect size analysis
-      somewhere. I think it should appear in the results. Note: Cohen's d was deliberately dropped
-      from both the paper and the CSV (#48), so this is still open.
 - [ ] ELO Rating (Question #3) --> add Elos to appendix. `elo_leaderboard.py` and its three CSVs
       are still only on the `elo-leaderboard` branch; bring them over in their own PR. The
       subsection and table are drafted in `appendix.tex` but stay commented out until the code
