@@ -27,9 +27,13 @@ from os.path import dirname, join
 import pandas as pd
 
 from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS, EXTRA_MODELS
+from multabench.leaderboard.analysis.pass_matrix import DELTA_DEFAULT
+from multabench.leaderboard.analysis.pool_names import POOL_DISPLAY_NAMES
 from multabench.leaderboard.main_paper.text_pool import _MULTABENCH_POOL_NAMES
 
-_MATRIX_CSV = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity", "pass_matrix.csv")
+_OUT_DIR = join(dirname(__file__), "..", "results", "analysis_curation_sensitivity")
+_MATRIX_CSV = join(_OUT_DIR, "pass_matrix.csv")
+_DELTA_SWEEP_CSV = join(_OUT_DIR, "committee_delta_sweep.csv")
 
 ALL_MODELS = CURATION_MODELS + EXTRA_MODELS
 PANEL_SIZE = 5
@@ -96,6 +100,23 @@ def panel_pass_rates(matrix: pd.DataFrame) -> pd.DataFrame:
             "pct_pass_eq5": round((counts == 5).mean() * 100, 1),
         })
     return pd.DataFrame(rows).set_index("dataset")
+
+
+def pass_rate_table(delta: float = DELTA_DEFAULT) -> pd.DataFrame:
+    """The persisted per-candidate rates at one delta, named as the paper's dataset tables
+    name them, ordered from the most-accepted candidate down."""
+    rates = pd.read_csv(_DELTA_SWEEP_CSV)
+    rates = rates[rates["delta"] == delta].copy()
+    unnamed = set(rates["dataset"]) - set(POOL_DISPLAY_NAMES)
+    assert not unnamed, f"no display name for {sorted(unnamed)}"
+    out = pd.DataFrame({
+        "Dataset": rates["dataset"].map(POOL_DISPLAY_NAMES),
+        "Accepted": rates["original_decision"] == "accept",
+        "Benchmark": rates["in_multabench"],
+        "Rate": rates["pct_pass_ge3"],
+        "Panels": rates["n_panels"],
+    })
+    return out.sort_values(["Rate", "Dataset"], ascending=[False, True]).reset_index(drop=True)
 
 
 def main():

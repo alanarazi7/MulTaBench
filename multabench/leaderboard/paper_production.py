@@ -33,6 +33,7 @@ from multabench.leaderboard.analysis.benchmark_threshold_sweep import (
     RHO_HEADLINE, benchmark_deltas, load_benchmark_scores, threshold_grid,
 )
 from multabench.leaderboard.analysis.pass_matrix       import DELTA_DEFAULT
+from multabench.leaderboard.analysis.committee_panel_pass_rates import pass_rate_table
 from multabench.leaderboard.main_paper.text_pool        import make_joint_tar_figure   as _make_text_pool_joint_tar_fig
 from multabench.leaderboard.main_paper.text_pool        import make_tfidf_figure       as _make_text_pool_tfidf_fig
 from multabench.leaderboard.main_paper.text_pool        import make_struct_unstruct_figure as _make_text_pool_struct_fig
@@ -853,6 +854,49 @@ def _to_latex_threshold_grid(tbl: pd.DataFrame) -> str:
     return header + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
 
 
+def _make_panel_pass_rates_table() -> pd.DataFrame:
+    """Per-candidate acceptance rate over every 5-learner committee drawable from the
+    10-learner pool, beside the decision the published panel reached."""
+    return pass_rate_table()
+
+
+_PASS_RATE_CAPTION = (
+    "Per-candidate acceptance rate across every 5-learner committee, on the 56-dataset "
+    "text-tabular pool at $\\delta = 0.001$ and $\\rho = 3/5$. "
+    "\\textit{Rate}: share of the $\\binom{10}{5} = 252$ committees drawable from the "
+    "10-learner pool that admit the dataset. "
+    "\\textit{Acc.}: the decision the published panel reached. "
+    "\\textit{Bench.}: membership in the released benchmark; 3 accepted candidates were left "
+    "out to match the image subset's size. "
+    "$^{\\dagger}$TabPFN cannot run on these two, so their rate is over the "
+    "$\\binom{8}{5} = 56$ committees of eligible learners."
+)
+
+
+def _to_latex_panel_pass_rates(tbl: pd.DataFrame) -> str:
+    def cells(r) -> str:
+        star = "$^{\\dagger}$" if r["Panels"] != 252 else ""
+        acc = "$\\checkmark$" if r["Accepted"] else "$\\times$"
+        bench = "$\\checkmark$" if r["Benchmark"] else ""
+        return f"{r['Dataset']}{star} & {acc} & {bench} & {r['Rate']:.1f}\\%"
+
+    half = (len(tbl) + 1) // 2
+    left, right = tbl.iloc[:half], tbl.iloc[half:]
+    head = "Dataset & Acc. & Bench. & Rate"
+    rows = [f"{cells(a)} & {cells(b)} \\\\"
+            for (_, a), (_, b) in zip(left.iterrows(), right.iterrows())]
+    return (
+        "\\begin{table}[ht]\n\\centering\n"
+        f"\\caption{{{_PASS_RATE_CAPTION}}}\n"
+        "\\label{tab:panel_pass_rates}\n"
+        "\\scriptsize\n\\setlength{\\tabcolsep}{4pt}\n"
+        "\\begin{tabular}{lccr@{\\hskip 16pt}lccr}\n\\toprule\n"
+        f"{head} & {head} \\\\\n\\midrule\n"
+        + "\n".join(rows)
+        + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
+    )
+
+
 # ---------------------------------------------------------------------------
 # Streamlit display
 # ---------------------------------------------------------------------------
@@ -1034,6 +1078,13 @@ def display_paper_production():
         st.dataframe(thresh_df, use_container_width=True, hide_index=True)
         with st.expander("📋 LaTeX source"):
             st.code(_to_latex_threshold_grid(thresh_df), language="latex")
+        st.divider()
+
+        st.subheader("Table — Per-Candidate Committee Pass Rates (appendix Tab. panel_pass_rates)")
+        pass_df = _make_panel_pass_rates_table()
+        st.dataframe(pass_df, use_container_width=True, hide_index=True)
+        with st.expander("📋 LaTeX source"):
+            st.code(_to_latex_panel_pass_rates(pass_df), language="latex")
         st.divider()
 
         st.subheader("Table — Text Curation Acceptance Rates")
