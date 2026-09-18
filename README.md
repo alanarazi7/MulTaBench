@@ -56,19 +56,6 @@ to get a real page count.
       are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
       as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
 
-## Small fixes found while mapping the paper
-
-- [x] `paper_production.py` captions and headers now match the hand-edited `.tex`, so regenerating
-      no longer clobbers the paper. The second half of this note was wrong:
-      `_get_datasets_table_latex()` builds from `datasets_summary.csv`, not from `appendix.tex`.
-      Nothing under `multabench/leaderboard/` reads a `.tex` file, so every table flows
-      script → paper.
-- [x] `tab:text_deduplication` is generated rather than hand-written. It reproduces the table's 15
-      rows and their check marks, and independently confirms the 56-candidate pool.
-- [ ] `tab:text_curation_grid` still differs in layout: the generator emits `{lcccccc}` with plain
-      `\midrule` group separators, the paper `{llcccccr}` with `Approved`/`Rejected` group
-      headings. Aligning them changes the typeset table, so it is deliberately left alone.
-
 ---
 
 # Alan's Manual TODOs
