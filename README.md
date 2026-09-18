@@ -64,21 +64,14 @@ to get a real page count.
 
 ## Concurrent work — VT-Bench
 
-Not cited anywhere yet.
+Cited in the Image-Tabular Benchmarks paragraph as concurrent work, contrasted on curation:
+it aggregates and studies fusion strategies, we filter by the need for encoder adaptation. What
+is still open:
 
-- [ ] **MUST ADDRESS: cite and differentiate VT-Bench** (`https://arxiv.org/pdf/2605.08146`,
-      ICML 2026): a visual-tabular benchmark published after our submission, aggregating 14
-      datasets across 9 domains and 756K samples. It is the closest concurrent work to the image
-      half and the camera-ready cannot ignore it.
 - [ ] **State the overlap honestly.** Seven of its eleven discriminative datasets are ones we
       also considered: Skin Cancer (PAD-UFES-20), DVM-Car, CelebA, PetFinder Adoption, Breast
       Cancer, Pawpularity and Anime (MyAnimeList). Two are already in MulTaBench, one is among
       the released extras, one we curated independently, and two we rejected as duplicates.
-- [ ] **Draw the distinction on curation, not on size.** VT-Bench aggregates datasets and
-      measures fusion; MulTaBench *screens* them, admitting only where the joint signal exceeds
-      each unimodal baseline, and additionally requires task-awareness. A dataset an aggregating
-      benchmark keeps is one we may reject for having no multimodal signal to measure — that is
-      the diagnostic-versus-ranking argument, applied to dataset selection.
 - [ ] **Mine its dataset table for candidates.** Its eleven discriminative datasets are the
       closest thing to a curated shortlist anyone has published for this problem, and four of
       them we have never evaluated. Worth working through before another blind Kaggle sweep.
@@ -123,8 +116,6 @@ Not cited anywhere yet.
       Target-Aware Representations (TAR), providing a dedicated benchmark to evaluate solutions
       for it. A true multimodal tabular architecture should excel on MulTaBench while remaining
       strong on simpler MMTL tasks." -> supports the same, and thus we also release extended.
-- [ ] Add STRABLE reference to the paper, as well as BeyondArena. Both should be considered
-      concurrent work for text-tabular. Similarly, VT-Bench for images.
 - [ ] Make a clear justification for the release of new datasets. Consider the phrasing such as
       "Datasets where Target-Aware Representations do not outperform Joint Frozen remain valuable,
       as they represent settings in which frozen encoders already provide sufficient task-relevant
