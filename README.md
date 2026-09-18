@@ -62,23 +62,6 @@ to get a real page count.
       are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
       as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
 
-## Concurrent work — VT-Bench
-
-Cited in the Image-Tabular Benchmarks paragraph as concurrent work, contrasted on curation:
-it aggregates and studies fusion strategies, we filter by the need for encoder adaptation. What
-is still open:
-
-- [ ] **State the overlap honestly.** Seven of its eleven discriminative datasets are ones we
-      also considered: Skin Cancer (PAD-UFES-20), DVM-Car, CelebA, PetFinder Adoption, Breast
-      Cancer, Pawpularity and Anime (MyAnimeList). Two are already in MulTaBench, one is among
-      the released extras, one we curated independently, and two we rejected as duplicates.
-- [ ] **Mine its dataset table for candidates.** Its eleven discriminative datasets are the
-      closest thing to a curated shortlist anyone has published for this problem, and four of
-      them we have never evaluated. Worth working through before another blind Kaggle sweep.
-- [ ] **Note what it has that we do not:** a cardiology/infarction set (44K) and three
-      MIMIC-IV + MIMIC-CXR derived tasks. The MIMIC ones need PhysioNet credentialing, which is a
-      redistribution constraint worth stating as a reason our benchmark is openly downloadable.
-
 ## Trimodal
 
 - [ ] **Adopt the relaxed trimodal rule.** §4 and Appendix~E still report **2** trimodal datasets
