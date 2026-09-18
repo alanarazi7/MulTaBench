@@ -75,7 +75,6 @@ in that paper, so there is nothing to generate here.
 - [ ] Merge `elo-leaderboard`, the last analysis branch whose numbers are not reproducible from a
       single checkout of `master`. The other analysis branches are squash-merged, so `git branch
       --no-merged` still lists them; compare contents, not the merge flag, before deleting any.
-- [x] The paper's code URL points at this repo. Only `checklist.tex` still says "anonymous".
 
 ## Protected branches
 
@@ -89,12 +88,6 @@ in that paper, so there is nothing to generate here.
 ---
 
 # Paper TODOs (`paper-multabench` repo)
-
-The curation-robustness work has landed on `main`: §6 carries a *Curation Pipeline Sensitivity*
-paragraph, and the appendix carries *Curation Committee* (pairwise agreement figure, committee
-table, per-candidate pass-rate table) and *Threshold Sensitivity*. The *Additional Released
-Datasets* appendix is also in, with a per-dataset admission table, a properties table and a
-description of every one of the 40. Everything below is what is still missing.
 
 Main-text body is currently over the 10-page camera-ready limit, so every addition needs a
 matching trim. Switch `neurips_2026.tex` from `[preprint]` to `[eandd, final]` and compile early
@@ -124,9 +117,6 @@ read them.
       Either name the fourth or keep the list honest.
 
 ## Positioning and framing
-
-Nothing here has landed; the words *diagnostic benchmark*, *neutral ranking* and *living
-benchmark* do not appear in the sources.
 
 - [ ] State plainly that MulTaBench is a **diagnostic benchmark for TAR, not a neutral ranking
       benchmark**: a true multimodal tabular architecture should excel on MulTaBench while
@@ -200,8 +190,6 @@ above `\section{MulTaBench Datasets}`), because the numbers are not reproducible
       never referenced, and it collides conceptually with `tab:compute_costs`).
 - [ ] `checklist.tex` hardcodes "Section 7" for limitations; this goes stale once a section is
       added.
-- [ ] `checklist.tex` still says "our anonymous GitHub repository". The abstract already links
-      `github.com/alanarazi7/MulTaBench`, so the checklist is the last anonymous reference.
 - [ ] `paper_production.py` regenerates tables whose captions have since drifted from the
       hand-edited `.tex`, so regenerating will clobber caption edits. Note also that
       `_get_datasets_table_latex()` reads the dataset table *back out of* `appendix.tex`, so that
@@ -238,12 +226,6 @@ above `\section{MulTaBench Datasets}`), because the numbers are not reproducible
       as they represent settings in which frozen encoders already provide sufficient task-relevant
       information and the main challenge lies in multimodal fusion rather than encoder adaptation."
       somewhere.
-- [x] Add analysis of voting correlations between pairs of learners. [Reviewer 1, Weakness #2 +
-      Question #2] → `figures/model_agreement.pdf` in the Curation Committee appendix, reported as
-      raw pairwise agreement.
-- [x] Add committee analysis - "committee simulation" - % acceptance had we used 5 different
-      models. → Curation Committee appendix: the 252-panel simulation, the disjoint-panel check
-      and the per-candidate pass-rate table.
 - [ ] Effect Size (Weakness #1 + Question #1) -> consider mentioning the effect size analysis
       somewhere. I think it should appear in the results. Note: Cohen's d was deliberately dropped
       from both the paper and the CSV (#48), so this is still open.
