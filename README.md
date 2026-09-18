@@ -40,23 +40,6 @@ tier name of their own, so their scores must not be pooled with the 40 MulTaBenc
 
 ---
 
-# Protected branches
-
-**Do not delete these**, even though `master` now carries the analyses they were opened for:
-
-| branch | what only lives there |
-|--------|-----------------------|
-| `neurips-rebuttal-sensitivity` | `model_sensitivity.py` and its `model_*.csv` outputs: a second computation of the committee results, dropped in favour of `committee_sensitivity.py`, which it agreed with exactly |
-| `elo-leaderboard` | `elo_leaderboard.py` and its three Elo CSVs |
-
-- [ ] Merge `elo-leaderboard`, the last analysis branch whose numbers are not reproducible from a
-      single checkout of `master`.
-
-The other analysis branches are squash-merged, so `git branch --no-merged` still lists them;
-compare contents, not the merge flag, before deleting any.
-
----
-
 # Paper TODOs (`paper-multabench` repo)
 
 Main-text body is currently over the 10-page camera-ready limit, so every addition needs a
@@ -143,15 +126,6 @@ Not cited anywhere yet.
       the prose (say 9 columns are typed as text, 8 of which are language), or drop `rle` in the
       HubMAP curation, which would change that dataset's feature counts and so needs a re-run.
 
-## Elo
-
-The appendix subsection and its table are written but commented out in `appendix.tex` (the block
-above `\section{MulTaBench Datasets}`), because the numbers are not reproducible from `master`.
-
-- [ ] Bring `elo_leaderboard.py` and its CSVs over from the `elo-leaderboard` branch.
-- [ ] Uncomment the appendix subsection once they are on `master`, and check the 27-competitor
-      table against the regenerated numbers.
-
 ## Small fixes found while mapping the paper
 
 - [ ] The trimodal cross-reference in §3 points at `par:text_tabular_curation`; it should be
@@ -182,10 +156,6 @@ above `\section{MulTaBench Datasets}`), because the numbers are not reproducible
       as they represent settings in which frozen encoders already provide sufficient task-relevant
       information and the main challenge lies in multimodal fusion rather than encoder adaptation."
       somewhere.
-- [ ] ELO Rating (Question #3) --> add Elos to appendix. `elo_leaderboard.py` and its three CSVs
-      are still only on the `elo-leaderboard` branch; bring them over in their own PR. The
-      subsection and table are drafted in `appendix.tex` but stay commented out until the code
-      lands on `master`.
 - [ ] Bimodal vs Trimodal (Weakness #2 + Question #1) --> emphasize more trimodality. Consider
       relaxing the writing / condition for it, and even make it more clear in the intro. "In
       hindsight, these criteria may have been overly restrictive; for instance, while our original
