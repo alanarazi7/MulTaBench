@@ -33,6 +33,7 @@ from multabench.leaderboard.analysis.benchmark_threshold_sweep import (
     RHO_HEADLINE, benchmark_deltas, load_benchmark_scores, threshold_grid,
 )
 from multabench.leaderboard.analysis.pass_matrix       import DELTA_DEFAULT
+from multabench.leaderboard.analysis.pool_names     import POOL_DISPLAY_NAMES, POOL_TO_RELEASED
 from multabench.leaderboard.analysis.committee_panel_pass_rates import pass_rate_table
 from multabench.leaderboard.main_paper.text_pool        import make_joint_tar_figure   as _make_text_pool_joint_tar_fig
 from multabench.leaderboard.main_paper.text_pool        import make_tfidf_figure       as _make_text_pool_tfidf_fig
@@ -762,6 +763,56 @@ def _make_curation_grid_latex(grid: pd.DataFrame) -> str:
     return header + "\n".join(rows) + "\n\\end{longtable}"
 
 
+_DEDUP_SOURCES = [
+    ("AutoML Multimodal", AUTOML_MULTIMODAL_ACCEPTED + AUTOML_MULTIMODAL_REJECTED),
+    ("Grinsztajn et al",  VECTORIZING_ACCEPTED + VECTORIZING_REJECTED),
+    ("CARTE",             CARTE_ACCEPTED + CARTE_REJECTED),
+    ("TextTabBench",      TEXT_TAB_BENCH_ACCEPTED + TEXT_TAB_BENCH_REJECTED),
+]
+
+# The source lists mix released and pool enums, so names are canonicalized before they are matched.
+_RELEASED_TO_POOL = {released: pool for pool, released in POOL_TO_RELEASED.items()}
+
+
+def _pool_display_name(dataset) -> str:
+    return POOL_DISPLAY_NAMES[_RELEASED_TO_POOL.get(dataset.name, dataset.name)]
+
+
+def _make_dedup_table() -> pd.DataFrame:
+    """Candidates shared by more than one source benchmark, one column per source."""
+    sources = [source for source, _ in _DEDUP_SOURCES]
+    presence: dict[str, dict[str, bool]] = {}
+    for source, datasets in _DEDUP_SOURCES:
+        for dataset in datasets:
+            presence.setdefault(_pool_display_name(dataset), {})[source] = True
+    tbl = pd.DataFrame.from_dict(presence, orient="index").reindex(columns=sources).fillna(False)
+    tbl = tbl[tbl.sum(axis=1) > 1]
+    # Widest overlaps first, then the largest groups sharing the same set of sources.
+    pattern = tbl.apply(tuple, axis=1)
+    order = pd.DataFrame({"n": tbl.sum(axis=1), "size": pattern.map(pattern.value_counts()),
+                          "pattern": pattern, "name": tbl.index})
+    order = order.sort_values(by=["n", "size", "pattern", "name"], ascending=[False, False, False, True])
+    return tbl.loc[order.index]
+
+
+def _to_latex_dedup(tbl: pd.DataFrame) -> str:
+    header = (
+        "\\begin{table}[ht]\n\\centering\n"
+        "\\caption{Duplicate datasets across benchmarks. \\checkmark\\ indicates presence.}\n"
+        "\\label{tab:text_deduplication}\n\\small\n"
+        "\\begin{tabular}{l" + "c" * len(tbl.columns) + "}\n\\toprule\n"
+        "\\textbf{Dataset} & "
+        + " & ".join(f"\\textbf{{{source}}}" for source in tbl.columns)
+        + " \\\\\n\\midrule\n"
+    )
+    width = max(len(name) for name in tbl.index)
+    rows = [
+        f"{name:<{width}} & " + " & ".join("$\\checkmark$" if present else " " * 12 for present in row) + " \\\\"
+        for name, row in tbl.iterrows()
+    ]
+    return header + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n\\end{table}"
+
+
 def _make_text_curation_rates_table() -> pd.DataFrame:
     benchmarks = [
         ("AutoML Multimodal", AUTOML_MULTIMODAL_ACCEPTED, AUTOML_MULTIMODAL_REJECTED),
@@ -1043,6 +1094,13 @@ def display_paper_production():
         else:
             st.info("Run `python multabench/scripts/do_dataset_summary.py` to generate "
                     "`datasets_summary_extra.csv`.")
+        st.divider()
+
+        st.subheader("Table — Benchmark Deduplication (appendix Tab. text_deduplication)")
+        dedup_df = _make_dedup_table()
+        st.dataframe(dedup_df, use_container_width=True)
+        with st.expander("📋 LaTeX source"):
+            st.code(_to_latex_dedup(dedup_df), language="latex")
         st.divider()
 
         st.subheader("Table — Text Curation Grid (56 datasets × 5 models)")
