@@ -40,43 +40,7 @@ tier name of their own, so their scores must not be pooled with the 40 MulTaBenc
 
 ---
 
-# Camera Ready TODOs (NeurIPS 2026 D&B)
-
-Commitments made during the rebuttal (reviewers 2eKq, jcEc, veTL; AC douQ) that must land in
-the camera-ready version. Source of truth: the OpenReview discussion thread for submission 240.
-
-**Working agreement.** All camera-ready work happens on a feature branch of this repo, committed
-and pushed as we go; branches are reviewed and merged to `master` by the maintainer. Paper edits
-live in the separate `paper-multabench` repo.
-
-**Scope decisions.** The release is 80 datasets, but only 40 of them are MulTaBench. The other 40
-are admitted on *Joint Signal* alone and carry no tier name: no `MulTaBench-Core`, no
-`MulTaBench-Full`. MulTaBench keeps its published meaning, the 40 curated datasets, and every
-analysis stays denominated in those 40, since the *Joint TAR* condition was never run on the
-other 40 and the two must not be pooled. The camera-ready gets one extra page (10 total): a new
-main-text section carries the δ/ρ sensitivity and the repositioning, while Elo and the
-per-dataset significance tables go to the appendix. The relaxed trimodal criterion is adopted.
-
-## Track 1 — Analyses
-
-Each committed CSV under `results/analysis_curation_sensitivity/` regenerates byte-identically
-from the script that wrote it. The committee simulation, the per-candidate pass rates, the
-pairwise agreement figure and the δ/ρ threshold grid are all on `master` and all in the paper.
-
-- [ ] **Elo** — `elo_leaderboard.py` and its three CSVs are still only on the `elo-leaderboard`
-      branch. Bring them over in their own PR; the paper's Elo appendix stays commented out until
-      they land.
-
-The TabArena effect-size contextualization stays paper-side: it compares against numbers reported
-in that paper, so there is nothing to generate here.
-
-## Track 2 — Release
-
-- [ ] Merge `elo-leaderboard`, the last analysis branch whose numbers are not reproducible from a
-      single checkout of `master`. The other analysis branches are squash-merged, so `git branch
-      --no-merged` still lists them; compare contents, not the merge flag, before deleting any.
-
-## Protected branches
+# Protected branches
 
 **Do not delete these**, even though `master` now carries the analyses they were opened for:
 
@@ -84,6 +48,12 @@ in that paper, so there is nothing to generate here.
 |--------|-----------------------|
 | `neurips-rebuttal-sensitivity` | `model_sensitivity.py` and its `model_*.csv` outputs: a second computation of the committee results, dropped in favour of `committee_sensitivity.py`, which it agreed with exactly |
 | `elo-leaderboard` | `elo_leaderboard.py` and its three Elo CSVs |
+
+- [ ] Merge `elo-leaderboard`, the last analysis branch whose numbers are not reproducible from a
+      single checkout of `master`.
+
+The other analysis branches are squash-merged, so `git branch --no-merged` still lists them;
+compare contents, not the merge flag, before deleting any.
 
 ---
 
@@ -178,7 +148,7 @@ Not cited anywhere yet.
 The appendix subsection and its table are written but commented out in `appendix.tex` (the block
 above `\section{MulTaBench Datasets}`), because the numbers are not reproducible from `master`.
 
-- [ ] Bring `elo_leaderboard.py` and its CSVs over from the `elo-leaderboard` branch (Track 1).
+- [ ] Bring `elo_leaderboard.py` and its CSVs over from the `elo-leaderboard` branch.
 - [ ] Uncomment the appendix subsection once they are on `master`, and check the 27-competitor
       table against the regenerated numbers.
 
@@ -192,18 +162,6 @@ above `\section{MulTaBench Datasets}`), because the numbers are not reproducible
       hand-edited `.tex`, so regenerating will clobber caption edits. Note also that
       `_get_datasets_table_latex()` reads the dataset table *back out of* `appendix.tex`, so that
       one table flows paper → script.
-
-## Settled, no action
-
-- **Curation robustness.** Committee simulation, per-candidate pass rates and pairwise agreement
-  are all in the paper. Agreement is reported raw, not as Cohen's κ, which was dropped from the
-  analysis in #54.
-- **Pairwise agreement matrix.** In the appendix as `figures/model_agreement.pdf`.
-- **Non-unanimous admissions.** The admission table's Pass column carries them per dataset, which
-  is stronger than the "five of 20 pass 4 of 5" sentence we had planned.
-- **The image-tabular rejected pool** is deliberately not reported at text-tabular detail: the
-  appendix states we could not assure faithful curation of the failures, and says so.
-- **The curation-robustness figure** was cut from the paper, and its generator deleted here (#56).
 
 ---
 
@@ -224,11 +182,10 @@ above `\section{MulTaBench Datasets}`), because the numbers are not reproducible
       as they represent settings in which frozen encoders already provide sufficient task-relevant
       information and the main challenge lies in multimodal fusion rather than encoder adaptation."
       somewhere.
-- [ ] Effect Size (Weakness #1 + Question #1) -> consider mentioning the effect size analysis
-      somewhere. I think it should appear in the results. Note: Cohen's d was deliberately dropped
-      from both the paper and the CSV (#48), so this is still open.
-- [ ] ELO Rating (Question #3) --> add Elos to appendix. The subsection and table are drafted in
-      `appendix.tex` but commented out until the code lands on `master`.
+- [ ] ELO Rating (Question #3) --> add Elos to appendix. `elo_leaderboard.py` and its three CSVs
+      are still only on the `elo-leaderboard` branch; bring them over in their own PR. The
+      subsection and table are drafted in `appendix.tex` but stay commented out until the code
+      lands on `master`.
 - [ ] Bimodal vs Trimodal (Weakness #2 + Question #1) --> emphasize more trimodality. Consider
       relaxing the writing / condition for it, and even make it more clear in the intro. "In
       hindsight, these criteria may have been overly restrictive; for instance, while our original
