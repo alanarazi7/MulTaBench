@@ -126,15 +126,6 @@ Not cited anywhere yet.
       the prose (say 9 columns are typed as text, 8 of which are language), or drop `rle` in the
       HubMAP curation, which would change that dataset's feature counts and so needs a re-run.
 
-## Elo
-
-The appendix subsection and its table are written but commented out in `appendix.tex` (the block
-above `\section{MulTaBench Datasets}`), because the numbers are not reproducible from `master`.
-
-- [ ] Bring `elo_leaderboard.py` and its CSVs over from the `elo-leaderboard` branch.
-- [ ] Uncomment the appendix subsection once they are on `master`, and check the 27-competitor
-      table against the regenerated numbers.
-
 ## Small fixes found while mapping the paper
 
 - [ ] The trimodal cross-reference in §3 points at `par:text_tabular_curation`; it should be
@@ -165,10 +156,6 @@ above `\section{MulTaBench Datasets}`), because the numbers are not reproducible
       as they represent settings in which frozen encoders already provide sufficient task-relevant
       information and the main challenge lies in multimodal fusion rather than encoder adaptation."
       somewhere.
-- [ ] ELO Rating (Question #3) --> add Elos to appendix. `elo_leaderboard.py` and its three CSVs
-      are still only on the `elo-leaderboard` branch; bring them over in their own PR. The
-      subsection and table are drafted in `appendix.tex` but stay commented out until the code
-      lands on `master`.
 - [ ] Bimodal vs Trimodal (Weakness #2 + Question #1) --> emphasize more trimodality. Consider
       relaxing the writing / condition for it, and even make it more clear in the intro. "In
       hindsight, these criteria may have been overly restrictive; for instance, while our original
