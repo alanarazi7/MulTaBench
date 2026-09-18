@@ -1,11 +1,9 @@
-"""Analysis (1) of 3 for the rebuttal: sensitivity of the retained dataset set to the choice
-of curation MODEL COMMITTEE. Fixed: delta=0.001, rho=3/5 (see analyses 2 and 3 for those).
+"""Sensitivity of the retained dataset set to the choice of curation MODEL COMMITTEE, at fixed
+delta and rho. The delta and rho axes are swept separately by committee_delta_sweep.py and
+benchmark_threshold_sweep.py.
 
-Built entirely on top of committee_pool.py's pass_matrix.csv (dataset x model boolean,
-computed once at the fixed delta) -- no dependency on curation_accept.py.
-pass_matrix.csv is the single canonical artifact both this and analysis
-(3) [quorum] read from, since both hold delta fixed; analysis (2) [delta sweep] instead needs
-the underlying Delta_Joint/Delta_Awareness values from pool_scores_long.csv directly.
+Reads pass_matrix.py's pass_matrix.csv (dataset x model boolean, computed once at the fixed
+delta), the canonical artifact for every analysis that holds delta fixed.
 
 Answers, from the rebuttal:
     "The paper does not sufficiently establish the robustness of the retained dataset set to
