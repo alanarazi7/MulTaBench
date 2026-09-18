@@ -56,12 +56,6 @@ to get a real page count.
       are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
       as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
 
-## Trimodal
-
-- [ ] Answer veTL's framing question explicitly: we do **not** treat MMTL as two separate bimodal
-      problems. §3 now says our logic "naturally extends to trimodal datasets", which is close but
-      still an aside.
-
 ## Small fixes found while mapping the paper
 
 - [ ] `paper_production.py` regenerates tables whose captions have since drifted from the
