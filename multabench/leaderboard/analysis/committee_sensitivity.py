@@ -167,9 +167,9 @@ def main():
     print("=== Leave-one-model-out ===")
     print(loo[["dropped_model", "n_accepted", "jaccard_vs_baseline"]].to_string(index=False))
 
-    agreement = pairwise_agreement(matrix)
+    agreement = pairwise_agreement(matrix, models=ALL_MODELS)
     agreement.to_csv(join(_OUT_DIR, "committee_pairwise_kappa.csv"))
-    print("\n=== Pairwise kappa (5 curation models) ===")
+    print("\n=== Pairwise kappa (all 10 pool models) ===")
     print(agreement)
     other_pairs = [agreement.loc[m1, m2] for m1, m2 in combinations(CURATION_MODELS, 2)
                    if {m1, m2} != {"TabPFNv2", "TabPFN-2.5"}]
