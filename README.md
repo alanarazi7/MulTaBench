@@ -87,13 +87,12 @@ in that paper, so there is nothing to generate here.
 
 ## Protected branches
 
-`curation-robustness` carries everything from `elo-leaderboard` and everything from
-`neurips-rebuttal-sensitivity` that ships. **Do not delete either** until that branch is merged:
+**Do not delete these**, even though `master` now carries the analyses they were opened for:
 
 | branch | what only lives there |
 |--------|-----------------------|
-| `neurips-rebuttal-sensitivity` | `model_sensitivity.py` and its `model_*.csv` outputs, the second computation of the committee results that was dropped in favour of `committee_sensitivity.py` |
-| `elo-leaderboard` | nothing beyond what `curation-robustness` carries |
+| `neurips-rebuttal-sensitivity` | `model_sensitivity.py` and its `model_*.csv` outputs: a second computation of the committee results, dropped in favour of `committee_sensitivity.py`, which it agreed with exactly |
+| `elo-leaderboard` | nothing; `elo_leaderboard.py` and its CSVs are on `master` |
 
 ---
 
