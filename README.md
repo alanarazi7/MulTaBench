@@ -46,30 +46,6 @@ Main-text body is currently over the 10-page camera-ready limit, so every additi
 matching trim. Switch `neurips_2026.tex` from `[preprint]` to `[eandd, final]` and compile early
 to get a real page count.
 
-## Positioning and framing
-
-- [ ] State plainly that MulTaBench is a **diagnostic benchmark for TAR, not a neutral ranking
-      benchmark**: a true multimodal tabular architecture should excel on MulTaBench while
-      remaining strong on simpler MMTL tasks. §6 gets close ("our objective is not to establish
-      the SOTA") but only as an aside about selection bias.
 - [ ] **Contextualize the effect size** for the +0.022 mean gain: TabArena's TFM-vs-XGBoost gaps
       are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
       as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
-
----
-
-# Alan's Manual TODOs
-
-- [ ] Clarify we are maybe not a pure benchmark: "We would like to emphasize its purpose:
-      MulTaBench is not intended as a neutral ranking benchmark for arbitrary multimodal tabular
-      models, but is better framed as a diagnostic benchmark for studying tasks where fusion of
-      modality-based representations is required and target-aware unstructured representations
-      are necessary." This could be intro/discussion material. "Our work establishes the need for
-      Target-Aware Representations (TAR), providing a dedicated benchmark to evaluate solutions
-      for it. A true multimodal tabular architecture should excel on MulTaBench while remaining
-      strong on simpler MMTL tasks." -> supports the same, and thus we also release extended.
-- [ ] Make a clear justification for the release of new datasets. Consider the phrasing such as
-      "Datasets where Target-Aware Representations do not outperform Joint Frozen remain valuable,
-      as they represent settings in which frozen encoders already provide sufficient task-relevant
-      information and the main challenge lies in multimodal fusion rather than encoder adaptation."
-      somewhere.
