@@ -1,9 +1,9 @@
-"""Paper figure: pairwise Cohen's kappa between the pool learners' accept/reject votes.
+"""Paper figure: pairwise agreement between the pool learners' accept/reject votes.
 
 Lower triangle of the 10x10 matrix over the 56-dataset text pool, the only subset where all 10
-learners have every condition. The five curation panel members are marked, and the cell for the
-two TabPFN variants is outlined: the pair the bloc-vote concern is about. Chance-corrected, so
-it is not inflated by the pool's overall acceptance rate the way raw agreement would be.
+learners have every condition. Each cell is the share of candidates on which the two learners
+cast the same vote. The five curation panel members are marked, and the cell for the two TabPFN
+variants is outlined: the pair the bloc-vote concern is about.
 """
 import os
 
@@ -17,32 +17,32 @@ from multabench.leaderboard.analysis.committee_pool import CURATION_MODELS
 
 _SENSITIVITY = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "results",
                             "analysis_curation_sensitivity")
-_KAPPA_CSV = os.path.join(_SENSITIVITY, "committee_pairwise_kappa.csv")
+_AGREEMENT_CSV = os.path.join(_SENSITIVITY, "model_agreement_percent.csv")
 
 _BLOC_PAIR = ("TabPFNv2", "TabPFN-2.5")
 _BLOC_COLOR = "#C05010"
-_KAPPA_MIN, _KAPPA_MAX = 0.15, 0.65
+_PCT_MIN, _PCT_MAX = 55, 85
 
 _FS_LABEL = 12
 _FS_TICK = 11
 _FS_CELL = 10
 
 
-def _load_kappa() -> pd.DataFrame:
-    return pd.read_csv(_KAPPA_CSV, index_col=0)
+def _load_agreement() -> pd.DataFrame:
+    return pd.read_csv(_AGREEMENT_CSV, index_col=0)
 
 
-def _draw_kappa(ax, kappa: pd.DataFrame):
-    models = list(kappa.index)
+def _draw_agreement(ax, agreement: pd.DataFrame):
+    models = list(agreement.index)
     n = len(models)
-    lower = np.where(np.tril(np.ones((n, n)), k=-1) == 1, kappa.values, np.nan)
+    lower = np.where(np.tril(np.ones((n, n)), k=-1) == 1, agreement.values, np.nan)
 
-    im = ax.imshow(lower, cmap="Blues", vmin=_KAPPA_MIN, vmax=_KAPPA_MAX)
+    im = ax.imshow(lower, cmap="Blues", vmin=_PCT_MIN, vmax=_PCT_MAX)
     for i in range(n):
         for j in range(i):
             val = lower[i, j]
-            ax.text(j, i, f"{val:.2f}", ha="center", va="center", fontsize=_FS_CELL,
-                    color="white" if val > 0.5 else "black")
+            ax.text(j, i, f"{val:.0f}", ha="center", va="center", fontsize=_FS_CELL,
+                    color="white" if val > 76 else "black")
 
     bi, bj = sorted(models.index(m) for m in _BLOC_PAIR)[::-1]
     ax.add_patch(plt.Rectangle((bj - 0.5, bi - 0.5), 1, 1, fill=False,
@@ -62,15 +62,15 @@ def _draw_kappa(ax, kappa: pd.DataFrame):
 
 
 def make_figure():
-    kappa = _load_kappa()
+    agreement = _load_agreement()
 
     fig, ax = plt.subplots(figsize=(7.6, 5.4))
     fig.subplots_adjust(left=0.19, right=0.88, top=0.99, bottom=0.22)
-    im = _draw_kappa(ax, kappa)
+    im = _draw_agreement(ax, agreement)
 
     bar = fig.colorbar(im, ax=ax, fraction=0.045, pad=0.03,
-                       ticks=[0.2, 0.3, 0.4, 0.5, 0.6])
-    bar.set_label(r"Cohen's $\kappa$", fontsize=_FS_LABEL)
+                       ticks=[55, 60, 65, 70, 75, 80, 85])
+    bar.set_label("Agreement (%)", fontsize=_FS_LABEL)
     bar.ax.tick_params(labelsize=_FS_TICK)
 
     ax.plot([], [], marker="s", linestyle="none", markersize=9, markerfacecolor="none",
@@ -78,4 +78,4 @@ def make_figure():
     ax.legend(loc="upper right", frameon=True, edgecolor="black", framealpha=0.95,
               prop={"size": _FS_TICK}, handletextpad=0.6)
 
-    return fig, {"Pairwise kappa": kappa}
+    return fig, {"Pairwise agreement (%)": agreement}
