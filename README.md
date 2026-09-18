@@ -106,10 +106,6 @@ Not cited anywhere yet.
 
 ## Small fixes found while mapping the paper
 
-- [ ] The trimodal cross-reference in §3 points at `par:text_tabular_curation`; it should be
-      `par:image_tabular_curation`.
-- [ ] `\subsection{Computation Costs}` carries a `tab:costs` label; rename to `app:costs` (it is
-      never referenced, and it collides conceptually with `tab:compute_costs`).
 - [ ] `paper_production.py` regenerates tables whose captions have since drifted from the
       hand-edited `.tex`, so regenerating will clobber caption edits. Note also that
       `_get_datasets_table_latex()` reads the dataset table *back out of* `appendix.tex`, so that
