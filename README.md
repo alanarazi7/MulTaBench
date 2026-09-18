@@ -62,30 +62,6 @@ to get a real page count.
       are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
       as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
 
-## Concurrent work — VT-Bench
-
-Not cited anywhere yet.
-
-- [ ] **MUST ADDRESS: cite and differentiate VT-Bench** (`https://arxiv.org/pdf/2605.08146`,
-      ICML 2026): a visual-tabular benchmark published after our submission, aggregating 14
-      datasets across 9 domains and 756K samples. It is the closest concurrent work to the image
-      half and the camera-ready cannot ignore it.
-- [ ] **State the overlap honestly.** Seven of its eleven discriminative datasets are ones we
-      also considered: Skin Cancer (PAD-UFES-20), DVM-Car, CelebA, PetFinder Adoption, Breast
-      Cancer, Pawpularity and Anime (MyAnimeList). Two are already in MulTaBench, one is among
-      the released extras, one we curated independently, and two we rejected as duplicates.
-- [ ] **Draw the distinction on curation, not on size.** VT-Bench aggregates datasets and
-      measures fusion; MulTaBench *screens* them, admitting only where the joint signal exceeds
-      each unimodal baseline, and additionally requires task-awareness. A dataset an aggregating
-      benchmark keeps is one we may reject for having no multimodal signal to measure — that is
-      the diagnostic-versus-ranking argument, applied to dataset selection.
-- [ ] **Mine its dataset table for candidates.** Its eleven discriminative datasets are the
-      closest thing to a curated shortlist anyone has published for this problem, and four of
-      them we have never evaluated. Worth working through before another blind Kaggle sweep.
-- [ ] **Note what it has that we do not:** a cardiology/infarction set (44K) and three
-      MIMIC-IV + MIMIC-CXR derived tasks. The MIMIC ones need PhysioNet credentialing, which is a
-      redistribution constraint worth stating as a reason our benchmark is openly downloadable.
-
 ## Trimodal
 
 - [ ] **Adopt the relaxed trimodal rule.** §4 and Appendix~E still report **2** trimodal datasets
@@ -123,8 +99,6 @@ Not cited anywhere yet.
       Target-Aware Representations (TAR), providing a dedicated benchmark to evaluate solutions
       for it. A true multimodal tabular architecture should excel on MulTaBench while remaining
       strong on simpler MMTL tasks." -> supports the same, and thus we also release extended.
-- [ ] Add STRABLE reference to the paper, as well as BeyondArena. Both should be considered
-      concurrent work for text-tabular. Similarly, VT-Bench for images.
 - [ ] Make a clear justification for the release of new datasets. Consider the phrasing such as
       "Datasets where Target-Aware Representations do not outperform Joint Frozen remain valuable,
       as they represent settings in which frozen encoders already provide sufficient task-relevant
