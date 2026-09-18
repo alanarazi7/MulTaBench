@@ -57,31 +57,29 @@ other 40 and the two must not be pooled. The camera-ready gets one extra page (1
 main-text section carries the δ/ρ sensitivity and the repositioning, while Elo and the
 per-dataset significance tables go to the appendix. The relaxed trimodal criterion is adopted.
 
-## Track 1 — Analyses (done, pending merge)
+## Track 1 — Analyses
 
-Everything is consolidated on the `curation-robustness` branch: one checkout of it runs every
-rebuttal analysis end to end, and each committed CSV regenerates byte-identically.
+Each committed CSV under `results/analysis_curation_sensitivity/` regenerates byte-identically
+from the script that wrote it.
 
-- [x] **Consolidate all rebuttal analysis code onto `master`.** `elo_leaderboard.py` and the
-      committee analyses now sit alongside `benchmark_threshold_sweep.py` under
-      `multabench/leaderboard/analysis/`, each with its outputs committed. The duplicate committee
-      analysis kept on `neurips-rebuttal-sensitivity` was dropped; `committee_sensitivity.py` is
-      the single script the paper's tables read from.
+- [x] **Committee sensitivity** — `committee_sensitivity.py` sits alongside
+      `benchmark_threshold_sweep.py` under `multabench/leaderboard/analysis/` and writes all six
+      committee CSVs, including the consensus buckets. The duplicate computation kept on
+      `neurips-rebuttal-sensitivity` was dropped; this is the single script the paper's committee
+      tables read from.
 - [x] **Fix `model_agreement.py`** — the import is repaired and the agreement matrix is committed
       as a CSV alongside the two PNGs.
-- [x] **Committee-consensus buckets** are printed and committed by `committee_sensitivity.py`
-      (`committee_consensus_buckets.csv`).
-- [x] **Elo** — `elo_leaderboard.py` brought over with its CSVs and the stale competitor count
-      corrected.
 - [x] **Paper figure** — `main_paper/curation_robustness.py` renders the two-panel curation
       robustness figure and is wired into `paper_production.py`.
+- [ ] **Elo** — `elo_leaderboard.py` and its three CSVs are still only on the `elo-leaderboard`
+      branch. Bring them over in their own PR.
 
 The TabArena effect-size contextualization stays paper-side: it compares against numbers reported
 in that paper, so there is nothing to generate here.
 
 ## Track 2 — Release
 
-- [ ] Merge the consolidated analysis branch so every rebuttal number is reproducible from a
+- [ ] Merge the remaining analysis branches so every rebuttal number is reproducible from a
       single checkout of `master`.
 - [ ] Switch the paper's code URL from the anonymous repo to this one.
 
@@ -92,7 +90,7 @@ in that paper, so there is nothing to generate here.
 | branch | what only lives there |
 |--------|-----------------------|
 | `neurips-rebuttal-sensitivity` | `model_sensitivity.py` and its `model_*.csv` outputs: a second computation of the committee results, dropped in favour of `committee_sensitivity.py`, which it agreed with exactly |
-| `elo-leaderboard` | nothing; `elo_leaderboard.py` and its CSVs are on `master` |
+| `elo-leaderboard` | `elo_leaderboard.py` and its three Elo CSVs |
 
 ---
 
