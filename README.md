@@ -48,23 +48,6 @@ to get a real page count.
 
 ## From the Full text half
 
-The admission table (`tab:extra_datasets`) now reports each dataset's margin and its pass count,
-so the numbers behind these are printed; what is missing is the prose that tells a reader how to
-read them.
-
-- [ ] **Say that admission was measured on the *uploaded* artifacts**, not on the pool's original
-      sources. The δ=0.001 / ρ=3-of-5 rule is stated in the curation appendix; this qualifier is
-      not.
-- [ ] **Say that membership was decided on the uploaded artifacts, not the pool ranking.** Two
-      datasets differ from the pool-ranked draft: IMDB Genre and Melbourne Airbnb are in, Movies
-      Revenue and ML/DS/AI Salaries are out. As it stands the pool table rejects both of the
-      first two with no word on why they are released.
-- [ ] **Carry the California Prices caveat.** The table shows +0.002 on 5 of 5, which is 2× δ at
-      the reported 3-decimal precision. Read the sign, not the ranking.
-- [ ] **Record the two curation deviations** that change what a reader would compute from the
-      source: Consumer Complaints is capped at 100K rows (the properties table prints 100,000
-      with no note), and Melbourne Airbnb drops its URL columns (they would otherwise be detected
-      as image features).
 - [ ] **Name the fourth binned dataset.** The image curation appendix lists quantile binning for
       CS:GO Skins (10), PetFinder (8) and HubMAP HPA (10), explicitly as a non-exhaustive list.
       Either name the fourth or keep the list honest.
@@ -75,11 +58,6 @@ read them.
       benchmark**: a true multimodal tabular architecture should excel on MulTaBench while
       remaining strong on simpler MMTL tasks. §6 gets close ("our objective is not to establish
       the SOTA") but only as an aside about selection bias.
-- [ ] Frame MulTaBench as a **living benchmark** (TabArena analogy) built on an open pipeline.
-- [ ] **Strengthen the novelty framing** (veTL): 15 genuinely new image-tabular datasets, screened
-      from 1000+ Kaggle datasets down to a 100+ candidate pool; surface the image-curation
-      engineering work (corrupt images, task formulation, directory standardization) into the
-      narrative; present the unified API as the reusable community contribution.
 - [ ] **Contextualize the effect size** for the +0.022 mean gain: TabArena's TFM-vs-XGBoost gaps
       are roughly +0.012 (default) and +0.007 (tuned), and TAR on a weak backbone is worth about
       as much as upgrading the backbone (RandomForest+TAR beats Frozen RealMLP).
