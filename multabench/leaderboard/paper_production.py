@@ -321,13 +321,9 @@ def _to_latex_costs(tbl_img: pd.DataFrame, tbl_txt: pd.DataFrame) -> str:
 
     header = (
         "\\begin{table*}[h]\n\\centering\n"
-        "\\caption{Computation costs per (dataset, fold) run on a single GPU. "
-        "Runtime in seconds (median over all datasets and folds). "
-        "Peak GPU memory in GB (median). "
-        "Frozen = structured + frozen embeddings; "
-        "TAR = structured + target-aware fine-tuned embeddings. "
-        "Image encoder: DINO-v3-small / DINO-v3-large. "
-        "Text encoder: E5-small-v2 / E5-large-v2.}\n"
+        "\\caption{Computation costs runs. "
+        "Median Runtime in seconds and Median Peak GPU memory in GB. "
+        "Partition by tabular learners, modality and encoder size.}\n"
         "\\label{tab:compute_costs}\n"
         "\\setlength{\\tabcolsep}{4pt}\\small\n"
         "\\begin{tabular}{l rr rr rr rr}\n"
@@ -382,8 +378,8 @@ def _to_latex_petfinder(tbl: pd.DataFrame) -> str:
     return (
         "\\begin{table}[h]\n\\centering\n"
         "\\caption{The PetFinder Analysis. S=Structured, I=Image, T=Text. "
-        "AUC (\\%) per model-condition pair. "
-        "The best condition performs Joint Modeling and Target-Aware Representations for both modalities.}\n"
+        "For all models, performing Joint Modeling and Target-Aware Representations "
+        "for both modalities maximizes AUC (shown in \\%).}\n"
         "\\label{tab:petfinder}\n"
         "\\setlength{\\tabcolsep}{4pt}\n\\small\n"
         "\\begin{tabular}{l cc ccc ccc}\n\\toprule\n"
@@ -429,9 +425,9 @@ def _to_latex_amazon_packages(tbl: pd.DataFrame) -> str:
         rows.append(f"{model} & {vals} \\\\")
     return (
         "\\begin{table}[h]\n\\centering\n"
-        "\\caption{Amazon Packages trimodal analysis. S=Structured, I=Image, T=Text. "
+        "\\caption{Amazon Packages Analysis. S=Structured, I=Image, T=Text. "
         "Mean $R^2$ (\\%) per model and condition. "
-        "The best condition uses Target-Aware Representations for both modalities.}\n"
+        "For all models, TAR over both modalities dominates.}\n"
         "\\label{tab:amazon_packages}\n"
         "\\setlength{\\tabcolsep}{4pt}\n\\small\n"
         "\\begin{tabular}{l cc ccc ccc}\n\\toprule\n"
@@ -488,24 +484,24 @@ def _fmt_p(p: float) -> str:
 
 def _to_latex(tbl: pd.DataFrame, label: str, caption: str) -> str:
     header = (
-        "\\begin{table*}[h]\n\\centering\n"
+        "\\begin{table*}[ht]\n\\centering\n"
         f"\\caption{{{caption}}}\n"
         f"\\label{{{label}}}\n"
         "\\small\n"
-        "\\begin{tabular}{llcccc}\n\\toprule\n"
-        "Dataset & Task & Frozen & Contextualized & Gain & $p_{\\text{BH}}$ \\\\\n"
+        "\\begin{tabular}{lcccc}\n\\toprule\n"
+        "Dataset & Frozen & TAR & Gain & $p_{\\text{BH}}$ \\\\\n"
         "\\midrule\n"
     )
     rows = []
     for _, r in tbl.iterrows():
         gain_str = f"$+${r['Gain']:.3f}" if r['Gain'] >= 0 else f"$-${abs(r['Gain']):.3f}"
         rows.append(
-            f"{r['Dataset']} & {r['Task']} & {r['Frozen']:.3f}"
+            f"{r['Dataset']} & {r['Frozen']:.3f}"
             f" & {r['FT']:.3f} & {gain_str} & {_fmt_p(r['p_BH'])} \\\\"
         )
     mean_row = (
         f"\\midrule\n"
-        f"\\textit{{Mean}} & & {tbl['Frozen'].mean():.3f}"
+        f"\\textit{{Mean}} & {tbl['Frozen'].mean():.3f}"
         f" & {tbl['FT'].mean():.3f} & $+${tbl['Gain'].mean():.3f} & \\\\"
     )
     return header + "\n".join(rows) + "\n" + mean_row + "\n\\bottomrule\n\\end{tabular}\n\\end{table*}"
@@ -622,7 +618,7 @@ _EXTRA_RESULTS_CAPTION = (
     "Structured, Unstructured and Joint are the mean score over the curation learners under each "
     "condition, AUC for classification and $R^2$ for regression. $\\Delta_{\\text{Joint}}$ is the "
     "median of Joint minus the better unimodal condition, and Pass counts the learners for which "
-    "it exceeds $\\delta$, out of those evaluated.}"
+    "it reaches $\\delta$, out of those evaluated.}"
 )
 
 
@@ -703,17 +699,16 @@ def _get_extra_datasets_table_latex() -> str:
 def _to_latex_win_rate(tbl: pd.DataFrame) -> str:
     header = (
         "\\begin{table}[h]\n\\centering\n"
-        "\\caption{Per-model FT win rate on MulTaBench. "
-        "Win rate = fraction of (dataset, fold) pairs where FT $>$ Frozen, with 95\\% CI. "
-        "End-to-end models excluded. Combined = mean of Image and Text.}\n"
+        "\\caption{Per-model TAR win rate on MulTaBench. "
+        "End-to-end models excluded from columns where they lack a separate TAR condition.}\n"
         "\\label{tab:win_rate}\n\\small\n"
         "\\begin{tabular}{lccc}\n\\toprule\n"
-        "Model & Image (\\%) & Text (\\%) & Combined (\\%) \\\\\n"
+        "Model & Image (\\%) & Text (\\%) & All (\\%) \\\\\n"
         "\\midrule\n"
     )
 
     def _fmt(wr, ci):
-        return "" if pd.isna(wr) else f"${wr:.1f} \\pm {ci:.1f}$"
+        return "---" if pd.isna(wr) else f"${wr:.1f} \\pm {ci:.1f}$"
 
     rows = [
         f"{r['Model']} & {_fmt(r.get('Image'), r.get('Image CI', 0))} "
@@ -728,19 +723,19 @@ def _make_curation_grid_latex(grid: pd.DataFrame) -> str:
     models = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]
     header = (
         "\\begin{longtable}{lcccccc}\n"
-        "\\caption{Per-dataset curation grid across all 56 text-tabular candidates. "
-        "Each cell indicates whether that model satisfies all three criteria: "
-        "Joint Signal and Task-awareness (\\S\\ref{sec:benchmarking}). "
-        "Datasets are sorted approved-first, then by descending pass count.}"
+        "\\caption{Per-dataset curation grid. Models: LightGBM (LGBM), CatBoost (Cat), "
+        "TabM, PFNv2 (TabPFNv2), PFN-2.5 (TabPFN-2.5). Each cell indicates whether the model "
+        "satisfies criteria. \\textit{Pass?} column shows how many models pass. "
+        "Options are pass ($\\checkmark$), fail ($\\times$), and N/A ($-$).}"
         "\\label{tab:text_curation_grid}\\\\\n"
         "\\toprule\n"
-        "\\textbf{Dataset} & \\textbf{LGB} & \\textbf{CTB} & \\textbf{TabM} "
-        "& \\textbf{PFNv2} & \\textbf{PFN-2.5} & \\textbf{Pass} \\\\\n"
+        "\\textbf{Dataset} & \\textbf{LGBM} & \\textbf{Cat} & \\textbf{TabM} "
+        "& \\textbf{PFNv2} & \\textbf{PFN-2.5} & \\textbf{Pass?} \\\\\n"
         "\\midrule\n"
         "\\endfirsthead\n"
         "\\toprule\n"
-        "\\textbf{Dataset} & \\textbf{LGB} & \\textbf{CTB} & \\textbf{TabM} "
-        "& \\textbf{PFNv2} & \\textbf{PFN-2.5} & \\textbf{Pass} \\\\\n"
+        "\\textbf{Dataset} & \\textbf{LGBM} & \\textbf{Cat} & \\textbf{TabM} "
+        "& \\textbf{PFNv2} & \\textbf{PFN-2.5} & \\textbf{Pass?} \\\\\n"
         "\\midrule\n"
         "\\endhead\n"
         "\\midrule\\multicolumn{7}{r}{\\textit{Continued on next page}}\\\\\n"
@@ -790,8 +785,7 @@ def _make_text_curation_rates_table() -> pd.DataFrame:
 def _to_latex_text_curation_rates(tbl: pd.DataFrame) -> str:
     header = (
         "\\begin{table}[h]\n\\centering\n"
-        "\\caption{Text-tabular curation acceptance rates by source benchmark. "
-        "Counts refer to unique datasets evaluated from each source.}\n"
+        "\\caption{Text-tabular curation acceptance rates by source benchmark.}\n"
         "\\label{tab:text_curation_rates}\n\\small\n"
         "\\begin{tabular}{lrrr}\n\\toprule\n"
         "\\textbf{Benchmark} & \\textbf{Candidates} & \\textbf{Accepted} & \\textbf{Rate} \\\\\n"
@@ -837,12 +831,14 @@ def _to_latex_threshold_grid(tbl: pd.DataFrame) -> str:
     n_total = tbl.attrs["n_total"]
     header = (
         "\\begin{table}[ht]\n\\centering\n"
-        "\\caption{Threshold sensitivity over MulTaBench. Datasets still admitted when the "
-        f"acceptance rule is re-applied to the final benchmark runs at each $(\\delta, \\rho)$, "
-        f"out of {n_total}. The published setting is in bold.}}\n"
+        "\\caption{\\textbf{Threshold sensitivity analysis.} Number of datasets "
+        f"(out of {n_total}) retained when varying the required performance margin "
+        "($\\delta$) and learner consensus ($\\rho$). The baseline setting is in bold.}\n"
         "\\label{tab:threshold_grid}\n\\small\n"
         "\\begin{tabular}{lccc}\n\\toprule\n"
-        "$\\delta$ & $\\rho{=}3/5$ & $\\rho{=}4/5$ & $\\rho{=}5/5$ \\\\\n"
+        "& \\multicolumn{3}{c}{Consensus ($\\rho$)} \\\\\n"
+        "\\cmidrule(lr){2-4}\n"
+        "Margin ($\\delta$) & \\textbf{3/5} & $4/5$ & $5/5$ \\\\\n"
         "\\midrule\n"
     )
     rows = []
@@ -863,11 +859,11 @@ def _make_panel_pass_rates_table() -> pd.DataFrame:
 _PASS_RATE_CAPTION = (
     "Per-candidate acceptance rate across every 5-learner committee, on the 56-dataset "
     "text-tabular pool at $\\delta = 0.001$ and $\\rho = 3/5$. "
+    "\\textit{Decision}: the decision the published panel reached, where $\\checkmark$ is "
+    "accepted and released, $(\\checkmark)$ accepted but held out to match the image subset's "
+    "size, and $\\times$ rejected. "
     "\\textit{Rate}: share of the $\\binom{10}{5} = 252$ committees drawable from the "
-    "10-learner pool that admit the dataset. "
-    "\\textit{Acc.}: the decision the published panel reached, where $\\checkmark$ is accepted "
-    "and released, $(\\checkmark)$ accepted but held out to match the image subset's size, and "
-    "$\\times$ rejected."
+    "10-learner pool that admit the dataset."
 )
 
 _PASS_RATE_MARKS = {"released": "$\\checkmark$", "held out": "$(\\checkmark)$",
@@ -880,7 +876,7 @@ def _to_latex_panel_pass_rates(tbl: pd.DataFrame) -> str:
 
     half = (len(tbl) + 1) // 2
     left, right = tbl.iloc[:half], tbl.iloc[half:]
-    head = "Dataset & Acc. & Rate"
+    head = "Dataset & Decision & Rate"
     rows = [f"{cells(a)} & {cells(b)} \\\\"
             for (_, a), (_, b) in zip(left.iterrows(), right.iterrows())]
     return (
@@ -976,27 +972,17 @@ def display_paper_production():
         st.subheader("Appendix — Per-Dataset Results")
         _APP_CAPTIONS = {
             "IMAGE": (
-                "MulTaBench image-tabular benchmark: per-dataset results averaged over "
-                "5 core learners and 5 random seeds, sorted by Gain. "
-                "Frozen: structured + frozen DINO-v3 embeddings. "
-                "Contextualized: structured + fine-tuned DINO-v3 embeddings. "
-                "Gain: Contextualized $-$ Frozen. "
-                "AUROC for classification ($\\uparrow$), $R^2$ for regression ($\\uparrow$). "
-                "$R^2$ clipped at $-0.1$. "
-                "$p_{\\text{BH}}$: Benjamini-Hochberg adjusted $p$-value of a one-sided paired "
-                "$t$-test on the per-learner-fold gains, corrected across all 40 datasets as one family.",
+                "MulTaBench Image-Tabular Per-dataset Results. Averaged over 12 learners and "
+                "5 seeds, with both Frozen and TAR conditions, sorted by Gain. "
+                "AUROC for classification, $R^2$ for regression. "
+                "$p_{\\text{BH}}$ is the Benjamini-Hochberg adjusted significance of the gain.",
                 "tab:app_results_image",
             ),
             "TEXT": (
-                "MulTaBench text-tabular benchmark: per-dataset results averaged over "
-                "5 core learners and 5 random seeds, sorted by Gain. "
-                "Frozen: structured + frozen E5-Small embeddings. "
-                "Contextualized: structured + fine-tuned E5-Small embeddings. "
-                "Gain: Contextualized $-$ Frozen. "
-                "AUROC for classification ($\\uparrow$), $R^2$ for regression ($\\uparrow$). "
-                "$R^2$ clipped at $-0.1$. "
-                "$p_{\\text{BH}}$: Benjamini-Hochberg adjusted $p$-value of a one-sided paired "
-                "$t$-test on the per-learner-fold gains, corrected across all 40 datasets as one family.",
+                "MulTaBench Text-Tabular Per-dataset Results. Averaged over 10 learners and "
+                "5 seeds, with both Frozen and TAR conditions, sorted by Gain. "
+                "AUROC for classification, $R^2$ for regression. "
+                "$p_{\\text{BH}}$ is the Benjamini-Hochberg adjusted significance of the gain.",
                 "tab:app_results_text",
             ),
         }
