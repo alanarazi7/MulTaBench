@@ -47,7 +47,6 @@ tier name of their own, so their scores must not be pooled with the 40 MulTaBenc
 | branch | what only lives there |
 |--------|-----------------------|
 | `neurips-rebuttal-sensitivity` | `model_sensitivity.py` and its `model_*.csv` outputs: a second computation of the committee results, dropped in favour of `committee_sensitivity.py`, which it agreed with exactly |
-| `elo-leaderboard` | `elo_leaderboard.py` and its three Elo CSVs |
 
 - [ ] Merge `elo-leaderboard`, the last analysis branch whose numbers are not reproducible from a
       single checkout of `master`.
