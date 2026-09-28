@@ -1,12 +1,17 @@
 # MulTaBench
 
+> **Work in progress:** MulTaBench is moving towards a living leaderboard, and `master` will change
+> gradually on the way there. To reproduce the paper, use the tag
+> [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) or the
+> [`official-paper-version`](https://github.com/alanarazi7/MulTaBench/tree/official-paper-version) branch.
+
 A benchmark for multimodal tabular learning: tables whose columns include images or free text, not
 just numbers and categories. It is 20 image-tabular and 20 text-tabular curated datasets, with 40
 further datasets released alongside them, 80 in total. The benchmark evaluates tabular learners
 under a target-aware setting, where the image and text encoders are fine-tuned on the task rather
 than used frozen.
 
-**Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616)  
+**Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616) (NeurIPS 2026 Spotlight)  
 **Datasets**: [kaggle.com/chico89](https://www.kaggle.com/chico89/datasets)
 
 ## Getting started
