@@ -41,8 +41,6 @@ TASK_TYPE = "task_type"
 TASK_REG = "Regression"
 TASK_CLS = "Classification"
 
-PCA_COMPONENTS = "pca_components"
-
 # Display mode labels
 MODE = "mode"
 ALL_FEAT = "All"

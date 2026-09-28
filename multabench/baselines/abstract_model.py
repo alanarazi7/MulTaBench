@@ -22,12 +22,10 @@ from multabench.baselines.preprocessing.categorical import fit_categorical_encod
 from multabench.preprocessing.feat_types import classify_semantic_features
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
 from multabench.baselines.preprocessing.target import transform_preprocess_y, fit_preprocess_y
-from multabench.datasets.multimodal import MultimodalError
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
 from multabench.baselines.preprocessing.text_embeddings import E5ColumnEncoder, fit_text_encoders, transform_text_features
 from multabench.datasets.objects import SupervisedTask
-from multabench.baselines.preprocessing.feature_types import detect_image_features
 from multabench.utils.warnings import silence_baselines_prints
 
 
@@ -49,8 +47,6 @@ class TabularModel:
                  tune_e5: bool = False,
                  e5_train_kwargs: Optional[Dict[str, Any]] = None,
                  e5_model_name: str = E5_SMALL_V2,
-                 pca_components: int = 30,
-                 no_pca: bool = False,
                  **kwargs):
         assert problem_type in {SupervisedTask.REGRESSION, SupervisedTask.BINARY, SupervisedTask.MULTICLASS}
         self.problem_type = problem_type
@@ -69,8 +65,6 @@ class TabularModel:
         self.tune_e5 = tune_e5
         self.e5_train_kwargs = e5_train_kwargs or {}
         self.e5_model_name = e5_model_name
-        self.pca_components = pca_components
-        self.no_pca = no_pca
         self.model_ = self.initialize_model()
         self.target_transformer: Optional[LabelEncoder] = None
         self.date_transformers: Dict[str, DatetimeEncoder] = {}
@@ -117,8 +111,6 @@ class TabularModel:
                 is_cls=self.is_cls,
                 d_output=self.d_output,
                 e5_model_name=self.e5_model_name,
-                pca_components=self.pca_components,
-                no_pca=self.no_pca,
             )
             self.vprint(f"📝 Detected {len(self.text_transformers)} text features: {sorted(self.text_transformers)}")
         self.fit_internal_preprocessor(x=x_train, y=y_train)
@@ -168,7 +160,6 @@ class TabularModel:
         self.vprint(f"📅 Detected {len(self.date_transformers)} date features: {sorted(self.date_transformers)}")
         # TODO: ConTextTab supports dates natively, perhaps we need to change this to "USE_DATE_TRANSFORMATION"
         x = transform_date_features(x=x, date_transformers=self.date_transformers)
-        self.raise_if_no_pca_and_too_multimodal(x=x)
         if self.is_cls:
             self.d_output = len(set(y))
         else:
@@ -183,8 +174,6 @@ class TabularModel:
             tune_dino=self.tune_dino,
             dino_train_kwargs=self.dino_train_kwargs if self.tune_dino else None,
             dino_model_name=self.dino_model_name,
-            pca_components=self.pca_components,
-            no_pca=self.no_pca,
         )
         self.vprint(f"📷 Detected {len(self.image_transformers)} image features: {sorted(self.image_transformers)}")
         non_image_columns = [col for col in x.columns if col not in self.image_transformers]
@@ -248,13 +237,3 @@ class TabularModel:
     def vprint(self, s: str):
         if self.verbose:
             print(s)
-
-    def raise_if_no_pca_and_too_multimodal(self, x):
-        if self.no_pca:
-            _image_cols = set(detect_image_features(x=x))
-            _x_no_img = x[[c for c in x.columns if c not in _image_cols]]
-            _num_feats = detect_numerical_features(_x_no_img)
-            _semantic = classify_semantic_features(x=_x_no_img, numerical_features=_num_feats)
-            _n_multimodal = len(_image_cols) + len(_semantic.text_features)
-            if _n_multimodal > 5:
-                raise MultimodalError(f"Dataset has {_n_multimodal} multimodal features (images + text); skipping for no_pca mode (threshold: 5).")

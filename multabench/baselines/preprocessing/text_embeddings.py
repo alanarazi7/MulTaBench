@@ -21,15 +21,6 @@ from multabench.utils.pca_logging import log_pca_variance
 PCA_COMPONENTS = 30
 
 
-class _IdentityTransform:
-    """No-op transformer: returns embeddings as-is (no PCA)."""
-    def __init__(self, n_components: int):
-        self.n_components = n_components
-
-    def transform(self, X: np.ndarray) -> np.ndarray:
-        return X
-
-
 class SkrubColumnEncoder:
     """Per-column text encoder using skrub.StringEncoder (TF-IDF + TruncatedSVD). CPU-only, no tokenizer needed."""
 
@@ -75,20 +66,19 @@ class E5ColumnEncoder:
 def fit_text_encoders_skrub(
     x: DataFrame,
     text_features_list: list[str],
-    pca_components: int = PCA_COMPONENTS,
 ) -> Dict[str, SkrubColumnEncoder]:
     """Fit one SkrubColumnEncoder per column using skrub.StringEncoder (TF-IDF + TruncatedSVD)."""
     from skrub import StringEncoder
     text_encoders: Dict[str, SkrubColumnEncoder] = {}
     for col in text_features_list:
         col_series = x[col].astype(str).fillna("")
-        print(f"Fitting SkrubStringEncoder for column {col} with n_components={pca_components} for {len(col_series)} texts")
-        string_enc = StringEncoder(n_components=pca_components)
+        print(f"Fitting SkrubStringEncoder for column {col} with n_components={PCA_COMPONENTS} for {len(col_series)} texts")
+        string_enc = StringEncoder(n_components=PCA_COMPONENTS)
         string_enc.fit(col_series)
         text_encoders[str(col)] = SkrubColumnEncoder(
             string_encoder=string_enc,
             col_name=str(col),
-            n_components=pca_components,
+            n_components=PCA_COMPONENTS,
         )
     return text_encoders
 
@@ -98,8 +88,6 @@ def fit_text_encoders_vanilla(
     text_features_list: list[str],
     device: torch.device,
     e5_model_name: str = E5_SMALL_V2,
-    pca_components: int = PCA_COMPONENTS,
-    no_pca: bool = False,
 ) -> Dict[str, E5ColumnEncoder]:
     """Fit one E5ColumnEncoder per column using shared vanilla E5 + PCA per column. Uses passage: col_name: col_val format."""
     text_encoders: Dict[str, E5ColumnEncoder] = {}
@@ -108,12 +96,9 @@ def fit_text_encoders_vanilla(
         texts = x[col].astype(str).fillna("").tolist()
         print(f"Fitting E5ColumnEncoder for column {col} with model {e5_model_name} for {len(texts)} texts")
         col_embeddings = encode_texts_with_e5(texts=texts, model=model, tokenizer=tokenizer, device=device, col_name=str(col))
-        if no_pca:
-            encoder = _IdentityTransform(n_components=col_embeddings.shape[1])
-        else:
-            encoder = PCA(n_components=pca_components, random_state=SEED)
-            encoder.fit(col_embeddings)
-            log_pca_variance(pca=encoder, col_name=col)
+        encoder = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
+        encoder.fit(col_embeddings)
+        log_pca_variance(pca=encoder, col_name=col)
         text_encoders[str(col)] = E5ColumnEncoder(model=model, tokenizer=tokenizer, encoder=encoder, col_name=str(col))
     return text_encoders
 
@@ -127,8 +112,6 @@ def fit_text_encoders_tuned(
     is_cls: bool,
     d_output: int,
     e5_model_name: str = E5_SMALL_V2,
-    pca_components: int = PCA_COMPONENTS,
-    no_pca: bool = False,
 ) -> Dict[str, E5ColumnEncoder]:
     """Fit a single E5 model for all text columns with passage: col_name: col_val format. Each column gets an E5ColumnEncoder sharing the same tuned model."""
     from transformers import AutoTokenizer
@@ -181,12 +164,9 @@ def fit_text_encoders_tuned(
     for col in text_features_list:
         texts = x[col].astype(str).fillna("").tolist()
         col_embeddings = encode_texts_with_e5(texts=texts, model=tuned_model, tokenizer=tuned_tokenizer, device=device, col_name=str(col))
-        if no_pca:
-            encoder = _IdentityTransform(n_components=col_embeddings.shape[1])
-        else:
-            encoder = PCA(n_components=pca_components, random_state=SEED)
-            encoder.fit(col_embeddings)
-            log_pca_variance(pca=encoder, col_name=col)
+        encoder = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
+        encoder.fit(col_embeddings)
+        log_pca_variance(pca=encoder, col_name=col)
         text_encoders[col] = E5ColumnEncoder(model=tuned_model, tokenizer=tuned_tokenizer, encoder=encoder, col_name=str(col))
     return text_encoders
 
@@ -201,8 +181,6 @@ def fit_text_encoders(
     is_cls: bool = True,
     d_output: int = 2,
     e5_model_name: str = E5_SMALL_V2,
-    pca_components: int = PCA_COMPONENTS,
-    no_pca: bool = False,
 ) -> Dict[str, E5ColumnEncoder]:
     """
     Fit one E5 model per text column (or vanilla E5 shared across columns when not tuning).
@@ -216,7 +194,6 @@ def fit_text_encoders(
         return fit_text_encoders_skrub(
             x=x,
             text_features_list=text_features_list,
-            pca_components=pca_components,
         )
     if tune_e5 and y is not None:
         return fit_text_encoders_tuned(
@@ -228,16 +205,12 @@ def fit_text_encoders(
             is_cls=is_cls,
             d_output=d_output,
             e5_model_name=e5_model_name,
-            pca_components=pca_components,
-            no_pca=no_pca,
         )
     return fit_text_encoders_vanilla(
         x=x,
         text_features_list=text_features_list,
         device=device,
         e5_model_name=e5_model_name,
-        pca_components=pca_components,
-        no_pca=no_pca,
     )
 
 

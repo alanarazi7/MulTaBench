@@ -36,9 +36,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 tune_e5: bool = False,
                                 e5_train_kwargs: dict | None = None,
                                 e5_model_name: str = E5_SMALL_V2,
-                                target_override: str | None = None,
-                                pca_components: int = 30,
-                                no_pca: bool = False) -> Dict:
+                                target_override: str | None = None) -> Dict:
     start_time = time.time()
     dataset_id = dataset.dataset_id
     is_cls = dataset.is_cls
@@ -47,8 +45,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
     kwargs = dict(problem_type=dataset.task_type, device=device, verbose=verbose, dataset=dataset_id,
                   image_folder=dataset.image_folder, tune_dino=tune_dino, dino_train_kwargs=dino_train_kwargs,
                   dino_model_name=dino_model_name,
-                  tune_e5=tune_e5, e5_train_kwargs=e5_train_kwargs, e5_model_name=e5_model_name,
-                  pca_components=pca_components, no_pca=no_pca)
+                  tune_e5=tune_e5, e5_train_kwargs=e5_train_kwargs, e5_model_name=e5_model_name)
     model = model_cls(**kwargs)
     with PeakMemoryTracker(phase='train', device=device) as train_tracker:
         model.fit(x_train, y_train)
@@ -76,8 +73,6 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         'e5_model_name': e5_model_name,
         'multimodal_state': multimodal_state,
         'target_override': target_override,
-        'pca_components': pca_components,
-        'no_pca': no_pca,
         "best_val_loss": getattr(model, "best_val_loss", None),
         **train_tracker.summary(),
         **test_tracker.summary(),
@@ -103,9 +98,7 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         tune_e5: bool = False,
                         e5_train_kwargs: dict | None = None,
                         e5_model_name: str = E5_SMALL_V2,
-                        target_override: str | None = None,
-                        pca_components: int = 30,
-                        no_pca: bool = False) -> Dict:
+                        target_override: str | None = None) -> Dict:
     print(f"Running model {model_cls.MODEL_NAME} over dataset {dataset_id} with fold {fold}")
     dataset = download_dataset(dataset_id=dataset_id, multimodal_state=multimodal_state, target_override=target_override)
     return evaluate_on_loaded_dataset(
@@ -124,6 +117,4 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
         e5_train_kwargs=e5_train_kwargs,
         e5_model_name=e5_model_name,
         target_override=target_override,
-        pca_components=pca_components,
-        no_pca=no_pca,
     )

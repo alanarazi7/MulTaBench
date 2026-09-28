@@ -83,9 +83,6 @@ if __name__ == "__main__":
     parser.add_argument('--e5_patience', type=int, default=_e5.patience)
     parser.add_argument('--e5_weight_decay', type=float, default=_e5.weight_decay)
     parser.add_argument('--e5_batch_size', type=int, default=_e5.batch_size)
-    parser.add_argument('--pca_components', type=int, default=30, help='Number of PCA components for image and text embeddings.')
-    parser.add_argument('--no_pca', type=str, default='no', choices=['yes', 'no'],
-                        help='Skip PCA and scaling for image/text embeddings. Exits early if dataset has >5 multimodal features.')
     args = parser.parse_args()
     states_mapping = {
         'all':           MultimodalState.ALL,
@@ -101,7 +98,6 @@ if __name__ == "__main__":
     }
     mm_state = states_mapping.get(args.multimodal_state)
 
-    no_pca = (args.no_pca == 'yes')
     model = SHORT2MODELS[args.model]
     dataset = dataset_from_name(name=args.dataset_name)
     args.tune_dino = (args.tune_dino == 'yes'
@@ -150,8 +146,6 @@ if __name__ == "__main__":
             e5_train_kwargs=e5_train_kwargs,
             e5_model_name=E5_MODEL_NAMES.get(args.e5_model, args.e5_model),
             target_override=args.target,
-            pca_components=args.pca_components,
-            no_pca=no_pca,
         )
         wandb_finish(d_summary=ret)
     except MultimodalError as e:
