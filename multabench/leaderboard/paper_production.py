@@ -769,12 +769,12 @@ _DEDUP_SOURCES = [
     ("TextTabBench",      TEXT_TAB_BENCH_ACCEPTED + TEXT_TAB_BENCH_REJECTED),
 ]
 
-# The source lists mix released and pool enums, so names are canonicalized before they are matched.
+# The source lists mix released and pool names, so names are canonicalized before they are matched.
 _RELEASED_TO_POOL = {released: pool for pool, released in POOL_TO_RELEASED.items()}
 
 
-def _pool_display_name(dataset) -> str:
-    return POOL_DISPLAY_NAMES[_RELEASED_TO_POOL.get(dataset.name, dataset.name)]
+def _pool_display_name(dataset: str) -> str:
+    return POOL_DISPLAY_NAMES[_RELEASED_TO_POOL.get(dataset, dataset)]
 
 
 def _make_dedup_table() -> pd.DataFrame:

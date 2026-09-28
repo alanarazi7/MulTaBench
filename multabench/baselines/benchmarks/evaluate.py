@@ -6,7 +6,7 @@ import torch
 
 from tabstar.preprocessing.splits import split_to_test
 from multabench.datasets.all_datasets import MultimodalDatasetID
-from multabench.datasets.curation import MultimodalDataset
+from multabench.datasets.objects import MultimodalDataset
 from multabench.baselines.abstract_model import TabularModel
 from multabench.datasets.downloading import download_dataset
 from multabench.baselines.preprocessing.sampling import subsample_dataset

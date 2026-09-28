@@ -1,2 +1,0 @@
-class MultimodalError(Exception):
-    pass

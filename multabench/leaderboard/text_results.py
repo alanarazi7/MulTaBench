@@ -11,8 +11,8 @@ from multabench.datasets.text_benchmarks import ACCEPTED_TEXT_DATASETS, REJECTED
 CONDITIONS = [TEXT_ONLY, NO_TEXT, ALL_FEAT, FINETUNED]
 E5_CONDITIONS = [E5_SMALL_ALL, E5_SMALL_FT, E5_LARGE_ALL, E5_LARGE_FT]
 
-_APPROVED_NAMES = {d.name for d in ACCEPTED_TEXT_DATASETS}
-_REJECTED_NAMES = {d.name for d in REJECTED_TEXT_DATASETS}
+_APPROVED_NAMES = set(ACCEPTED_TEXT_DATASETS)
+_REJECTED_NAMES = set(REJECTED_TEXT_DATASETS)
 
 _CORPUS_CSV = join(dirname(__file__), 'results', 'tabstar_corpus', 'text_50_datasets.csv')
 _TEXTTABENCH_CSV = join(dirname(__file__), 'results', 'tabstar_corpus', 'texttabench_datasets.csv')

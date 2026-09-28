@@ -20,13 +20,6 @@ BASELINE_NOISY_MARKERS: Tuple[str, ...] = (
     "UserWarning: Please use the new API settings to control TF32 behavior",
 )
 
-# Kaggle-specific noisy markers
-KAGGLE_NOISY_MARKERS: Tuple[str, ...] = (
-    "outdated `kagglehub` version",
-    "please consider upgrading",
-)
-
-
 @contextlib.contextmanager
 def silence_noisy_prints(noisy_markers: Tuple[str, ...] = BASELINE_NOISY_MARKERS):
     """
@@ -60,21 +53,6 @@ def silence_baselines_prints():
         sys.stderr = _FilteredStream(old_stderr, BASELINE_NOISY_MARKERS)
         try:
             yield
-        finally:
-            sys.stderr = old_stderr
-
-
-@contextlib.contextmanager
-def silence_kaggle_prints():
-    """Filter noisy prints from kagglehub (version warnings, stderr, etc.)."""
-    with silence_noisy_prints(KAGGLE_NOISY_MARKERS):
-        import sys
-        old_stderr = sys.stderr
-        sys.stderr = _FilteredStream(old_stderr, KAGGLE_NOISY_MARKERS)
-        try:
-            with warnings.catch_warnings():
-                warnings.filterwarnings('ignore', message='.*kagglehub.*')
-                yield
         finally:
             sys.stderr = old_stderr
 
