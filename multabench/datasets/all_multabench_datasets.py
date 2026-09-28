@@ -86,7 +86,7 @@ MULTABENCH_FULL_TEXT_EXTRA = [
 
 
 # MulTaBench-Full image datasets, admitted on Joint Signal over the uploaded Kaggle artifacts.
-# See leaderboard/analysis/image_full_verification.py.
+# See leaderboard/analysis/image_full_verification.py at the paper_version tag.
 MULTABENCH_FULL_IMAGE_EXTRA = [
     MulTaBenchDatasetID.MUL_IMAGE_MINECRAFT,
     MulTaBenchDatasetID.BIN_IMAGE_OASIS_ALZHEIMERS,
