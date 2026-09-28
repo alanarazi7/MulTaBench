@@ -2,7 +2,6 @@ import argparse
 
 from tabstar.training.devices import get_device
 
-from multabench.datasets.utils import dataset_from_name
 from multabench.finetune.train_args import DinoTrainArgs, E5TrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost
@@ -18,7 +17,7 @@ from multabench.baselines.tabstar_v1 import TabSTAR
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset, DOWNSTREAM_EXAMPLES
 from multabench.constants import DEVICE
-from multabench.datasets.all_datasets import is_image_dataset, is_text_dataset
+from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_image_dataset, is_text_dataset
 from multabench.dino.constants import DINO_SMALL, DINO_LARGE, DINO_MODEL_NAMES
 from multabench.e5.constants import E5_SMALL, E5_LARGE, E5_MODEL_NAMES, TF_IDF
 from multabench.utils.logging import wandb_run, wandb_finish
@@ -37,7 +36,7 @@ SHORT2MODELS = {model.SHORT_NAME: model for model in BASELINES}
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, choices=list(SHORT2MODELS.keys()), required=True)
-    parser.add_argument('--dataset_name', type=str, required=True)
+    parser.add_argument('--dataset_name', type=str, required=True, choices=[d.name for d in MulTaBenchDatasetID])
     parser.add_argument('--fold', type=int, required=True)
     parser.add_argument('--train_examples', type=int, default=DOWNSTREAM_EXAMPLES)
     parser.add_argument('--verbose', action='store_true', default=False)
@@ -73,7 +72,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     model = SHORT2MODELS[args.model]
-    dataset = dataset_from_name(name=args.dataset_name)
+    dataset = MulTaBenchDatasetID[args.dataset_name]
     args.tune_dino = (args.tune_dino == 'yes'
                       or (args.multimodal_state == "ft" and is_image_dataset(dataset))
                       or args.multimodal_state == "ft-img-ft-txt")
