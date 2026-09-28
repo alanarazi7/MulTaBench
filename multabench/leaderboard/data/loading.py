@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import dirname, isdir, join
+from os.path import dirname, join
 
 import pandas as pd
 import streamlit as st
@@ -74,41 +74,6 @@ def load_multabench_data() -> pd.DataFrame:
     if not dfs:
         return pd.DataFrame()
     return pd.concat([df[[MODEL, DATASET, FOLD, MM, "test_score"]] for df in dfs])
-
-
-@st.cache_data
-def load_triple_data() -> pd.DataFrame:
-    """Load combined image + tabular_image_text results for the Triple panel (8 states)."""
-    required = [MODEL, DATASET, FOLD, MM, "test_score"]
-    results_root = join(dirname(__file__), '..', 'results')
-
-    # Images directory uses the standard 'dataset' column
-    images_dfs = _load_result_dir(join(results_root, 'images'), required_cols=required)
-
-    # tabular_image_text uses 'dataset_name' instead of 'dataset'
-    txt_img_dfs = []
-    txt_img_dir = join(results_root, 'tabular_image_text')
-    if isdir(txt_img_dir):
-        for fname in [join(txt_img_dir, fn) for fn in listdir(txt_img_dir) if fn.endswith('.csv')]:
-            df = _load_csv(fname)
-            if 'dataset_name' in df.columns and 'dataset' not in df.columns:
-                df = df.rename(columns={'dataset_name': 'dataset'})
-            _require_columns(df, required, fname)
-            df = df.dropna(subset=[MODEL])
-            df[MODEL] = df[MODEL].apply(lambda x: x.split()[0])
-            df[IS_TUNED] = df[MODEL].apply(lambda x: 'Tuned' in x)
-            if E5_MODEL not in df.columns:
-                df[E5_MODEL] = E5_SMALL
-            if DINO_MODEL not in df.columns:
-                df[DINO_MODEL] = DINO_SMALL
-            if "test_score" in df.columns:
-                df["test_score"] = df["test_score"].clip(lower=0)
-            txt_img_dfs.append(df)
-
-    all_dfs = images_dfs + txt_img_dfs
-    if not all_dfs:
-        return pd.DataFrame()
-    return pd.concat([df[[MODEL, DATASET, FOLD, MM, "test_score"]] for df in all_dfs])
 
 
 @st.cache_data
