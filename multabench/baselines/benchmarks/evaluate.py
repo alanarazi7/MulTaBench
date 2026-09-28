@@ -17,7 +17,6 @@ from multabench.utils.logging import get_current_commit_hash
 from multabench.utils.profiling import PeakMemoryTracker
 
 DOWNSTREAM_EXAMPLES = 10_000
-FOLDS = 10
 MEMORY = "32G"
 
 
