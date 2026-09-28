@@ -15,7 +15,7 @@ from multabench.baselines.tabm import TabM
 from multabench.baselines.tabpfnv2 import TabPFNv2, TabPFNv2p5
 from multabench.baselines.tabstar_v1 import TabSTAR
 from multabench.baselines.xgboost import XGBoost
-from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset, DOWNSTREAM_EXAMPLES
+from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset, DOWNSTREAM_EXAMPLES, FOLDS
 from multabench.constants import DEVICE
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_image_dataset, is_text_dataset
 from multabench.dino.constants import DINO_SMALL, DINO_LARGE, DINO_MODEL_NAMES
@@ -37,10 +37,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, choices=list(SHORT2MODELS.keys()), required=True)
     parser.add_argument('--dataset_name', type=str, required=True, choices=[d.name for d in MulTaBenchDatasetID])
-    parser.add_argument('--fold', type=int, required=True)
+    parser.add_argument('--fold', type=int, required=True, choices=range(FOLDS))
     parser.add_argument('--train_examples', type=int, default=DOWNSTREAM_EXAMPLES)
     parser.add_argument('--verbose', action='store_true', default=False)
-    parser.add_argument('--memory', type=str, default='32G')
     parser.add_argument('--multimodal_state', type=str,
                         choices=["all", "ft"],
                         default="all")
@@ -105,7 +104,6 @@ if __name__ == "__main__":
         train_examples=args.train_examples,
         device=device,
         verbose=args.verbose,
-        memory=args.memory,
         tune_dino=args.tune_dino,
         dino_train_kwargs=dino_train_kwargs,
         dino_model_name=DINO_MODEL_NAMES[args.dino_model],

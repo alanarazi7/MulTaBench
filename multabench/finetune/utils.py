@@ -11,9 +11,6 @@ from sklearn.metrics import roc_auc_score
 from multabench.utils.metrics import _per_class_auc
 
 
-DEFAULT_REGRESSION_AUX_BINS = 20
-
-
 def encoder_finetune_loss(logits: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
     """
     Classification loss for E5/DINO encoder finetuning. Always cross-entropy over classes or bins.

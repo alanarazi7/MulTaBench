@@ -17,8 +17,7 @@ from multabench.utils.logging import get_current_commit_hash
 from multabench.utils.profiling import PeakMemoryTracker
 
 DOWNSTREAM_EXAMPLES = 10_000
-FOLDS = 10
-MEMORY = "32G"
+FOLDS = 5
 
 
 def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
@@ -27,7 +26,6 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 device: torch.device,
                                 train_examples: int = DOWNSTREAM_EXAMPLES,
                                 verbose: bool = False,
-                                memory: str = MEMORY,
                                 tune_dino: bool = False,
                                 dino_train_kwargs: dict | None = None,
                                 dino_model_name: str = DINOV3_SMALL,
@@ -64,7 +62,6 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         "n_train": len(y_train),
         "n_test": len(y_test),
         "m_features": x_train.shape[1],
-        "request_memory": memory,
         'tune_dino': tune_dino,
         'tune_e5': tune_e5,
         'e5_model_name': e5_model_name,
@@ -85,7 +82,6 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         device: torch.device,
                         train_examples: int = DOWNSTREAM_EXAMPLES,
                         verbose: bool = False,
-                        memory: str = MEMORY,
                         tune_dino: bool = False,
                         dino_train_kwargs: dict | None = None,
                         dino_model_name: str | None = None,
@@ -101,7 +97,6 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
         device=device,
         train_examples=train_examples,
         verbose=verbose,
-        memory=memory,
         tune_dino=tune_dino,
         dino_train_kwargs=dino_train_kwargs,
         dino_model_name=dino_model_name,

@@ -22,7 +22,6 @@ from multabench.baselines.preprocessing.feature_types import detect_image_featur
 
 PCA_COMPONENTS = 30
 IMAGE_BATCH_SIZE = 64
-IMAGE_SUFFIX = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp",  ".jpe"]
 
 IMAGE_ENCODER = {"encoder": None, "processor": None}
 
