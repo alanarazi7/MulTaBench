@@ -3,7 +3,6 @@
 Main figure: single combined panel (image + text), 4 non-stacked grouped vertical bars per
 model (LightGBM → TabPFN-2.5, left to right), order Frozen Small, Frozen Large, TAR Small,
 TAR Large within each group.
-Appendix figures: separate DINO (image) and E5 (text) panels, horizontal bar style.
 """
 import os
 import numpy as np
@@ -20,7 +19,6 @@ _COLOR_FROZEN_LARGE = "#3A88C8"
 _COLOR_TAR_SMALL    = "#E8722A"
 _COLOR_TAR_LARGE    = "#B85010"
 
-_FS_TITLE   = 15
 _FS_XLABEL  = 15
 _FS_YTICK   = 13
 _FS_XTICK   = 13
@@ -30,14 +28,12 @@ _CAPSIZE    = 2
 _ERR_LW     = 0.9
 
 _BAR_H     = 0.14
-_BAR_GAP   = 0.03
 _GROUP_GAP = 0.38
 
 _GROUPED_CONDITIONS = ["Frozen Small", "Frozen Large", "TAR Small", "TAR Large"]
 _GROUPED_COLORS     = [_COLOR_FROZEN_SMALL, _COLOR_FROZEN_LARGE, _COLOR_TAR_SMALL, _COLOR_TAR_LARGE]
 _GROUPED_ERR_COLORS = ["#3A88C8", "#1A5888", "#B85010", "#7A3008"]
 
-_MODELS          = ["TabPFN-2.5", "TabPFNv2", "TabM", "CatBoost", "LightGBM"]  # horizontal appendix (top→bottom)
 _MODELS_VERTICAL = ["LightGBM", "CatBoost", "TabM", "TabPFNv2", "TabPFN-2.5"]  # vertical main (left→right)
 
 DINO_SMALL_ALL = "DINO-small (all)"
@@ -133,43 +129,6 @@ def _aggregate(df: pd.DataFrame) -> pd.DataFrame:
     return agg[agg["condition"].isin(_GROUPED_CONDITIONS)]
 
 
-def _plot_grouped_panel(ax, agg, title):
-    n_conds  = len(_GROUPED_CONDITIONS)
-    bar_slot = _BAR_H + _BAR_GAP
-    group_h  = n_conds * bar_slot
-    y_centers = np.arange(len(_MODELS)) * (group_h + _GROUP_GAP)
-
-    for ci, (cond, color, ec) in enumerate(
-            zip(_GROUPED_CONDITIONS, _GROUPED_COLORS, _GROUPED_ERR_COLORS)):
-        y_offset = ((n_conds - 1) / 2 - ci) * bar_slot
-        for mi, model in enumerate(_MODELS):
-            row = agg[(agg["model_label"] == model) & (agg["condition"] == cond)]
-            if row.empty:
-                continue
-            y = y_centers[mi] + y_offset
-            ax.barh(y, row["mean"].iloc[0], _BAR_H, color=color,
-                    edgecolor="black", linewidth=0.6, zorder=2)
-            ax.errorbar(row["mean"].iloc[0], y, xerr=row["ci"].iloc[0],
-                        fmt="none", ecolor=ec, capsize=_CAPSIZE, linewidth=_ERR_LW, zorder=3)
-
-    if title:
-        ax.set_title(title, fontsize=_FS_TITLE, fontweight=_FONTWEIGHT, pad=7)
-    ax.set_xlabel("Normalized Score", fontsize=_FS_XLABEL, fontweight=_FONTWEIGHT)
-    ax.set_yticks(y_centers)
-    ax.set_yticklabels(_MODELS, fontsize=_FS_YTICK, fontweight=_FONTWEIGHT)
-    ax.tick_params(axis="y", length=0)
-    ax.set_xlim(0, 1.05)
-    ax.set_xticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
-    ax.set_xticklabels(["0", "0.2", "0.4", "0.6", "0.8", "1"],
-                       fontsize=_FS_XTICK, fontweight=_FONTWEIGHT)
-    half = group_h / 2
-    ax.set_ylim(y_centers[0] - half - 0.08, y_centers[-1] + half + 0.08)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.xaxis.grid(True, linestyle="--", alpha=0.3)
-    ax.set_axisbelow(True)
-
-
 def _plot_vertical_panel(ax, agg):
     n_conds  = len(_GROUPED_CONDITIONS)
     bar_slot = _BAR_H  # no gap — bars touch within each model group
@@ -232,29 +191,3 @@ def make_figure(task_type: str = "all"):
                prop={"size": _FS_LEGEND})
 
     return fig, {"Combined": agg}
-
-
-def make_appendix_figure(task_type: str = "all"):
-    """Appendix figure — separate DINO (image) and E5 (text) panels."""
-    dino_df   = _build_dino_df(task_type)
-    e5_df     = _build_e5_df(task_type)
-    dino_norm = _normalize_within_model(dino_df)
-    e5_norm   = _normalize_within_model(e5_df)
-    dino_agg  = _aggregate(dino_norm)
-    e5_agg    = _aggregate(e5_norm)
-
-    n_img = dino_df["dataset"].nunique()
-    n_txt = e5_df["dataset"].nunique()
-
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4.8))
-    fig.subplots_adjust(wspace=0.42, left=0.10, right=0.82, top=0.90, bottom=0.12)
-
-    _plot_grouped_panel(ax1, dino_agg, "(a) Image-Tabular (DINO-v3)")
-    _plot_grouped_panel(ax2, e5_agg,   "(b) Text-Tabular (E5-v2)")
-
-    fig.legend(handles=_legend_handles(),
-               loc="center left", bbox_to_anchor=(0.83, 0.5),
-               frameon=True, edgecolor="black", framealpha=0.95,
-               prop={"size": _FS_LEGEND})
-
-    return fig, {"DINO": dino_agg, "E5": e5_agg}
