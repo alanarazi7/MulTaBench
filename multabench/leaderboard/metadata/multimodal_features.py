@@ -10,9 +10,6 @@ from typing import Dict, List
 
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 
-NO_PCA_THRESHOLD = 5
-
-
 @dataclass(frozen=True)
 class DatasetMultimodalFeatures:
     image_cols: List[str] = field(default_factory=list)
@@ -21,10 +18,6 @@ class DatasetMultimodalFeatures:
     @property
     def n_total(self) -> int:
         return len(self.image_cols) + len(self.text_cols)
-
-    @property
-    def exceeds_no_pca_threshold(self) -> bool:
-        return self.n_total > NO_PCA_THRESHOLD
 
 
 MULTIMODAL_FEATURES: Dict[MulTaBenchDatasetID, DatasetMultimodalFeatures] = {

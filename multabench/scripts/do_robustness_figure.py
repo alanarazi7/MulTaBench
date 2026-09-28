@@ -1,10 +1,10 @@
-"""Generate 3-panel robustness figure for §6.1 of the MulTaBench paper.
+"""Generate the robustness figure for §6.1 of the MulTaBench paper.
 
-Panel (a) and (b) show the FT gap (ft_score − frozen_score) per condition,
+Panel (a) shows the FT gap (ft_score − frozen_score) per condition,
 averaged across (dataset, fold, model). This is metric-scale-invariant since
 we compare ft vs frozen on the *same* datasets, so AUROC/R² differences cancel.
 
-Panel (c) shows per-dataset normalized scores [0,1] within {TF-IDF, E5-frozen,
+Panel (b) shows per-dataset normalized scores [0,1] within {TF-IDF, E5-frozen,
 E5-ft}, removing metric-scale differences across text datasets.
 """
 import os
@@ -40,16 +40,6 @@ def _load_dir(path: str) -> pd.DataFrame:
         df["test_score"] = df["test_score"].clip(lower=-0.1)
         frames.append(df)
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
-
-
-def _load_pca_csv(fpath: str, mode: str) -> pd.DataFrame:
-    df = pd.read_csv(fpath)
-    if "dataset_name" in df.columns and "dataset" not in df.columns:
-        df = df.rename(columns={"dataset_name": "dataset"})
-    df["model"]            = df["model"].str.strip()
-    df["test_score"]       = df["test_score"].clip(lower=-0.1)
-    df["multimodal_state"] = mode
-    return df[["dataset", "fold", "model", "multimodal_state", "test_score"]]
 
 
 # ---------------------------------------------------------------------------
@@ -117,46 +107,6 @@ def _encoder_data():
         _ft_gap(_filt(txt_large, txt_ds, "all"), _filt(txt_large, txt_ds, "ft"), "E5-large\n(text)"),
     ]
     return pd.DataFrame(rows)
-
-
-def _pca_data():
-    pca_dir = os.path.join(_RESULTS, "analysis_pca")
-
-    # Get common datasets from the 15-dim ablation
-    base_ds = set(_load_pca_csv(os.path.join(pca_dir, "all_15.csv"), "all")["dataset"].unique())
-
-    rows = []
-    for dim, label in [(15, "15 dims"), (60, "60 dims")]:
-        df_all = _load_pca_csv(os.path.join(pca_dir, f"all_{dim}.csv"), "all")
-        df_ft  = _load_pca_csv(os.path.join(pca_dir, f"ft_{dim}.csv"),  "ft")
-        rows.append(_ft_gap(df_all, df_ft, label))
-
-    # pca=30: from main benchmark directories, filtered to same datasets
-    img30 = _load_dir(os.path.join(_RESULTS, "images"))
-    txt30 = _load_dir(os.path.join(_RESULTS, "text"))
-    df30  = pd.concat([img30, txt30], ignore_index=True)
-    df30  = df30[df30["dataset"].isin(base_ds)]
-    rows.append(_ft_gap(
-        df30[df30["multimodal_state"] == "all"],
-        df30[df30["multimodal_state"] == "ft"],
-        "30 dims\n(default)",
-    ))
-
-    # no-PCA
-    df_np = pd.read_csv(os.path.join(pca_dir, "no_pca.csv"))
-    df_np["model"]      = df_np["model"].str.strip()
-    df_np["test_score"] = df_np["test_score"].clip(lower=-0.1)
-    rows.append(_ft_gap(
-        df_np[df_np["multimodal_state"] == "all"],
-        df_np[df_np["multimodal_state"] == "ft"],
-        "no PCA\n(384 dims)",
-    ))
-
-    # Display order: no-PCA, 15, 30, 60
-    order = ["no PCA\n(384 dims)", "15 dims", "30 dims\n(default)", "60 dims"]
-    df = pd.DataFrame(rows)
-    df["label"] = pd.Categorical(df["label"], categories=order, ordered=True)
-    return df.sort_values("label").reset_index(drop=True)
 
 
 def _tfidf_data():
@@ -232,10 +182,9 @@ def _hbar_norm(ax, df, order, colors):
 
 def make_figure():
     enc_df   = _encoder_data()
-    pca_df   = _pca_data()
     tfidf_df = _tfidf_data()
 
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4.0))
+    fig, axes = plt.subplots(1, 2, figsize=(9, 4.0))
     fig.subplots_adjust(wspace=0.55, left=0.10, right=0.97, top=0.88, bottom=0.12)
 
     # ── Panel (a): Encoder scale ────────────────────────────────────────────
@@ -251,24 +200,15 @@ def make_figure():
     ax.annotate("text",  xy=(0.02, 0.33), xycoords="axes fraction",
                 fontsize=7.5, color="#555", style="italic")
 
-    # ── Panel (b): PCA dimensions ───────────────────────────────────────────
+    # ── Panel (b): TF-IDF vs E5 ─────────────────────────────────────────────
     ax = axes[1]
-    pca_df = pca_df.reset_index(drop=True)
-    _hbar_gap(ax, pca_df, color=_COLOR_FINETUNED)
-    vals = pca_df["mean"]
-    margin = max(pca_df["ci"].max() * 1.5, 0.003)
-    ax.set_xlim(0, vals.max() + margin)
-    _style_ax(ax, "(b) PCA dimensions", "FT improvement (ft \u2212 frozen)")
-
-    # ── Panel (c): TF-IDF vs E5 ─────────────────────────────────────────────
-    ax = axes[2]
     tf_order  = ["TF-IDF\n(frozen)", "E5-small\n(frozen)", "E5-small\n(fine-tuned)"]
     tf_colors = [_COLOR_TFIDF, _COLOR_FROZEN, _COLOR_FINETUNED]
     _hbar_norm(ax, tfidf_df, tf_order, tf_colors)
     norm_vals = tfidf_df["mean"]
     margin = max(tfidf_df["ci"].max() * 1.5, 0.03)
     ax.set_xlim(max(0, norm_vals.min() - margin), min(1, norm_vals.max() + margin))
-    _style_ax(ax, "(c) Text representation", "Normalized score (per-dataset min/max)")
+    _style_ax(ax, "(b) Text representation", "Normalized score (per-dataset min/max)")
     legend_tf = [
         Patch(color=_COLOR_TFIDF,     label="TF-IDF"),
         Patch(color=_COLOR_FROZEN,    label="E5 frozen"),

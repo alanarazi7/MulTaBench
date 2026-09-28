@@ -5,7 +5,7 @@ import pandas as pd
 import streamlit as st
 
 from multabench.leaderboard.data.keys import IS_TUNED, MODEL, DATASET, FOLD, MM, MODE, E5_MODEL, E5_SMALL, \
-    DINO_MODEL, DINO_SMALL, TEST_SCORE, PCA_COMPONENTS
+    DINO_MODEL, DINO_SMALL, TEST_SCORE
 
 
 def _load_csv(f: str) -> pd.DataFrame:
@@ -130,74 +130,6 @@ def load_paper_benchmark_data() -> pd.DataFrame:
     df = df[df[MM].isin(["all", "ft"])]
     df = df[(df[E5_MODEL] == E5_SMALL) & (df[DINO_MODEL] == DINO_SMALL)]
     return df.reset_index(drop=True)
-
-
-@st.cache_data
-def load_pca_comparison_data() -> pd.DataFrame:
-    """Load PCA-dimension comparison data (15 / 30-default / 60).
-
-    Sources:
-    - analysis_pca/{ft,all}_{15,60}.csv  →  pca_components in file
-    - images/ + text/ curation dirs      →  pca_components = 30 (default)
-
-    Only ft and all multimodal states are kept.
-    Returns columns: model, dataset, fold, multimodal_state, test_score, pca_components.
-    """
-    results_root = join(dirname(__file__), '..', 'results')
-    dfs = []
-    cols = [MODEL, DATASET, FOLD, MM, TEST_SCORE, PCA_COMPONENTS]
-
-    # 1. PCA experiment files (have pca_components column, dataset_name key)
-    pca_dir = join(results_root, 'analysis_pca')
-    for fname in [f for f in listdir(pca_dir) if f.endswith('.csv')]:
-        df = _load_csv(join(pca_dir, fname))
-        if 'no_pca' in df.columns:
-            continue  # handled separately by load_no_pca_data
-        if 'dataset_name' in df.columns and DATASET not in df.columns:
-            df = df.rename(columns={'dataset_name': DATASET})
-        df = df.dropna(subset=[MODEL])
-        df[MODEL] = df[MODEL].str.strip()
-        df[IS_TUNED] = df[MODEL].apply(lambda x: 'Tuned' in x)
-        df[TEST_SCORE] = df[TEST_SCORE].clip(lower=-0.1)
-        df = df[df[MM].isin(["ft", "all"])]
-        dfs.append(df[cols])
-
-    # 2. Curation data: images/ and text/ directories (pca_components = 30 default)
-    for subdir in ('images', 'text'):
-        for raw_df in _load_result_dir(join(results_root, subdir), required_cols=[MODEL, DATASET, FOLD, MM, TEST_SCORE]):
-            df = raw_df[raw_df[MM].isin(["ft", "all"])].copy()
-            df[PCA_COMPONENTS] = 30
-            dfs.append(df[cols])
-
-    if not dfs:
-        return pd.DataFrame()
-    return pd.concat(dfs, ignore_index=True)
-
-
-@st.cache_data
-def load_no_pca_data() -> pd.DataFrame:
-    """Load no-PCA runs (no_pca=yes) from analysis_pca/."""
-    results_root = join(dirname(__file__), '..', 'results')
-    pca_dir = join(results_root, 'analysis_pca')
-    cols = [MODEL, DATASET, FOLD, MM, TEST_SCORE]
-    dfs = []
-    for fname in listdir(pca_dir):
-        if not fname.endswith('.csv'):
-            continue
-        df = _load_csv(join(pca_dir, fname))
-        if 'no_pca' not in df.columns:
-            continue
-        df = df[df['no_pca'].astype(str).str.lower().isin(['yes', 'true'])]
-        if df.empty:
-            continue
-        df = df.dropna(subset=[MODEL])
-        df[MODEL] = df[MODEL].str.strip()
-        df[TEST_SCORE] = df[TEST_SCORE].clip(lower=-0.1)
-        df = df[df[MM].isin(['all', 'ft'])]
-        dfs.append(df[cols])
-    if not dfs:
-        return pd.DataFrame()
-    return pd.concat(dfs, ignore_index=True)
 
 
 TFIDF_MODE = "TF-IDF"

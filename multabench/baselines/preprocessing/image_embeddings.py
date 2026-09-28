@@ -16,7 +16,6 @@ from multabench.dino.image_loading import load_images
 from multabench.preprocessing.discretize import discretize_numerical
 from multabench.utils.warnings import suppress_channel_dimension_warning
 from multabench.preprocessing.splits import split_to_val
-from multabench.utils.pca_logging import log_pca_variance
 from multabench.baselines.preprocessing.feature_types import detect_image_features
 
 # Alternatives: facebook/dinov3-vits16plus-pretrain-lvd1689m, facebook/dinov3-convnext-tiny-pretrain-lvd1689m
@@ -39,14 +38,6 @@ class _ScaledPCA:
         return self.pca.transform(self.scaler.transform(X))
 
 
-class _IdentityTransform:
-    """No-op transformer: returns embeddings as-is (no scaling, no PCA)."""
-    def __init__(self, n_components: int):
-        self.n_components = n_components
-
-    def transform(self, X: np.ndarray) -> np.ndarray:
-        return X
-
 def fit_image_encoders(
     x: DataFrame,
     device: torch.device,
@@ -57,8 +48,6 @@ def fit_image_encoders(
     tune_dino: bool = False,
     dino_train_kwargs: Optional[Dict[str, Any]] = None,
     dino_model_name: str = DINOV3_SMALL,
-    pca_components: int = PCA_COMPONENTS,
-    no_pca: bool = False,
 ) -> Tuple[Dict[str, Any], Optional[Any], Optional[DINOv3ViTImageProcessorFast]]:
     """
     Fit PCA per image column. If tune_dino and y is provided,
@@ -100,16 +89,12 @@ def fit_image_encoders(
     for col in image_features:
         images = load_images(s=x[col], image_folder=image_folder)
         embeddings = encode_images_in_batches(images=images, processor=img_processor, model=dino_model)
-        if no_pca:
-            image_encoders[col] = _IdentityTransform(n_components=embeddings.shape[1])
-        else:
-            scaler = StandardScaler()
-            scaler.fit(embeddings)
-            scaled = scaler.transform(embeddings)
-            pca_col = PCA(n_components=pca_components, random_state=SEED)
-            pca_col.fit(scaled)
-            log_pca_variance(pca=pca_col, col_name=col)
-            image_encoders[col] = _ScaledPCA(scaler, pca_col)
+        scaler = StandardScaler()
+        scaler.fit(embeddings)
+        scaled = scaler.transform(embeddings)
+        pca_col = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
+        pca_col.fit(scaled)
+        image_encoders[col] = _ScaledPCA(scaler, pca_col)
 
     return image_encoders, tuned_model, tuned_processor
 
