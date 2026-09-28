@@ -16,7 +16,6 @@ from multabench.dino.image_loading import load_images
 from multabench.preprocessing.discretize import discretize_numerical
 from multabench.utils.warnings import suppress_channel_dimension_warning
 from multabench.preprocessing.splits import split_to_val
-from multabench.utils.pca_logging import log_pca_variance
 from multabench.baselines.preprocessing.feature_types import detect_image_features
 
 # Alternatives: facebook/dinov3-vits16plus-pretrain-lvd1689m, facebook/dinov3-convnext-tiny-pretrain-lvd1689m
@@ -95,7 +94,6 @@ def fit_image_encoders(
         scaled = scaler.transform(embeddings)
         pca_col = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
         pca_col.fit(scaled)
-        log_pca_variance(pca=pca_col, col_name=col)
         image_encoders[col] = _ScaledPCA(scaler, pca_col)
 
     return image_encoders, tuned_model, tuned_processor

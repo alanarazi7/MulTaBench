@@ -16,7 +16,6 @@ import torch
 
 from multabench.e5.constants import E5_SMALL_V2, TF_IDF
 from multabench.e5.e5_finetune import encode_texts_with_e5, get_vanilla_e5
-from multabench.utils.pca_logging import log_pca_variance
 
 PCA_COMPONENTS = 30
 
@@ -98,7 +97,6 @@ def fit_text_encoders_vanilla(
         col_embeddings = encode_texts_with_e5(texts=texts, model=model, tokenizer=tokenizer, device=device, col_name=str(col))
         encoder = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
         encoder.fit(col_embeddings)
-        log_pca_variance(pca=encoder, col_name=col)
         text_encoders[str(col)] = E5ColumnEncoder(model=model, tokenizer=tokenizer, encoder=encoder, col_name=str(col))
     return text_encoders
 
@@ -166,7 +164,6 @@ def fit_text_encoders_tuned(
         col_embeddings = encode_texts_with_e5(texts=texts, model=tuned_model, tokenizer=tuned_tokenizer, device=device, col_name=str(col))
         encoder = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
         encoder.fit(col_embeddings)
-        log_pca_variance(pca=encoder, col_name=col)
         text_encoders[col] = E5ColumnEncoder(model=tuned_model, tokenizer=tuned_tokenizer, encoder=encoder, col_name=str(col))
     return text_encoders
 
