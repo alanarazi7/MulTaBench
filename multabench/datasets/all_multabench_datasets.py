@@ -24,19 +24,6 @@ MULTABENCH_CORE_IMAGE = [
     MulTaBenchDatasetID.REG_IMAGE_PAINTING_PRICE,
 ]
 
-# Datasets with detectable raw text columns (detect_text_features: >=100 unique OR >=80% unique ratio)
-FULLY_MULTIMODAL_DATASET_CANDIDATES = [
-    MulTaBenchDatasetID.MUL_IMAGE_CSGO_SKIN_PRICE,
-    MulTaBenchDatasetID.MUL_IMAGE_FLOWER_BOUQUETS,
-    MulTaBenchDatasetID.MUL_IMAGE_PETFINDER,
-    MulTaBenchDatasetID.REG_IMAGE_AMAZON_PACKAGES,
-    MulTaBenchDatasetID.REG_IMAGE_HNM_FASHION,
-    MulTaBenchDatasetID.REG_IMAGE_KHAADI_CLOTHES,
-    MulTaBenchDatasetID.REG_IMAGE_LETTERBOXD_MOVIES,
-    MulTaBenchDatasetID.REG_IMAGE_PAINTING_PRICE,
-]
-
-
 MULTABENCH_CORE_TEXT = [
     MulTaBenchDatasetID.BIN_TEXT_FAKE_JOB_POSTING,
     MulTaBenchDatasetID.BIN_TEXT_JIGSAW_TOXICITY,
