@@ -16,9 +16,7 @@ from multabench.datasets.curation_mapping import get_curated
 from multabench.datasets.curation_objects import CuratedDataset, CuratedTarget, CuratedFeature
 from multabench.datasets.multimodal import MultimodalState, filter_by_multimodality
 from multabench.datasets.objects import SupervisedTask, FeatureType
-from multabench.preprocessing.discretize import discretize_numerical
 
-_DISCRETE_SUFFIX = "_discrete"
 MAX_ABS_Z = 5.0
 
 @dataclass
@@ -36,8 +34,7 @@ class MultimodalDataset:
 
 def curate_dataset(x: DataFrame | DatasetDict | None, y: Series | None,
                    dataset_id: MultimodalDatasetID, dir_path: str | None = None,
-                   multimodal_state: MultimodalState | None = None,
-                   target_override: str | None = None) -> MultimodalDataset:
+                   multimodal_state: MultimodalState | None = None) -> MultimodalDataset:
     curation = get_curated(dataset_id)
     if x is None:
         x = curation.loading_func(dir_path=dir_path)
@@ -46,13 +43,10 @@ def curate_dataset(x: DataFrame | DatasetDict | None, y: Series | None,
     if curation.processing_func is not None:
         x = curation.processing_func(df=x)
     x = drop_columns(x, curation=curation)
-    if target_override is not None:
-        x, y, task_type = _override_target(x=x, target_col=target_override)
-    else:
-        x, y = set_target_if_missing(x=x, y=y, curation=curation)
-        task_type = curation.target.task_type
-        y = curate_target_values(y=y, target=curation.target, task_type=task_type)
-        y.name = curation.target.new_name
+    x, y = set_target_if_missing(x=x, y=y, curation=curation)
+    task_type = curation.target.task_type
+    y = curate_target_values(y=y, target=curation.target, task_type=task_type)
+    y.name = curation.target.new_name
     x = curate_feature_values(x=x, curation=curation)
     x = curate_column_names(x=x, curation=curation)
     x, y = remove_missing_target_rows(x=x, y=y)
@@ -64,36 +58,6 @@ def curate_dataset(x: DataFrame | DatasetDict | None, y: Series | None,
     if task_type == SupervisedTask.REGRESSION:
         check_extreme_outliers(y=y)
     return dataset
-
-
-def _infer_task(y: Series) -> SupervisedTask:
-    if y.nunique() == 2:
-        return SupervisedTask.BINARY
-    if is_numeric_dtype(y):
-        return SupervisedTask.REGRESSION
-    return SupervisedTask.MULTICLASS
-
-
-def _override_target(x: DataFrame, target_col: str) -> tuple[DataFrame, Series, SupervisedTask]:
-    """Extract an override target column from x. If target_col ends with '_discrete',
-    strip the suffix, find the raw column, discretize it to bins → MULTICLASS.
-    Otherwise use the column as-is and infer the task type automatically."""
-    if target_col.endswith('_discretize'):
-        target_col = target_col.replace('_discretize', _DISCRETE_SUFFIX)
-    discretize = target_col.endswith(_DISCRETE_SUFFIX)
-    raw_col = target_col[:-len(_DISCRETE_SUFFIX)] if discretize else target_col
-    if raw_col not in x.columns:
-        raise ValueError(f"Override target '{raw_col}' not found in columns: {list(x.columns)}")
-    y = x[raw_col].copy()
-    x = x.drop(columns=[raw_col])
-    if discretize:
-        y = discretize_numerical(y)
-        task_type = SupervisedTask.MULTICLASS
-    else:
-        task_type = _infer_task(y)
-    y.name = raw_col
-    print(f"[target_override] Using '{raw_col}' as target, task={task_type.name}, discretize={discretize}")
-    return x, y, task_type
 
 
 def drop_columns(x: DataFrame, curation: CuratedDataset) -> DataFrame:
