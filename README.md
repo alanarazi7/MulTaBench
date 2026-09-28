@@ -36,9 +36,9 @@ released alongside them `multabench-full-<name>`.
 
 | What you are looking for | Where it is |
 |--------------------------|-------------|
-| Which datasets are in the benchmark | `multabench/datasets/all_multabench_datasets.py` |
+| Which datasets are in the benchmark | `is_benchmark_dataset` in `multabench/datasets/all_datasets.py` |
 | A dataset's Kaggle slug | `MulTaBenchDatasetID` in `multabench/datasets/all_datasets.py` |
-| Where a dataset originally comes from | `multabench/datasets/sources.py` |
+| Where a dataset originally comes from | `MULTABENCH_SOURCES` in `multabench/datasets/all_datasets.py` |
 | How a dataset was curated | the recipes in `multabench/benchmark/datasets/` at the [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) tag |
 | Size, task and feature counts per dataset | `multabench/leaderboard/results/datasets_summary{,_extra}.csv` at the [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) tag |
 
