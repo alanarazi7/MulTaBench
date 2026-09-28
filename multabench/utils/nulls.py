@@ -1,14 +1,10 @@
 from numbers import Number
-from typing import List, Any, Optional, Set
+from typing import List, Any, Optional
 
 import numpy as np
 import pandas as pd
 from pandas import Series
 
-
-
-def get_invalid_indices(ls: Series) -> Set[int]:
-    return {i for i, x in enumerate(ls) if _get_non_null_value(x) is None}
 
 
 def get_valid_values(ls: Series) -> List:
