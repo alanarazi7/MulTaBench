@@ -155,7 +155,7 @@ def _load_dir(subdir: str) -> pd.DataFrame:
 
 
 def _load_significance() -> pd.Series:
-    """BH-corrected p-value per dataset, from dataset_significance.py."""
+    """BH-corrected p-value per dataset, from analysis/dataset_significance.py at the paper_version tag."""
     path = join(_RESULTS_ROOT, "analysis_curation_sensitivity", "dataset_significance.csv")
     return pd.read_csv(path).set_index("dataset")["p_bh"]
 
