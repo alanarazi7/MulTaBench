@@ -14,7 +14,6 @@ from tabstar.preprocessing.feat_types import convert_series_to_numeric, convert_
 from tabstar.preprocessing.texts import normalize_col_name
 from multabench.datasets.curation_mapping import get_curated
 from multabench.datasets.curation_objects import CuratedDataset, CuratedTarget, CuratedFeature
-from multabench.datasets.multimodal import MultimodalState, filter_by_multimodality
 from multabench.datasets.objects import SupervisedTask, FeatureType
 
 MAX_ABS_Z = 5.0
@@ -33,8 +32,7 @@ class MultimodalDataset:
 
 
 def curate_dataset(x: DataFrame | DatasetDict | None, y: Series | None,
-                   dataset_id: MultimodalDatasetID, dir_path: str | None = None,
-                   multimodal_state: MultimodalState | None = None) -> MultimodalDataset:
+                   dataset_id: MultimodalDatasetID, dir_path: str | None = None) -> MultimodalDataset:
     curation = get_curated(dataset_id)
     if x is None:
         x = curation.loading_func(dir_path=dir_path)
@@ -52,7 +50,6 @@ def curate_dataset(x: DataFrame | DatasetDict | None, y: Series | None,
     x, y = remove_missing_target_rows(x=x, y=y)
     image_folder = _get_image_folder(curation=curation, dir_path=dir_path)
     x, y = remove_missing_image_rows(x=x, y=y, curation=curation, image_folder=image_folder)
-    x = filter_by_multimodality(x=x, multimodal_state=multimodal_state, curation=curation)
     validate_task_type(task_type=task_type, y=y)
     dataset = MultimodalDataset(x=x, y=y, task_type=task_type, dataset_id=dataset_id, image_folder=image_folder)
     if task_type == SupervisedTask.REGRESSION:

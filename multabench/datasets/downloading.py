@@ -13,7 +13,7 @@ from multabench.datasets.all_datasets import KaggleDatasetID, OpenMLDatasetID, U
 from multabench.datasets.curation import MultimodalDataset, curate_dataset
 from multabench.datasets.description import get_dataset_description
 from multabench.datasets.kaggle_competitions import login_to_kaggle
-from multabench.datasets.multimodal import MultimodalError, MultimodalState
+from multabench.datasets.multimodal import MultimodalError
 from multabench.utils.io_handlers import load_txt
 from multabench.utils.warnings import silence_kaggle_prints
 
@@ -26,11 +26,11 @@ def download_multimodal_dataset(dataset_id: MultimodalDatasetID, for_annotation:
     return download_dataset(dataset_id=dataset_id, for_annotation=for_annotation)
 
 
-def download_dataset(dataset_id: MultimodalDatasetID, multimodal_state: MultimodalState | None = None, for_annotation: bool = False) -> MultimodalDataset:
+def download_dataset(dataset_id: MultimodalDatasetID, for_annotation: bool = False) -> MultimodalDataset:
     if isinstance(dataset_id, MulTaBenchDatasetID):
         from multabench.benchmark.load import load_multabench_dataset
         from multabench.benchmark.utils.constants import MULTABENCH_KAGGLE_OWNER
-        dataset = load_multabench_dataset(dataset_id, multimodal_state=multimodal_state)
+        dataset = load_multabench_dataset(dataset_id)
         if for_annotation:
             url = f"https://www.kaggle.com/datasets/{MULTABENCH_KAGGLE_OWNER}/{dataset_id.value}"
             get_dataset_description(name=dataset_id.name, url=url, x=dataset.x, y=dataset.y)
@@ -38,16 +38,16 @@ def download_dataset(dataset_id: MultimodalDatasetID, multimodal_state: Multimod
         return dataset
     elif dataset_id.name in {d.name for d in KaggleDatasetID}:
         with silence_kaggle_prints():
-            return load_kaggle_dataset(dataset_id, multimodal_state=multimodal_state, for_annotation=for_annotation)
+            return load_kaggle_dataset(dataset_id, for_annotation=for_annotation)
     elif dataset_id.name in {d.name for d in UrlDatasetID}:
-        return load_url_dataset(dataset_id, multimodal_state=multimodal_state, for_annotation=for_annotation)
+        return load_url_dataset(dataset_id, for_annotation=for_annotation)
     elif dataset_id.name in {d.name for d in OpenMLDatasetID}:
-        return load_openml_dataset(dataset_id, multimodal_state=multimodal_state, for_annotation=for_annotation)
+        return load_openml_dataset(dataset_id, for_annotation=for_annotation)
     else:
         raise ValueError(f"Unsupported dataset ID type: {type(dataset_id)}")
 
 
-def load_kaggle_dataset(dataset_id: KaggleDatasetID, for_annotation: bool = False, multimodal_state: MultimodalState | None = None) -> MultimodalDataset:
+def load_kaggle_dataset(dataset_id: KaggleDatasetID, for_annotation: bool = False) -> MultimodalDataset:
     dataset_value = dataset_id.value
     if dataset_value.count('/') == 1:
         dataset_value += '/'
@@ -61,7 +61,7 @@ def load_kaggle_dataset(dataset_id: KaggleDatasetID, for_annotation: bool = Fals
                 dir_path = kagglehub.dataset_download(dataset_name)
             df = _read_csv(path=os.path.join(dir_path, file), dataset_id=dataset_id) if file else None
             url = f"https://www.kaggle.com/{dataset_name}"
-            dataset = curate_dataset(x=df, y=None, dataset_id=dataset_id, dir_path=dir_path, multimodal_state=multimodal_state)
+            dataset = curate_dataset(x=df, y=None, dataset_id=dataset_id, dir_path=dir_path)
             if for_annotation:
                 try:
                     description = _get_kaggle_dataset_description(dataset_name, dir_path=dir_path)
@@ -79,14 +79,14 @@ def load_kaggle_dataset(dataset_id: KaggleDatasetID, for_annotation: bool = Fals
     raise ValueError("Failed to load Kaggle dataset")
 
 
-def load_url_dataset(dataset_id: UrlDatasetID, for_annotation: bool = False, multimodal_state: MultimodalState | None = None) -> MultimodalDataset:
+def load_url_dataset(dataset_id: UrlDatasetID, for_annotation: bool = False) -> MultimodalDataset:
     for i in range(10):
         try:
             print(f"💾 Downloading URL dataset {dataset_id.name}")
             csv_path = get_csv_local_path(dataset_id=dataset_id)
             df = _read_csv(path=csv_path, dataset_id=dataset_id)
             dir_path = _get_dir_path(dataset_id)
-            dataset = curate_dataset(x=df, y=None, dataset_id=dataset_id, dir_path=dir_path, multimodal_state=multimodal_state)
+            dataset = curate_dataset(x=df, y=None, dataset_id=dataset_id, dir_path=dir_path)
             if for_annotation:
                 get_dataset_description(name=dataset_id.name, url=dataset_id.value, x=dataset.x, y=dataset.y)
                 raise SystemExit
@@ -156,13 +156,13 @@ def _get_kaggle_dataset_description(dataset_name: str, dir_path: str | None = No
     return ret
 
 
-def load_openml_dataset(dataset_id: OpenMLDatasetID, for_annotation: bool = False, multimodal_state: MultimodalState | None = None) -> MultimodalDataset:
+def load_openml_dataset(dataset_id: OpenMLDatasetID, for_annotation: bool = False) -> MultimodalDataset:
     for i in range(10):
         try:
             print(f"💾 Downloading OpenML dataset {dataset_id.name}")
             openml_dataset = openml.datasets.get_dataset(dataset_id.value, download_data=True, download_features_meta_data=True)
             x, y, _, _ = openml_dataset.get_data(target=openml_dataset.default_target_attribute)
-            dataset = curate_dataset(x=x, y=y, dataset_id=dataset_id, multimodal_state=multimodal_state)
+            dataset = curate_dataset(x=x, y=y, dataset_id=dataset_id)
             if for_annotation:
                 get_dataset_description(name=dataset_id.name, url=dataset_id.value, x=dataset.x, y=dataset.y)
                 raise SystemExit

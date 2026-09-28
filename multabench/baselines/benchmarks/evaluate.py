@@ -9,7 +9,6 @@ from multabench.datasets.all_datasets import MultimodalDatasetID
 from multabench.datasets.curation import MultimodalDataset
 from multabench.baselines.abstract_model import TabularModel
 from multabench.datasets.downloading import download_dataset
-from multabench.datasets.multimodal import MultimodalState
 from multabench.baselines.preprocessing.sampling import subsample_dataset
 from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
@@ -29,7 +28,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 train_examples: int = DOWNSTREAM_EXAMPLES,
                                 verbose: bool = False,
                                 memory: str = MEMORY,
-                                multimodal_state: MultimodalState | None = None,
+                                multimodal_state: str = "all",
                                 tune_dino: bool = False,
                                 dino_train_kwargs: dict | None = None,
                                 dino_model_name: str = DINOV3_SMALL,
@@ -89,7 +88,7 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         train_examples: int = DOWNSTREAM_EXAMPLES,
                         verbose: bool = False,
                         memory: str = MEMORY,
-                        multimodal_state: MultimodalState | None = None,
+                        multimodal_state: str = "all",
                         tune_dino: bool = False,
                         dino_train_kwargs: dict | None = None,
                         dino_model_name: str | None = None,
@@ -97,7 +96,7 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         e5_train_kwargs: dict | None = None,
                         e5_model_name: str = E5_SMALL_V2) -> Dict:
     print(f"Running model {model_cls.MODEL_NAME} over dataset {dataset_id} with fold {fold}")
-    dataset = download_dataset(dataset_id=dataset_id, multimodal_state=multimodal_state)
+    dataset = download_dataset(dataset_id=dataset_id)
     return evaluate_on_loaded_dataset(
         model_cls=model_cls,
         dataset=dataset,
