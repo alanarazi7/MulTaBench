@@ -83,6 +83,9 @@ def _display_win_rate(df: pd.DataFrame):
                              .format("{:.1f}"), use_container_width=True)
 
 
+# TODO: headline this tab with an Elo leaderboard (bencheval, RandomForest anchored at 1000,
+#  bootstrapped CIs) instead of the normalized-score plots. The paper appendix's own Elo
+#  implementation is leaderboard/analysis/elo_leaderboard.py at the paper_version tag.
 def display_paper_benchmark():
     st.title("🏆 MulTaBench")
 
