@@ -123,7 +123,6 @@ if __name__ == "__main__":
             device=device,
             verbose=args.verbose,
             memory=args.memory,
-            multimodal_state=args.multimodal_state,
             tune_dino=args.tune_dino,
             dino_train_kwargs=dino_train_kwargs,
             dino_model_name=DINO_MODEL_NAMES[args.dino_model],
