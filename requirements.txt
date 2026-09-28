@@ -61,9 +61,7 @@ cachetools==6.2.2
 catboost==1.2.8
     # via -r requirements.in
 certifi==2025.11.12
-    # via
-    #   requests
-    #   sentry-sdk
+    # via requests
 cffi==2.0.0
     # via cryptography
 charset-normalizer==3.4.4
@@ -76,7 +74,6 @@ click==8.2.1
     #   openmim
     #   ray
     #   streamlit
-    #   wandb
 cloudpickle==3.1.2
     # via hyperopt
 colorama==0.4.6
@@ -149,9 +146,7 @@ gdown==5.2.1
 gitdb==4.0.12
     # via gitpython
 gitpython==3.1.45
-    # via
-    #   streamlit
-    #   wandb
+    # via streamlit
 google-api-core==2.30.2
     # via opencensus
 google-auth==2.49.1
@@ -424,7 +419,6 @@ packaging==25.0
     #   tensorboardx
     #   torchmetrics
     #   transformers
-    #   wandb
 pandas==2.3.3
     # via
     #   -r requirements.in
@@ -472,7 +466,6 @@ platformdirs==4.5.0
     #   python-discovery
     #   tabpfn-common-utils
     #   virtualenv
-    #   wandb
 plotly==6.5.0
     # via catboost
 pluggy==1.6.0
@@ -501,7 +494,6 @@ protobuf==6.33.1
     #   tensorboard
     #   tensorboardx
     #   transformers
-    #   wandb
 psutil==7.0.0
     # via
     #   accelerate
@@ -535,7 +527,6 @@ pydantic==2.12.5
     #   pydantic-settings
     #   ray
     #   tabpfn
-    #   wandb
 pydantic-core==2.41.5
     # via pydantic
 pydantic-settings==2.12.0
@@ -595,7 +586,6 @@ pyyaml==6.0.3
     #   ray
     #   timm
     #   transformers
-    #   wandb
 ray==2.52.1
     # via autogluon-core
 referencing==0.37.0
@@ -627,7 +617,6 @@ requests==2.32.5
     #   streamlit
     #   tabpfn-common-utils
     #   transformers
-    #   wandb
 rich==14.3.3
     # via
     #   opendatalab
@@ -688,8 +677,6 @@ sentence-transformers==5.1.2
     # via -r requirements.in
 sentencepiece==0.2.1
     # via transformers
-sentry-sdk==2.46.0
-    # via wandb
 seqeval==1.2.2
     # via autogluon-multimodal
 setuptools==80.9.0
@@ -845,7 +832,6 @@ typing-extensions==4.15.0
     #   torch
     #   torcheval
     #   typing-inspection
-    #   wandb
 typing-inspection==0.4.2
     # via
     #   pydantic
@@ -856,11 +842,8 @@ urllib3==2.5.0
     # via
     #   botocore
     #   requests
-    #   sentry-sdk
 virtualenv==21.2.0
     # via ray
-wandb==0.23.0
-    # via -r requirements.in
 watchdog==6.0.0
     # via streamlit
 wcwidth==0.6.0
