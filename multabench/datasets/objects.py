@@ -3,7 +3,7 @@ from enum import Enum
 
 from pandas import DataFrame, Series
 
-from multabench.datasets.all_datasets import MultimodalDatasetID
+from multabench.datasets.all_datasets import MulTaBenchDatasetID
 
 
 class SupervisedTask(Enum):
@@ -17,7 +17,7 @@ class MultimodalDataset:
     x: DataFrame
     y: Series
     task_type: SupervisedTask
-    dataset_id: MultimodalDatasetID
+    dataset_id: MulTaBenchDatasetID
     image_folder: str | None = None
 
     @property

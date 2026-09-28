@@ -1,6 +1,7 @@
-from enum import Enum
+from enum import Enum, unique
 
 
+@unique
 class MulTaBenchDatasetID(Enum):
     BIN_IMAGE_CELEB_ATTRACTIVENESS = "multabench-celeb-attractiveness"
     BIN_IMAGE_HATEFUL_MEME = "multabench-hateful-meme"
@@ -89,33 +90,17 @@ class MulTaBenchDatasetID(Enum):
     REG_IMAGE_AIRBNB_NYC = "multabench-full-airbnb-nyc"
 
 
-MultimodalDatasetID = MulTaBenchDatasetID
-
-ALL_DATASETS = list(MulTaBenchDatasetID)
-
 _IMAGE_PREFIXES = ("BIN_IMAGE_", "MUL_IMAGE_", "REG_IMAGE_")
 _TEXT_PREFIXES = ("BIN_TEXT_", "MUL_TEXT_", "REG_TEXT_")
 
 
-def is_image_dataset(dataset_id: MultimodalDatasetID) -> bool:
+def is_image_dataset(dataset_id: MulTaBenchDatasetID) -> bool:
     return dataset_id.name.startswith(_IMAGE_PREFIXES)
 
 
-def is_text_dataset(dataset_id: MultimodalDatasetID) -> bool:
+def is_text_dataset(dataset_id: MulTaBenchDatasetID) -> bool:
     return dataset_id.name.startswith(_TEXT_PREFIXES)
 
-ALL_IMAGE_DATASETS = [d for d in ALL_DATASETS if is_image_dataset(d)]
 
-
-for _d in ALL_DATASETS:
-    assert is_image_dataset(_d) or is_text_dataset(_d), f"Dataset {_d.name} is neither image nor text"
-    assert not (is_image_dataset(_d) and is_text_dataset(_d)), f"Dataset {_d.name} is both image and text"
-
-_all_names = [d.name for d in ALL_DATASETS]
-_all_values = [d.value for d in ALL_DATASETS]
-_dup_names = sorted({n for n in _all_names if _all_names.count(n) > 1})
-_dup_values = sorted({str(v) for v in _all_values if _all_values.count(v) > 1})
-if _dup_names:
-    raise ValueError(f"Duplicate dataset names across enums: {_dup_names}")
-if _dup_values:
-    raise ValueError(f"Duplicate dataset values across enums: {_dup_values}")
+for _d in MulTaBenchDatasetID:
+    assert is_image_dataset(_d) != is_text_dataset(_d), f"Dataset {_d.name} must be exactly one of image or text"

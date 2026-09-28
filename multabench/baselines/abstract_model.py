@@ -17,7 +17,7 @@ from multabench.baselines.preprocessing.image_embeddings import (
     fit_image_encoders,
 )
 from multabench.baselines.training.metrics import calculate_metric, Metrics
-from multabench.datasets.all_datasets import MultimodalDatasetID
+from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.baselines.preprocessing.categorical import fit_categorical_encoders, transform_categorical_features
 from multabench.preprocessing.feat_types import classify_semantic_features
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
@@ -40,7 +40,7 @@ class TabularModel:
     USE_TARGET_ENCODER: bool
 
     def __init__(self, problem_type: SupervisedTask, device: torch.device,
-                 dataset: MultimodalDatasetID | None = None, verbose: bool = False, image_folder: str | None = None,
+                 dataset: MulTaBenchDatasetID | None = None, verbose: bool = False, image_folder: str | None = None,
                  tune_dino: bool = False,
                  dino_train_kwargs: Optional[Dict[str, Any]] = None,
                  dino_model_name: str = DINOV3_SMALL,

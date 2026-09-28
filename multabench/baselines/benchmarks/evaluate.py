@@ -5,10 +5,10 @@ from typing import Type, Dict
 import torch
 
 from tabstar.preprocessing.splits import split_to_test
-from multabench.datasets.all_datasets import MultimodalDatasetID
+from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.objects import MultimodalDataset
 from multabench.baselines.abstract_model import TabularModel
-from multabench.datasets.downloading import download_dataset
+from multabench.benchmark.load import load_multabench_dataset
 from multabench.baselines.preprocessing.sampling import subsample_dataset
 from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
@@ -80,7 +80,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
 
 
 def evaluate_on_dataset(model_cls: Type[TabularModel],
-                        dataset_id: MultimodalDatasetID,
+                        dataset_id: MulTaBenchDatasetID,
                         fold: int,
                         device: torch.device,
                         train_examples: int = DOWNSTREAM_EXAMPLES,
@@ -93,7 +93,7 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         e5_train_kwargs: dict | None = None,
                         e5_model_name: str = E5_SMALL_V2) -> Dict:
     print(f"Running model {model_cls.MODEL_NAME} over dataset {dataset_id} with fold {fold}")
-    dataset = download_dataset(dataset_id=dataset_id)
+    dataset = load_multabench_dataset(dataset_id)
     return evaluate_on_loaded_dataset(
         model_cls=model_cls,
         dataset=dataset,
