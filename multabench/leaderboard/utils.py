@@ -1,10 +1,5 @@
 """Shared utilities for leaderboard display modules."""
-import matplotlib.pyplot as plt
 from multabench.leaderboard.data.keys import MODALITY_IMAGE, MODALITY_TEXT, TASK_REG, TASK_CLS
-
-
-def save_figure(fig: plt.Figure, path: str) -> None:
-    fig.savefig(path, format="pdf", dpi=200, bbox_inches="tight", pad_inches=0)
 
 
 def infer_modality(dataset_name: str) -> str:

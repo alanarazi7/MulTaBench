@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import numpy as np
 import streamlit as st
 from pandas import DataFrame
@@ -10,77 +9,6 @@ COLORS = ['#FFCC99', '#FFD1DC', '#8DE5A1', '#A1C9F4', '#D4B8E0', '#FFE4B5', '#B0
 
 _COLOR_FROZEN    = 'paleturquoise'
 _COLOR_FINETUNED = '#A9CCE3'
-
-
-def render_filters(df: DataFrame, key: str) -> DataFrame:
-    models = sorted(df[MODEL].apply(lambda x: x.split()[0]).unique())
-    modes  = sorted(df[MODE].unique())
-    c1, c2 = st.columns(2)
-    with c1:
-        sel_models = st.multiselect("Models", models, default=models, key=f"{key}_models")
-    with c2:
-        sel_modes = st.multiselect("Modes", modes, default=modes, key=f"{key}_modes")
-    df = df[df[MODEL].apply(lambda x: x.split()[0]).isin(sel_models)]
-    df = df[df[MODE].isin(sel_modes)]
-    return df
-
-
-def plot_aggregated_performance(df: DataFrame, title: str):
-    from matplotlib.patches import Patch
-
-    df = df.copy()
-    df[MODEL] = df[MODEL].apply(lambda x: x.split()[0])
-    df[TEST_SCORE] = df[TEST_SCORE] * 100
-    df = df[df[MODE].isin([ALL_FEAT, FINETUNED])]
-
-    agg = (df.groupby([MODEL, MODE])[TEST_SCORE]
-             .agg(mean='mean', std='std', n='count')
-             .reset_index())
-    agg['ci'] = 1.96 * agg['std'] / agg['n'] ** 0.5
-
-    # Show numbers so we can verify them
-    pivot = agg.pivot(index=MODEL, columns=MODE, values='mean').round(2)
-    st.dataframe(pivot)
-
-    # Sort by ft mean descending (best at top → highest y index)
-    ft_mean = agg[agg[MODE] == FINETUNED].set_index(MODEL)['mean']
-    models  = ft_mean.sort_values(ascending=False).index.tolist()
-    n = len(models)
-    # y centres: model 0 = top = n-1, model n-1 = bottom = 0
-    y_of = {m: n - 1 - i for i, m in enumerate(models)}
-
-    fig, ax = plt.subplots(figsize=(7, n * 1.0 + 0.8))
-
-    bar_h = 0.25
-    dy    = 0.18   # offset from row centre to each sub-bar centre
-
-    for mode, offset, color in [(ALL_FEAT, +dy, _COLOR_FROZEN),
-                                 (FINETUNED, -dy, _COLOR_FINETUNED)]:
-        subset = agg[agg[MODE] == mode].set_index(MODEL)
-        for model in models:
-            if model not in subset.index:
-                continue
-            row  = subset.loc[model]
-            y    = y_of[model] + offset
-            ax.barh(y, row['mean'], height=bar_h, color=color, linewidth=0)
-            ax.errorbar(row['mean'], y, xerr=row['ci'],
-                        fmt='none', ecolor='black', capsize=3, linewidth=0.8)
-
-    ax.set_yticks(list(y_of.values()))
-    ax.set_yticklabels(list(y_of.keys()), fontsize=11)
-    ax.set_xlabel("Test Score (%)", fontsize=11)
-    ax.set_title(title, fontsize=13, fontweight='bold', pad=14)
-    ax.tick_params(axis='x', labelsize=10)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.xaxis.grid(True, color='0.9', linestyle='--', linewidth=0.7)
-    ax.set_axisbelow(True)
-    ax.legend(handles=[Patch(color=_COLOR_FROZEN,    label='Frozen (all)'),
-                       Patch(color=_COLOR_FINETUNED, label='Fine-tuned (ft)')],
-              loc='lower right', frameon=False, fontsize=10)
-    plt.tight_layout()
-    st.pyplot(fig)
-    plt.close(fig)
 
 
 def _normalize_scores(df: DataFrame, group_cols: list[str]) -> DataFrame:
