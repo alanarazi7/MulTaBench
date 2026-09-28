@@ -15,6 +15,3 @@ __pycache__/
 
 # venv legacy
 .TabSTAR-env/
-
-# Generated outputs (kept in paper-multabench repo instead)
-figures/
