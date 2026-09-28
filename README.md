@@ -39,7 +39,7 @@ released alongside them `multabench-full-<name>`.
 | A dataset's Kaggle slug | `MulTaBenchDatasetID` in `multabench/datasets/all_datasets.py` |
 | Where a dataset originally comes from | `multabench/datasets/sources.py` |
 | How a dataset was curated | the recipes in `multabench/benchmark/datasets/` at the [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) tag |
-| Size, task and feature counts per dataset | `multabench/leaderboard/results/datasets_summary{,_extra}.csv` |
+| Size, task and feature counts per dataset | `multabench/leaderboard/results/datasets_summary{,_extra}.csv` at the [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) tag |
 
 The 40 datasets released alongside the benchmark were admitted on a weaker criterion and carry no
 tier name of their own, so their scores must not be pooled with the 40 MulTaBench datasets.
