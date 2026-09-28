@@ -6,8 +6,8 @@ and returns a MultimodalDataset, bypassing the original source and curation logi
 
 Usage:
     from multabench.datasets.all_datasets import MulTaBenchDatasetID
-    from multabench.benchmark.curation.load import load_multabench_dataset
-    dataset = load_multabench_dataset(MulTaBenchDatasetID.MUL_IMAGE_LEAGUE_OF_LEGENDS_SKIN_CATEGORY)
+    from multabench.benchmark.load import load_multabench_dataset
+    dataset = load_multabench_dataset(MulTaBenchDatasetID.MUL_IMAGE_PETFINDER)
 """
 import json
 import time
