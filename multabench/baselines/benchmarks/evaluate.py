@@ -56,7 +56,9 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         "train_type": "benchmark",
         "fold": fold,
         "train_examples": train_examples,
+        "metric": metrics.metric,
         "test_score": metrics.score,
+        "test_error": metrics.error,
         "metrics_dict": asdict(metrics),
         "runtime": runtime,
         "n_train": len(y_train),
@@ -72,7 +74,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         **(dino_train_kwargs or {}),
         **(e5_train_kwargs or {}),
     }
-    print(f"Scored {metrics.score:.4f} on dataset {dataset_id.name}, fold {fold} in {int(runtime)} seconds.")
+    print(f"Scored {metrics.metric} error {metrics.error:.4f} on dataset {dataset_id.name}, fold {fold} in {int(runtime)} seconds.")
     return d_summary
 
 

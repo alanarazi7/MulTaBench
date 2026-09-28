@@ -27,10 +27,11 @@ TASK2AG = {
     SupervisedTask.REGRESSION: "regression",
 }
 
+# Same metrics the benchmark scores with (baselines/training/metrics.py).
 TASK2METRIC = {
     SupervisedTask.BINARY: "roc_auc",
-    SupervisedTask.MULTICLASS: "roc_auc_ovr",
-    SupervisedTask.REGRESSION: "r2",
+    SupervisedTask.MULTICLASS: "log_loss",
+    SupervisedTask.REGRESSION: "root_mean_squared_error",
 }
 
 
