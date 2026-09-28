@@ -3,10 +3,10 @@
 .idea
 .venv
 **/catboost_info/
-**/wandb/
 **/.tabstar_*/
 **/temp_*/
 **/check_whl/
+runs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

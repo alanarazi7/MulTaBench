@@ -18,14 +18,15 @@ than used frozen.
 
 ```bash
 source init.sh && source .venv/bin/activate
-cp .env.example .env     # Weights & Biases, Hugging Face and Kaggle credentials
+cp .env.example .env     # Hugging Face and Kaggle credentials
 
 python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --multimodal_state all
 ```
 
-`benchmark.py` is the single entry point: it evaluates one model on one dataset and logs the
-result to Weights & Biases. `--help` lists the available models and the feature combinations each
-run can use, from tabular-only through fully multimodal with fine-tuned encoders.
+`benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
+result to `runs/<model>_<dataset>_<state>_<fold>.json` (`--output_dir` to change). `--help` lists
+the available models; `--multimodal_state` is `all` (frozen encoders) or `ft` (the dataset's image
+or text encoder fine-tuned on the task).
 
 ## Datasets
 

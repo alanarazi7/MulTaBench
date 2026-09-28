@@ -1,4 +1,6 @@
 import argparse
+import json
+import os
 
 from tabstar.training.devices import get_device
 
@@ -20,7 +22,6 @@ from multabench.constants import DEVICE
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_image_dataset, is_text_dataset
 from multabench.dino.constants import DINO_SMALL, DINO_LARGE, DINO_MODEL_NAMES
 from multabench.e5.constants import E5_SMALL, E5_LARGE, E5_MODEL_NAMES, TF_IDF
-from multabench.utils.logging import wandb_run, wandb_finish
 
 BASELINES = [TabSTAR,
              CatBoost, XGBoost, LightGBM, RandomForest,
@@ -44,7 +45,7 @@ if __name__ == "__main__":
     parser.add_argument('--multimodal_state', type=str,
                         choices=["all", "ft"],
                         default="all")
-    parser.add_argument('--project', type=str, default='multimodal_benchmark_filtering_attempts_0224')
+    parser.add_argument('--output_dir', type=str, default='runs')
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
     # DINO image encoder model selection
@@ -79,7 +80,6 @@ if __name__ == "__main__":
                     or (args.multimodal_state == "ft" and is_text_dataset(dataset)))
     device = get_device(device=DEVICE)
     exp_name = f"{args.model}_{dataset.name}_{args.multimodal_state}_{args.fold}"
-    wandb_run(exp_name=exp_name, project=args.project)
     dino_train_kwargs = dict(
         lora_rank=args.dino_rank,
         img_layers=args.dino_img_layers,
@@ -113,4 +113,8 @@ if __name__ == "__main__":
         e5_train_kwargs=e5_train_kwargs,
         e5_model_name=E5_MODEL_NAMES.get(args.e5_model, args.e5_model),
     )
-    wandb_finish(d_summary=ret)
+    os.makedirs(args.output_dir, exist_ok=True)
+    out_path = os.path.join(args.output_dir, f"{exp_name}.json")
+    with open(out_path, "w") as f:
+        json.dump(ret, f, indent=2, default=str)
+    print(f"Summary written to {out_path}: {ret}")
