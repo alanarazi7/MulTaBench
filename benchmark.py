@@ -2,7 +2,7 @@ import argparse
 
 from tabstar.training.devices import get_device
 
-from multabench.datasets.multimodal import MultimodalError, MultimodalState
+from multabench.datasets.multimodal import MultimodalError
 from multabench.datasets.utils import dataset_from_name
 from multabench.finetune.train_args import DinoTrainArgs, E5TrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
@@ -54,8 +54,7 @@ if __name__ == "__main__":
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--memory', type=str, default='32G')
     parser.add_argument('--multimodal_state', type=str,
-                        choices=["all", "non", "ft", "img", "text_only", "no_text",
-                                 "txt", "non_txt", "ft-txt", "ft-img-ft-txt"],
+                        choices=["all", "ft", "ft-txt", "ft-img-ft-txt"],
                         default="all")
     parser.add_argument('--project', type=str, default='multimodal_benchmark_filtering_attempts_0224')
     _dino = DinoTrainArgs()
@@ -83,19 +82,6 @@ if __name__ == "__main__":
     parser.add_argument('--e5_weight_decay', type=float, default=_e5.weight_decay)
     parser.add_argument('--e5_batch_size', type=int, default=_e5.batch_size)
     args = parser.parse_args()
-    states_mapping = {
-        'all':           MultimodalState.ALL,
-        'non':           MultimodalState.NON_IMAGE,
-        'img':           MultimodalState.IMAGE_ONLY,
-        'ft':            MultimodalState.ALL,
-        'text_only':     MultimodalState.TEXT_ONLY,
-        'no_text':       MultimodalState.NO_TEXT,
-        'txt':           MultimodalState.TEXT_ONLY,   # text embeddings only, no FT
-        'non_txt':       MultimodalState.NO_TEXT,     # tabular + image, no text, no FT
-        'ft-txt':        MultimodalState.ALL,          # ALL + E5 FT
-        'ft-img-ft-txt': MultimodalState.ALL,          # ALL + DINO FT + E5 FT (sequential)
-    }
-    mm_state = states_mapping.get(args.multimodal_state)
 
     model = SHORT2MODELS[args.model]
     dataset = dataset_from_name(name=args.dataset_name)
@@ -137,7 +123,6 @@ if __name__ == "__main__":
             device=device,
             verbose=args.verbose,
             memory=args.memory,
-            multimodal_state=mm_state,
             tune_dino=args.tune_dino,
             dino_train_kwargs=dino_train_kwargs,
             dino_model_name=DINO_MODEL_NAMES[args.dino_model],
