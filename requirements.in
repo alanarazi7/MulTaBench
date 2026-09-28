@@ -1,12 +1,9 @@
 catboost
-datasets
 gpustat ; platform_system == "Linux"
 joblib
-kaggle>=2.0.1
 kagglehub >= 1.0.0
 lightgbm
 numpy
-openml
 pandas >= 2.2.2
 peft
 pytabkit
