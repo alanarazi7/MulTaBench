@@ -16,8 +16,7 @@ from os.path import join
 import kagglehub
 import pandas as pd
 
-from multabench.datasets.curation import MultimodalDataset
-from multabench.datasets.objects import SupervisedTask
+from multabench.datasets.objects import MultimodalDataset, SupervisedTask
 from multabench.benchmark.utils.constants import METADATA_JSON, DATA_CSV, MULTABENCH_KAGGLE_OWNER
 from multabench.benchmark.utils.curation import TASK_REG, task_type_from_name
 

@@ -196,7 +196,7 @@ def load_tfidf_comparison_data() -> pd.DataFrame:
       pd.NA — in ACCEPTED_TEXT_DATASETS but not yet confirmed in the curated 20
     """
     from multabench.datasets.text_benchmarks import ACCEPTED_TEXT_DATASETS
-    accepted_names = {d.name for d in ACCEPTED_TEXT_DATASETS}
+    accepted_names = set(ACCEPTED_TEXT_DATASETS)
 
     results_root = join(dirname(__file__), '..', 'results')
     cols = [MODEL, DATASET, FOLD, MODE, TEST_SCORE, IN_BENCHMARK]

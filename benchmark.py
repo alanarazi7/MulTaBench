@@ -2,8 +2,6 @@ import argparse
 
 from tabstar.training.devices import get_device
 
-from multabench.datasets.multimodal import MultimodalError
-from multabench.datasets.utils import dataset_from_name
 from multabench.finetune.train_args import DinoTrainArgs, E5TrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost
@@ -19,7 +17,7 @@ from multabench.baselines.tabstar_v1 import TabSTAR
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset, DOWNSTREAM_EXAMPLES
 from multabench.constants import DEVICE
-from multabench.datasets.all_datasets import MultimodalDatasetID, OpenMLDatasetID, is_image_dataset, is_text_dataset
+from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_image_dataset, is_text_dataset
 from multabench.dino.constants import DINO_SMALL, DINO_LARGE, DINO_MODEL_NAMES
 from multabench.e5.constants import E5_SMALL, E5_LARGE, E5_MODEL_NAMES, TF_IDF
 from multabench.utils.logging import wandb_run, wandb_finish
@@ -35,20 +33,10 @@ BASELINES = [TabSTAR,
 SHORT2MODELS = {model.SHORT_NAME: model for model in BASELINES}
 
 
-def is_invalid_model_dataset_pair(model_name: str, dataset_id: MultimodalDatasetID) -> bool:
-    highly_multiclass = [OpenMLDatasetID.MUL_TEXT_FOOD_WINE_REVIEW]
-    if model_name in {TabPFNv2.SHORT_NAME, TabPFNv2p5.SHORT_NAME}:
-        if dataset_id in highly_multiclass:
-            print(f"Skipping {dataset_id.name} for TabPFNv2/TabPFNv2p5 as it is a highly multiclass dataset.")
-            return True
-    return False
-
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, choices=list(SHORT2MODELS.keys()), required=True)
-    parser.add_argument('--dataset_name', type=str, required=True)
+    parser.add_argument('--dataset_name', type=str, required=True, choices=[d.name for d in MulTaBenchDatasetID])
     parser.add_argument('--fold', type=int, required=True)
     parser.add_argument('--train_examples', type=int, default=DOWNSTREAM_EXAMPLES)
     parser.add_argument('--verbose', action='store_true', default=False)
@@ -84,7 +72,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     model = SHORT2MODELS[args.model]
-    dataset = dataset_from_name(name=args.dataset_name)
+    dataset = MulTaBenchDatasetID[args.dataset_name]
     args.tune_dino = (args.tune_dino == 'yes'
                       or (args.multimodal_state == "ft" and is_image_dataset(dataset))
                       or args.multimodal_state == "ft-img-ft-txt")
@@ -92,8 +80,6 @@ if __name__ == "__main__":
                     or (args.multimodal_state == "ft" and is_text_dataset(dataset))
                     or args.multimodal_state in {"ft-txt", "ft-img-ft-txt"})
     device = get_device(device=DEVICE)
-    if is_invalid_model_dataset_pair(model_name=args.model, dataset_id=dataset):
-        exit()
     exp_name = f"{args.model}_{dataset.name}_{args.multimodal_state}_{args.fold}"
     wandb_run(exp_name=exp_name, project=args.project)
     dino_train_kwargs = dict(
@@ -114,22 +100,19 @@ if __name__ == "__main__":
         weight_decay=args.e5_weight_decay,
         batch_size=args.e5_batch_size,
     ) if args.tune_e5 else None
-    try:
-        ret = evaluate_on_dataset(
-            model_cls=model,
-            dataset_id=dataset,
-            fold=args.fold,
-            train_examples=args.train_examples,
-            device=device,
-            verbose=args.verbose,
-            memory=args.memory,
-            tune_dino=args.tune_dino,
-            dino_train_kwargs=dino_train_kwargs,
-            dino_model_name=DINO_MODEL_NAMES[args.dino_model],
-            tune_e5=args.tune_e5,
-            e5_train_kwargs=e5_train_kwargs,
-            e5_model_name=E5_MODEL_NAMES.get(args.e5_model, args.e5_model),
-        )
-        wandb_finish(d_summary=ret)
-    except MultimodalError as e:
-        print(f"❌ {e} for dataset {dataset.name} and model {model.MODEL_NAME}")
+    ret = evaluate_on_dataset(
+        model_cls=model,
+        dataset_id=dataset,
+        fold=args.fold,
+        train_examples=args.train_examples,
+        device=device,
+        verbose=args.verbose,
+        memory=args.memory,
+        tune_dino=args.tune_dino,
+        dino_train_kwargs=dino_train_kwargs,
+        dino_model_name=DINO_MODEL_NAMES[args.dino_model],
+        tune_e5=args.tune_e5,
+        e5_train_kwargs=e5_train_kwargs,
+        e5_model_name=E5_MODEL_NAMES.get(args.e5_model, args.e5_model),
+    )
+    wandb_finish(d_summary=ret)
