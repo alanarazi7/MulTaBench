@@ -35,8 +35,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 dino_model_name: str = DINOV3_SMALL,
                                 tune_e5: bool = False,
                                 e5_train_kwargs: dict | None = None,
-                                e5_model_name: str = E5_SMALL_V2,
-                                target_override: str | None = None) -> Dict:
+                                e5_model_name: str = E5_SMALL_V2) -> Dict:
     start_time = time.time()
     dataset_id = dataset.dataset_id
     is_cls = dataset.is_cls
@@ -72,7 +71,6 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         'tune_e5': tune_e5,
         'e5_model_name': e5_model_name,
         'multimodal_state': multimodal_state,
-        'target_override': target_override,
         "best_val_loss": getattr(model, "best_val_loss", None),
         **train_tracker.summary(),
         **test_tracker.summary(),
@@ -97,10 +95,9 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         dino_model_name: str | None = None,
                         tune_e5: bool = False,
                         e5_train_kwargs: dict | None = None,
-                        e5_model_name: str = E5_SMALL_V2,
-                        target_override: str | None = None) -> Dict:
+                        e5_model_name: str = E5_SMALL_V2) -> Dict:
     print(f"Running model {model_cls.MODEL_NAME} over dataset {dataset_id} with fold {fold}")
-    dataset = download_dataset(dataset_id=dataset_id, multimodal_state=multimodal_state, target_override=target_override)
+    dataset = download_dataset(dataset_id=dataset_id, multimodal_state=multimodal_state)
     return evaluate_on_loaded_dataset(
         model_cls=model_cls,
         dataset=dataset,
@@ -116,5 +113,4 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
         tune_e5=tune_e5,
         e5_train_kwargs=e5_train_kwargs,
         e5_model_name=e5_model_name,
-        target_override=target_override,
     )
