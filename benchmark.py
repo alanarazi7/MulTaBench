@@ -42,7 +42,7 @@ if __name__ == "__main__":
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--memory', type=str, default='32G')
     parser.add_argument('--multimodal_state', type=str,
-                        choices=["all", "ft", "ft-txt", "ft-img-ft-txt"],
+                        choices=["all", "ft"],
                         default="all")
     parser.add_argument('--project', type=str, default='multimodal_benchmark_filtering_attempts_0224')
     _dino = DinoTrainArgs()
@@ -74,11 +74,9 @@ if __name__ == "__main__":
     model = SHORT2MODELS[args.model]
     dataset = MulTaBenchDatasetID[args.dataset_name]
     args.tune_dino = (args.tune_dino == 'yes'
-                      or (args.multimodal_state == "ft" and is_image_dataset(dataset))
-                      or args.multimodal_state == "ft-img-ft-txt")
+                      or (args.multimodal_state == "ft" and is_image_dataset(dataset)))
     args.tune_e5 = (args.tune_e5 == 'yes'
-                    or (args.multimodal_state == "ft" and is_text_dataset(dataset))
-                    or args.multimodal_state in {"ft-txt", "ft-img-ft-txt"})
+                    or (args.multimodal_state == "ft" and is_text_dataset(dataset)))
     device = get_device(device=DEVICE)
     exp_name = f"{args.model}_{dataset.name}_{args.multimodal_state}_{args.fold}"
     wandb_run(exp_name=exp_name, project=args.project)
