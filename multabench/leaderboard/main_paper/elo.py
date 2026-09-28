@@ -1,7 +1,7 @@
 """Paper figure: bootstrapped Bradley-Terry (Elo) rating of every Frozen / TAR competitor.
 
 Reads the combined split of elo_frozen_vs_tar.csv, produced by
-`python -m multabench.leaderboard.analysis.elo_leaderboard`. Each of the 10 embedding learners
+`leaderboard/analysis/elo_leaderboard.py` at the paper_version tag. Each of the 10 embedding learners
 appears twice, Frozen and TAR; TabSTAR and ConTextTab are end-to-end for text and split into
 Frozen / TAR for image. Ratings are anchored so RandomForest (Frozen) = 1000, with 95% CIs
 bootstrapped over datasets.
