@@ -13,6 +13,7 @@ from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
 from multabench.utils.logging import get_current_commit_hash
+from multabench.result_keys import METRIC, TEST_ERROR
 from multabench.utils.profiling import PeakMemoryTracker
 
 DOWNSTREAM_EXAMPLES = 10_000
@@ -70,7 +71,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         **(dino_train_kwargs or {}),
         **(e5_train_kwargs or {}),
     }
-    print(f"{dataset_id.name} fold {fold}: {metrics['metric']} error {metrics['test_error']:.4f} ({runtime:.0f}s)")
+    print(f"{dataset_id.name} fold {fold}: {metrics[METRIC]} error {metrics[TEST_ERROR]:.4f} ({runtime:.0f}s)")
     return d_summary
 
 

@@ -8,6 +8,8 @@ import numpy as np
 from autogluon.core.metrics import Scorer, log_loss, roc_auc, root_mean_squared_error
 from pandas import Series
 
+from multabench.result_keys import METRIC, TEST_ERROR, TEST_SCORE
+
 
 def get_scorer(d_output: int) -> Scorer:
     if d_output == 1:
@@ -31,4 +33,5 @@ def calculate_metric(y_true: Union[np.ndarray, Series], y_pred: np.ndarray, d_ou
     if d_output == 2 and y_pred.ndim == 2:
         y_pred = y_pred[:, 1]
     score = float(scorer(y_true, y_pred))
-    return {"metric": scorer.name, "test_score": score, "test_error": float(scorer.convert_score_to_error(score))}
+    error = float(scorer.convert_score_to_error(score))
+    return {METRIC: scorer.name, TEST_SCORE: score, TEST_ERROR: error}

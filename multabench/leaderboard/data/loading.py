@@ -70,10 +70,10 @@ def load_multabench_data() -> pd.DataFrame:
     results_root = join(dirname(__file__), '..', 'results')
     dfs = []
     for subdir in ('images', 'text'):
-        dfs += _load_result_dir(join(results_root, subdir), required_cols=[MODEL, DATASET, FOLD, MM, "test_score"])
+        dfs += _load_result_dir(join(results_root, subdir), required_cols=[MODEL, DATASET, FOLD, MM, TEST_SCORE])
     if not dfs:
         return pd.DataFrame()
-    return pd.concat([df[[MODEL, DATASET, FOLD, MM, "test_score"]] for df in dfs])
+    return pd.concat([df[[MODEL, DATASET, FOLD, MM, TEST_SCORE]] for df in dfs])
 
 
 @st.cache_data
@@ -84,14 +84,14 @@ def load_paper_benchmark_data() -> pd.DataFrame:
     Adding a new model is as simple as dropping a new CSV into more_baselines/.
     Rows are filtered to all/ft states and dino-small / e5-small only.
     """
-    required = [MODEL, DATASET, FOLD, MM, "test_score"]
+    required = [MODEL, DATASET, FOLD, MM, TEST_SCORE]
     results_root = join(dirname(__file__), '..', 'results')
     dfs = []
     for subdir in ('images', 'text', 'more_baselines'):
         dfs += _load_result_dir(join(results_root, subdir), required_cols=required)
     if not dfs:
         return pd.DataFrame()
-    df = pd.concat([d[[MODEL, DATASET, FOLD, MM, "test_score", E5_MODEL, DINO_MODEL]] for d in dfs])
+    df = pd.concat([d[[MODEL, DATASET, FOLD, MM, TEST_SCORE, E5_MODEL, DINO_MODEL]] for d in dfs])
     df = df[df[MM].isin(["all", "ft"])]
     df = df[(df[E5_MODEL] == E5_SMALL) & (df[DINO_MODEL] == DINO_SMALL)]
     return df.reset_index(drop=True)
