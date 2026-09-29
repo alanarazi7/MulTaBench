@@ -14,7 +14,7 @@ class RandomForestDefaultHyperparams:
 
 class RandomForest(TabularModel):
 
-    MODEL_NAME = "RandomForest 🌳"
+    MODEL_NAME = "RandomForest"
     SHORT_NAME = "rf"
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = True
