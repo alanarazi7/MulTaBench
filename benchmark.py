@@ -68,8 +68,8 @@ if __name__ == "__main__":
 
     model = SHORT2MODELS[args.model]
     dataset = MulTaBenchDatasetID[args.dataset_name]
-    dino_model_name, tune_dino = IMAGE_ENCODERS[args.image_encoder]
-    e5_model_name, tune_e5 = TEXT_ENCODERS[args.text_encoder]
+    image_encoder = IMAGE_ENCODERS[args.image_encoder]
+    text_encoder = TEXT_ENCODERS[args.text_encoder]
     device = get_device(device=DEVICE)
     exp_name = f"{args.model}_{dataset.name}_{args.text_encoder}_{args.image_encoder}_{args.fold}"
     dino_train_kwargs = dict(
@@ -80,7 +80,7 @@ if __name__ == "__main__":
         patience=args.dino_patience,
         weight_decay=args.dino_weight_decay,
         batch_size=args.dino_batch_size,
-    ) if tune_dino else None
+    ) if image_encoder.tune_encoder else None
     e5_train_kwargs = dict(
         lora_rank=args.e5_rank,
         text_layers=args.e5_text_layers,
@@ -89,7 +89,7 @@ if __name__ == "__main__":
         patience=args.e5_patience,
         weight_decay=args.e5_weight_decay,
         batch_size=args.e5_batch_size,
-    ) if tune_e5 else None
+    ) if text_encoder.tune_encoder else None
     ret = evaluate_on_dataset(
         model_cls=model,
         dataset_id=dataset,
@@ -97,12 +97,12 @@ if __name__ == "__main__":
         train_examples=args.train_examples,
         device=device,
         verbose=args.verbose,
-        tune_dino=tune_dino,
+        tune_dino=image_encoder.tune_encoder,
         dino_train_kwargs=dino_train_kwargs,
-        dino_model_name=dino_model_name,
-        tune_e5=tune_e5,
+        dino_model_name=image_encoder.encoder_name,
+        tune_e5=text_encoder.tune_encoder,
         e5_train_kwargs=e5_train_kwargs,
-        e5_model_name=e5_model_name,
+        e5_model_name=text_encoder.encoder_name,
     )
     ret["text_encoder"] = args.text_encoder
     ret["image_encoder"] = args.image_encoder

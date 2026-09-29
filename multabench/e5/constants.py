@@ -1,16 +1,18 @@
 """Constants for E5 text encoders (BERT-based)."""
 
+from multabench.utils.encoders import Encoder
+
 E5_SMALL_V2 = "intfloat/e5-small-v2"
 E5_LARGE_V2 = "intfloat/e5-large-v2"
 
 TF_IDF = "tf-idf"  # skrub StringEncoder (TF-IDF + TruncatedSVD), CPU-only
 
-# --text_encoder choices: name -> (encoder, fine-tune it on the task, i.e. target-aware "TAR")
+# --text_encoder choices
 TEXT_ENCODERS = {
-    "tfidf": (TF_IDF, False),
-    "e5-small": (E5_SMALL_V2, False),
-    "e5-small-tar": (E5_SMALL_V2, True),
-    "e5-large": (E5_LARGE_V2, False),
+    "tfidf": Encoder(encoder_name=TF_IDF, tune_encoder=False),
+    "e5-small": Encoder(encoder_name=E5_SMALL_V2, tune_encoder=False),
+    "e5-small-tar": Encoder(encoder_name=E5_SMALL_V2, tune_encoder=True),
+    "e5-large": Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
 }
 
 D_E5_SMALL = 384
