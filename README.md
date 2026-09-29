@@ -53,7 +53,7 @@ MulTaBench is not an official TabArena leaderboard.
 
 | | TabArena | MulTaBench | Status |
 |---|---|---|---|
-| Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | ROC AUC (binary and multiclass), R² (regression), via scikit-learn | |
+| Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | ✅ |
 | Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Normalized scores per dataset | |
 | Splits | Fixed and part of the task definition | Drawn when the run starts | |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited | |
