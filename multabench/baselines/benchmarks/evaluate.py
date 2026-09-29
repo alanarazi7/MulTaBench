@@ -3,12 +3,11 @@ from typing import Type, Dict
 
 import torch
 
-from tabstar.preprocessing.splits import split_to_test
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.objects import MultimodalDataset
 from multabench.baselines.abstract_model import TabularModel
 from multabench.benchmark.load import load_multabench_dataset
-from multabench.baselines.preprocessing.sampling import subsample_dataset
+from multabench.benchmark.splits import load_splits
 from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
@@ -16,15 +15,10 @@ from multabench.utils.logging import get_current_commit_hash
 from multabench.result_keys import METRIC, TEST_ERROR
 from multabench.utils.profiling import PeakMemoryTracker
 
-DOWNSTREAM_EXAMPLES = 10_000
-FOLDS = 5
-
-
 def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 dataset: MultimodalDataset,
                                 fold: int,
                                 device: torch.device,
-                                train_examples: int = DOWNSTREAM_EXAMPLES,
                                 verbose: bool = False,
                                 tune_dino: bool = False,
                                 dino_train_kwargs: dict | None = None,
@@ -34,9 +28,9 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 e5_model_name: str = E5_SMALL_V2) -> Dict:
     start_time = time.time()
     dataset_id = dataset.dataset_id
-    is_cls = dataset.is_cls
-    x, y = subsample_dataset(x=dataset.x, y=dataset.y, is_cls=is_cls, train_examples=train_examples, fold=fold)
-    x_train, x_test, y_train, y_test = split_to_test(x=x, y=y, is_cls=is_cls, fold=fold, train_examples=train_examples)
+    split = load_splits(dataset_id.name, n_rows=len(dataset.y))[fold]
+    x_train, y_train = dataset.x.iloc[split.train_idx], dataset.y.iloc[split.train_idx]
+    x_test, y_test = dataset.x.iloc[split.test_idx], dataset.y.iloc[split.test_idx]
     kwargs = dict(problem_type=dataset.task_type, device=device, verbose=verbose, dataset=dataset_id,
                   image_folder=dataset.image_folder, tune_dino=tune_dino, dino_train_kwargs=dino_train_kwargs,
                   dino_model_name=dino_model_name,
@@ -55,7 +49,6 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         "task_type": str(dataset_id.name)[:3],
         "train_type": "benchmark",
         "fold": fold,
-        "train_examples": train_examples,
         **metrics,
         "runtime": runtime,
         "n_train": len(y_train),
@@ -79,7 +72,6 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         dataset_id: MulTaBenchDatasetID,
                         fold: int,
                         device: torch.device,
-                        train_examples: int = DOWNSTREAM_EXAMPLES,
                         verbose: bool = False,
                         tune_dino: bool = False,
                         dino_train_kwargs: dict | None = None,
@@ -94,7 +86,6 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
         dataset=dataset,
         fold=fold,
         device=device,
-        train_examples=train_examples,
         verbose=verbose,
         tune_dino=tune_dino,
         dino_train_kwargs=dino_train_kwargs,
