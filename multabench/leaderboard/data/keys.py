@@ -1,9 +1,10 @@
+from multabench.result_keys import TEST_SCORE  # noqa: F401
+
 # Column keys
 MODEL = "model"
 DATASET = "dataset"
 FOLD = "fold"
 IS_TUNED = "is_tuned"
-TEST_SCORE = "test_score"
 MM = "multimodal_state"
 DINO_TUNE = "tune_dino"
 E5_MODEL = "e5_model"

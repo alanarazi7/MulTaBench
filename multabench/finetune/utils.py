@@ -8,8 +8,6 @@ import numpy as np
 import torch
 from sklearn.metrics import roc_auc_score
 
-from multabench.utils.metrics import _per_class_auc
-
 
 def encoder_finetune_loss(logits: torch.Tensor, labels: torch.Tensor) -> torch.Tensor:
     """
@@ -35,3 +33,22 @@ def compute_metrics_multiclass(eval_pred: Any, d_output: int) -> Dict[str, float
         except ValueError:
             score = _per_class_auc(labels_flat, probs)
     return {"eval_auc": float(score)}
+
+
+# TODO: replace with AutoGluon's scorers (get_scorer in baselines/training/metrics.py), as the
+#  benchmark does. This changes which checkpoint fine-tuning early-stops on.
+def _per_class_auc(y_true, y_pred) -> float:
+    present_classes = np.unique(y_true)
+    aucs = {}
+    for cls in present_classes:
+        # Binary ground truth: 1 for the current class, 0 for others
+        y_true_binary = (y_true == cls).astype(int)
+        # Predicted probabilities for the current class
+        y_pred_scores = y_pred[:, int(cls)]
+        try:
+            auc = roc_auc_score(y_true_binary, y_pred_scores)
+            aucs[cls] = auc
+        except ValueError:
+            pass
+    macro_avg = float(np.mean(list(aucs.values())))
+    return macro_avg

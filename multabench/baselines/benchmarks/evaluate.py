@@ -1,5 +1,4 @@
 import time
-from dataclasses import asdict
 from typing import Type, Dict
 
 import torch
@@ -14,6 +13,7 @@ from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
 from multabench.utils.logging import get_current_commit_hash
+from multabench.result_keys import METRIC, TEST_ERROR
 from multabench.utils.profiling import PeakMemoryTracker
 
 DOWNSTREAM_EXAMPLES = 10_000
@@ -56,8 +56,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         "train_type": "benchmark",
         "fold": fold,
         "train_examples": train_examples,
-        "test_score": metrics.score,
-        "metrics_dict": asdict(metrics),
+        **metrics,
         "runtime": runtime,
         "n_train": len(y_train),
         "n_test": len(y_test),
@@ -72,7 +71,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         **(dino_train_kwargs or {}),
         **(e5_train_kwargs or {}),
     }
-    print(f"Scored {metrics.score:.4f} on dataset {dataset_id.name}, fold {fold} in {int(runtime)} seconds.")
+    print(f"{dataset_id.name} fold {fold}: {metrics[METRIC]} error {metrics[TEST_ERROR]:.4f} ({runtime:.0f}s)")
     return d_summary
 
 

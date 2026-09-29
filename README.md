@@ -53,14 +53,14 @@ MulTaBench is not an official TabArena leaderboard.
 
 | | TabArena | MulTaBench | Status |
 |---|---|---|---|
-| Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | Adopting |
-| Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Normalized scores per dataset | Adopting |
-| Splits | Fixed and part of the task definition | Drawn when the run starts | Adopting |
-| Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited | Adopting |
-| Runtime | Train and inference time per 1K rows | Total runtime per run | Adopting |
-| Hardware | Recorded per run | Recorded per run | Same |
-| Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 5 folds, no repeats | Deliberate difference |
-| Dataset size | Full size | Capped at 10K train and 2.5K test rows; a full-size mode is planned | Deliberate difference |
-| Inner validation | 8-fold bagging for every model | Each model holds out its own validation split | Deliberate difference |
-| Hyperparameters | Default, tuned, and tuned + ensembled | Default only | Deliberate difference |
-| Model implementations | TabArena's model registry | MulTaBench's own wrappers, which add image and text embeddings | Deliberate difference |
+| Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | ✅ |
+| Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Normalized scores per dataset | |
+| Splits | Fixed and part of the task definition | Drawn when the run starts | |
+| Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited | |
+| Runtime | Train and inference time per 1K rows | Total runtime per run | |
+| Hardware | Recorded per run | Recorded per run | ✅ |
+| Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 5 folds, no repeats | |
+| Dataset size | Full size | Capped at 10K train and 2.5K test rows; a full-size mode is planned | |
+| Inner validation | 8-fold bagging for every model | Each model holds out its own validation split | |
+| Hyperparameters | Default, tuned, and tuned + ensembled | Default only | |
+| Model implementations | TabArena's model registry | MulTaBench's own wrappers, which add image and text embeddings | |

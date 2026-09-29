@@ -16,7 +16,7 @@ from multabench.baselines.preprocessing.image_embeddings import (
     transform_image_features,
     fit_image_encoders,
 )
-from multabench.baselines.training.metrics import calculate_metric, Metrics
+from multabench.baselines.training.metrics import calculate_metric
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.baselines.preprocessing.categorical import fit_categorical_encoders, transform_categorical_features
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
@@ -188,8 +188,7 @@ class TabularModel:
         # order changes (image cols → PCA, text cols → PCA), so indices no longer match. Models that need
         # categorical columns at fit time (e.g. LightGBM) must resolve by name: [c for c in x.columns if c in self.categorical_features].
         self.categorical_indices = [i for i, c in enumerate(x.columns) if c in self.categorical_features]
-        if self.USE_TARGET_ENCODER:
-            self.target_transformer = fit_preprocess_y(y=y, is_cls=self.is_cls)
+        self.target_transformer = fit_preprocess_y(y=y, is_cls=self.is_cls)
         # d_output already set above for fit_image_encoders
         # TODO: drop constant columns, where constants means all values are the same (and no nulls)
         return x, y
@@ -206,17 +205,10 @@ class TabularModel:
             probs = probs[:, 1]
         return probs
 
-    def score(self, X, y) -> float:
-        metrics = self.score_all_metrics(X=X, y=y)
-        return metrics.score
-
-    def score_all_metrics(self, X, y) -> Metrics:
+    def score_all_metrics(self, X, y) -> Dict:
         x = X.copy()
         y = y.copy()
-        if self.USE_TARGET_ENCODER:
-            y_true = transform_preprocess_y(y=y, scaler=self.target_transformer)
-        else:
-            y_true = y
+        y_true = transform_preprocess_y(y=y, scaler=self.target_transformer)
         y_pred = self.predict(x)
         metrics = calculate_metric(y_true=y_true, y_pred=y_pred, d_output=self.d_output)
         return metrics
