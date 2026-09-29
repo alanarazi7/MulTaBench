@@ -70,7 +70,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         **(dino_train_kwargs or {}),
         **(e5_train_kwargs or {}),
     }
-    print(f"Scored {metrics['metric']} error {metrics['test_error']:.4f} on dataset {dataset_id.name}, fold {fold} in {int(runtime)} seconds.")
+    print(f"{dataset_id.name} fold {fold}: {metrics['metric']} error {metrics['test_error']:.4f} ({runtime:.0f}s)")
     return d_summary
 
 
