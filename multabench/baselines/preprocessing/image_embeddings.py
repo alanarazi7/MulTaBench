@@ -104,6 +104,7 @@ def transform_image_features(
     image_folder: str,
     dino_model: Optional[DINOv3ViTModel] = None,
     dino_processor: Optional[DINOv3ViTImageProcessorFast] = None,
+    dino_model_name: str = DINOV3_SMALL,
 ) -> DataFrame:
     # TODO: In realistic scenarios where we tune the model repeatedly, the efficient way would be to fit the encoder once,
     # cache the embeddings, and then apply PCA on the cached embeddings over and over for every train split in every run.
@@ -112,7 +113,7 @@ def transform_image_features(
     if dino_model is not None and dino_processor is not None:
         pass  # use provided tuned model
     else:
-        dino_model, dino_processor = get_image_encoder(model_name=DINOV3_SMALL)  # transform always uses default model
+        dino_model, dino_processor = get_image_encoder(model_name=dino_model_name)
     dino_model.to(device)
     img_processor = dino_processor
     for image_col, image_pca in image_transformers.items():
