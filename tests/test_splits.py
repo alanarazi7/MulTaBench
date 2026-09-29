@@ -22,7 +22,7 @@ def test_each_repeat_tests_every_row_once():
 
 
 def test_train_test_ratio_is_two_to_one():
-    train, test = get_split(np.random.default_rng(0).integers(0, 2, 900), is_cls=True, split=0)
+    train, test = get_split(np.arange(900) % 2, is_cls=True, split=0)
     assert (len(train), len(test)) == (600, 300)
 
 
