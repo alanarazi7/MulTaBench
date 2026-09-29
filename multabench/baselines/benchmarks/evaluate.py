@@ -1,5 +1,4 @@
 import time
-from dataclasses import asdict
 from typing import Type, Dict
 
 import torch
@@ -56,10 +55,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         "train_type": "benchmark",
         "fold": fold,
         "train_examples": train_examples,
-        "metric": metrics.metric,
-        "test_score": metrics.score,
-        "test_error": metrics.error,
-        "metrics_dict": asdict(metrics),
+        **metrics,
         "runtime": runtime,
         "n_train": len(y_train),
         "n_test": len(y_test),
@@ -74,7 +70,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         **(dino_train_kwargs or {}),
         **(e5_train_kwargs or {}),
     }
-    print(f"Scored {metrics.metric} error {metrics.error:.4f} on dataset {dataset_id.name}, fold {fold} in {int(runtime)} seconds.")
+    print(f"Scored {metrics['metric']} error {metrics['test_error']:.4f} on dataset {dataset_id.name}, fold {fold} in {int(runtime)} seconds.")
     return d_summary
 
 

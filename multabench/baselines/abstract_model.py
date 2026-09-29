@@ -16,7 +16,7 @@ from multabench.baselines.preprocessing.image_embeddings import (
     transform_image_features,
     fit_image_encoders,
 )
-from multabench.baselines.training.metrics import calculate_metric, Metrics
+from multabench.baselines.training.metrics import calculate_metric
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.baselines.preprocessing.categorical import fit_categorical_encoders, transform_categorical_features
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
@@ -207,11 +207,7 @@ class TabularModel:
             probs = probs[:, 1]
         return probs
 
-    def score(self, X, y) -> float:
-        metrics = self.score_all_metrics(X=X, y=y)
-        return metrics.score
-
-    def score_all_metrics(self, X, y) -> Metrics:
+    def score_all_metrics(self, X, y) -> Dict:
         x = X.copy()
         y = y.copy()
         y_true = transform_preprocess_y(y=y, scaler=self.target_transformer)
