@@ -55,12 +55,12 @@ MulTaBench is not an official TabArena leaderboard.
 |---|---|---|---|
 | Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | ✅ |
 | Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Normalized scores per dataset | |
-| Splits | Fixed and part of the task definition | Same, committed in `data/splits/` | ✅ |
+| Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited | |
 | Runtime | Train and inference time per 1K rows | Total runtime per run | |
 | Hardware | Recorded per run | Recorded per run | ✅ |
-| Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 5 folds, no repeats | |
-| Dataset size | Full size | Capped at 10K train and 2.5K test rows; a full-size mode is planned | |
-| Inner validation | 8-fold bagging for every model | Each model holds out its own validation split | |
+| Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 3 folds, repeated twice for every size | |
+| Dataset size | Full size | Capped at 10K train and 5K test rows; a full-size mode is planned | |
+| Inner validation | 8-fold bagging for every model | No bagging: one fit per split, and models that need validation hold out 10% of the training rows (at most 1,000). This favors models that ensemble internally (TabPFN, TabICL, TabDPT, TabM, RandomForest) over single GBDTs and RealMLP | |
 | Hyperparameters | Default, tuned, and tuned + ensembled | Default only | |
 | Model implementations | TabArena's model registry | MulTaBench's own wrappers, which add image and text embeddings | |
