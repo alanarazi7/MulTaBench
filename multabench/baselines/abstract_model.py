@@ -188,8 +188,6 @@ class TabularModel:
         # order changes (image cols → PCA, text cols → PCA), so indices no longer match. Models that need
         # categorical columns at fit time (e.g. LightGBM) must resolve by name: [c for c in x.columns if c in self.categorical_features].
         self.categorical_indices = [i for i, c in enumerate(x.columns) if c in self.categorical_features]
-        # Always fitted: scoring needs the labels as 0..K-1 to match the probability columns.
-        # USE_TARGET_ENCODER only decides whether the model also trains on the encoded labels.
         self.target_transformer = fit_preprocess_y(y=y, is_cls=self.is_cls)
         # d_output already set above for fit_image_encoders
         # TODO: drop constant columns, where constants means all values are the same (and no nulls)
