@@ -124,6 +124,7 @@ class TabularModel:
             image_folder=self.image_folder,
             dino_model=getattr(self, "_tuned_dino_model", None),
             dino_processor=getattr(self, "_tuned_dino_processor", None),
+            dino_model_name=self.dino_model_name,
         )
         image_features = [f"{col}_img_pca_{i}" for col in self.image_transformers.keys() for i in range(self.image_transformers[col].n_components)]
         x = transform_feature_types(x=x, numerical_features=self.numerical_features, image_features=image_features)

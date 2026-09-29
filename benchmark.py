@@ -20,9 +20,9 @@ from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
 from multabench.benchmark.splits import SPLITS
 from multabench.constants import DEVICE
-from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_image_dataset, is_text_dataset
-from multabench.dino.constants import DINO_SMALL, DINO_LARGE, DINO_MODEL_NAMES
-from multabench.e5.constants import E5_SMALL, E5_LARGE, E5_MODEL_NAMES, TF_IDF
+from multabench.datasets.all_datasets import MulTaBenchDatasetID
+from multabench.dino.constants import IMAGE_ENCODERS
+from multabench.e5.constants import TEXT_ENCODERS
 
 BASELINES = [TabSTAR,
              CatBoost, XGBoost, LightGBM, RandomForest,
@@ -41,16 +41,11 @@ if __name__ == "__main__":
     parser.add_argument('--dataset_name', type=str, required=True, choices=[d.name for d in MulTaBenchDatasetID])
     parser.add_argument('--fold', type=int, required=True, choices=range(SPLITS))
     parser.add_argument('--verbose', action='store_true', default=False)
-    parser.add_argument('--multimodal_state', type=str,
-                        choices=["all", "ft"],
-                        default="all")
     parser.add_argument('--output_dir', type=str, default='runs')
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
-    # DINO image encoder model selection
-    parser.add_argument('--dino_model', type=str, default=DINO_SMALL, choices=[DINO_SMALL, DINO_LARGE])
-    # DINO LoRA finetuning params (used when --tune_dino)
-    parser.add_argument('--tune_dino', type=str, default='no', choices=['yes', 'no'])
+    parser.add_argument('--image_encoder', type=str, default='dino-small', choices=list(IMAGE_ENCODERS))
+    # DINO LoRA finetuning params (used by the "-tar" image encoders)
     parser.add_argument('--dino_lr', type=float, default=_dino.learning_rate)
     parser.add_argument('--dino_rank', type=int, default=_dino.lora_rank)
     parser.add_argument('--dino_img_layers', type=int, default=_dino.img_layers)
@@ -58,10 +53,8 @@ if __name__ == "__main__":
     parser.add_argument('--dino_patience', type=int, default=_dino.patience)
     parser.add_argument('--dino_weight_decay', type=float, default=_dino.weight_decay)
     parser.add_argument('--dino_batch_size', type=int, default=_dino.batch_size)
-    # E5 text encoder model selection
-    parser.add_argument('--e5_model', type=str, default=E5_SMALL, choices=[E5_SMALL, E5_LARGE, TF_IDF])
-    # E5 LoRA finetuning params (used when --tune_e5)
-    parser.add_argument('--tune_e5', type=str, default='no', choices=['yes', 'no'])
+    parser.add_argument('--text_encoder', type=str, default='e5-small', choices=list(TEXT_ENCODERS))
+    # E5 LoRA finetuning params (used by the "-tar" text encoders)
     parser.add_argument('--e5_lr', type=float, default=_e5.learning_rate)
     parser.add_argument('--e5_rank', type=int, default=_e5.lora_rank)
     parser.add_argument('--e5_text_layers', type=int, default=_e5.text_layers)
@@ -73,12 +66,10 @@ if __name__ == "__main__":
 
     model = SHORT2MODELS[args.model]
     dataset = MulTaBenchDatasetID[args.dataset_name]
-    args.tune_dino = (args.tune_dino == 'yes'
-                      or (args.multimodal_state == "ft" and is_image_dataset(dataset)))
-    args.tune_e5 = (args.tune_e5 == 'yes'
-                    or (args.multimodal_state == "ft" and is_text_dataset(dataset)))
+    image_encoder = IMAGE_ENCODERS[args.image_encoder]
+    text_encoder = TEXT_ENCODERS[args.text_encoder]
     device = get_device(device=DEVICE)
-    exp_name = f"{args.model}_{dataset.name}_{args.multimodal_state}_{args.fold}"
+    exp_name = f"{args.model}_{dataset.name}_{args.text_encoder}_{args.image_encoder}_{args.fold}"
     dino_train_kwargs = dict(
         lora_rank=args.dino_rank,
         img_layers=args.dino_img_layers,
@@ -87,7 +78,7 @@ if __name__ == "__main__":
         patience=args.dino_patience,
         weight_decay=args.dino_weight_decay,
         batch_size=args.dino_batch_size,
-    ) if args.tune_dino else None
+    ) if image_encoder.tune_encoder else None
     e5_train_kwargs = dict(
         lora_rank=args.e5_rank,
         text_layers=args.e5_text_layers,
@@ -96,20 +87,22 @@ if __name__ == "__main__":
         patience=args.e5_patience,
         weight_decay=args.e5_weight_decay,
         batch_size=args.e5_batch_size,
-    ) if args.tune_e5 else None
+    ) if text_encoder.tune_encoder else None
     ret = evaluate_on_dataset(
         model_cls=model,
         dataset_id=dataset,
         fold=args.fold,
         device=device,
         verbose=args.verbose,
-        tune_dino=args.tune_dino,
+        tune_dino=image_encoder.tune_encoder,
         dino_train_kwargs=dino_train_kwargs,
-        dino_model_name=DINO_MODEL_NAMES[args.dino_model],
-        tune_e5=args.tune_e5,
+        dino_model_name=image_encoder.encoder_name,
+        tune_e5=text_encoder.tune_encoder,
         e5_train_kwargs=e5_train_kwargs,
-        e5_model_name=E5_MODEL_NAMES.get(args.e5_model, args.e5_model),
+        e5_model_name=text_encoder.encoder_name,
     )
+    ret["text_encoder"] = args.text_encoder
+    ret["image_encoder"] = args.image_encoder
     os.makedirs(args.output_dir, exist_ok=True)
     out_path = os.path.join(args.output_dir, f"{exp_name}.json")
     with open(out_path, "w") as f:

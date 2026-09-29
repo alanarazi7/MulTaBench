@@ -13,7 +13,7 @@ from multabench.constants import HF_TOKEN
 
 class TabPFNv2(TabularModel):
 
-    MODEL_NAME = "TabPFN-v2 🤯"
+    MODEL_NAME = "TabPFN-v2"
     SHORT_NAME = "tabpfnv2"
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = False
@@ -45,7 +45,7 @@ class TabPFNv2(TabularModel):
 
 class TabPFNv2p5(TabPFNv2):
 
-    MODEL_NAME = "TabPFN-v2p5 🇩🇪"
+    MODEL_NAME = "TabPFN-v2p5"
     SHORT_NAME = "tabpfnv2p5"
 
     MAX_ROWS = 50000

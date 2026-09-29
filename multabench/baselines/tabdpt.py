@@ -6,7 +6,7 @@ from multabench.baselines.abstract_model import TabularModel
 
 class TabDPT(TabularModel):
 
-    MODEL_NAME = "TabDPT 6️⃣"
+    MODEL_NAME = "TabDPT"
     SHORT_NAME = "dpt"
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = False

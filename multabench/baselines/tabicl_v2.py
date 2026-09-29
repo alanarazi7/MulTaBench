@@ -6,7 +6,7 @@ from multabench.baselines.abstract_model import TabularModel
 
 class TabICLv2(TabularModel):
 
-    MODEL_NAME = "TabICLv2 🗼"
+    MODEL_NAME = "TabICLv2"
     SHORT_NAME = "iclv2"
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = False

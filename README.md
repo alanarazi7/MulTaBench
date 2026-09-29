@@ -20,13 +20,15 @@ than used frozen.
 source init.sh && source .venv/bin/activate
 cp .env.example .env     # Hugging Face and Kaggle credentials
 
-python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --multimodal_state all
+python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --text_encoder e5-small --image_encoder dino-small
 ```
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
-result to `runs/<model>_<dataset>_<state>_<fold>.json` (`--output_dir` to change). `--help` lists
-the available models; `--multimodal_state` is `all` (frozen encoders) or `ft` (the dataset's image
-or text encoder fine-tuned on the task).
+result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<fold>.json` (`--output_dir` to change). `--help`
+lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
+`e5-small` or `e5-large`, or `e5-small-tar`, E5 fine-tuned on the task with LoRA (target-aware).
+`--image_encoder` does the same for image columns: frozen `dino-small` or `dino-large`, or
+`dino-small-tar`.
 
 ## Datasets
 
@@ -57,7 +59,7 @@ MulTaBench is not an official TabArena leaderboard.
 | Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Normalized scores per dataset | |
 | Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited | |
-| Runtime | Train and inference time per 1K rows | Total runtime per run | |
+| Runtime | Train and inference time per 1K rows | Same | ✅ |
 | Hardware | Recorded per run | Recorded per run | ✅ |
 | Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 3 folds, repeated twice for every size | |
 | Dataset size | Full size | Capped at 10K train and 5K test rows; a full-size mode is planned | |

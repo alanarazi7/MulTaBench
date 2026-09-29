@@ -62,7 +62,7 @@ def get_tabstar_paper_mapping(dataset_id: str) -> str | None:
 
 class TabSTAR(TabularModel):
 
-    MODEL_NAME = "TabSTAR ⭐"
+    MODEL_NAME = "TabSTAR"
     SHORT_NAME = "tabstar"
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = False

@@ -42,7 +42,7 @@ def unique_run_dir(dataset_name: str, x: DataFrame) -> str:
 
 class AutoGluonMM(TabularModel):
 
-    MODEL_NAME = "AutoGluon-MM 🧴"
+    MODEL_NAME = "AutoGluon-MM"
     SHORT_NAME = "agmm"
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = False

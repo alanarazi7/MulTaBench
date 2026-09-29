@@ -19,7 +19,7 @@ class CatBoostDefaultHyperparams:
 
 class CatBoost(TabularModel):
 
-    MODEL_NAME = "CatBoost 😸"
+    MODEL_NAME = "CatBoost"
     SHORT_NAME = "cat"
     USE_VAL_SPLIT = True
     USE_MEDIAN_FILLING = False
