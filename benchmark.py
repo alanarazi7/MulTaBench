@@ -19,9 +19,9 @@ from multabench.baselines.tabstar_v1 import TabSTAR
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset, DOWNSTREAM_EXAMPLES, FOLDS
 from multabench.constants import DEVICE
-from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_image_dataset, is_text_dataset
+from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.dino.constants import DINO_SMALL, DINO_LARGE, DINO_MODEL_NAMES
-from multabench.e5.constants import E5_SMALL, E5_LARGE, E5_MODEL_NAMES, TF_IDF
+from multabench.e5.constants import TEXT_ENCODERS
 
 BASELINES = [TabSTAR,
              CatBoost, XGBoost, LightGBM, RandomForest,
@@ -41,9 +41,6 @@ if __name__ == "__main__":
     parser.add_argument('--fold', type=int, required=True, choices=range(FOLDS))
     parser.add_argument('--train_examples', type=int, default=DOWNSTREAM_EXAMPLES)
     parser.add_argument('--verbose', action='store_true', default=False)
-    parser.add_argument('--multimodal_state', type=str,
-                        choices=["all", "ft"],
-                        default="all")
     parser.add_argument('--output_dir', type=str, default='runs')
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
@@ -58,10 +55,9 @@ if __name__ == "__main__":
     parser.add_argument('--dino_patience', type=int, default=_dino.patience)
     parser.add_argument('--dino_weight_decay', type=float, default=_dino.weight_decay)
     parser.add_argument('--dino_batch_size', type=int, default=_dino.batch_size)
-    # E5 text encoder model selection
-    parser.add_argument('--e5_model', type=str, default=E5_SMALL, choices=[E5_SMALL, E5_LARGE, TF_IDF])
-    # E5 LoRA finetuning params (used when --tune_e5)
-    parser.add_argument('--tune_e5', type=str, default='no', choices=['yes', 'no'])
+    # Text encoder: TF-IDF, frozen E5, or E5 fine-tuned on the task with LoRA ("-tar")
+    parser.add_argument('--text_encoder', type=str, default='e5-small', choices=list(TEXT_ENCODERS))
+    # E5 LoRA finetuning params (used by the "-tar" text encoders)
     parser.add_argument('--e5_lr', type=float, default=_e5.learning_rate)
     parser.add_argument('--e5_rank', type=int, default=_e5.lora_rank)
     parser.add_argument('--e5_text_layers', type=int, default=_e5.text_layers)
@@ -73,12 +69,10 @@ if __name__ == "__main__":
 
     model = SHORT2MODELS[args.model]
     dataset = MulTaBenchDatasetID[args.dataset_name]
-    args.tune_dino = (args.tune_dino == 'yes'
-                      or (args.multimodal_state == "ft" and is_image_dataset(dataset)))
-    args.tune_e5 = (args.tune_e5 == 'yes'
-                    or (args.multimodal_state == "ft" and is_text_dataset(dataset)))
+    args.tune_dino = args.tune_dino == 'yes'
+    e5_model_name, tune_e5 = TEXT_ENCODERS[args.text_encoder]
     device = get_device(device=DEVICE)
-    exp_name = f"{args.model}_{dataset.name}_{args.multimodal_state}_{args.fold}"
+    exp_name = f"{args.model}_{dataset.name}_{args.text_encoder}_{args.fold}"
     dino_train_kwargs = dict(
         lora_rank=args.dino_rank,
         img_layers=args.dino_img_layers,
@@ -96,7 +90,7 @@ if __name__ == "__main__":
         patience=args.e5_patience,
         weight_decay=args.e5_weight_decay,
         batch_size=args.e5_batch_size,
-    ) if args.tune_e5 else None
+    ) if tune_e5 else None
     ret = evaluate_on_dataset(
         model_cls=model,
         dataset_id=dataset,
@@ -107,10 +101,11 @@ if __name__ == "__main__":
         tune_dino=args.tune_dino,
         dino_train_kwargs=dino_train_kwargs,
         dino_model_name=DINO_MODEL_NAMES[args.dino_model],
-        tune_e5=args.tune_e5,
+        tune_e5=tune_e5,
         e5_train_kwargs=e5_train_kwargs,
-        e5_model_name=E5_MODEL_NAMES.get(args.e5_model, args.e5_model),
+        e5_model_name=e5_model_name,
     )
+    ret["text_encoder"] = args.text_encoder
     os.makedirs(args.output_dir, exist_ok=True)
     out_path = os.path.join(args.output_dir, f"{exp_name}.json")
     with open(out_path, "w") as f:

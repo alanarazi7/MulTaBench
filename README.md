@@ -20,13 +20,14 @@ than used frozen.
 source init.sh && source .venv/bin/activate
 cp .env.example .env     # Hugging Face and Kaggle credentials
 
-python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --multimodal_state all
+python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --text_encoder e5-small
 ```
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
-result to `runs/<model>_<dataset>_<state>_<fold>.json` (`--output_dir` to change). `--help` lists
-the available models; `--multimodal_state` is `all` (frozen encoders) or `ft` (the dataset's image
-or text encoder fine-tuned on the task).
+result to `runs/<model>_<dataset>_<text_encoder>_<fold>.json` (`--output_dir` to change). `--help`
+lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
+`e5-small` or `e5-large`, or `e5-small-tar`, E5 fine-tuned on the task with LoRA (target-aware).
+`--tune_dino yes` fine-tunes the image encoder the same way.
 
 ## Datasets
 

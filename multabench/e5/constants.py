@@ -3,13 +3,14 @@
 E5_SMALL_V2 = "intfloat/e5-small-v2"
 E5_LARGE_V2 = "intfloat/e5-large-v2"
 
-E5_SMALL = "e5-small"
-E5_LARGE = "e5-large"
 TF_IDF = "tf-idf"  # skrub StringEncoder (TF-IDF + TruncatedSVD), CPU-only
 
-E5_MODEL_NAMES = {
-    E5_SMALL: E5_SMALL_V2,
-    E5_LARGE: E5_LARGE_V2,
+# --text_encoder choices: name -> (encoder, fine-tune it on the task, i.e. target-aware "TAR")
+TEXT_ENCODERS = {
+    "tfidf": (TF_IDF, False),
+    "e5-small": (E5_SMALL_V2, False),
+    "e5-small-tar": (E5_SMALL_V2, True),
+    "e5-large": (E5_LARGE_V2, False),
 }
 
 D_E5_SMALL = 384
