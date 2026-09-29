@@ -1,12 +1,11 @@
 DINOV3_SMALL = "facebook/dinov3-vits16-pretrain-lvd1689m"
 DINOV3_LARGE = "facebook/dinov3-vitl16-pretrain-lvd1689m"
 
-DINO_SMALL = "dino-small"
-DINO_LARGE = "dino-large"
-
-DINO_MODEL_NAMES = {
-    DINO_SMALL: DINOV3_SMALL,
-    DINO_LARGE: DINOV3_LARGE,
+# --image_encoder choices: name -> (encoder, fine-tune it on the task, i.e. target-aware "TAR")
+IMAGE_ENCODERS = {
+    "dino-small": (DINOV3_SMALL, False),
+    "dino-small-tar": (DINOV3_SMALL, True),
+    "dino-large": (DINOV3_LARGE, False),
 }
 
 D_DINO_SMALL = 384

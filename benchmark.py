@@ -20,7 +20,7 @@ from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset, DOWNSTREAM_EXAMPLES, FOLDS
 from multabench.constants import DEVICE
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.dino.constants import DINO_SMALL, DINO_LARGE, DINO_MODEL_NAMES
+from multabench.dino.constants import IMAGE_ENCODERS
 from multabench.e5.constants import TEXT_ENCODERS
 
 BASELINES = [TabSTAR,
@@ -44,10 +44,9 @@ if __name__ == "__main__":
     parser.add_argument('--output_dir', type=str, default='runs')
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
-    # DINO image encoder model selection
-    parser.add_argument('--dino_model', type=str, default=DINO_SMALL, choices=[DINO_SMALL, DINO_LARGE])
-    # DINO LoRA finetuning params (used when --tune_dino)
-    parser.add_argument('--tune_dino', type=str, default='no', choices=['yes', 'no'])
+    # Image encoder: frozen DINOv3, or DINOv3 fine-tuned on the task with LoRA ("-tar")
+    parser.add_argument('--image_encoder', type=str, default='dino-small', choices=list(IMAGE_ENCODERS))
+    # DINO LoRA finetuning params (used by the "-tar" image encoders)
     parser.add_argument('--dino_lr', type=float, default=_dino.learning_rate)
     parser.add_argument('--dino_rank', type=int, default=_dino.lora_rank)
     parser.add_argument('--dino_img_layers', type=int, default=_dino.img_layers)
@@ -69,10 +68,10 @@ if __name__ == "__main__":
 
     model = SHORT2MODELS[args.model]
     dataset = MulTaBenchDatasetID[args.dataset_name]
-    args.tune_dino = args.tune_dino == 'yes'
+    dino_model_name, tune_dino = IMAGE_ENCODERS[args.image_encoder]
     e5_model_name, tune_e5 = TEXT_ENCODERS[args.text_encoder]
     device = get_device(device=DEVICE)
-    exp_name = f"{args.model}_{dataset.name}_{args.text_encoder}_{args.fold}"
+    exp_name = f"{args.model}_{dataset.name}_{args.text_encoder}_{args.image_encoder}_{args.fold}"
     dino_train_kwargs = dict(
         lora_rank=args.dino_rank,
         img_layers=args.dino_img_layers,
@@ -81,7 +80,7 @@ if __name__ == "__main__":
         patience=args.dino_patience,
         weight_decay=args.dino_weight_decay,
         batch_size=args.dino_batch_size,
-    ) if args.tune_dino else None
+    ) if tune_dino else None
     e5_train_kwargs = dict(
         lora_rank=args.e5_rank,
         text_layers=args.e5_text_layers,
@@ -98,14 +97,15 @@ if __name__ == "__main__":
         train_examples=args.train_examples,
         device=device,
         verbose=args.verbose,
-        tune_dino=args.tune_dino,
+        tune_dino=tune_dino,
         dino_train_kwargs=dino_train_kwargs,
-        dino_model_name=DINO_MODEL_NAMES[args.dino_model],
+        dino_model_name=dino_model_name,
         tune_e5=tune_e5,
         e5_train_kwargs=e5_train_kwargs,
         e5_model_name=e5_model_name,
     )
     ret["text_encoder"] = args.text_encoder
+    ret["image_encoder"] = args.image_encoder
     os.makedirs(args.output_dir, exist_ok=True)
     out_path = os.path.join(args.output_dir, f"{exp_name}.json")
     with open(out_path, "w") as f:
