@@ -16,7 +16,7 @@ class RandomForest(TabularModel):
 
     MODEL_NAME = "RandomForest 🌳"
     SHORT_NAME = "rf"
-    USE_VAL_SPLIT = True
+    USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = True
     USE_CATEGORICAL_ENCODING = True
     USE_TEXT_EMBEDDINGS = True
