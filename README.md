@@ -57,7 +57,7 @@ MulTaBench is not an official TabArena leaderboard.
 | Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Normalized scores per dataset | |
 | Splits | Fixed and part of the task definition | Drawn when the run starts | |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited | |
-| Runtime | Train and inference time per 1K rows | Total runtime per run | |
+| Runtime | Train and inference time per 1K rows | Same | ✅ |
 | Hardware | Recorded per run | Recorded per run | ✅ |
 | Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 5 folds, no repeats | |
 | Dataset size | Full size | Capped at 10K train and 2.5K test rows; a full-size mode is planned | |

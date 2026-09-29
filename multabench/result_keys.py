@@ -3,3 +3,5 @@
 METRIC = "metric"
 TEST_SCORE = "test_score"
 TEST_ERROR = "test_error"
+TRAIN_TIME_PER_1K = "train_time_per_1k_s"
+INFERENCE_TIME_PER_1K = "inference_time_per_1k_s"

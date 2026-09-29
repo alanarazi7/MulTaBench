@@ -13,7 +13,7 @@ from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
 from multabench.utils.logging import get_current_commit_hash
-from multabench.result_keys import METRIC, TEST_ERROR
+from multabench.result_keys import METRIC, TEST_ERROR, TRAIN_TIME_PER_1K, INFERENCE_TIME_PER_1K
 from multabench.utils.profiling import PeakMemoryTracker
 
 DOWNSTREAM_EXAMPLES = 10_000
@@ -67,6 +67,8 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         "best_val_loss": getattr(model, "best_val_loss", None),
         **train_tracker.summary(),
         **test_tracker.summary(),
+        TRAIN_TIME_PER_1K: train_tracker.wall_time_s / len(y_train) * 1000,
+        INFERENCE_TIME_PER_1K: test_tracker.wall_time_s / len(y_test) * 1000,
         **get_hardware_dict(device),
         **(dino_train_kwargs or {}),
         **(e5_train_kwargs or {}),

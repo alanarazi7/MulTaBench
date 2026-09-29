@@ -51,11 +51,15 @@ class PeakMemoryTracker:
         self.thread.join(timeout=self.interval * 2)
         self.end_time = time.time()
 
+    @property
+    def wall_time_s(self) -> float:
+        return self.end_time - self.start_time
+
     def summary(self):
         peak_ram_gb = byte_to_gb(self.max_rss)
         peak_gpu_ram_gb = byte_to_gb(self.max_gpu_used)
         return {
-            f'{self.phase}_wall_time_s': self.end_time - self.start_time,
+            f'{self.phase}_wall_time_s': self.wall_time_s,
             f'{self.phase}_peak_cpu_gb': peak_ram_gb,
             f'{self.phase}_peak_gpu_gb': peak_gpu_ram_gb,
         }
