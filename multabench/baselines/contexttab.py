@@ -8,7 +8,7 @@ from multabench.constants import HF_TOKEN
 
 
 class ConTextTab(TabularModel):
-    MODEL_NAME = "ConTextTab 🏢"
+    MODEL_NAME = "ConTextTab"
     SHORT_NAME = "ctx"
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = False

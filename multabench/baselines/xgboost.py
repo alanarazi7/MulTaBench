@@ -20,7 +20,7 @@ class XGBoostDefaultHyperparams:
 
 class XGBoost(TabularModel):
 
-    MODEL_NAME = "XGBoost 🌲"
+    MODEL_NAME = "XGBoost"
     SHORT_NAME = "xgb"
     USE_VAL_SPLIT = True
     USE_MEDIAN_FILLING = True

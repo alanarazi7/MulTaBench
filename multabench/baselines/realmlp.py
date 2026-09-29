@@ -18,7 +18,7 @@ class RealMlpDefaultHyperparams:
     use_ls: bool = False
 
 class RealMLP(TabularModel):
-    MODEL_NAME = "RealMLP 🕸"
+    MODEL_NAME = "RealMLP"
     SHORT_NAME = "real"
     USE_VAL_SPLIT = True
     USE_MEDIAN_FILLING = True

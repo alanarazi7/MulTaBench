@@ -16,7 +16,7 @@ class TabMDefaultHyperparams:
 
 
 class TabM(TabularModel):
-    MODEL_NAME = "TabM Ⓜ️"
+    MODEL_NAME = "TabM"
     SHORT_NAME = "tabm"
     USE_VAL_SPLIT = True
     USE_MEDIAN_FILLING = True

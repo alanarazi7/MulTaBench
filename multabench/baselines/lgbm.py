@@ -7,7 +7,7 @@ from multabench.baselines.abstract_model import TabularModel
 
 class LightGBM(TabularModel):
 
-    MODEL_NAME = "LightGBM 💡"
+    MODEL_NAME = "LightGBM"
     SHORT_NAME = "light"
     USE_VAL_SPLIT = True
     USE_MEDIAN_FILLING = False
