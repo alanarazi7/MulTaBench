@@ -11,7 +11,7 @@ from tabstar.preprocessing.nulls import raise_if_null_target
 from tabstar.preprocessing.sparse import densify_objects
 from tabstar.preprocessing.splits import split_to_val
 
-from multabench.baselines.preprocessing.feature_types import transform_feature_types
+from multabench.baselines.preprocessing.feature_types import classify_semantic_features, transform_feature_types
 from multabench.baselines.preprocessing.image_embeddings import (
     transform_image_features,
     fit_image_encoders,
@@ -19,7 +19,6 @@ from multabench.baselines.preprocessing.image_embeddings import (
 from multabench.baselines.training.metrics import calculate_metric, Metrics
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.baselines.preprocessing.categorical import fit_categorical_encoders, transform_categorical_features
-from multabench.preprocessing.feat_types import classify_semantic_features
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
 from multabench.baselines.preprocessing.target import transform_preprocess_y, fit_preprocess_y
 from multabench.dino.constants import DINOV3_SMALL
