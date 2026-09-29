@@ -35,6 +35,8 @@ def compute_metrics_multiclass(eval_pred: Any, d_output: int) -> Dict[str, float
     return {"eval_auc": float(score)}
 
 
+# TODO: replace with AutoGluon's scorers (get_scorer in baselines/training/metrics.py), as the
+#  benchmark does. This changes which checkpoint fine-tuning early-stops on.
 def _per_class_auc(y_true, y_pred) -> float:
     present_classes = np.unique(y_true)
     aucs = {}
