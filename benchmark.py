@@ -18,7 +18,7 @@ from multabench.baselines.tabpfnv2 import TabPFNv2, TabPFNv2p5
 from multabench.baselines.tabstar_v1 import TabSTAR
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
-from multabench.benchmark.splits import SPLITS
+from multabench.benchmark.splits import SIZE_10K, SIZES, SPLITS
 from multabench.constants import DEVICE
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.dino.constants import IMAGE_ENCODERS
@@ -40,6 +40,7 @@ if __name__ == "__main__":
     parser.add_argument('--model', type=str, choices=list(SHORT2MODELS.keys()), required=True)
     parser.add_argument('--dataset_name', type=str, required=True, choices=[d.name for d in MulTaBenchDatasetID])
     parser.add_argument('--fold', type=int, required=True, choices=range(SPLITS))
+    parser.add_argument('--size', type=str, default=SIZE_10K, choices=SIZES)
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--output_dir', type=str, default='runs')
     _dino = DinoTrainArgs()
@@ -69,7 +70,7 @@ if __name__ == "__main__":
     image_encoder = IMAGE_ENCODERS[args.image_encoder]
     text_encoder = TEXT_ENCODERS[args.text_encoder]
     device = get_device(device=DEVICE)
-    exp_name = f"{args.model}_{dataset.name}_{args.text_encoder}_{args.image_encoder}_{args.fold}"
+    exp_name = f"{args.model}_{dataset.name}_{args.text_encoder}_{args.image_encoder}_{args.size}_{args.fold}"
     dino_train_kwargs = dict(
         lora_rank=args.dino_rank,
         img_layers=args.dino_img_layers,
@@ -92,6 +93,7 @@ if __name__ == "__main__":
         model_cls=model,
         dataset_id=dataset,
         fold=args.fold,
+        size=args.size,
         device=device,
         verbose=args.verbose,
         tune_dino=image_encoder.tune_encoder,

@@ -24,7 +24,7 @@ python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --
 ```
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
-result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<fold>.json` (`--output_dir` to change). `--help`
+result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change). `--help`
 lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
 `e5-small` or `e5-large`, or `e5-small-tar`, E5 fine-tuned on the task with LoRA (target-aware).
 `--image_encoder` does the same for image columns: frozen `dino-small` or `dino-large`, or
@@ -62,7 +62,7 @@ MulTaBench is not an official TabArena leaderboard.
 | Runtime | Train and inference time per 1K rows | Same | ✅ |
 | Hardware | Recorded per run | Recorded per run | ✅ |
 | Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 3 folds, repeated twice for every size | |
-| Dataset size | Full size | Capped at 10K train and 5K test rows; a full-size mode is planned | |
+| Dataset size | Full size | `--size 10k` (the default, and the one the leaderboard reports) caps train and test at 10K and 5K rows; `--size full` keeps every row | |
 | Inner validation | 8-fold bagging for every model | No bagging: one fit per split, and models that need validation hold out 10% of the training rows (at most 1,000). This favors models that ensemble internally (TabPFN, TabICL, TabDPT, TabM, RandomForest) over single GBDTs and RealMLP | |
 | Hyperparameters | Default, tuned, and tuned + ensembled | Default only | |
 | Model implementations | TabArena's model registry | MulTaBench's own wrappers, which add image and text embeddings | |

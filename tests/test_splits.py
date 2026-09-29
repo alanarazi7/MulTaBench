@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from multabench.benchmark.splits import FOLDS, MAX_TEST_ROWS, MAX_TRAIN_ROWS, REPEATS, SPLITS, get_split
+from multabench.benchmark.splits import FOLDS, MAX_TEST_ROWS, MAX_TRAIN_ROWS, REPEATS, SIZE_FULL, SPLITS, get_split
 
 
 @pytest.mark.parametrize("n, is_cls", [(300, True), (60_000, True), (30_000, False)])
@@ -24,6 +24,11 @@ def test_each_repeat_tests_every_row_once():
 def test_train_test_ratio_is_two_to_one():
     train, test = get_split(np.arange(900) % 2, is_cls=True, split=0)
     assert (len(train), len(test)) == (600, 300)
+
+
+def test_full_size_keeps_every_row():
+    train, test = get_split(np.random.default_rng(0).normal(size=30_000), is_cls=False, split=0, size=SIZE_FULL)
+    assert (len(train), len(test)) == (20_000, 10_000)
 
 
 def test_stratification_survives_capping():
