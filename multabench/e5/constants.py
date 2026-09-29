@@ -7,7 +7,6 @@ E5_LARGE_V2 = "intfloat/e5-large-v2"
 
 TF_IDF = "tf-idf"  # skrub StringEncoder (TF-IDF + TruncatedSVD), CPU-only
 
-# --text_encoder choices
 TEXT_ENCODERS = {
     "tfidf": Encoder(encoder_name=TF_IDF, tune_encoder=False),
     "e5-small": Encoder(encoder_name=E5_SMALL_V2, tune_encoder=False),

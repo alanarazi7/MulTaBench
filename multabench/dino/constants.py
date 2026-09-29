@@ -3,7 +3,6 @@ from multabench.utils.encoders import Encoder
 DINOV3_SMALL = "facebook/dinov3-vits16-pretrain-lvd1689m"
 DINOV3_LARGE = "facebook/dinov3-vitl16-pretrain-lvd1689m"
 
-# --image_encoder choices
 IMAGE_ENCODERS = {
     "dino-small": Encoder(encoder_name=DINOV3_SMALL, tune_encoder=False),
     "dino-small-tar": Encoder(encoder_name=DINOV3_SMALL, tune_encoder=True),
