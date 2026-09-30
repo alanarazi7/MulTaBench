@@ -6,8 +6,8 @@ import torch
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.objects import MultimodalDataset
 from multabench.baselines.abstract_model import TabularModel
-from multabench.benchmark.load import load_multabench_dataset
-from multabench.benchmark.splits import SIZE_10K, get_split
+from multabench.benchmark.load import load_multabench_dataset, split_dataset
+from multabench.benchmark.splits import SIZE_10K
 from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
@@ -29,9 +29,9 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 e5_model_name: str = E5_SMALL_V2) -> Dict:
     start_time = time.time()
     dataset_id = dataset.dataset_id
-    train_idx, test_idx = get_split(dataset.y.to_numpy(), is_cls=dataset.is_cls, split=fold, size=size)
-    x_train, y_train = dataset.x.iloc[train_idx], dataset.y.iloc[train_idx]
-    x_test, y_test = dataset.x.iloc[test_idx], dataset.y.iloc[test_idx]
+    split = split_dataset(dataset, fold=fold, size=size)
+    x_train, y_train = split.x_train, split.y_train
+    x_test, y_test = split.x_test, split.y_test
     kwargs = dict(problem_type=dataset.task_type, device=device, verbose=verbose, dataset=dataset_id,
                   image_folder=dataset.image_folder, tune_dino=tune_dino, dino_train_kwargs=dino_train_kwargs,
                   dino_model_name=dino_model_name,

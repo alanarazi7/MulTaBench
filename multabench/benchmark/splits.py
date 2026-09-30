@@ -23,8 +23,10 @@ SIZES = (SIZE_10K, SIZE_FULL)
 def get_split(y: np.ndarray, is_cls: bool, split: int, size: str = SIZE_10K) -> Tuple[np.ndarray, np.ndarray]:
     assert size in SIZES, size
     y = np.asarray(y)
-    stratify = is_cls and np.unique(y, return_counts=True)[1].min() >= FOLDS
-    cv_cls = RepeatedStratifiedKFold if stratify else RepeatedKFold
+    if is_cls and _smallest_class_count(y) >= FOLDS:
+        cv_cls = RepeatedStratifiedKFold
+    else:
+        cv_cls = RepeatedKFold
     cv = cv_cls(n_splits=FOLDS, n_repeats=REPEATS, random_state=SEED)
     train, test = list(cv.split(np.zeros(len(y)), y))[split]
     if size == SIZE_10K:
@@ -36,6 +38,13 @@ def get_split(y: np.ndarray, is_cls: bool, split: int, size: str = SIZE_10K) -> 
 def _cap(idx: np.ndarray, y: np.ndarray, is_cls: bool, size: int, seed: int) -> np.ndarray:
     if len(idx) <= size:
         return idx
-    stratify = y[idx] if is_cls and np.unique(y[idx], return_counts=True)[1].min() >= 2 else None
+    stratify = None
+    if is_cls and _smallest_class_count(y[idx]) >= 2:
+        stratify = y[idx]
     kept, _ = train_test_split(idx, train_size=size, random_state=seed, stratify=stratify)
     return kept
+
+
+def _smallest_class_count(y: np.ndarray) -> int:
+    _, counts = np.unique(y, return_counts=True)
+    return counts.min()

@@ -23,3 +23,13 @@ class MultimodalDataset:
     @property
     def is_cls(self) -> bool:
         return self.task_type != SupervisedTask.REGRESSION
+
+
+@dataclass
+class DatasetSplit:
+    x_train: DataFrame
+    y_train: Series
+    x_test: DataFrame
+    y_test: Series
+    task_type: SupervisedTask
+    image_folder: str | None = None

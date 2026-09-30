@@ -30,6 +30,16 @@ lists the available models. `--text_encoder` picks how text columns are embedded
 `--image_encoder` does the same for image columns: frozen `dino-small` or `dino-large`, or
 `dino-small-tar`.
 
+To use a benchmark split in your own code, `load_split` downloads the dataset and returns the same
+train and test rows that `benchmark.py` evaluates on:
+
+```python
+from multabench import load_split
+
+split = load_split("MUL_IMAGE_PETFINDER", fold=0, size="10k")
+split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split.image_folder
+```
+
 ## Datasets
 
 Every dataset is hosted on the [`chico89`](https://www.kaggle.com/chico89/datasets) Kaggle account

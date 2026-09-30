@@ -5,9 +5,9 @@ Downloads the already-curated dataset (data.csv + images/) using kagglehub
 and returns a MultimodalDataset, bypassing the original source and curation logic.
 
 Usage:
-    from multabench.datasets.all_datasets import MulTaBenchDatasetID
-    from multabench.benchmark.load import load_multabench_dataset
-    dataset = load_multabench_dataset(MulTaBenchDatasetID.MUL_IMAGE_PETFINDER)
+    from multabench import load_split
+    split = load_split("MUL_IMAGE_PETFINDER", fold=0, size="10k")
+    split.x_train, split.y_train, split.x_test, split.y_test
 """
 import json
 import time
@@ -16,7 +16,9 @@ from os.path import join
 import kagglehub
 import pandas as pd
 
-from multabench.datasets.objects import MultimodalDataset, SupervisedTask
+from multabench.benchmark.splits import SIZE_10K, get_split
+from multabench.datasets.all_datasets import MulTaBenchDatasetID
+from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
 from multabench.benchmark.utils.constants import METADATA_JSON, DATA_CSV, MULTABENCH_KAGGLE_OWNER
 from multabench.benchmark.utils.curation import TASK_REG, task_type_from_name
 
@@ -56,3 +58,19 @@ def load_multabench_dataset(dataset_id) -> MultimodalDataset:
     x = df.drop(columns=[target_col])
 
     return MultimodalDataset(x=x, y=y, task_type=_parse_task_type(meta, dataset_id, y), dataset_id=dataset_id, image_folder=image_folder)
+
+
+def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: str = SIZE_10K) -> DatasetSplit:
+    if isinstance(dataset, str):
+        dataset = MulTaBenchDatasetID[dataset]
+    return split_dataset(load_multabench_dataset(dataset), fold=fold, size=size)
+
+
+def split_dataset(dataset: MultimodalDataset, fold: int, size: str = SIZE_10K) -> DatasetSplit:
+    train_idx, test_idx = get_split(dataset.y.to_numpy(), is_cls=dataset.is_cls, split=fold, size=size)
+    return DatasetSplit(x_train=dataset.x.iloc[train_idx],
+                        y_train=dataset.y.iloc[train_idx],
+                        x_test=dataset.x.iloc[test_idx],
+                        y_test=dataset.y.iloc[test_idx],
+                        task_type=dataset.task_type,
+                        image_folder=dataset.image_folder)
