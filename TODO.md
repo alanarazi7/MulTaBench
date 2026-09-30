@@ -10,16 +10,20 @@ file as the PRs that complete them are merged.
       cached embeddings from Hugging Face at a pinned revision.
 - [ ] Add a script that computes the embeddings for every (dataset, size, fold, encoder) and uploads
       them. Embeddings are stored at full dimension; PCA stays in the pipeline, fitted per fold.
-- [ ] Compute and upload `e5-small` and `e5-small-tar` embeddings for the benchmark datasets. Each
-      `e5-small-tar` fine-tune sees only its fold's training rows, so it is keyed by size and fold.
+- [ ] Compute and upload `e5-small`, `e5-small-tar`, `dino-small` and `dino-small-tar` embeddings for
+      the benchmark datasets. Each `-tar` fine-tune sees only its fold's training rows, so it is
+      keyed by size and fold.
 - [ ] Upload the fine-tuned LoRA adapters alongside the embeddings, for reproducibility.
 - [ ] Make the model runners read the cached embeddings instead of re-embedding, so one fine-tune per
       fold is shared by every model.
 
 ## Runs
 
-- [ ] Sweep runner: every model × text encoder in {`tfidf`, `e5-small`, `e5-small-tar`} × dataset ×
-      fold at `--size 10k`.
+- [ ] Sweep runner: every model × text encoder in {`tfidf`, `e5-small`, `e5-small-tar`} × image
+      encoder in {`dino-small`, `dino-small-tar`} × dataset × fold at `--size 10k`, skipping encoders
+      for modalities a dataset doesn't have.
+- [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
+      AutoGluon multimodal.
 - [ ] Collect the run JSONs into one results CSV with `metric`, `test_score`, `test_error`, train and
       inference time per 1K rows, and hardware.
 - [ ] Rerun every result CSV under `multabench/leaderboard/results/` with the TabArena metrics; the
@@ -34,11 +38,6 @@ file as the PRs that complete them are merged.
 - [ ] Remove the remaining paper analysis code in `multabench/leaderboard/`, keeping only the main
       leaderboard tab.
 
-## Open decisions
-
-- [ ] Image encoders for the image datasets on the first leaderboard (`dino-small`, `dino-small-tar`).
-- [ ] Whether TabSTAR, ConTextTab and AutoGluon multimodal appear as reference rows.
-
 ## Later, not needed for the first release
 
 - Mirror the 80 datasets to Hugging Face, and decide whether Kaggle stays as a secondary source.
@@ -46,4 +45,3 @@ file as the PRs that complete them are merged.
 - Hosting the leaderboard as a Hugging Face Space.
 - `e5-large` and `dino-large` stay available as options but are not run.
 - `--size full` results.
-- Group and time structure audit (splits are IID for now; see the README).
