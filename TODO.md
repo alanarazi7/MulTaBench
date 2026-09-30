@@ -3,13 +3,16 @@
 Work in progress towards the first release of the living leaderboard. Items are removed from this
 file as the PRs that complete them are merged.
 
-## Bugs
+## Typed datasets
 
-- [ ] Date columns are read from the Kaggle CSVs as strings, and `fit_date_encoders` only picks up
-      `datetime64` columns, so dates fall through to text or categorical features. Detect
-      string-encoded dates (date separators plus a parse rate of at least 99%) and convert them
-      before the numerical and semantic type detection.
-- [ ] Pin `pandas < 3`: pandas 3's default string dtype breaks TabSTAR's dtype detection.
+- [ ] Re-curate the benchmark datasets as Parquet with explicit column types (datetime,
+      categorical, numeric, text, image path), so the loader reads the types instead of guessing
+      them. The CSVs store dates as strings, so today dates fall through to text or categorical
+      features. A detection script proposes the types, and each dataset's types are reviewed by hand.
+- [ ] Fix `BIN_TEXT_KICKSTARTER_FUNDING`: `deadline` and `created_at` are Unix seconds that were
+      stored as nanoseconds, so every value falls on 1970-01-01.
+- [ ] Upload the typed datasets to the `multabench` organization on Hugging Face and make
+      `load_split` read them from there.
 
 ## Embedding cache
 

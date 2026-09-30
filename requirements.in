@@ -4,7 +4,7 @@ joblib
 kagglehub >= 1.0.0
 lightgbm
 numpy
-pandas >= 2.2.2
+pandas >= 2.2.2, < 3  # pandas 3's default string dtype breaks tabstar's dtype detection
 peft
 pytabkit
 pytest
