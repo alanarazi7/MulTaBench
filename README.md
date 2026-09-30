@@ -68,7 +68,7 @@ MulTaBench is not an official TabArena leaderboard.
 | Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | ✅ |
 | Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Normalized scores per dataset | |
 | Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
-| Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited | |
+| Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited: every dataset is split IID. Some datasets may have group or time structure, in which case IID splits can overestimate performance | |
 | Runtime | Train and inference time per 1K rows | Same | ✅ |
 | Hardware | Recorded per run | Recorded per run | ✅ |
 | Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 3 folds, repeated twice for every size | |
