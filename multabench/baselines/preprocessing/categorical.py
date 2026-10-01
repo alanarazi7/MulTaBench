@@ -3,7 +3,7 @@ from typing import Set, Dict
 from pandas import Series, DataFrame
 from sklearn.preprocessing import LabelEncoder
 
-from tabstar.preprocessing.nulls import MISSING_VALUE
+from multabench.baselines.preprocessing.nulls import MISSING_VALUE
 
 
 def fit_categorical_encoders(x: DataFrame, categorical_features: Set[str]) -> Dict[str, LabelEncoder]:

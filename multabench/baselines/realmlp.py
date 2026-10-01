@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from pandas import DataFrame, Series
 from pytabkit import RealMLP_TD_Classifier, RealMLP_TD_Regressor
 
-from tabstar.constants import SEED
-from tabstar.training.devices import CPU_CORES
+from multabench.constants import SEED
+from multabench.utils.devices import CPU_CORES
 from multabench.baselines.abstract_model import TabularModel
 from multabench.datasets.objects import SupervisedTask
 

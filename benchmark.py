@@ -2,8 +2,7 @@ import argparse
 import json
 import os
 
-from tabstar.training.devices import get_device
-
+from multabench.utils.devices import get_device
 from multabench.finetune.train_args import DinoTrainArgs, E5TrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost

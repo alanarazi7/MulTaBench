@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from pandas import DataFrame, Series
 
-from tabstar.constants import SEED
+from multabench.constants import SEED
 from multabench.baselines.abstract_model import TabularModel
 
 @dataclass

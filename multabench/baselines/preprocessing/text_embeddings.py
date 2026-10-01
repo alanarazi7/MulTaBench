@@ -2,7 +2,7 @@ import os
 
 from sklearn.decomposition import PCA
 
-from tabstar.constants import SEED
+from multabench.constants import SEED
 
 from multabench.preprocessing.discretize import discretize_numerical
 
