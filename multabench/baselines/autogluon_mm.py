@@ -9,10 +9,10 @@ from pandas import DataFrame, Series, notna
 
 from autogluon.multimodal import MultiModalPredictor
 
-from tabstar.preprocessing.feat_types import detect_numerical_features
 from multabench.baselines.preprocessing.target import fit_preprocess_y, transform_preprocess_y
 from multabench.baselines.abstract_model import TabularModel
 from multabench.baselines.preprocessing.feature_types import classify_semantic_features, detect_image_features
+from multabench.baselines.preprocessing.numerical_detection import detect_numerical_features
 from multabench.datasets.objects import SupervisedTask
 from multabench.e5.constants import E5_SMALL_V2
 

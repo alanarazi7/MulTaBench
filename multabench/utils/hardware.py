@@ -2,7 +2,7 @@ import psutil
 from typing import Dict, Optional
 import torch
 
-from tabstar.training.devices import CPU_CORES
+from multabench.utils.devices import CPU_CORES
 
 
 def get_hardware_dict(device: torch.device) -> Dict:

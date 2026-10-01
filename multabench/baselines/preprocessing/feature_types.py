@@ -6,7 +6,9 @@ from typing import Any, List, Optional, Set
 import numpy as np
 import pandas as pd
 from pandas import DataFrame, Series
-from tabstar.preprocessing.feat_types import convert_series_to_numeric, convert_series_to_textual
+
+from multabench.baselines.preprocessing.nulls import MISSING_VALUE
+from multabench.baselines.preprocessing.numerical_detection import convert_series_to_numeric
 
 
 MIN_TEXT_UNIQUE_RATIO = 0.8
@@ -96,7 +98,7 @@ def transform_feature_types(x: DataFrame, numerical_features: set[str], image_fe
         elif col in image_features:
             new_x[col] = x[col]
         else:
-            new_x[col] = convert_series_to_textual(s=x[col])
+            new_x[col] = x[col].astype(object).fillna(MISSING_VALUE).astype(str)
     new_x = DataFrame(new_x, index=x.index)
     ordered_x = new_x[x.columns]
     return ordered_x

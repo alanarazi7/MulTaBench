@@ -11,3 +11,5 @@ GPU = os.getenv("GPU")
 DEVICE = None
 if GPU is not None:
     DEVICE = f"cuda:{GPU}"
+
+SEED = 42
