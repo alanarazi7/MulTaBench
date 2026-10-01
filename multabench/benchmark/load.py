@@ -1,8 +1,6 @@
 """
-Load a MulTaBench dataset directly from Kaggle.
-
-Downloads the already-curated dataset (data.csv + images/) using kagglehub
-and returns a MultimodalDataset, bypassing the original source and curation logic.
+Load a MulTaBench dataset: from the Hugging Face Hub (typed data.parquet) when it has been uploaded there, from Kaggle
+(data.csv + images/) otherwise.
 
 Usage:
     from multabench import load_split
@@ -15,9 +13,11 @@ from os.path import join
 
 import kagglehub
 import pandas as pd
+from huggingface_hub import snapshot_download
 
 from multabench.benchmark.splits import SIZE_10K, get_split
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
+from multabench.datasets.hub import DATA_PARQUET, HF_DATASETS, hf_repo_id
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
 from multabench.benchmark.utils.constants import METADATA_JSON, DATA_CSV, MULTABENCH_KAGGLE_OWNER
 from multabench.benchmark.utils.curation import TASK_REG, task_type_from_name
@@ -30,7 +30,7 @@ def _parse_task_type(meta: dict, dataset_id, y: pd.Series) -> SupervisedTask:
     return SupervisedTask.BINARY if y.nunique() == 2 else SupervisedTask.MULTICLASS
 
 
-def load_multabench_dataset(dataset_id) -> MultimodalDataset:
+def download_from_kaggle(dataset_id: MulTaBenchDatasetID) -> str:
     slug = dataset_id.value
     kaggle_ref = f"{MULTABENCH_KAGGLE_OWNER}/{slug}"
     print(f"Downloading {kaggle_ref} from Kaggle...")
@@ -45,11 +45,21 @@ def load_multabench_dataset(dataset_id) -> MultimodalDataset:
             print(f"kagglehub archive bug (attempt {attempt + 1}/3): {e} — retrying in {wait // 60} min...")
             time.sleep(wait)
     print(f"💾 Downloaded to: {dir_path}")
+    return dir_path
+
+
+def load_multabench_dataset(dataset_id) -> MultimodalDataset:
+    if dataset_id in HF_DATASETS:
+        repo_id = hf_repo_id(dataset_id)
+        print(f"Downloading {repo_id} from Hugging Face...")
+        dir_path = snapshot_download(repo_id=repo_id, repo_type="dataset")
+        df = pd.read_parquet(join(dir_path, DATA_PARQUET))
+    else:
+        dir_path = download_from_kaggle(dataset_id)
+        df = pd.read_csv(join(dir_path, DATA_CSV))
 
     with open(join(dir_path, METADATA_JSON)) as f:
         meta = json.load(f)
-
-    df = pd.read_csv(join(dir_path, DATA_CSV))
 
     target_col = meta["target"]
     image_folder = dir_path  # image paths in CSV already include "images/" prefix
