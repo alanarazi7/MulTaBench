@@ -25,7 +25,7 @@ from transformers import (
     EvalPrediction,
 )
 
-from tabstar.constants import SEED
+from multabench.constants import SEED
 from multabench.finetune.utils import compute_metrics_multiclass, encoder_finetune_loss
 from multabench.dino.constants import DINO_DIM, DINO_NUM_LAYERS, DINOV3_SMALL, LORA_IMAGE_TARGET_MODULES
 from multabench.dino.image_loading import load_images
