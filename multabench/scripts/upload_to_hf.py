@@ -10,6 +10,7 @@ Usage:
 import argparse
 import json
 import os
+import shutil
 import tempfile
 from os.path import join
 from typing import Callable, Dict, Optional
@@ -23,6 +24,7 @@ from multabench.datasets.all_datasets import MULTABENCH_SOURCES, MulTaBenchDatas
 from multabench.datasets.hub import DATA_PARQUET, hf_repo_id
 
 MAX_CATEGORIES = 100
+IMAGES_DIR = "images"
 
 
 def _seconds_stored_as_nanoseconds(s: pd.Series) -> pd.Series:
@@ -36,6 +38,7 @@ DATETIME_COLUMNS: Dict[MulTaBenchDatasetID, Dict[str, Optional[Callable[[pd.Seri
     MulTaBenchDatasetID.BIN_TEXT_JIGSAW_TOXICITY: {"created_date": None},
     MulTaBenchDatasetID.REG_TEXT_MONTGOMERY_SALARIES: {"date_first_hired": None},
     MulTaBenchDatasetID.REG_TEXT_VIDEO_GAMES_SALES: {},
+    MulTaBenchDatasetID.REG_IMAGE_KHAADI_CLOTHES: {},
 }
 
 
@@ -57,8 +60,25 @@ def type_columns(df: pd.DataFrame, target: str, datetime_columns: dict) -> pd.Da
     return typed
 
 
+def _column_type(s: pd.Series) -> str:
+    if isinstance(s.dtype, pd.CategoricalDtype):
+        return "categorical"
+    if pd.api.types.is_datetime64_any_dtype(s):
+        return "datetime"
+    if pd.api.types.is_bool_dtype(s):
+        return "bool"
+    if pd.api.types.is_integer_dtype(s):
+        return "int"
+    if pd.api.types.is_float_dtype(s):
+        return "float"
+    return "string"
+
+
 def dataset_card(dataset_id: MulTaBenchDatasetID, meta: dict, df: pd.DataFrame) -> str:
-    columns = "\n".join(f"| {col} | {df[col].dtype} |" for col in df.columns)
+    types = {col: _column_type(df[col]) for col in df.columns}
+    if meta.get("image_col"):
+        types[meta["image_col"]] = f"image path (under `{IMAGES_DIR}/`)"
+    columns = "\n".join(f"| {col} | {kind} |" for col, kind in types.items())
     return f"""---
 tags:
 - multabench
@@ -81,12 +101,17 @@ Load the benchmark splits with `multabench.load_split("{dataset_id.name}", fold=
 """
 
 
+def _copy_images(paths: pd.Series, src_dir: str, out_dir: str):
+    missing = [p for p in paths.dropna() if not os.path.isfile(join(src_dir, p))]
+    if missing:
+        raise FileNotFoundError(f"{len(missing)} images are missing, e.g. {missing[:3]}")
+    shutil.copytree(join(src_dir, IMAGES_DIR), join(out_dir, IMAGES_DIR))
+
+
 def upload(dataset_id: MulTaBenchDatasetID, private: bool) -> str:
     if dataset_id not in DATETIME_COLUMNS:
         raise ValueError(f"{dataset_id.name} has no reviewed DATETIME_COLUMNS entry yet")
     kaggle_dir = download_from_kaggle(dataset_id)
-    if os.path.isdir(join(kaggle_dir, "images")):
-        raise NotImplementedError("Image datasets are not uploaded yet")
     with open(join(kaggle_dir, METADATA_JSON)) as f:
         meta = json.load(f)
     df = pd.read_csv(join(kaggle_dir, DATA_CSV), low_memory=False)
@@ -102,6 +127,8 @@ def upload(dataset_id: MulTaBenchDatasetID, private: bool) -> str:
             json.dump(meta, f, indent=2)
         with open(join(out_dir, "README.md"), "w") as f:
             f.write(dataset_card(dataset_id, meta, typed))
+        if meta.get("image_col"):
+            _copy_images(df[meta["image_col"]], src_dir=kaggle_dir, out_dir=out_dir)
         api = HfApi()
         api.create_repo(repo_id=repo_id, repo_type="dataset", private=private, exist_ok=True)
         api.upload_folder(repo_id=repo_id, repo_type="dataset", folder_path=out_dir,

@@ -4,7 +4,10 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_benchmark_d
 HF_ORG = "multabench"
 DATA_PARQUET = "data.parquet"
 
-HF_DATASETS = {MulTaBenchDatasetID.REG_TEXT_MONTGOMERY_SALARIES}
+HF_DATASETS = {
+    MulTaBenchDatasetID.REG_TEXT_MONTGOMERY_SALARIES,
+    MulTaBenchDatasetID.REG_IMAGE_KHAADI_CLOTHES,
+}
 
 
 def hf_repo_id(dataset_id: MulTaBenchDatasetID) -> str:
