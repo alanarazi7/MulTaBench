@@ -10,6 +10,7 @@ Usage:
 import json
 from os.path import join
 
+import numpy as np
 import pandas as pd
 from huggingface_hub import snapshot_download
 
@@ -28,12 +29,20 @@ def _parse_task_type(meta: dict, dataset_id, y: pd.Series) -> SupervisedTask:
     return SupervisedTask.BINARY if y.nunique() == 2 else SupervisedTask.MULTICLASS
 
 
+def _missing_as_nan(df: pd.DataFrame) -> pd.DataFrame:
+    # Parquet returns missing strings as None, the CSV reader as NaN; tabstar counts None as a non-numeric value.
+    for col in df.columns:
+        if df[col].dtype == object:
+            df[col] = df[col].where(df[col].notna(), np.nan)
+    return df
+
+
 def load_multabench_dataset(dataset_id) -> MultimodalDataset:
     repo_id = hf_repo_id(dataset_id)
     print(f"Downloading {repo_id} from Hugging Face...")
     dir_path = snapshot_download(repo_id=repo_id, repo_type="dataset")
     extract_images(dir_path)
-    df = pd.read_parquet(join(dir_path, DATA_PARQUET))
+    df = _missing_as_nan(pd.read_parquet(join(dir_path, DATA_PARQUET)))
 
     with open(join(dir_path, METADATA_JSON)) as f:
         meta = json.load(f)

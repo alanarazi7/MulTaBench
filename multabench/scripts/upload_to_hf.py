@@ -1,25 +1,30 @@
 """
-Upload a MulTaBench dataset from Kaggle to the Hugging Face Hub as typed Parquet.
+Upload a curated MulTaBench dataset to the Hugging Face Hub as typed Parquet.
 
-Columns and values are kept as they are. Only two types are added: the datetime columns listed in DATETIME_COLUMNS
-are parsed, and string features with fewer than MAX_CATEGORIES distinct values become categorical.
+The source folder holds data.csv, metadata.json and, for image datasets, an images/ folder (the layout of the
+curated copies at https://www.kaggle.com/chico89/datasets). Every column is kept. Types are decided here, so that
+models read them instead of guessing:
+- datetime: the columns listed in DATETIME_COLUMNS are parsed.
+- numeric: the number-like string columns in NUMERIC_COLUMNS become numbers, with each non-number value mapped
+  explicitly. These are the only values changed.
+- categorical: string features with fewer than MAX_CATEGORIES distinct values, and True/False features with missing
+  values (stored with the categories "True" and "False").
+Every other column stays as read from the CSV.
 
 Usage:
-    python -m multabench.scripts.upload_to_hf --dataset_name REG_TEXT_MONTGOMERY_SALARIES
+    python -m multabench.scripts.upload_to_hf --dataset_name REG_TEXT_MONTGOMERY_SALARIES --source_dir <folder>
 """
 import argparse
 import json
 import os
 import tempfile
-import time
 from os.path import join
-from typing import Callable, Dict, Union
+from typing import Callable, Dict, Optional, Union
 
-import kagglehub
 import pandas as pd
 from huggingface_hub import CommitOperationDelete, HfApi
 
-from multabench.benchmark.utils.constants import DATA_CSV, METADATA_JSON, MULTABENCH_KAGGLE_OWNER
+from multabench.benchmark.utils.constants import DATA_CSV, METADATA_JSON
 from multabench.datasets.all_datasets import MULTABENCH_SOURCES, MulTaBenchDatasetID
 from multabench.datasets.hub import DATA_PARQUET, IMAGE_SHARDS, hf_repo_id, pack_images
 
@@ -58,35 +63,37 @@ DATETIME_COLUMNS: Dict[MulTaBenchDatasetID, Dict[str, Union[None, str, Callable[
 }
 
 
-def download_from_kaggle(dataset_id: MulTaBenchDatasetID) -> str:
-    slug = dataset_id.value
-    kaggle_ref = f"{MULTABENCH_KAGGLE_OWNER}/{slug}"
-    print(f"Downloading {kaggle_ref} from Kaggle...")
-    for attempt in range(3):
-        try:
-            dir_path = kagglehub.dataset_download(kaggle_ref)
-            break
-        except FileNotFoundError as e:
-            if attempt == 2:
-                raise
-            wait = 60 * (attempt + 1) * 5  # 5 min, 10 min
-            print(f"kagglehub archive bug (attempt {attempt + 1}/3): {e} — retrying in {wait // 60} min...")
-            time.sleep(wait)
-    print(f"💾 Downloaded to: {dir_path}")
-    return dir_path
+# Number-like string columns: each non-number value and the number (or None for missing) it stands for.
+NUMERIC_COLUMNS: Dict[MulTaBenchDatasetID, Dict[str, Dict[str, Optional[float]]]] = {
+    MulTaBenchDatasetID.REG_IMAGE_DVM_CAR: {"Runned_Miles": {"1 mile": 1}},
+    MulTaBenchDatasetID.REG_TEXT_ANIME_PLANET: {"Duration": {"Unknown": None}, "StartYear": {"Unknown": None},
+                                                "EndYear": {"Unknown": None}},
+}
 
 
 def _is_string(s: pd.Series) -> bool:
     return s.dtype == object and s.dropna().map(type).eq(str).all()
 
 
-def type_columns(df: pd.DataFrame, target: str, datetime_columns: dict) -> pd.DataFrame:
+def _is_boolean_with_missing(s: pd.Series) -> bool:
+    return s.dtype == object and s.dropna().map(type).eq(bool).all()
+
+
+def _to_numeric(s: pd.Series, replacements: Dict[str, Optional[float]]) -> pd.Series:
+    return pd.to_numeric(s.replace(replacements), errors="raise").astype(float)
+
+
+def type_columns(df: pd.DataFrame, target: str, datetime_columns: dict, numeric_columns: dict) -> pd.DataFrame:
     typed = df.copy()
     for col in df.columns:
-        if col == target or col in datetime_columns:
+        if col == target or col in datetime_columns or col in numeric_columns:
             continue
         if _is_string(df[col]) and df[col].nunique() < MAX_CATEGORIES:
             typed[col] = df[col].astype("category")
+        elif _is_boolean_with_missing(df[col]):
+            typed[col] = df[col].map(str).where(df[col].notna()).astype("category")
+    for col, replacements in numeric_columns.items():
+        typed[col] = _to_numeric(df[col], replacements)
     for col, parse in datetime_columns.items():
         if parse is None:
             typed[col] = pd.to_datetime(df[col], format="mixed")
@@ -95,7 +102,9 @@ def type_columns(df: pd.DataFrame, target: str, datetime_columns: dict) -> pd.Da
         else:
             typed[col] = parse(df[col])
     for col in df.columns:
-        if typed[col].isna().sum() != df[col].isna().sum():
+        mapped_to_missing = [v for v, number in numeric_columns.get(col, {}).items() if number is None]
+        expected = df[col].isna().sum() + df[col].isin(mapped_to_missing).sum()
+        if typed[col].isna().sum() != expected:
             raise ValueError(f"Typing {col} changed its number of missing values")
     return typed
 
@@ -159,12 +168,12 @@ def _delete_stale_files(api: HfApi, repo_id: str, out_dir: str):
                           operations=[CommitOperationDelete(path_in_repo=f) for f in stale])
 
 
-def upload(dataset_id: MulTaBenchDatasetID) -> str:
-    kaggle_dir = download_from_kaggle(dataset_id)
-    with open(join(kaggle_dir, METADATA_JSON)) as f:
+def upload(dataset_id: MulTaBenchDatasetID, source_dir: str) -> str:
+    with open(join(source_dir, METADATA_JSON)) as f:
         meta = json.load(f)
-    df = pd.read_csv(join(kaggle_dir, DATA_CSV), low_memory=False)
-    typed = type_columns(df, target=meta["target"], datetime_columns=DATETIME_COLUMNS.get(dataset_id, {}))
+    df = pd.read_csv(join(source_dir, DATA_CSV), low_memory=False)
+    typed = type_columns(df, target=meta["target"], datetime_columns=DATETIME_COLUMNS.get(dataset_id, {}),
+                         numeric_columns=NUMERIC_COLUMNS.get(dataset_id, {}))
 
     repo_id = hf_repo_id(dataset_id)
     with tempfile.TemporaryDirectory() as out_dir:
@@ -177,7 +186,7 @@ def upload(dataset_id: MulTaBenchDatasetID) -> str:
         with open(join(out_dir, "README.md"), "w") as f:
             f.write(dataset_card(dataset_id, meta, typed))
         if meta.get("image_col"):
-            _pack_images(df[meta["image_col"]], src_dir=kaggle_dir, out_dir=out_dir)
+            _pack_images(df[meta["image_col"]], src_dir=source_dir, out_dir=out_dir)
         api = HfApi()
         api.create_repo(repo_id=repo_id, repo_type="dataset", private=False, exist_ok=True)
         api.upload_large_folder(repo_id=repo_id, repo_type="dataset", folder_path=out_dir)
@@ -188,5 +197,7 @@ def upload(dataset_id: MulTaBenchDatasetID) -> str:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset_name", type=str, required=True, choices=[d.name for d in MulTaBenchDatasetID])
+    parser.add_argument("--source_dir", type=str, required=True)
     args = parser.parse_args()
-    print(f"Uploaded to https://huggingface.co/datasets/{upload(MulTaBenchDatasetID[args.dataset_name])}")
+    repo_id = upload(MulTaBenchDatasetID[args.dataset_name], source_dir=args.source_dir)
+    print(f"Uploaded to https://huggingface.co/datasets/{repo_id}")

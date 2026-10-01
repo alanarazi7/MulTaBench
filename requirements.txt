@@ -215,10 +215,6 @@ jsonschema==4.23.0
     #   ray
 jsonschema-specifications==2025.9.1
     # via jsonschema
-kagglehub==1.0.0
-    # via -r requirements.in
-kagglesdk==0.1.17
-    # via kagglehub
 kiwisolver==1.4.9
     # via matplotlib
 lazy-loader==0.5
@@ -402,7 +398,6 @@ packaging==25.0
     #   evaluate
     #   faiss-cpu
     #   huggingface-hub
-    #   kagglehub
     #   lazy-loader
     #   lightning
     #   lightning-utilities
@@ -486,7 +481,6 @@ protobuf==6.33.1
     # via
     #   google-api-core
     #   googleapis-common-protos
-    #   kagglesdk
     #   opentelemetry-proto
     #   proto-plus
     #   ray
@@ -577,7 +571,6 @@ pyyaml==6.0.3
     #   autogluon-common
     #   datasets
     #   huggingface-hub
-    #   kagglehub
     #   lightning
     #   model-index
     #   omegaconf
@@ -606,8 +599,6 @@ requests==2.32.5
     #   gdown
     #   google-api-core
     #   huggingface-hub
-    #   kagglehub
-    #   kagglesdk
     #   nlpaug
     #   opendatalab
     #   openmim
@@ -786,7 +777,6 @@ tqdm==4.67.1
     #   gdown
     #   huggingface-hub
     #   hyperopt
-    #   kagglehub
     #   lightning
     #   nltk
     #   opendatalab

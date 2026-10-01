@@ -1,7 +1,6 @@
 catboost
 gpustat ; platform_system == "Linux"
 joblib
-kagglehub >= 1.0.0
 lightgbm
 numpy
 pandas >= 2.2.2
