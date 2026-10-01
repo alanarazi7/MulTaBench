@@ -1,16 +1,11 @@
-"""Feature type detection: image columns, text vs categorical columns, and the dtype conversion per type."""
+"""Feature types: image columns, the stored type of every other column, and the dtype conversion per type."""
 from dataclasses import dataclass, field
-from numbers import Number
-from typing import Any, List, Optional, Set
+from typing import Any, Set
 
-import numpy as np
 import pandas as pd
 from pandas import DataFrame, Series
-from tabstar.preprocessing.feat_types import convert_series_to_numeric, convert_series_to_textual
-
-
-MIN_TEXT_UNIQUE_RATIO = 0.8
-MIN_TEXT_UNIQUE_FREQUENCY = 100
+from pandas.api.types import is_bool_dtype, is_numeric_dtype
+from tabstar.preprocessing.feat_types import convert_series_to_textual
 
 
 def detect_image_features(x: DataFrame) -> list[str]:
@@ -39,60 +34,30 @@ def is_image_value(value: Any) -> bool:
 
 
 @dataclass
-class SemanticFeatureTypes:
+class FeatureTypes:
+    numerical_features: Set[str] = field(default_factory=set)
     categorical_features: Set[str] = field(default_factory=set)
     text_features: Set[str] = field(default_factory=set)
 
 
-def classify_semantic_features(
-    x: DataFrame, numerical_features: Set[str]
-) -> SemanticFeatureTypes:
-    """Split non-numerical columns into text (high cardinality) vs categorical."""
-    result = SemanticFeatureTypes()
+def detect_feature_types(x: DataFrame) -> FeatureTypes:
+    """Read each column's type from its stored dtype; the datasets are curated with explicit types."""
+    result = FeatureTypes()
     for col in x.columns:
-        if col in numerical_features:
-            continue
-        if _is_text_feature(s=x[col]):
-            result.text_features.add(col)
-        else:
+        if isinstance(x[col].dtype, pd.CategoricalDtype):
             result.categorical_features.add(col)
+        elif is_numeric_dtype(x[col]) or is_bool_dtype(x[col]):
+            result.numerical_features.add(col)
+        else:
+            result.text_features.add(col)
     return result
-
-
-def _is_text_feature(s: Series) -> bool:
-    values = get_valid_values(s)
-    if not values:
-        return False
-    n_unique = len(set(values))
-    if n_unique >= MIN_TEXT_UNIQUE_FREQUENCY:
-        return True
-    unique_ratio = n_unique / len(values)
-    return unique_ratio >= MIN_TEXT_UNIQUE_RATIO
-
-
-def get_valid_values(ls: Series) -> List:
-    return [x for x in ls if _get_non_null_value(x) is not None]
-
-def _get_non_null_value(x: Any) -> Optional[Any]:
-    if isinstance(x, str):
-        return x
-    if isinstance(x, pd.Timestamp):
-        if pd.isnull(x):
-            return None
-    if pd.isna(x):
-        return None
-    if isinstance(x, Number) and not np.isfinite(x):
-        return None
-    if pd.isnull(x):
-        return None
-    return x
 
 
 def transform_feature_types(x: DataFrame, numerical_features: set[str], image_features: set[str]) -> DataFrame:
     new_x = {}
     for col in x.columns:
         if col in numerical_features:
-            new_x[col] = convert_series_to_numeric(s=x[col])
+            new_x[col] = x[col].astype(float)
         elif col in image_features:
             new_x[col] = x[col]
         else:

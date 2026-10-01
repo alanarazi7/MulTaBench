@@ -6,12 +6,11 @@ from pandas import DataFrame, Series
 from sklearn.preprocessing import LabelEncoder
 from skrub import DatetimeEncoder
 from tabstar.preprocessing.dates import fit_date_encoders, transform_date_features
-from tabstar.preprocessing.feat_types import detect_numerical_features
 from tabstar.preprocessing.nulls import raise_if_null_target
 from tabstar.preprocessing.sparse import densify_objects
 from tabstar.preprocessing.splits import split_to_val
 
-from multabench.baselines.preprocessing.feature_types import classify_semantic_features, transform_feature_types
+from multabench.baselines.preprocessing.feature_types import detect_feature_types, transform_feature_types
 from multabench.baselines.preprocessing.image_embeddings import (
     transform_image_features,
     fit_image_encoders,
@@ -178,13 +177,13 @@ class TabularModel:
         self.vprint(f"📷 Detected {len(self.image_transformers)} image features: {sorted(self.image_transformers)}")
         non_image_columns = [col for col in x.columns if col not in self.image_transformers]
         x = x[non_image_columns]
-        self.numerical_features = detect_numerical_features(x)
+        feature_types = detect_feature_types(x)
+        self.numerical_features = feature_types.numerical_features
+        self.text_features = feature_types.text_features
+        self.categorical_features = feature_types.categorical_features
         self.vprint(f"🔢 Detected {len(self.numerical_features)} numerical features: {sorted(self.numerical_features)}")
         image_features = [f"{col}_img_pca_{i}" for col in self.image_transformers.keys() for i in range(self.image_transformers[col].n_components)]
         x = transform_feature_types(x=x, numerical_features=self.numerical_features, image_features=image_features)
-        semantic_types = classify_semantic_features(x=x, numerical_features=self.numerical_features)
-        self.text_features = semantic_types.text_features
-        self.categorical_features = semantic_types.categorical_features
         # Indices here are for the current x (no image/text PCA yet). After transform_preprocessor, column
         # order changes (image cols → PCA, text cols → PCA), so indices no longer match. Models that need
         # categorical columns at fit time (e.g. LightGBM) must resolve by name: [c for c in x.columns if c in self.categorical_features].
