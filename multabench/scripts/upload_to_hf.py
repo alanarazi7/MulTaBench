@@ -108,7 +108,7 @@ def _copy_images(paths: pd.Series, src_dir: str, out_dir: str):
     shutil.copytree(join(src_dir, IMAGES_DIR), join(out_dir, IMAGES_DIR))
 
 
-def upload(dataset_id: MulTaBenchDatasetID, private: bool) -> str:
+def upload(dataset_id: MulTaBenchDatasetID) -> str:
     if dataset_id not in DATETIME_COLUMNS:
         raise ValueError(f"{dataset_id.name} has no reviewed DATETIME_COLUMNS entry yet")
     kaggle_dir = download_from_kaggle(dataset_id)
@@ -130,7 +130,7 @@ def upload(dataset_id: MulTaBenchDatasetID, private: bool) -> str:
         if meta.get("image_col"):
             _copy_images(df[meta["image_col"]], src_dir=kaggle_dir, out_dir=out_dir)
         api = HfApi()
-        api.create_repo(repo_id=repo_id, repo_type="dataset", private=private, exist_ok=True)
+        api.create_repo(repo_id=repo_id, repo_type="dataset", private=False, exist_ok=True)
         api.upload_folder(repo_id=repo_id, repo_type="dataset", folder_path=out_dir,
                           commit_message=f"Upload {dataset_id.name}")
     return repo_id
@@ -139,6 +139,5 @@ def upload(dataset_id: MulTaBenchDatasetID, private: bool) -> str:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset_name", type=str, required=True, choices=[d.name for d in MulTaBenchDatasetID])
-    parser.add_argument("--private", action="store_true")
     args = parser.parse_args()
-    print(f"Uploaded to https://huggingface.co/datasets/{upload(MulTaBenchDatasetID[args.dataset_name], args.private)}")
+    print(f"Uploaded to https://huggingface.co/datasets/{upload(MulTaBenchDatasetID[args.dataset_name])}")
