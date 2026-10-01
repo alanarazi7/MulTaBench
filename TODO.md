@@ -13,7 +13,6 @@ file as the PRs that complete them are merged.
 
 ## Embedding cache
 
-- [ ] Create the `multabench` organization on Hugging Face.
 - [ ] Add `load_embeddings(dataset, fold, size, encoder)`, shaped like `load_split`, which downloads
       cached embeddings from Hugging Face at a pinned revision.
 - [ ] Add a script that computes the embeddings for every (dataset, size, fold, encoder) and uploads
@@ -60,7 +59,6 @@ file as the PRs that complete them are merged.
 
 ## Later, not needed for the first release
 
-- Mirror the 80 datasets to Hugging Face, and decide whether Kaggle stays as a secondary source.
 - Minimal installation for `load_split` and `load_embeddings`.
 - Hosting the leaderboard as a Hugging Face Space.
 - `e5-large` and `dino-large` stay available as options but are not run.

@@ -1,8 +1,9 @@
 """The 80 MulTaBench datasets: their IDs, which of them form the benchmark, and where each comes from.
 
-Each dataset is a curated copy, hosted on Kaggle under its MulTaBenchDatasetID slug, of the source
-dataset in MULTABENCH_SOURCES. Credit and licensing belong to the source. The curation recipe for
-each dataset is in multabench/benchmark/datasets/ at the paper_version tag.
+Each dataset is a curated copy of the source dataset in MULTABENCH_SOURCES, hosted on Kaggle under its
+MulTaBenchDatasetID slug and, as typed Parquet, on Hugging Face (multabench/datasets/hub.py). Credit
+and licensing belong to the source. The curation recipe for each dataset is in
+multabench/benchmark/datasets/ at the paper_version tag.
 """
 from enum import Enum, unique
 
