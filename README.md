@@ -47,13 +47,18 @@ Hugging Face organization, downloaded on demand. Repos are named
 `<core|extended>-<img|text>-<reg|cls>-<name>`: `core` for the benchmark datasets and `extended` for
 the ones released alongside them. Each holds `data.parquet` with explicit column types (datetime,
 categorical, numeric, string), `metadata.json` with the target, and, for image datasets, the images
-in `images-*.zip`. The Parquet files were converted from the curated copies on the
-[`chico89`](https://www.kaggle.com/chico89/datasets) Kaggle account, keeping every column and value.
+in `images-*.zip`.
+
+The paper used the curated CSV copies on the [`chico89`](https://www.kaggle.com/chico89/datasets)
+Kaggle account, which the Hugging Face datasets were converted from. The two may differ: the
+Hugging Face datasets store dates, categories and numbers as typed columns where the CSVs hold
+strings, and a few non-numeric values in numeric columns were mapped (DVM car's `"1 mile"` to 1,
+Anime Planet's `"Unknown"` to missing). Scores on the two versions are not directly comparable.
 
 | What you are looking for | Where it is |
 |--------------------------|-------------|
 | Which datasets are in the benchmark | `is_benchmark_dataset` in `multabench/datasets/all_datasets.py` |
-| A dataset's Hugging Face repo | `HF_REPOS` in `multabench/datasets/hub.py` |
+| A dataset's Hugging Face repo | the `MulTaBenchDatasetID` values in `multabench/datasets/all_datasets.py` |
 | Where a dataset originally comes from | `MULTABENCH_SOURCES` in `multabench/datasets/all_datasets.py` |
 | How a dataset was curated | the recipes in `multabench/benchmark/datasets/` at the [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) tag |
 | Size, task and feature counts per dataset | `multabench/leaderboard/results/datasets_summary{,_extra}.csv` at the [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) tag |

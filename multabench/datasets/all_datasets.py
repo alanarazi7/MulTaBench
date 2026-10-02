@@ -1,8 +1,8 @@
 """The 80 MulTaBench datasets: their IDs, which of them form the benchmark, and where each comes from.
 
-Each dataset is a curated copy of the source dataset in MULTABENCH_SOURCES, hosted on Kaggle under its
-MulTaBenchDatasetID slug and, as typed Parquet, on Hugging Face (multabench/datasets/hub.py). Credit
-and licensing belong to the source. The curation recipe for each dataset is in
+Each dataset is a curated copy of the source dataset in MULTABENCH_SOURCES, hosted as typed Parquet on
+Hugging Face in the multabench organization, in a repo named by its MulTaBenchDatasetID value
+(<core|extended>-<img|text>-<reg|cls>-<name>). Credit and licensing belong to the source. The curation recipe for each dataset is in
 multabench/benchmark/datasets/ at the paper_version tag.
 """
 from enum import Enum, unique
@@ -10,91 +10,91 @@ from enum import Enum, unique
 
 @unique
 class MulTaBenchDatasetID(Enum):
-    BIN_IMAGE_CELEB_ATTRACTIVENESS = "multabench-celeb-attractiveness"
-    BIN_IMAGE_HATEFUL_MEME = "multabench-hateful-meme"
-    BIN_IMAGE_MAMMOGRAPHY_CMMD = "multabench-mammography-cmmd"
-    MUL_IMAGE_CBIS_DDSM = "multabench-cbis-ddsm"
-    MUL_IMAGE_CHEXPERT = "multabench-chexpert"
-    MUL_IMAGE_CSGO_SKIN_PRICE = "multabench-csgo-skin"
-    MUL_IMAGE_FLOWER_BOUQUETS = "multabench-flower-bouquets"
-    MUL_IMAGE_GLAUCOMA_SMDG = "multabench-glaucoma-smdg"
-    MUL_IMAGE_HUBMAP_HPA = "multabench-hubmap-hpa"
-    MUL_IMAGE_JUSTIN_INSTAGRAM = "multabench-justin-instagram"
-    MUL_IMAGE_PETFINDER = "multabench-petfinder"
-    MUL_IMAGE_ZOOSCAN_ZOOPLANKTON = "multabench-zooscan-zooplankton"
-    REG_IMAGE_AMAZON_BEST_SELLER = "multabench-amazon-bestseller"
-    REG_IMAGE_AMAZON_PACKAGES = "multabench-amazon-packages"
-    REG_IMAGE_HNM_FASHION = "multabench-hnm-fashion"
-    REG_IMAGE_KHAADI_CLOTHES = "multabench-khaadi-clothes"
-    REG_IMAGE_LETTERBOXD_MOVIES = "multabench-letterboxd-movies"
-    REG_IMAGE_MANGO_MASS = "multabench-mango-mass"
-    REG_IMAGE_MKPHOTO_BOTS = "multabench-mkphoto-bots"
-    REG_IMAGE_PAINTING_PRICE = "multabench-painting-price"
+    BIN_IMAGE_CELEB_ATTRACTIVENESS = "core-img-cls-celeb-attractiveness"
+    BIN_IMAGE_HATEFUL_MEME = "core-img-cls-hateful-meme"
+    BIN_IMAGE_MAMMOGRAPHY_CMMD = "core-img-cls-mammography-cmmd"
+    MUL_IMAGE_CBIS_DDSM = "core-img-cls-cbis-ddsm"
+    MUL_IMAGE_CHEXPERT = "core-img-cls-chexpert"
+    MUL_IMAGE_CSGO_SKIN_PRICE = "core-img-cls-csgo-skin"
+    MUL_IMAGE_FLOWER_BOUQUETS = "core-img-cls-flower-bouquets"
+    MUL_IMAGE_GLAUCOMA_SMDG = "core-img-cls-glaucoma-smdg"
+    MUL_IMAGE_HUBMAP_HPA = "core-img-cls-hubmap-hpa"
+    MUL_IMAGE_JUSTIN_INSTAGRAM = "core-img-cls-justin-instagram"
+    MUL_IMAGE_PETFINDER = "core-img-cls-petfinder"
+    MUL_IMAGE_ZOOSCAN_ZOOPLANKTON = "core-img-cls-zooscan-zooplankton"
+    REG_IMAGE_AMAZON_BEST_SELLER = "core-img-reg-amazon-bestseller"
+    REG_IMAGE_AMAZON_PACKAGES = "core-img-reg-amazon-packages"
+    REG_IMAGE_HNM_FASHION = "core-img-reg-hnm-fashion"
+    REG_IMAGE_KHAADI_CLOTHES = "core-img-reg-khaadi-clothes"
+    REG_IMAGE_LETTERBOXD_MOVIES = "core-img-reg-letterboxd-movies"
+    REG_IMAGE_MANGO_MASS = "core-img-reg-mango-mass"
+    REG_IMAGE_MKPHOTO_BOTS = "core-img-reg-mkphoto-bots"
+    REG_IMAGE_PAINTING_PRICE = "core-img-reg-painting-price"
     # Text datasets
-    BIN_TEXT_FAKE_JOB_POSTING = "multabench-fake-job-posting"
-    BIN_TEXT_JIGSAW_TOXICITY = "multabench-jigsaw-toxicity"
-    BIN_TEXT_KICKSTARTER_FUNDING = "multabench-kickstarter-funding"
-    MUL_TEXT_DATA_SCIENTIST_SALARY = "multabench-data-scientist-salary"
-    MUL_TEXT_MICHELIN_RESTAURANTS = "multabench-michelin-restaurants"
-    MUL_TEXT_PRODUCT_SENTIMENT = "multabench-product-sentiment"
-    MUL_TEXT_SPOTIFY_GENRES = "multabench-spotify-genres"
-    MUL_TEXT_US_ACCIDENTS = "multabench-us-accidents"
-    MUL_TEXT_WINE_REVIEW = "multabench-wine-review"
-    MUL_TEXT_WOMEN_CLOTHING_REVIEW = "multabench-women-clothing-review"
-    REG_TEXT_BABIES_PRICES = "multabench-babies-prices"
-    REG_TEXT_BOOK_PRICE = "multabench-book-price"
-    REG_TEXT_BOOK_READABILITY = "multabench-book-readability"
-    REG_TEXT_MERCARI_MARKETPLACE = "multabench-mercari-marketplace"
-    REG_TEXT_MONTGOMERY_SALARIES = "multabench-montgomery-salaries"
-    REG_TEXT_SCIMAGOJR_IMPACT = "multabench-scimagojr-impact"
-    REG_TEXT_ROTTEN_TOMATOES = "multabench-rotten-tomatoes"
-    REG_TEXT_VANCOUVER_SALARIES = "multabench-vancouver-salaries"
-    REG_TEXT_VIDEO_GAMES_SALES = "multabench-video-games-sales"
-    REG_TEXT_ZOMATO_RESTAURANTS = "multabench-zomato-restaurants"
+    BIN_TEXT_FAKE_JOB_POSTING = "core-text-cls-fake-job-posting"
+    BIN_TEXT_JIGSAW_TOXICITY = "core-text-cls-jigsaw-toxicity"
+    BIN_TEXT_KICKSTARTER_FUNDING = "core-text-cls-kickstarter-funding"
+    MUL_TEXT_DATA_SCIENTIST_SALARY = "core-text-cls-data-scientist-salary"
+    MUL_TEXT_MICHELIN_RESTAURANTS = "core-text-cls-michelin-restaurants"
+    MUL_TEXT_PRODUCT_SENTIMENT = "core-text-cls-product-sentiment"
+    MUL_TEXT_SPOTIFY_GENRES = "core-text-cls-spotify-genres"
+    MUL_TEXT_US_ACCIDENTS = "core-text-cls-us-accidents"
+    MUL_TEXT_WINE_REVIEW = "core-text-cls-wine-review"
+    MUL_TEXT_WOMEN_CLOTHING_REVIEW = "core-text-cls-women-clothing-review"
+    REG_TEXT_BABIES_PRICES = "core-text-reg-babies-prices"
+    REG_TEXT_BOOK_PRICE = "core-text-reg-book-price"
+    REG_TEXT_BOOK_READABILITY = "core-text-reg-book-readability"
+    REG_TEXT_MERCARI_MARKETPLACE = "core-text-reg-mercari-marketplace"
+    REG_TEXT_MONTGOMERY_SALARIES = "core-text-reg-montgomery-salaries"
+    REG_TEXT_SCIMAGOJR_IMPACT = "core-text-reg-scimagojr-impact"
+    REG_TEXT_ROTTEN_TOMATOES = "core-text-reg-rotten-tomatoes"
+    REG_TEXT_VANCOUVER_SALARIES = "core-text-reg-vancouver-salaries"
+    REG_TEXT_VIDEO_GAMES_SALES = "core-text-reg-video-games-sales"
+    REG_TEXT_ZOMATO_RESTAURANTS = "core-text-reg-zomato-restaurants"
 
     # MulTaBench-Full text datasets: the 20 text extras beyond Core.
-    MUL_TEXT_CONSUMER_COMPLAINT = "multabench-full-consumer-complaint"
-    MUL_TEXT_BOX_OFFICE = "multabench-full-box-office"
-    BIN_TEXT_OSHA_INJURY = "multabench-full-osha-injury"
-    MUL_TEXT_NEWS_CHANNEL = "multabench-full-news-channel"
-    BIN_TEXT_IMDB_GENRE = "multabench-full-imdb-genre"
-    MUL_TEXT_MELBOURNE_AIRBNB = "multabench-full-melbourne-airbnb"
-    BIN_TEXT_CALIFORNIA_PRICES = "multabench-full-california-prices"
-    MUL_TEXT_BOOKS_GOODREADS = "multabench-full-books-goodreads"
-    MUL_TEXT_AMERICAN_EAGLE_PRICES = "multabench-full-american-eagle-prices"
-    MUL_TEXT_KOREAN_DRAMA = "multabench-full-korean-drama"
-    REG_TEXT_WIKILIQ_PRICES = "multabench-full-wikiliq-prices"
-    REG_TEXT_CHOCOLATE_BAR_RATINGS = "multabench-full-chocolate-bar-ratings"
-    REG_TEXT_RAMEN_RATINGS = "multabench-full-ramen-ratings"
-    REG_TEXT_WINE_POLISH_MARKET = "multabench-full-wine-polish-market"
-    REG_TEXT_WINE_VIVINO_SPAIN = "multabench-full-wine-vivino-spain"
-    REG_TEXT_AIRBNB_SEATTLE = "multabench-full-airbnb-seattle"
-    REG_TEXT_ANIME_PLANET = "multabench-full-anime-planet"
-    REG_TEXT_USED_CAR_PAKISTAN = "multabench-full-used-car-pakistan"
-    REG_TEXT_USED_CAR_SAUDI = "multabench-full-used-car-saudi"
-    REG_TEXT_FIFA22_WAGES = "multabench-full-fifa22-wages"
+    MUL_TEXT_CONSUMER_COMPLAINT = "extended-text-cls-consumer-complaint"
+    MUL_TEXT_BOX_OFFICE = "extended-text-cls-box-office"
+    BIN_TEXT_OSHA_INJURY = "extended-text-cls-osha-injury"
+    MUL_TEXT_NEWS_CHANNEL = "extended-text-cls-news-channel"
+    BIN_TEXT_IMDB_GENRE = "extended-text-cls-imdb-genre"
+    MUL_TEXT_MELBOURNE_AIRBNB = "extended-text-cls-melbourne-airbnb"
+    BIN_TEXT_CALIFORNIA_PRICES = "extended-text-cls-california-prices"
+    MUL_TEXT_BOOKS_GOODREADS = "extended-text-cls-books-goodreads"
+    MUL_TEXT_AMERICAN_EAGLE_PRICES = "extended-text-cls-american-eagle-prices"
+    MUL_TEXT_KOREAN_DRAMA = "extended-text-cls-korean-drama"
+    REG_TEXT_WIKILIQ_PRICES = "extended-text-reg-wikiliq-prices"
+    REG_TEXT_CHOCOLATE_BAR_RATINGS = "extended-text-reg-chocolate-bar-ratings"
+    REG_TEXT_RAMEN_RATINGS = "extended-text-reg-ramen-ratings"
+    REG_TEXT_WINE_POLISH_MARKET = "extended-text-reg-wine-polish-market"
+    REG_TEXT_WINE_VIVINO_SPAIN = "extended-text-reg-wine-vivino-spain"
+    REG_TEXT_AIRBNB_SEATTLE = "extended-text-reg-airbnb-seattle"
+    REG_TEXT_ANIME_PLANET = "extended-text-reg-anime-planet"
+    REG_TEXT_USED_CAR_PAKISTAN = "extended-text-reg-used-car-pakistan"
+    REG_TEXT_USED_CAR_SAUDI = "extended-text-reg-used-car-saudi"
+    REG_TEXT_FIFA22_WAGES = "extended-text-reg-fifa22-wages"
 
     # MulTaBench-Full image extras
-    BIN_IMAGE_OASIS_ALZHEIMERS = "multabench-full-oasis-alzheimers"
-    MUL_IMAGE_MINECRAFT = "multabench-full-minecraft"
-    REG_IMAGE_DVM_CAR = "multabench-full-dvm-car"
-    REG_IMAGE_FLIPKART_RATIO = "multabench-full-flipkart-ratio"
-    REG_IMAGE_LAHAINA_AUCTION = "multabench-full-lahaina-auction"
-    REG_IMAGE_SOCAL_HOUSES = "multabench-full-socal-houses"
-    MUL_IMAGE_REDDIT_MEMES = "multabench-full-reddit-memes"
-    MUL_IMAGE_POKEMON_HEIGHT = "multabench-full-pokemon-height"
-    MUL_IMAGE_PAD_UFES_LESION = "multabench-full-pad-ufes-lesion"
-    MUL_IMAGE_HEARTHSTONE_CLASS = "multabench-full-hearthstone-class"
-    REG_IMAGE_WATCH_TIER = "multabench-full-watch-tier"
-    MUL_IMAGE_HAM10000_LESION = "multabench-full-ham10000-lesion"
-    REG_IMAGE_GOIAS_HOUSES = "multabench-full-goias-houses"
-    REG_IMAGE_TOKOPEDIA_WEIGHT = "multabench-full-tokopedia-weight"
-    REG_IMAGE_KAMERNET_SIZE = "multabench-full-kamernet-size"
-    REG_IMAGE_SAO_PAULO_HOUSES = "multabench-full-sao-paulo-houses"
-    REG_IMAGE_ROMANIA_PRICE = "multabench-full-romania-price"
-    BIN_IMAGE_PINTEREST_POPULAR = "multabench-full-pinterest-popular"
-    REG_IMAGE_ZEPTO_PRICE = "multabench-full-zepto-price"
-    REG_IMAGE_AIRBNB_NYC = "multabench-full-airbnb-nyc"
+    BIN_IMAGE_OASIS_ALZHEIMERS = "extended-img-cls-oasis-alzheimers"
+    MUL_IMAGE_MINECRAFT = "extended-img-cls-minecraft"
+    REG_IMAGE_DVM_CAR = "extended-img-reg-dvm-car"
+    REG_IMAGE_FLIPKART_RATIO = "extended-img-reg-flipkart-ratio"
+    REG_IMAGE_LAHAINA_AUCTION = "extended-img-reg-lahaina-auction"
+    REG_IMAGE_SOCAL_HOUSES = "extended-img-reg-socal-houses"
+    MUL_IMAGE_REDDIT_MEMES = "extended-img-cls-reddit-memes"
+    MUL_IMAGE_POKEMON_HEIGHT = "extended-img-cls-pokemon-height"
+    MUL_IMAGE_PAD_UFES_LESION = "extended-img-cls-pad-ufes-lesion"
+    MUL_IMAGE_HEARTHSTONE_CLASS = "extended-img-cls-hearthstone-class"
+    REG_IMAGE_WATCH_TIER = "extended-img-reg-watch-tier"
+    MUL_IMAGE_HAM10000_LESION = "extended-img-cls-ham10000-lesion"
+    REG_IMAGE_GOIAS_HOUSES = "extended-img-reg-goias-houses"
+    REG_IMAGE_TOKOPEDIA_WEIGHT = "extended-img-reg-tokopedia-weight"
+    REG_IMAGE_KAMERNET_SIZE = "extended-img-reg-kamernet-size"
+    REG_IMAGE_SAO_PAULO_HOUSES = "extended-img-reg-sao-paulo-houses"
+    REG_IMAGE_ROMANIA_PRICE = "extended-img-reg-romania-price"
+    BIN_IMAGE_PINTEREST_POPULAR = "extended-img-cls-pinterest-popular"
+    REG_IMAGE_ZEPTO_PRICE = "extended-img-reg-zepto-price"
+    REG_IMAGE_AIRBNB_NYC = "extended-img-reg-airbnb-nyc"
 
 
 _IMAGE_PREFIXES = ("BIN_IMAGE_", "MUL_IMAGE_", "REG_IMAGE_")
@@ -109,14 +109,14 @@ def is_text_dataset(dataset_id: MulTaBenchDatasetID) -> bool:
     return dataset_id.name.startswith(_TEXT_PREFIXES)
 
 
-# The 40 benchmark datasets are slugged multabench-<name>; the 40 released alongside them,
-# admitted on a weaker criterion, are slugged multabench-full-<name>. Their scores must not be
-# pooled. Their admission checks are in leaderboard/analysis/ at the paper_version tag.
-_RELEASED_ALONGSIDE_PREFIX = "multabench-full-"
+# The 40 benchmark datasets are core-*; the 40 released alongside them, admitted on a weaker criterion,
+# are extended-*. Their scores must not be pooled. Their admission checks are in leaderboard/analysis/
+# at the paper_version tag.
+_BENCHMARK_PREFIX = "core-"
 
 
 def is_benchmark_dataset(dataset_id: MulTaBenchDatasetID) -> bool:
-    return not dataset_id.value.startswith(_RELEASED_ALONGSIDE_PREFIX)
+    return dataset_id.value.startswith(_BENCHMARK_PREFIX)
 
 
 MULTABENCH_SOURCES: dict[MulTaBenchDatasetID, str] = {
