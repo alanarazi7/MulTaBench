@@ -3,10 +3,6 @@
 Work in progress towards the first release of the living leaderboard. Items are removed from this
 file as the PRs that complete them are merged.
 
-## Bugs
-
-- [ ] Pin `pandas < 3`: pandas 3's default string dtype breaks TabSTAR's dtype detection.
-
 ## Embedding cache
 
 - [ ] Add `load_embeddings(dataset, fold, size, encoder)`, shaped like `load_split`, which downloads

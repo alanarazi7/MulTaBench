@@ -1,3 +1,4 @@
+import pandas as pd
 from pandas import DataFrame, Series
 
 from tabstar.tabstar_model import TabSTARClassifier, TabSTARRegressor
@@ -69,6 +70,8 @@ class TabSTAR(TabularModel):
     IS_PAPER_VERSION = True
 
     def initialize_model(self) -> TabSTARClassifier | TabSTARRegressor:
+        # pandas 3's default string dtype breaks TabSTAR's dtype detection; don't run it until TabSTAR v1.1.
+        assert int(pd.__version__.split(".")[0]) < 3, f"TabSTAR needs pandas < 3, got {pd.__version__}"
         # TODO: if memory is low, use smaller batch size?
         lora_batch = 64
         tabstar_cls = TabSTARClassifier if self.is_cls else TabSTARRegressor
