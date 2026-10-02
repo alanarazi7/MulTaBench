@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 import re
 import tempfile
 from typing import List, Optional, Tuple, Dict, Any, Union
@@ -155,10 +154,10 @@ def finetune_dino_with_lora(
 ) -> Tuple[DINOv3ViTModel, DINOv3ViTImageProcessorFast]:
     """
     Finetune DINOv3 with LoRA using Hugging Face Trainer. Uses train/val for early stopping.
-    Single GPU only (device e.g. torch.device("cuda", 3) or "cuda:3"). No model/data parallelism.
+    Single GPU only. No model/data parallelism.
     Returns the backbone (encoding outputs D_DINO dims, PCA applied downstream).
     """
-    assert "CUDA_VISIBLE_DEVICES" in os.environ, "CUDA_VISIBLE_DEVICES must be set"
+    assert torch.cuda.device_count() <= 1, "The Trainer uses every visible GPU; make only one visible"
     torch.manual_seed(seed)
     np.random.seed(seed)
 
