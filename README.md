@@ -18,7 +18,7 @@ than used frozen.
 
 ```bash
 source init.sh && source .venv/bin/activate
-cp .env.example .env     # credentials, only needed to upload datasets
+cp .env.example .env     # Hugging Face token
 
 python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --text_encoder e5-small --image_encoder dino-small
 ```
@@ -48,8 +48,7 @@ Hugging Face organization, downloaded on demand. Repos are named
 the ones released alongside them. Each holds `data.parquet` with explicit column types (datetime,
 categorical, numeric, string), `metadata.json` with the target, and, for image datasets, the images
 in `images-*.zip`. The Parquet files were converted from the curated copies on the
-[`chico89`](https://www.kaggle.com/chico89/datasets) Kaggle account
-(`multabench/scripts/upload_to_hf.py`), keeping every column and value.
+[`chico89`](https://www.kaggle.com/chico89/datasets) Kaggle account, keeping every column and value.
 
 | What you are looking for | Where it is |
 |--------------------------|-------------|

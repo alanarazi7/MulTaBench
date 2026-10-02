@@ -9,7 +9,7 @@ import os
 import tempfile
 import zipfile
 from glob import glob
-from os.path import join, relpath
+from os.path import join
 
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_benchmark_dataset, is_image_dataset
 
@@ -17,7 +17,6 @@ HF_ORG = "multabench"
 DATA_PARQUET = "data.parquet"
 IMAGES_DIR = "images"
 IMAGE_SHARDS = "images-*.zip"
-IMAGES_PER_SHARD = 5000
 
 
 def hf_repo_id(dataset_id: MulTaBenchDatasetID) -> str:
@@ -26,16 +25,6 @@ def hf_repo_id(dataset_id: MulTaBenchDatasetID) -> str:
     task = "reg" if dataset_id.name.startswith("REG_") else "cls"
     name = dataset_id.value.removeprefix("multabench-full-").removeprefix("multabench-")
     return f"{HF_ORG}/{tier}-{modality}-{task}-{name}"
-
-
-def pack_images(src_dir: str, out_dir: str) -> int:
-    files = sorted(join(root, f) for root, _, names in os.walk(join(src_dir, IMAGES_DIR)) for f in names)
-    for start in range(0, len(files), IMAGES_PER_SHARD):
-        shard = join(out_dir, IMAGE_SHARDS.replace("*", f"{start // IMAGES_PER_SHARD:05d}"))
-        with zipfile.ZipFile(shard, "w", compression=zipfile.ZIP_STORED) as z:
-            for f in files[start:start + IMAGES_PER_SHARD]:
-                z.write(f, arcname=relpath(f, src_dir))
-    return len(files)
 
 
 def extract_images(dir_path: str):
