@@ -44,8 +44,8 @@ split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split
 
 Every dataset is a public dataset repo in the [`multabench`](https://huggingface.co/multabench)
 Hugging Face organization, downloaded on demand. Repos are named
-`<core|extended>-<img|text>-<reg|cls>-<name>`: `core` for the benchmark datasets and `extended` for
-the ones released alongside them. Each holds `data.parquet` with explicit column types (datetime,
+`<core|extended>-<img|text>-<reg|cls>-<name>`; `core` and `extended` are two slices of the
+benchmark. Each holds `data.parquet` with explicit column types (datetime,
 categorical, numeric, string), `metadata.json` with the target, and, for image datasets, the images
 in `images-*.zip`.
 
@@ -57,7 +57,6 @@ Anime Planet's `"Unknown"` to missing). Scores on the two versions are not direc
 
 | What you are looking for | Where it is |
 |--------------------------|-------------|
-| Which datasets are in the benchmark | `is_benchmark_dataset` in `multabench/datasets/all_datasets.py` |
 | A dataset's Hugging Face repo | the `MulTaBenchDatasetID` values in `multabench/datasets/all_datasets.py` |
 | Where a dataset originally comes from | `MULTABENCH_SOURCES` in `multabench/datasets/all_datasets.py` |
 | How a dataset was curated | the recipes in `multabench/benchmark/datasets/` at the [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) tag |

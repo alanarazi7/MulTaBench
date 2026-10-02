@@ -3,12 +3,8 @@ import zipfile
 import pytest
 
 from multabench.datasets import hub
-from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_benchmark_dataset, is_image_dataset
+from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_image_dataset
 from multabench.datasets.hub import hf_repo_id
-
-
-def test_40_benchmark_datasets():
-    assert sum(is_benchmark_dataset(d) for d in MulTaBenchDatasetID) == 40
 
 
 @pytest.mark.parametrize("dataset_id", list(MulTaBenchDatasetID))
