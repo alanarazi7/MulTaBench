@@ -49,6 +49,20 @@ file as the PRs that complete them are merged.
 - [ ] Remove the remaining paper analysis code in `multabench/leaderboard/`, keeping only the main
       leaderboard tab.
 
+## Shared fine-tuning code
+
+`e5/e5_finetune.py` and `dino/dino_finetune.py` are near copies. Move what they share into
+`finetune/`, keeping only the encoder-specific parts (loading, the dataset class, pooling) per
+modality:
+
+- [ ] `_get_lora_target_modules` and `_print_trainable_params_per_layer`, which differ only in the
+      module names.
+- [ ] `E5ForTuning` / `DINOForTuning`: the same backbone + linear head, apart from pooling.
+- [ ] `finetune_*_with_lora`: the same seeding, `LoraConfig`, `TrainingArguments`, early stopping
+      and `Trainer` loop.
+- [ ] `DinoTrainArgs` / `E5TrainArgs`, and the matching `--dino_*` / `--e5_*` flags and kwargs
+      dicts in `benchmark.py`.
+
 ## Later, not needed for the first release
 
 - Minimal installation for `load_split` and `load_embeddings`.
