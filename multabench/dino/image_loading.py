@@ -5,6 +5,8 @@ from typing import Iterable
 
 from pandas import Series
 
+from multabench.utils.timing import embedding_step
+
 # Images are capped at MAX_IMAGE_SIZE (longest side) before being passed to DINO.
 # DINO's processor resizes everything to 224px internally, so this cap has zero quality impact.
 # Without it, high-res datasets (e.g. CBIS-DDSM mammography) load full-resolution images into RAM,
@@ -13,6 +15,7 @@ from pandas import Series
 MAX_IMAGE_SIZE = 512
 
 
+@embedding_step
 def load_images(s: Series | Iterable, image_folder: str | None = None) -> list[Image.Image]:
     if isinstance(s, Series):
         s = s.tolist()

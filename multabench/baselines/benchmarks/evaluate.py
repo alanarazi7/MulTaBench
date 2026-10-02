@@ -12,8 +12,10 @@ from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
 from multabench.utils.logging import get_current_commit_hash
-from multabench.result_keys import METRIC, TEST_ERROR, TRAIN_TIME_PER_1K, INFERENCE_TIME_PER_1K
+from multabench.result_keys import (METRIC, TEST_ERROR, TRAIN_TIME_PER_1K, INFERENCE_TIME_PER_1K,
+                                    TRAIN_EMBEDDING_TIME_PER_1K, INFERENCE_EMBEDDING_TIME_PER_1K)
 from multabench.utils.profiling import PeakMemoryTracker
+from multabench.utils.timing import pop_embedding_seconds
 
 def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 dataset: MultimodalDataset,
@@ -37,10 +39,13 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                   dino_model_name=dino_model_name,
                   tune_e5=tune_e5, e5_train_kwargs=e5_train_kwargs, e5_model_name=e5_model_name)
     model = model_cls(**kwargs)
+    pop_embedding_seconds()
     with PeakMemoryTracker(phase='train', device=device) as train_tracker:
         model.fit(x_train, y_train)
+    train_embedding_s = pop_embedding_seconds()
     with PeakMemoryTracker(phase='inference', device=device) as test_tracker:
         metrics = model.score_all_metrics(X=x_test, y=y_test)
+    inference_embedding_s = pop_embedding_seconds()
     runtime = time.time() - start_time
     d_summary = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
@@ -62,8 +67,10 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         "best_val_loss": getattr(model, "best_val_loss", None),
         **train_tracker.summary(),
         **test_tracker.summary(),
-        TRAIN_TIME_PER_1K: train_tracker.wall_time_s / len(y_train) * 1000,
-        INFERENCE_TIME_PER_1K: test_tracker.wall_time_s / len(y_test) * 1000,
+        TRAIN_TIME_PER_1K: (train_tracker.wall_time_s - train_embedding_s) / len(y_train) * 1000,
+        INFERENCE_TIME_PER_1K: (test_tracker.wall_time_s - inference_embedding_s) / len(y_test) * 1000,
+        TRAIN_EMBEDDING_TIME_PER_1K: train_embedding_s / len(y_train) * 1000,
+        INFERENCE_EMBEDDING_TIME_PER_1K: inference_embedding_s / len(y_test) * 1000,
         **get_hardware_dict(device),
         **(dino_train_kwargs or {}),
         **(e5_train_kwargs or {}),

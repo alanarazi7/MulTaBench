@@ -16,6 +16,7 @@ from multabench.dino.image_loading import load_images
 from multabench.preprocessing.discretize import discretize_numerical
 from multabench.utils.warnings import suppress_channel_dimension_warning
 from multabench.preprocessing.splits import split_to_val
+from multabench.utils.timing import embedding_step
 
 # Alternatives: facebook/dinov3-vits16plus-pretrain-lvd1689m, facebook/dinov3-convnext-tiny-pretrain-lvd1689m
 
@@ -130,6 +131,7 @@ def transform_image_features(
     return x
 
 
+@embedding_step
 def get_image_encoder(model_name: str) -> Tuple[DINOv3ViTModel, DINOv3ViTImageProcessorFast]:
     if IMAGE_ENCODER["encoder"] is None:
         model = AutoModel.from_pretrained(model_name)
@@ -156,6 +158,7 @@ def image_urls_to_embeddings(
     return embeddings
 
 
+@embedding_step
 def encode_images_in_batches(
     images: List[Image.Image],
     processor: DINOv3ViTImageProcessorFast,

@@ -16,6 +16,7 @@ import torch
 
 from multabench.e5.constants import E5_SMALL_V2, TF_IDF
 from multabench.e5.e5_finetune import encode_texts_with_e5, get_vanilla_e5
+from multabench.utils.timing import embedding_step
 
 PCA_COMPONENTS = 30
 
@@ -29,6 +30,7 @@ class SkrubColumnEncoder:
         self.n_components = n_components
         self.encoder = self  # so wrapper.encoder.transform(X) delegates to self.transform(X)
 
+    @embedding_step
     def encode_texts(self, texts: list[str], device) -> np.ndarray:
         """Encode texts with skrub StringEncoder (device ignored — CPU-only)."""
         result = self.string_encoder.transform(pd.Series(texts, dtype=str))
@@ -62,6 +64,7 @@ class E5ColumnEncoder:
         return self.encoder.transform(X)
 
 
+@embedding_step
 def fit_text_encoders_skrub(
     x: DataFrame,
     text_features_list: list[str],

@@ -31,6 +31,7 @@ from multabench.e5.constants import (
     LORA_TEXT_TARGET_MODULES,
     format_e5_passage,
 )
+from multabench.utils.timing import embedding_step
 
 
 def _get_lora_target_modules(layer_indices: list[int]) -> list[str]:
@@ -160,6 +161,7 @@ def _load_fresh_e5(device: torch.device, model_name: str = E5_SMALL_V2) -> Tuple
 _VANILLA_E5_CACHE: Dict[Tuple, Tuple[Union[BertModel, nn.Module], AutoTokenizer]] = {}
 
 
+@embedding_step
 def get_vanilla_e5(device: Union[torch.device, str], model_name: str = E5_SMALL_V2) -> Tuple[Union[BertModel, nn.Module], AutoTokenizer]:
     """Return cached vanilla E5 model and tokenizer for encoding (no tuning). Same model as finetune path."""
     cache_key = (str(device), model_name)
@@ -181,6 +183,7 @@ def _mean_pool_l2(last_hidden: torch.Tensor, attention_mask: torch.Tensor) -> to
     return _mean_pool(last_hidden, attention_mask, l2_normalize=True)
 
 
+@embedding_step
 def encode_texts_with_e5(
     texts: List[str],
     col_name: str,
@@ -217,6 +220,7 @@ def encode_texts_with_e5(
     return np.concatenate(embeddings_list, axis=0).astype(np.float32)
 
 
+@embedding_step
 def finetune_e5_with_lora(
     train_texts: List[str],
     train_y: np.ndarray,

@@ -29,6 +29,7 @@ from multabench.finetune.utils import compute_metrics_multiclass, encoder_finetu
 from multabench.dino.constants import DINO_DIM, DINO_NUM_LAYERS, DINOV3_SMALL, LORA_IMAGE_TARGET_MODULES
 from multabench.dino.image_loading import load_images
 from multabench.utils.warnings import suppress_channel_dimension_warning
+from multabench.utils.timing import embedding_step
 
 
 def _get_lora_target_modules(layer_indices: list[int]) -> list[str]:
@@ -132,6 +133,7 @@ def _load_fresh_dino(device: torch.device, model_name: str = DINOV3_SMALL) -> Tu
     return model, processor
 
 
+@embedding_step
 def finetune_dino_with_lora(
     train_images: List[Image.Image],
     train_y: np.ndarray,
