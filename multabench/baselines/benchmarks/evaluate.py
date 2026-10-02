@@ -33,7 +33,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
     x_train, y_train = split.x_train, split.y_train
     x_test, y_test = split.x_test, split.y_test
     kwargs = dict(problem_type=dataset.task_type, device=device, verbose=verbose, dataset=dataset_id,
-                  image_folder=dataset.image_folder, tune_dino=tune_dino, dino_train_kwargs=dino_train_kwargs,
+                  image_folder=dataset.image_folder, image_column=dataset.image_column, tune_dino=tune_dino, dino_train_kwargs=dino_train_kwargs,
                   dino_model_name=dino_model_name,
                   tune_e5=tune_e5, e5_train_kwargs=e5_train_kwargs, e5_model_name=e5_model_name)
     model = model_cls(**kwargs)

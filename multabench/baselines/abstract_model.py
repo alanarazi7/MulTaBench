@@ -39,6 +39,7 @@ class TabularModel:
 
     def __init__(self, problem_type: SupervisedTask, device: torch.device,
                  dataset: MulTaBenchDatasetID | None = None, verbose: bool = False, image_folder: str | None = None,
+                 image_column: str | None = None,
                  tune_dino: bool = False,
                  dino_train_kwargs: Optional[Dict[str, Any]] = None,
                  dino_model_name: str = DINOV3_SMALL,
@@ -55,6 +56,7 @@ class TabularModel:
         self.verbose = verbose
         self.d_output: int = 0
         self.image_folder = image_folder
+        self.image_column = image_column
         self.tune_dino = tune_dino
         self.dino_train_kwargs = dino_train_kwargs or {}
         self.dino_model_name = dino_model_name
@@ -155,7 +157,8 @@ class TabularModel:
     def do_model_agnostic_preprocessing(self, x: DataFrame, y: Series) -> Tuple[DataFrame, Series]:
         raise_if_null_target(y)
         x, y = densify_objects(x=x, y=y)
-        self.date_transformers = fit_date_encoders(x=x)
+        feature_types = detect_feature_types(x, image_column=self.image_column)
+        self.date_transformers = fit_date_encoders(x=x, date_features=feature_types.date_features)
         self.vprint(f"📅 Detected {len(self.date_transformers)} date features: {sorted(self.date_transformers)}")
         # TODO: ConTextTab supports dates natively, perhaps we need to change this to "USE_DATE_TRANSFORMATION"
         x = transform_date_features(x=x, date_transformers=self.date_transformers)
@@ -165,6 +168,7 @@ class TabularModel:
             self.d_output = 1
         self.image_transformers, self._tuned_dino_model, self._tuned_dino_processor = fit_image_encoders(
             x=x,
+            image_features=feature_types.image_features,
             device=self.device,
             image_folder=self.image_folder,
             y=y if self.tune_dino else None,
@@ -177,8 +181,8 @@ class TabularModel:
         self.vprint(f"📷 Detected {len(self.image_transformers)} image features: {sorted(self.image_transformers)}")
         non_image_columns = [col for col in x.columns if col not in self.image_transformers]
         x = x[non_image_columns]
-        feature_types = detect_feature_types(x)
-        self.numerical_features = feature_types.numerical_features
+        date_parts = {part for encoder in self.date_transformers.values() for part in encoder.get_feature_names_out()}
+        self.numerical_features = feature_types.numerical_features | date_parts
         self.text_features = feature_types.text_features
         self.categorical_features = feature_types.categorical_features
         self.vprint(f"🔢 Detected {len(self.numerical_features)} numerical features: {sorted(self.numerical_features)}")

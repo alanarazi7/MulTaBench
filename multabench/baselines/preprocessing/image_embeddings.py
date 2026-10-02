@@ -1,6 +1,6 @@
 import numpy as np
 from PIL import Image
-from typing import Dict, Tuple, Optional, List, Any
+from typing import Dict, Tuple, Optional, List, Any, Set
 
 import pandas as pd
 import torch
@@ -16,7 +16,6 @@ from multabench.dino.image_loading import load_images
 from multabench.preprocessing.discretize import discretize_numerical
 from multabench.utils.warnings import suppress_channel_dimension_warning
 from multabench.preprocessing.splits import split_to_val
-from multabench.baselines.preprocessing.feature_types import detect_image_features
 
 # Alternatives: facebook/dinov3-vits16plus-pretrain-lvd1689m, facebook/dinov3-convnext-tiny-pretrain-lvd1689m
 
@@ -39,6 +38,7 @@ class _ScaledPCA:
 
 def fit_image_encoders(
     x: DataFrame,
+    image_features: Set[str],
     device: torch.device,
     image_folder: Optional[str],
     is_cls: bool,
@@ -54,12 +54,14 @@ def fit_image_encoders(
     Returns (image_encoders, tuned_dino_model_or_none, tuned_processor_or_none).
     """
     image_encoders: Dict[str, Any] = {}
-    image_features = detect_image_features(x=x)
+    image_features = [c for c in x.columns if c in image_features]
     tuned_model = None
     tuned_processor: Optional[DINOv3ViTImageProcessorFast] = None
 
-    if not image_features or image_folder is None:
+    if not image_features:
         return image_encoders, tuned_model, tuned_processor
+    if image_folder is None:
+        raise ValueError(f"Image columns {image_features} need an image_folder")
 
     if tune_dino and y is not None:
         if not is_cls:
