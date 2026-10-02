@@ -5,15 +5,10 @@ file as the PRs that complete them are merged.
 
 ## Bugs
 
-- [ ] Date columns are read from the Kaggle CSVs as strings, and `fit_date_encoders` only picks up
-      `datetime64` columns, so dates fall through to text or categorical features. Detect
-      string-encoded dates (date separators plus a parse rate of at least 99%) and convert them
-      before the numerical and semantic type detection.
 - [ ] Pin `pandas < 3`: pandas 3's default string dtype breaks TabSTAR's dtype detection.
 
 ## Embedding cache
 
-- [ ] Create the `multabench` organization on Hugging Face.
 - [ ] Add `load_embeddings(dataset, fold, size, encoder)`, shaped like `load_split`, which downloads
       cached embeddings from Hugging Face at a pinned revision.
 - [ ] Add a script that computes the embeddings for every (dataset, size, fold, encoder) and uploads
@@ -74,7 +69,6 @@ Helpers copied from tabstar that may not be needed:
 
 ## Later, not needed for the first release
 
-- Mirror the 80 datasets to Hugging Face, and decide whether Kaggle stays as a secondary source.
 - Minimal installation for `load_split` and `load_embeddings`.
 - Hosting the leaderboard as a Hugging Face Space.
 - `e5-large` and `dino-large` stay available as options but are not run.
