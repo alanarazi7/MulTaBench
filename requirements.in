@@ -1,5 +1,4 @@
 catboost
-gpustat ; platform_system == "Linux"
 joblib
 lightgbm
 numpy

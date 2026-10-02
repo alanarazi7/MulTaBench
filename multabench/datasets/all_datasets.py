@@ -1,10 +1,5 @@
-"""The 80 MulTaBench datasets: their IDs, which of them form the benchmark, and where each comes from.
-
-Each dataset is a curated copy of the source dataset in MULTABENCH_SOURCES, hosted as typed Parquet on
-Hugging Face in the multabench organization, in a repo named by its MulTaBenchDatasetID value
-(<core|extended>-<img|text>-<reg|cls>-<name>). Credit and licensing belong to the source. The curation recipe for each dataset is in
-multabench/benchmark/datasets/ at the paper_version tag.
-"""
+"""The 80 MulTaBench datasets. Each ID's value is its Hugging Face repo name; credit and licensing belong to the
+source in MULTABENCH_SOURCES."""
 from enum import Enum, unique
 
 
@@ -109,9 +104,7 @@ def is_text_dataset(dataset_id: MulTaBenchDatasetID) -> bool:
     return dataset_id.name.startswith(_TEXT_PREFIXES)
 
 
-# The 40 benchmark datasets are core-*; the 40 released alongside them, admitted on a weaker criterion,
-# are extended-*. Their scores must not be pooled. Their admission checks are in leaderboard/analysis/
-# at the paper_version tag.
+# Don't pool scores of core (benchmark) and extended datasets.
 _BENCHMARK_PREFIX = "core-"
 
 

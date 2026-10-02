@@ -1,10 +1,4 @@
-"""
-MulTaBench datasets on the Hugging Face Hub: one dataset repo each, holding a typed data.parquet and metadata.json.
-
-Image datasets also hold their images packed in images-*.zip shards (the Hub limits files per folder and per repo).
-Their paths inside the shards are the paths in the image column, so extracting the shards next to data.parquet
-restores the images/ folder.
-"""
+"""Image datasets keep their images in images-*.zip shards, because the Hub limits the number of files per repo."""
 import os
 import tempfile
 import zipfile
