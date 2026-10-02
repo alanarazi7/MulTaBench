@@ -42,7 +42,6 @@ class FeatureTypes:
 
 
 def detect_feature_types(x: DataFrame) -> FeatureTypes:
-    """Read each column's type from its stored dtype; the datasets are curated with explicit types."""
     result = FeatureTypes()
     for col in x.columns:
         if isinstance(x[col].dtype, pd.CategoricalDtype):
