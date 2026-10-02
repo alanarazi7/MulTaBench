@@ -3,23 +3,21 @@ import zipfile
 import pytest
 
 from multabench.datasets import hub
-from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.datasets.hub import hf_repo_id
+from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_benchmark_dataset, is_image_dataset
+from multabench.datasets.hub import HF_REPOS
 
 
-@pytest.mark.parametrize("dataset_id, repo_id", [
-    (MulTaBenchDatasetID.REG_TEXT_MONTGOMERY_SALARIES, "multabench/core-text-reg-montgomery-salaries"),
-    (MulTaBenchDatasetID.BIN_TEXT_KICKSTARTER_FUNDING, "multabench/core-text-cls-kickstarter-funding"),
-    (MulTaBenchDatasetID.MUL_IMAGE_PETFINDER, "multabench/core-img-cls-petfinder"),
-    (MulTaBenchDatasetID.REG_TEXT_AIRBNB_SEATTLE, "multabench/extended-text-reg-airbnb-seattle"),
-])
-def test_hf_repo_id(dataset_id, repo_id):
-    assert hf_repo_id(dataset_id) == repo_id
+def test_every_dataset_has_one_repo():
+    assert set(HF_REPOS) == set(MulTaBenchDatasetID)
+    assert len(set(HF_REPOS.values())) == len(HF_REPOS)
 
 
-def test_hf_repo_ids_are_unique():
-    repo_ids = [hf_repo_id(d) for d in MulTaBenchDatasetID]
-    assert len(repo_ids) == len(set(repo_ids))
+@pytest.mark.parametrize("dataset_id", list(MulTaBenchDatasetID))
+def test_repo_name_matches_the_dataset(dataset_id):
+    tier, modality, task = HF_REPOS[dataset_id].split("-")[:3]
+    assert tier == ("core" if is_benchmark_dataset(dataset_id) else "extended")
+    assert modality == ("img" if is_image_dataset(dataset_id) else "text")
+    assert task == ("reg" if dataset_id.name.startswith("REG_") else "cls")
 
 
 def test_image_shards_restore_the_images_folder(tmp_path):
