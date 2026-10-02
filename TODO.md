@@ -55,8 +55,6 @@ Helpers copied from tabstar that may not be needed:
 
 - [ ] `get_device` (`utils/devices.py`): picks the first idle GPU through `nvidia-smi`. Keep it, or
       let the runner set the device explicitly?
-- [ ] `CPU_CORES` (`utils/devices.py`): models use at most 8 threads. Keep the cap, or make it a
-      setting recorded with each run?
 
 ## Later, not needed for the first release
 
