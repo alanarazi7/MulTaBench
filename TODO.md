@@ -5,10 +5,6 @@ file as the PRs that complete them are merged.
 
 ## Bugs
 
-- [ ] Date columns are read from the Kaggle CSVs as strings, and `fit_date_encoders` only picks up
-      `datetime64` columns, so dates fall through to text or categorical features. Detect
-      string-encoded dates (date separators plus a parse rate of at least 99%) and convert them
-      before the numerical and semantic type detection.
 - [ ] Pin `pandas < 3`: pandas 3's default string dtype breaks TabSTAR's dtype detection.
 
 ## Embedding cache
