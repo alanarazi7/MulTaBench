@@ -5,11 +5,13 @@ from pandas import DataFrame, Series
 
 from multabench.constants import SEED
 from multabench.baselines.abstract_model import TabularModel
+from multabench.utils.devices import CPU_CORES
 
 @dataclass
 class RandomForestDefaultHyperparams:
     n_estimators: int = 100
     random_state: int = SEED
+    n_jobs: int = CPU_CORES
 
 
 class RandomForest(TabularModel):
