@@ -47,7 +47,7 @@ class MulTaBenchDatasetID(Enum):
     REG_TEXT_VIDEO_GAMES_SALES = "core-text-reg-video-games-sales"
     REG_TEXT_ZOMATO_RESTAURANTS = "core-text-reg-zomato-restaurants"
 
-    # MulTaBench-Full text datasets: the 20 text extras beyond Core.
+    # Extended text datasets
     MUL_TEXT_CONSUMER_COMPLAINT = "extended-text-cls-consumer-complaint"
     MUL_TEXT_BOX_OFFICE = "extended-text-cls-box-office"
     BIN_TEXT_OSHA_INJURY = "extended-text-cls-osha-injury"
@@ -69,7 +69,7 @@ class MulTaBenchDatasetID(Enum):
     REG_TEXT_USED_CAR_SAUDI = "extended-text-reg-used-car-saudi"
     REG_TEXT_FIFA22_WAGES = "extended-text-reg-fifa22-wages"
 
-    # MulTaBench-Full image extras
+    # Extended image datasets
     BIN_IMAGE_OASIS_ALZHEIMERS = "extended-img-cls-oasis-alzheimers"
     MUL_IMAGE_MINECRAFT = "extended-img-cls-minecraft"
     REG_IMAGE_DVM_CAR = "extended-img-reg-dvm-car"
@@ -102,14 +102,6 @@ def is_image_dataset(dataset_id: MulTaBenchDatasetID) -> bool:
 
 def is_text_dataset(dataset_id: MulTaBenchDatasetID) -> bool:
     return dataset_id.name.startswith(_TEXT_PREFIXES)
-
-
-# Don't pool scores of core (benchmark) and extended datasets.
-_BENCHMARK_PREFIX = "core-"
-
-
-def is_benchmark_dataset(dataset_id: MulTaBenchDatasetID) -> bool:
-    return dataset_id.value.startswith(_BENCHMARK_PREFIX)
 
 
 MULTABENCH_SOURCES: dict[MulTaBenchDatasetID, str] = {
