@@ -30,9 +30,9 @@ def _parse_task_type(meta: dict, dataset_id, y: pd.Series) -> SupervisedTask:
 
 
 def _missing_as_nan(df: pd.DataFrame) -> pd.DataFrame:
-    # Parquet gives None for missing strings, which the numerical detection counts as non-numeric.
     for col in df.columns:
         if df[col].dtype == object:
+            # Parquet reads missing strings as None; the CSV reader gave NaN.
             df[col] = df[col].where(df[col].notna(), np.nan)
     return df
 
