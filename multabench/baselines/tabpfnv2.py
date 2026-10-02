@@ -4,7 +4,7 @@ from typing import List
 from pandas import DataFrame, Series
 from tabpfn.constants import ModelVersion
 
-from tabstar.constants import SEED
+from multabench.constants import SEED
 from multabench.baselines.abstract_model import TabularModel
 from tabpfn import TabPFNClassifier, TabPFNRegressor
 

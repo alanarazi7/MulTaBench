@@ -7,7 +7,7 @@ import torch
 from pandas import DataFrame, Series
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-from tabstar.constants import SEED
+from multabench.constants import SEED
 from transformers import AutoImageProcessor, AutoModel, DINOv3ViTImageProcessorFast, DINOv3ViTModel
 
 from multabench.dino.constants import DINOV3_SMALL

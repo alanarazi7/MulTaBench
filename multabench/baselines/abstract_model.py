@@ -5,13 +5,13 @@ import torch
 from pandas import DataFrame, Series
 from sklearn.preprocessing import LabelEncoder
 from skrub import DatetimeEncoder
-from tabstar.preprocessing.dates import fit_date_encoders, transform_date_features
-from tabstar.preprocessing.feat_types import detect_numerical_features
-from tabstar.preprocessing.nulls import raise_if_null_target
-from tabstar.preprocessing.sparse import densify_objects
-from tabstar.preprocessing.splits import split_to_val
 
+from multabench.baselines.preprocessing.dates import fit_date_encoders, transform_date_features
 from multabench.baselines.preprocessing.feature_types import classify_semantic_features, transform_feature_types
+from multabench.baselines.preprocessing.nulls import raise_if_null_target
+from multabench.baselines.preprocessing.numerical_detection import detect_numerical_features
+from multabench.baselines.preprocessing.sparse import densify_objects
+from multabench.baselines.preprocessing.validation import split_to_val
 from multabench.baselines.preprocessing.image_embeddings import (
     transform_image_features,
     fit_image_encoders,

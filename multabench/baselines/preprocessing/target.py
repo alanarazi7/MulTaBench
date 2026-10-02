@@ -4,13 +4,13 @@ import numpy as np
 from pandas import Series
 from sklearn.preprocessing import LabelEncoder
 
-from tabstar.preprocessing.target import fit_cls_y, transform_cls_y
-
 
 def fit_preprocess_y(y: Series, is_cls: bool) -> Optional[LabelEncoder]:
     if not is_cls:
         return None
-    return fit_cls_y(y)
+    label_encoder = LabelEncoder()
+    label_encoder.fit(y)
+    return label_encoder
 
 
 def transform_preprocess_y(y: Series | np.ndarray, scaler: Optional[LabelEncoder]) -> Series:
@@ -18,4 +18,4 @@ def transform_preprocess_y(y: Series | np.ndarray, scaler: Optional[LabelEncoder
         return y
     assert isinstance(scaler, LabelEncoder), f"Scaler must be LabelEncoder if not None, but got {type(scaler)}"
     y = y.copy()
-    return transform_cls_y(y=y, encoder=scaler)
+    return Series(scaler.transform(y), name=y.name, index=y.index)
