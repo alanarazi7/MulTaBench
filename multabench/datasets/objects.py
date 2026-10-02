@@ -19,6 +19,7 @@ class MultimodalDataset:
     task_type: SupervisedTask
     dataset_id: MulTaBenchDatasetID
     image_folder: str | None = None
+    image_column: str | None = None
 
     @property
     def is_cls(self) -> bool:
@@ -33,3 +34,4 @@ class DatasetSplit:
     y_test: Series
     task_type: SupervisedTask
     image_folder: str | None = None
+    image_column: str | None = None

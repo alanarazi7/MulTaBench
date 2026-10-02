@@ -11,7 +11,7 @@ from autogluon.multimodal import MultiModalPredictor
 
 from multabench.baselines.preprocessing.target import fit_preprocess_y, transform_preprocess_y
 from multabench.baselines.abstract_model import TabularModel
-from multabench.baselines.preprocessing.feature_types import detect_feature_types, detect_image_features
+from multabench.baselines.preprocessing.feature_types import detect_feature_types
 from multabench.datasets.objects import SupervisedTask
 from multabench.e5.constants import E5_SMALL_V2
 
@@ -65,8 +65,9 @@ class AutoGluonMM(TabularModel):
             self.d_output = 1
 
         # Detect modalities
-        image_cols = detect_image_features(x)
-        text_cols = detect_feature_types(x).text_features
+        feature_types = detect_feature_types(x, image_column=self.image_column)
+        image_cols = feature_types.image_features
+        text_cols = feature_types.text_features
 
         # Expand image file paths
         x_ag = x.copy()
@@ -98,10 +99,9 @@ class AutoGluonMM(TabularModel):
 
     def _prepare_x(self, x: DataFrame) -> DataFrame:
         x_ag = x.copy()
-        image_cols = detect_image_features(x_ag)
-        if image_cols and self.image_folder:
-            for col in image_cols:
-                x_ag[col] = x_ag[col].apply(lambda f: os.path.join(self.image_folder, str(f)) if notna(f) else f)
+        if self.image_column and self.image_folder:
+            col = self.image_column
+            x_ag[col] = x_ag[col].apply(lambda f: os.path.join(self.image_folder, str(f)) if notna(f) else f)
         return x_ag
 
     def predict(self, x: DataFrame) -> np.ndarray:

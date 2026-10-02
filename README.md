@@ -37,7 +37,7 @@ train and test rows that `benchmark.py` evaluates on:
 from multabench import load_split
 
 split = load_split("MUL_IMAGE_PETFINDER", fold=0, size="10k")
-split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split.image_folder
+split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split.image_folder, split.image_column
 ```
 
 ## Datasets

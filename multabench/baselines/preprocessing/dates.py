@@ -1,9 +1,8 @@
 """Datetime columns expanded into numeric parts (copied from tabstar 1.1.15, tabstar/preprocessing/dates.py)."""
-from typing import Any, Dict
+from typing import Any, Dict, Set
 
 import pandas as pd
 from pandas import DataFrame, Series
-from pandas.api.types import is_datetime64_any_dtype
 from skrub import DatetimeEncoder
 
 
@@ -20,10 +19,9 @@ def transform_date_features(x: DataFrame, date_transformers: Dict[str, DatetimeE
     return x
 
 
-def fit_date_encoders(x: DataFrame) -> Dict[str, DatetimeEncoder]:
+def fit_date_encoders(x: DataFrame, date_features: Set[str]) -> Dict[str, DatetimeEncoder]:
     date_encoders = {}
-    date_columns = [str(col) for col, dtype in x.dtypes.items() if is_datetime64_any_dtype(dtype)]
-    for col in date_columns:
+    for col in [c for c in x.columns if c in date_features]:
         dt_s = series_to_dt(s=x[col])
         # Adds: "year", "month", "day", "hour", "total_seconds", "weekday"
         encoder = DatetimeEncoder(add_weekday=True, add_total_seconds=True)

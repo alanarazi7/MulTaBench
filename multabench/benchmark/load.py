@@ -53,7 +53,8 @@ def load_multabench_dataset(dataset_id) -> MultimodalDataset:
     y = df[target_col]
     x = df.drop(columns=[target_col])
 
-    return MultimodalDataset(x=x, y=y, task_type=_parse_task_type(meta, dataset_id, y), dataset_id=dataset_id, image_folder=image_folder)
+    return MultimodalDataset(x=x, y=y, task_type=_parse_task_type(meta, dataset_id, y), dataset_id=dataset_id,
+                             image_folder=image_folder, image_column=meta["image_col"])
 
 
 def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: str = SIZE_10K) -> DatasetSplit:
@@ -69,4 +70,5 @@ def split_dataset(dataset: MultimodalDataset, fold: int, size: str = SIZE_10K) -
                         x_test=dataset.x.iloc[test_idx],
                         y_test=dataset.y.iloc[test_idx],
                         task_type=dataset.task_type,
-                        image_folder=dataset.image_folder)
+                        image_folder=dataset.image_folder,
+                        image_column=dataset.image_column)
