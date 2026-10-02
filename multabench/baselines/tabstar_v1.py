@@ -1,10 +1,9 @@
 from pandas import DataFrame, Series
 
-from tabstar.constants import SEED
-from tabstar.tabstar_datasets import TEXT2FOLD
 from tabstar.tabstar_model import TabSTARClassifier, TabSTARRegressor
 
 from multabench.baselines.abstract_model import TabularModel
+from multabench.constants import SEED
 
 
 NEW2PAPER = {
@@ -53,10 +52,7 @@ NEW2PAPER = {
 
 def get_tabstar_paper_mapping(dataset_id: str) -> str | None:
     assert dataset_id in NEW2PAPER
-    dataset = NEW2PAPER[dataset_id]
-    if dataset:
-        assert dataset in TEXT2FOLD, f"{dataset} not in {TEXT2FOLD}"
-    return dataset
+    return NEW2PAPER[dataset_id]
 
 
 

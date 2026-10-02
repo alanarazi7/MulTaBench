@@ -5,10 +5,6 @@ file as the PRs that complete them are merged.
 
 ## Bugs
 
-- [ ] Date columns are read from the Kaggle CSVs as strings, and `fit_date_encoders` only picks up
-      `datetime64` columns, so dates fall through to text or categorical features. Detect
-      string-encoded dates (date separators plus a parse rate of at least 99%) and convert them
-      before the numerical and semantic type detection.
 - [ ] Pin `pandas < 3`: pandas 3's default string dtype breaks TabSTAR's dtype detection.
 
 ## Embedding cache
@@ -56,6 +52,20 @@ file as the PRs that complete them are merged.
       not accepted.
 - [ ] Remove the remaining paper analysis code in `multabench/leaderboard/`, keeping only the main
       leaderboard tab.
+
+## Open questions
+
+Helpers copied from tabstar that may not be needed:
+
+- [ ] `densify_objects` (`baselines/preprocessing/sparse.py`): converts pandas sparse columns to
+      dense. Does any dataset have sparse columns? If not, remove it.
+- [ ] `series_to_dt` (`baselines/preprocessing/dates.py`): strips quotes from date strings,
+      re-parses with `errors="coerce"` and drops timezones. Once the datasets store datetime
+      columns as timezone-naive `datetime64`, is any of this still needed?
+- [ ] `get_device` (`utils/devices.py`): picks the first idle GPU through `nvidia-smi`. Keep it, or
+      let the runner set the device explicitly?
+- [ ] `CPU_CORES` (`utils/devices.py`): models use at most 8 threads. Keep the cap, or make it a
+      setting recorded with each run?
 
 ## Later, not needed for the first release
 

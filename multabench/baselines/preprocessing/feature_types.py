@@ -5,7 +5,8 @@ from typing import Any, Set
 import pandas as pd
 from pandas import DataFrame, Series
 from pandas.api.types import is_bool_dtype, is_numeric_dtype
-from tabstar.preprocessing.feat_types import convert_series_to_textual
+
+from multabench.baselines.preprocessing.nulls import MISSING_VALUE
 
 
 def detect_image_features(x: DataFrame) -> list[str]:
@@ -61,7 +62,7 @@ def transform_feature_types(x: DataFrame, numerical_features: set[str], image_fe
         elif col in image_features:
             new_x[col] = x[col]
         else:
-            new_x[col] = convert_series_to_textual(s=x[col])
+            new_x[col] = x[col].astype(object).fillna(MISSING_VALUE).astype(str)
     new_x = DataFrame(new_x, index=x.index)
     ordered_x = new_x[x.columns]
     return ordered_x

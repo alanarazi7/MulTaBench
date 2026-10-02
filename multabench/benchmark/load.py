@@ -30,7 +30,7 @@ def _parse_task_type(meta: dict, dataset_id, y: pd.Series) -> SupervisedTask:
 
 
 def _missing_as_nan(df: pd.DataFrame) -> pd.DataFrame:
-    # Parquet returns missing strings as None, the CSV reader as NaN; tabstar counts None as a non-numeric value.
+    # Parquet returns missing strings as None, the CSV reader NaN; TabSTAR counts None as a non-numeric value.
     for col in df.columns:
         if df[col].dtype == object:
             df[col] = df[col].where(df[col].notna(), np.nan)

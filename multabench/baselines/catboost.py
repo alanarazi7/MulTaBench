@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from catboost import CatBoostRegressor, CatBoostClassifier
 from pandas import DataFrame, Series
 
-from tabstar.constants import SEED
-from tabstar.training.devices import CPU_CORES
+from multabench.constants import SEED
+from multabench.utils.devices import CPU_CORES
 from multabench.baselines.abstract_model import TabularModel
 
 

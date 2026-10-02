@@ -1,7 +1,7 @@
 from lightgbm import LGBMClassifier, LGBMRegressor
 from pandas import DataFrame, Series
 
-from tabstar.constants import SEED
+from multabench.constants import SEED
 from multabench.baselines.abstract_model import TabularModel
 
 

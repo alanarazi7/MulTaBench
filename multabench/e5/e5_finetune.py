@@ -22,7 +22,7 @@ from transformers import (
     EarlyStoppingCallback,
 )
 
-from tabstar.constants import SEED
+from multabench.constants import SEED
 from multabench.finetune.utils import compute_metrics_multiclass, encoder_finetune_loss
 from multabench.e5.constants import (
     E5_DIM,
