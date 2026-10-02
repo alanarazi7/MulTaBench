@@ -1,16 +1,15 @@
 """Datetime columns expanded into numeric parts (copied from tabstar 1.1.15, tabstar/preprocessing/dates.py)."""
-from typing import Any, Dict, Set
+from typing import Dict, Set
 
 import pandas as pd
-from pandas import DataFrame, Series
+from pandas import DataFrame
 from skrub import DatetimeEncoder
 
 
 def transform_date_features(x: DataFrame, date_transformers: Dict[str, DatetimeEncoder]) -> DataFrame:
     rows = x.shape[0]
     for col, dt_encoder in date_transformers.items():
-        s = series_to_dt(s=x[col])
-        dt_df = dt_encoder.transform(s)
+        dt_df = dt_encoder.transform(x[col])
         dt_df.index = x.index
         x = x.drop(columns=[col])
         x = pd.concat([x, dt_df], axis=1)
@@ -22,28 +21,9 @@ def transform_date_features(x: DataFrame, date_transformers: Dict[str, DatetimeE
 def fit_date_encoders(x: DataFrame, date_features: Set[str]) -> Dict[str, DatetimeEncoder]:
     date_encoders = {}
     for col in [c for c in x.columns if c in date_features]:
-        dt_s = series_to_dt(s=x[col])
         # Adds: "year", "month", "day", "hour", "total_seconds", "weekday"
         encoder = DatetimeEncoder(add_weekday=True, add_total_seconds=True)
-        encoder.fit(dt_s)
+        encoder.fit(x[col])
         date_encoders[col] = encoder
     return date_encoders
 
-
-def series_to_dt(s: Series) -> Series:
-    s = s.apply(_clean_dirty_date)
-    dt_s = pd.to_datetime(s, errors='coerce')
-    dt_s = dt_s.apply(_remove_timezone)
-    return dt_s
-
-
-def _remove_timezone(dt):
-    if pd.notnull(dt) and getattr(dt, 'tzinfo', None) is not None:
-        return dt.tz_localize(None)
-    return dt
-
-
-def _clean_dirty_date(s: Any) -> Any:
-    if isinstance(s, str):
-        s = s.replace('"', "")
-    return s

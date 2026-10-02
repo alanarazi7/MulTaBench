@@ -9,7 +9,6 @@ from skrub import DatetimeEncoder
 from multabench.baselines.preprocessing.dates import fit_date_encoders, transform_date_features
 from multabench.baselines.preprocessing.feature_types import detect_feature_types, transform_feature_types
 from multabench.baselines.preprocessing.nulls import raise_if_null_target
-from multabench.baselines.preprocessing.sparse import densify_objects
 from multabench.baselines.preprocessing.validation import split_to_val
 from multabench.baselines.preprocessing.image_embeddings import (
     transform_image_features,
@@ -116,7 +115,6 @@ class TabularModel:
         self.fit_internal_preprocessor(x=x_train, y=y_train)
 
     def transform_preprocessor(self, x: DataFrame, y: Optional[Series]) -> Tuple[DataFrame, Optional[Series]]:
-        x, y = densify_objects(x=x, y=y)
         x = transform_date_features(x=x, date_transformers=self.date_transformers)
         x = transform_image_features(
             x=x,
@@ -156,7 +154,6 @@ class TabularModel:
 
     def do_model_agnostic_preprocessing(self, x: DataFrame, y: Series) -> Tuple[DataFrame, Series]:
         raise_if_null_target(y)
-        x, y = densify_objects(x=x, y=y)
         feature_types = detect_feature_types(x, image_column=self.image_column)
         self.date_transformers = fit_date_encoders(x=x, date_features=feature_types.date_features)
         self.vprint(f"📅 Detected {len(self.date_transformers)} date features: {sorted(self.date_transformers)}")
