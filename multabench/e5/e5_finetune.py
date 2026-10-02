@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 import re
 import tempfile
 from typing import Dict, List, Optional, Tuple, Any, Union
@@ -242,7 +241,7 @@ def finetune_e5_with_lora(
     Finetune an E5 model with LoRA using Hugging Face Trainer. Uses train/val for early stopping.
     Single GPU only. Returns the backbone (encoding outputs d_model dims).
     """
-    assert "CUDA_VISIBLE_DEVICES" in os.environ, "CUDA_VISIBLE_DEVICES must be set"
+    assert torch.cuda.device_count() <= 1, "The Trainer uses every visible GPU; make only one visible"
     torch.manual_seed(seed)
     np.random.seed(seed)
 
