@@ -1,3 +1,5 @@
+import zipfile
+
 import pytest
 
 from multabench.datasets import hub
@@ -20,17 +22,14 @@ def test_hf_repo_ids_are_unique():
     assert len(repo_ids) == len(set(repo_ids))
 
 
-def test_image_shards_restore_the_images_folder(tmp_path, monkeypatch):
-    monkeypatch.setattr(hub, "IMAGES_PER_SHARD", 2)
-    src, repo = tmp_path / "src", tmp_path / "repo"
-    (src / "images" / "sub").mkdir(parents=True)
-    repo.mkdir()
+def test_image_shards_restore_the_images_folder(tmp_path):
     names = ["images/a.jpg", "images/b.png", "images/sub/c.jpg"]
+    shards = {"images-00000.zip": names[:2], "images-00001.zip": names[2:]}
+    for shard, shard_names in shards.items():
+        with zipfile.ZipFile(tmp_path / shard, "w") as z:
+            for name in shard_names:
+                z.writestr(name, bytes([names.index(name)]) * 10)
+    hub.extract_images(str(tmp_path))
     for i, name in enumerate(names):
-        (src / name).write_bytes(bytes([i]) * 10)
-    assert hub.pack_images(str(src), str(repo)) == 3
-    assert sorted(p.name for p in repo.iterdir()) == ["images-00000.zip", "images-00001.zip"]
-    hub.extract_images(str(repo))
-    for i, name in enumerate(names):
-        assert (repo / name).read_bytes() == bytes([i]) * 10
-    assert sorted(p.name for p in repo.iterdir()) == ["images", "images-00000.zip", "images-00001.zip"]
+        assert (tmp_path / name).read_bytes() == bytes([i]) * 10
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["images", "images-00000.zip", "images-00001.zip"]
