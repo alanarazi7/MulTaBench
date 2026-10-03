@@ -65,12 +65,9 @@ modality:
 
 ## Sentence embeddings
 
-`sentence-transformers` is already a dependency, but `e5/e5_finetune.py` still tokenizes, pads to
-512 and mean-pools by hand (`_mean_pool`, `_mean_pool_l2`).
+Frozen E5 encodes with `sentence-transformers`, but the `-tar` path in `e5/e5_finetune.py` still
+tokenizes, pads to 512 and mean-pools by hand (`_mean_pool`, `_mean_pool_l2`).
 
-- [ ] Encode frozen text with `SentenceTransformer(...).encode(..., normalize_embeddings=True)`,
-      dropping the hand-written pooling and the fixed-length padding. Check the embeddings match
-      the current ones.
 - [ ] See whether `E5ForTuning` can wrap the `SentenceTransformer` module for LoRA fine-tuning, so
       pooling lives in one place.
 
