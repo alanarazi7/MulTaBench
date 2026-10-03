@@ -7,7 +7,7 @@ from multabench.constants import SEED
 from multabench.preprocessing.discretize import discretize_numerical
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # Suppresses warning, avoids deadlock
-from typing import Dict, Set, Optional, Any
+from typing import Dict, Set, Optional, Any, Tuple
 
 import numpy as np
 import pandas as pd
@@ -68,7 +68,7 @@ class E5ColumnEncoder:
 def fit_text_encoders_skrub(
     x: DataFrame,
     text_features_list: list[str],
-) -> Dict[str, SkrubColumnEncoder]:
+) -> Tuple[Dict[str, SkrubColumnEncoder], Dict[str, np.ndarray]]:
     """Fit one SkrubColumnEncoder per column using skrub.StringEncoder (TF-IDF + TruncatedSVD)."""
     from skrub import StringEncoder
     text_encoders: Dict[str, SkrubColumnEncoder] = {}
@@ -82,7 +82,7 @@ def fit_text_encoders_skrub(
             col_name=str(col),
             n_components=PCA_COMPONENTS,
         )
-    return text_encoders
+    return text_encoders, {}
 
 
 def fit_text_encoders_vanilla(
@@ -90,9 +90,10 @@ def fit_text_encoders_vanilla(
     text_features_list: list[str],
     device: torch.device,
     e5_model_name: str = E5_SMALL_V2,
-) -> Dict[str, E5ColumnEncoder]:
+) -> Tuple[Dict[str, E5ColumnEncoder], Dict[str, np.ndarray]]:
     """Fit one E5ColumnEncoder per column using shared vanilla E5 + PCA per column. Uses passage: col_name: col_val format."""
     text_encoders: Dict[str, E5ColumnEncoder] = {}
+    train_embeddings: Dict[str, np.ndarray] = {}
     model, tokenizer = get_vanilla_e5(device, model_name=e5_model_name)
     for col in text_features_list:
         texts = x[col].astype(str).fillna("").tolist()
@@ -101,7 +102,8 @@ def fit_text_encoders_vanilla(
         encoder = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
         encoder.fit(col_embeddings)
         text_encoders[str(col)] = E5ColumnEncoder(model=model, tokenizer=tokenizer, encoder=encoder, col_name=str(col))
-    return text_encoders
+        train_embeddings[str(col)] = col_embeddings
+    return text_encoders, train_embeddings
 
 
 def fit_text_encoders_tuned(
@@ -113,7 +115,7 @@ def fit_text_encoders_tuned(
     is_cls: bool,
     d_output: int,
     e5_model_name: str = E5_SMALL_V2,
-) -> Dict[str, E5ColumnEncoder]:
+) -> Tuple[Dict[str, E5ColumnEncoder], Dict[str, np.ndarray]]:
     """Fit a single E5 model for all text columns with passage: col_name: col_val format. Each column gets an E5ColumnEncoder sharing the same tuned model."""
     from transformers import AutoTokenizer
 
@@ -162,13 +164,15 @@ def fit_text_encoders_tuned(
     tuned_model.to(device)
 
     text_encoders: Dict[str, E5ColumnEncoder] = {}
+    train_embeddings: Dict[str, np.ndarray] = {}
     for col in text_features_list:
         texts = x[col].astype(str).fillna("").tolist()
         col_embeddings = encode_texts_with_e5(texts=texts, model=tuned_model, tokenizer=tuned_tokenizer, device=device, col_name=str(col))
         encoder = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
         encoder.fit(col_embeddings)
         text_encoders[col] = E5ColumnEncoder(model=tuned_model, tokenizer=tuned_tokenizer, encoder=encoder, col_name=str(col))
-    return text_encoders
+        train_embeddings[col] = col_embeddings
+    return text_encoders, train_embeddings
 
 
 def fit_text_encoders(
@@ -181,15 +185,15 @@ def fit_text_encoders(
     is_cls: bool = True,
     d_output: int = 2,
     e5_model_name: str = E5_SMALL_V2,
-) -> Dict[str, E5ColumnEncoder]:
+) -> Tuple[Dict[str, E5ColumnEncoder], Dict[str, np.ndarray]]:
     """
     Fit one E5 model per text column (or vanilla E5 shared across columns when not tuning).
     Each column gets an E5ColumnEncoder wrapper holding model, tokenizer, and PCA.
-    Returns text_encoders mapping column -> E5ColumnEncoder.
+    Returns text_encoders mapping column -> E5ColumnEncoder, and the training rows' embeddings per column.
     """
     text_features_list = sorted(text_features)
     if not text_features_list:
-        return {}
+        return {}, {}
     if e5_model_name == TF_IDF:
         return fit_text_encoders_skrub(
             x=x,
@@ -218,10 +222,15 @@ def transform_text_features(
     x: DataFrame,
     text_encoders: Dict[str, E5ColumnEncoder],
     device: torch.device,
+    train_embeddings: Optional[Dict[str, np.ndarray]] = None,
 ) -> DataFrame:
+    train_embeddings = train_embeddings or {}
     for text_col, wrapper in text_encoders.items():
-        texts = x[text_col].astype(str).fillna("").tolist()
-        embeddings = wrapper.encode_texts(texts, device)
+        embeddings = train_embeddings.get(text_col)
+        if embeddings is None:
+            texts = x[text_col].astype(str).fillna("").tolist()
+            embeddings = wrapper.encode_texts(texts, device)
+        assert len(embeddings) == len(x)
         n_components = wrapper.n_components
         pca_vec = wrapper.encoder.transform(embeddings)
         pca_cols = [f"{text_col}_txt_pca_{i}" for i in range(n_components)]

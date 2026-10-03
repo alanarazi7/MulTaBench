@@ -75,6 +75,7 @@ class TabularModel:
         self.categorical_encoders: Dict[str, LabelEncoder] = {}
         self.text_features: Set[str] = set()
         self.text_transformers: Dict[str, E5ColumnEncoder] = {}
+        self._train_embeddings: Dict[str, np.ndarray] = {}
 
     def initialize_model(self):
         raise NotImplementedError("Initialize model method not implemented yet")
@@ -86,7 +87,8 @@ class TabularModel:
         else:
             x_val, y_val = None, None
         self.fit_preprocessor(x_train=x_train, y_train=y_train)
-        x_train, y_train = self.transform_preprocessor(x=x_train, y=y_train)
+        x_train, y_train = self.transform_preprocessor(x=x_train, y=y_train, train_embeddings=self._train_embeddings)
+        self._train_embeddings = {}
         if x_val is not None and y_val is not None:
             x_val, y_val = self.transform_preprocessor(x=x_val, y=y_val)
         self._print_feature_summary(x_train)
@@ -100,7 +102,7 @@ class TabularModel:
         if self.USE_CATEGORICAL_ENCODING:
             self.categorical_encoders = fit_categorical_encoders(x=x_train, categorical_features=self.categorical_features)
         if self.USE_TEXT_EMBEDDINGS:
-            self.text_transformers = fit_text_encoders(
+            self.text_transformers, text_embeddings = fit_text_encoders(
                 x=x_train,
                 text_features=self.text_features,
                 device=self.device,
@@ -111,10 +113,12 @@ class TabularModel:
                 d_output=self.d_output,
                 e5_model_name=self.e5_model_name,
             )
+            self._train_embeddings.update(text_embeddings)
             self.vprint(f"📝 Detected {len(self.text_transformers)} text features: {sorted(self.text_transformers)}")
         self.fit_internal_preprocessor(x=x_train, y=y_train)
 
-    def transform_preprocessor(self, x: DataFrame, y: Optional[Series]) -> Tuple[DataFrame, Optional[Series]]:
+    def transform_preprocessor(self, x: DataFrame, y: Optional[Series],
+                               train_embeddings: Optional[Dict[str, np.ndarray]] = None) -> Tuple[DataFrame, Optional[Series]]:
         x = transform_date_features(x=x, date_transformers=self.date_transformers)
         x = transform_image_features(
             x=x,
@@ -124,6 +128,7 @@ class TabularModel:
             dino_model=getattr(self, "_tuned_dino_model", None),
             dino_processor=getattr(self, "_tuned_dino_processor", None),
             dino_model_name=self.dino_model_name,
+            train_embeddings=train_embeddings,
         )
         image_features = [f"{col}_img_pca_{i}" for col in self.image_transformers.keys() for i in range(self.image_transformers[col].n_components)]
         x = transform_feature_types(x=x, numerical_features=self.numerical_features, image_features=image_features)
@@ -140,6 +145,7 @@ class TabularModel:
                 x=x,
                 text_encoders=self.text_transformers,
                 device=self.device,
+                train_embeddings=train_embeddings,
             )
         return self.transform_internal_preprocessor(x=x, y=y)
 
@@ -163,7 +169,7 @@ class TabularModel:
             self.d_output = len(set(y))
         else:
             self.d_output = 1
-        self.image_transformers, self._tuned_dino_model, self._tuned_dino_processor = fit_image_encoders(
+        self.image_transformers, self._tuned_dino_model, self._tuned_dino_processor, self._train_embeddings = fit_image_encoders(
             x=x,
             image_features=feature_types.image_features,
             device=self.device,
