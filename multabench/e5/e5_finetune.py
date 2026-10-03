@@ -158,18 +158,6 @@ def _load_fresh_e5(device: torch.device, model_name: str = E5_SMALL_V2) -> Tuple
     return model, tokenizer
 
 
-_VANILLA_E5_CACHE: Dict[Tuple, Tuple[Union[BertModel, nn.Module], AutoTokenizer]] = {}
-
-
-@embedding_step
-def get_vanilla_e5(device: Union[torch.device, str], model_name: str = E5_SMALL_V2) -> Tuple[Union[BertModel, nn.Module], AutoTokenizer]:
-    """Return cached vanilla E5 model and tokenizer for encoding (no tuning). Same model as finetune path."""
-    cache_key = (str(device), model_name)
-    if cache_key not in _VANILLA_E5_CACHE:
-        _VANILLA_E5_CACHE[cache_key] = _load_fresh_e5(device if isinstance(device, torch.device) else torch.device(device), model_name=model_name)
-    return _VANILLA_E5_CACHE[cache_key]
-
-
 def _mean_pool(last_hidden: torch.Tensor, attention_mask: torch.Tensor, l2_normalize: bool = False) -> torch.Tensor:
     """Masked mean pooling over tokens. Optionally L2 normalize (for encoding; matches E5 / SentenceTransformer)."""
     mask = attention_mask.unsqueeze(-1).float()  # (B, L, 1)

@@ -15,7 +15,8 @@ from pandas import DataFrame, Series
 import torch
 
 from multabench.e5.constants import E5_SMALL_V2, TF_IDF
-from multabench.e5.e5_finetune import encode_texts_with_e5, get_vanilla_e5
+from multabench.e5.e5_finetune import encode_texts_with_e5
+from multabench.e5.sentence_embeddings import encode_texts_with_vanilla_e5, get_vanilla_e5
 from multabench.utils.timing import embedding_step
 
 PCA_COMPONENTS = 30
@@ -38,6 +39,22 @@ class SkrubColumnEncoder:
 
     def transform(self, X: np.ndarray) -> np.ndarray:
         return X  # encode_texts already returns final (N, n_components) array
+
+
+class VanillaE5ColumnEncoder:
+    """Per-column text encoder: a shared frozen E5 SentenceTransformer and this column's PCA. Uses passage: col_name: col_val format."""
+
+    def __init__(self, model: Any, encoder: Any, col_name: str):
+        self.model = model
+        self.encoder = encoder
+        self.col_name = col_name
+        self.n_components = encoder.n_components
+
+    def encode_texts(self, texts: list[str], device: torch.device) -> np.ndarray:
+        return encode_texts_with_vanilla_e5(texts=texts, col_name=self.col_name, model=self.model)
+
+    def transform(self, X: np.ndarray) -> np.ndarray:
+        return self.encoder.transform(X)
 
 
 class E5ColumnEncoder:
@@ -90,17 +107,17 @@ def fit_text_encoders_vanilla(
     text_features_list: list[str],
     device: torch.device,
     e5_model_name: str = E5_SMALL_V2,
-) -> Dict[str, E5ColumnEncoder]:
-    """Fit one E5ColumnEncoder per column using shared vanilla E5 + PCA per column. Uses passage: col_name: col_val format."""
-    text_encoders: Dict[str, E5ColumnEncoder] = {}
-    model, tokenizer = get_vanilla_e5(device, model_name=e5_model_name)
+) -> Dict[str, VanillaE5ColumnEncoder]:
+    """Fit one VanillaE5ColumnEncoder per column using shared vanilla E5 + PCA per column. Uses passage: col_name: col_val format."""
+    text_encoders: Dict[str, VanillaE5ColumnEncoder] = {}
+    model = get_vanilla_e5(device, model_name=e5_model_name)
     for col in text_features_list:
         texts = x[col].astype(str).fillna("").tolist()
-        print(f"Fitting E5ColumnEncoder for column {col} with model {e5_model_name} for {len(texts)} texts")
-        col_embeddings = encode_texts_with_e5(texts=texts, model=model, tokenizer=tokenizer, device=device, col_name=str(col))
+        print(f"Fitting VanillaE5ColumnEncoder for column {col} with model {e5_model_name} for {len(texts)} texts")
+        col_embeddings = encode_texts_with_vanilla_e5(texts=texts, col_name=str(col), model=model)
         encoder = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
         encoder.fit(col_embeddings)
-        text_encoders[str(col)] = E5ColumnEncoder(model=model, tokenizer=tokenizer, encoder=encoder, col_name=str(col))
+        text_encoders[str(col)] = VanillaE5ColumnEncoder(model=model, encoder=encoder, col_name=str(col))
     return text_encoders
 
 
