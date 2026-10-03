@@ -32,6 +32,21 @@ reruns it. `--help` lists the available models. `--text_encoder` picks how text 
 `--image_encoder` does the same for image columns: frozen `dino-small` or `dino-large`, or
 `dino-small-tar`.
 
+`sweep.py` runs `benchmark.py` over models × datasets × encoders × folds. It writes the runs that
+don't have a result yet to `sweep_jobs.txt`, one command per line, which any scheduler can run.
+Text datasets have no images, so they run with the first image encoder only. Each run is its own
+process, and a failed run doesn't stop the others:
+
+```bash
+python sweep.py --models light,cat                        # only write sweep_jobs.txt
+python sweep.py --models light,cat --launcher local       # run them here, one after another
+python sweep.py --models light,cat --launcher slurm --sbatch="--partition=gpu --gres=gpu:1" --submit
+```
+
+With `--launcher slurm`, each line becomes a task of a Slurm array; `--sbatch="..."` is passed to `sbatch`
+as is (the `=` is needed, since the value starts with `--`), and without `--submit` the `sbatch` commands are only printed. Relaunching a sweep runs only
+what is still missing.
+
 To use a benchmark split in your own code, `load_split` downloads the dataset and returns the same
 train and test rows that `benchmark.py` evaluates on:
 

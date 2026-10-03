@@ -20,6 +20,7 @@ from multabench.baselines.tabpfnv2 import TabPFNv2, TabPFNv2p5
 from multabench.baselines.tabstar_v1 import TabSTAR
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
+from multabench.benchmark.runs import result_path
 from multabench.benchmark.splits import SIZE_10K, SIZES, SPLITS
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.dino.constants import IMAGE_ENCODERS
@@ -75,10 +76,9 @@ if __name__ == "__main__":
     image_encoder = IMAGE_ENCODERS[args.image_encoder]
     text_encoder = TEXT_ENCODERS[args.text_encoder]
     device = get_device(device=args.device)
-    exp_name = f"{args.model}_{dataset.name}_{args.text_encoder}_{args.image_encoder}_{args.size}_{args.fold}"
-    out_path = os.path.join(args.output_dir, f"{exp_name}.json")
+    out_path = result_path(args.output_dir, args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
     if os.path.exists(out_path) and not args.overwrite:
-        print(f"Skipping {exp_name}: {out_path} exists (--overwrite to rerun)")
+        print(f"Skipping: {out_path} exists (--overwrite to rerun)")
         sys.exit(0)
     dino_train_kwargs = dict(
         lora_rank=args.dino_rank,
