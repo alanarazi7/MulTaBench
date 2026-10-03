@@ -13,8 +13,8 @@ file as the PRs that complete them are merged.
       the benchmark datasets. Frozen encoders don't depend on the split, so they are stored once per
       dataset for every row. Each `-tar` fine-tune sees only its fold's training rows, so it is
       keyed by size and fold.
-- [ ] Record the encoding time with each embedding file, and report embedding time per 1K rows on
-      the leaderboard separately from the model's train and inference time.
+- [ ] Record the encoding time with each embedding file, so runs that read cached embeddings still
+      report their embedding time.
 - [ ] Upload the fine-tuned LoRA adapters alongside the embeddings, for reproducibility.
 - [ ] Make the model runners read the cached embeddings instead of re-embedding, so one fine-tune per
       fold is shared by every model. Each run records how many features had no cached embedding and
@@ -31,7 +31,7 @@ file as the PRs that complete them are merged.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
 - [ ] Collect the run JSONs into one results CSV with `metric`, `test_score`, `test_error`, train and
-      inference time per 1K rows, and hardware.
+      inference time per 1K rows, train and inference embedding time per 1K rows, and hardware.
 - [ ] Rerun every result CSV under `multabench/leaderboard/results/` with the TabArena metrics; the
       current ones still report AUC and R².
 
