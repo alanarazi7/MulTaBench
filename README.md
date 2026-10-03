@@ -24,8 +24,10 @@ python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --
 ```
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
-result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change). `--help`
-lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
+result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change). A run
+that fails still writes its JSON, with `"status": "error"` and the error, and exits non-zero; a successful one has
+`"status": "ok"`. A run whose JSON already exists is skipped, so a stopped sweep can be relaunched as is; `--overwrite`
+reruns it. `--help` lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
 `e5-small` or `e5-large`, or `e5-small-tar`, E5 fine-tuned on the task with LoRA (target-aware).
 `--image_encoder` does the same for image columns: frozen `dino-small` or `dino-large`, or
 `dino-small-tar`.

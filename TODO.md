@@ -25,8 +25,8 @@ file as the PRs that complete them are merged.
 - [ ] Sweep runner: every model × text encoder in {`tfidf`, `e5-small`, `e5-small-tar`} × image
       encoder in {`dino-small`, `dino-small-tar`} × dataset × fold at `--size 10k`, skipping encoders
       for modalities a dataset doesn't have.
-- [ ] A time limit per (model, dataset, fold). Timeouts and errors are written as result rows with a
-      `status` and the error, and the sweep can be resumed, skipping jobs that already have a row.
+- [ ] A time limit per (model, dataset, fold), enforced by the sweep runner, which kills the job and
+      writes a result row with `"status": "timeout"`.
 - [ ] Run every leaderboard entry on one fixed GPU type.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
