@@ -202,7 +202,7 @@ def encode_texts_with_e5(
         batch = prefixed[i : i + batch_size]
         out = tokenizer(
             batch,
-            padding="max_length",
+            padding=True,
             truncation=True,
             max_length=max_length,
             return_tensors="pt",
