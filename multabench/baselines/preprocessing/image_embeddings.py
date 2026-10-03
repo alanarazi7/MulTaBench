@@ -48,19 +48,20 @@ def fit_image_encoders(
     tune_dino: bool = False,
     dino_train_kwargs: Optional[Dict[str, Any]] = None,
     dino_model_name: str = DINOV3_SMALL,
-) -> Tuple[Dict[str, Any], Optional[Any], Optional[DINOv3ViTImageProcessorFast]]:
+) -> Tuple[Dict[str, Any], Optional[Any], Optional[DINOv3ViTImageProcessorFast], Dict[str, np.ndarray]]:
     """
     Fit PCA per image column. If tune_dino and y is provided,
     finetune DINO with LoRA on train/val split then use the best model for encoding.
-    Returns (image_encoders, tuned_dino_model_or_none, tuned_processor_or_none).
+    Returns (image_encoders, tuned_dino_model_or_none, tuned_processor_or_none, train_embeddings per column).
     """
     image_encoders: Dict[str, Any] = {}
+    train_embeddings: Dict[str, np.ndarray] = {}
     image_features = [c for c in x.columns if c in image_features]
     tuned_model = None
     tuned_processor: Optional[DINOv3ViTImageProcessorFast] = None
 
     if not image_features:
-        return image_encoders, tuned_model, tuned_processor
+        return image_encoders, tuned_model, tuned_processor, train_embeddings
     if image_folder is None:
         raise ValueError(f"Image columns {image_features} need an image_folder")
 
@@ -97,8 +98,9 @@ def fit_image_encoders(
         pca_col = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
         pca_col.fit(scaled)
         image_encoders[col] = _ScaledPCA(scaler, pca_col)
+        train_embeddings[col] = embeddings
 
-    return image_encoders, tuned_model, tuned_processor
+    return image_encoders, tuned_model, tuned_processor, train_embeddings
 
 def transform_image_features(
     x: DataFrame,
@@ -108,6 +110,7 @@ def transform_image_features(
     dino_model: Optional[DINOv3ViTModel] = None,
     dino_processor: Optional[DINOv3ViTImageProcessorFast] = None,
     dino_model_name: str = DINOV3_SMALL,
+    train_embeddings: Optional[Dict[str, np.ndarray]] = None,
 ) -> DataFrame:
     # TODO: In realistic scenarios where we tune the model repeatedly, the efficient way would be to fit the encoder once,
     # cache the embeddings, and then apply PCA on the cached embeddings over and over for every train split in every run.
@@ -119,10 +122,14 @@ def transform_image_features(
         dino_model, dino_processor = get_image_encoder(model_name=dino_model_name)
     dino_model.to(device)
     img_processor = dino_processor
+    train_embeddings = train_embeddings or {}
     for image_col, image_pca in image_transformers.items():
         assert image_col in x.columns, f"Image column {image_col} not found in DataFrame"
         s = x[image_col]
-        embeddings = image_urls_to_embeddings(s=x[image_col], image_folder=image_folder, processor=img_processor, model=dino_model)
+        embeddings = train_embeddings.get(image_col)
+        if embeddings is None:
+            embeddings = image_urls_to_embeddings(s=x[image_col], image_folder=image_folder, processor=img_processor, model=dino_model)
+        assert len(embeddings) == len(x)
         pca_vec = image_pca.transform(embeddings).astype(np.float32)
         pca_cols = [f"{image_col}_img_pca_{i}" for i in range(pca_vec.shape[1])]
         pca_df = pd.DataFrame(pca_vec, index=s.index, columns=pca_cols)
