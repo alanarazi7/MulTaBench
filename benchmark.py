@@ -20,9 +20,9 @@ from multabench.baselines.tabpfnv2 import TabPFNv2, TabPFNv2p5
 from multabench.baselines.tabstar_v1 import TabSTAR
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
-from multabench.benchmark.runs import result_path
+from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import SIZE_10K, SIZES, SPLITS
-from multabench.datasets.all_datasets import MulTaBenchDatasetID
+from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import IMAGE_ENCODERS
 from multabench.e5.constants import TEXT_ENCODERS
 from multabench.result_keys import STATUS, RunStatus
@@ -51,7 +51,8 @@ if __name__ == "__main__":
     parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1 or cpu; default: cuda, then mps, then cpu")
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
-    parser.add_argument('--image_encoder', type=str, default='dino-small', choices=list(IMAGE_ENCODERS))
+    parser.add_argument('--image_encoder', type=str, default=None, choices=list(IMAGE_ENCODERS),
+                        help="for datasets with images; default: dino-small")
     # DINO LoRA finetuning params (used by the "-tar" image encoders)
     parser.add_argument('--dino_lr', type=float, default=_dino.learning_rate)
     parser.add_argument('--dino_rank', type=int, default=_dino.lora_rank)
@@ -60,7 +61,8 @@ if __name__ == "__main__":
     parser.add_argument('--dino_patience', type=int, default=_dino.patience)
     parser.add_argument('--dino_weight_decay', type=float, default=_dino.weight_decay)
     parser.add_argument('--dino_batch_size', type=int, default=_dino.batch_size)
-    parser.add_argument('--text_encoder', type=str, default='e5-small', choices=list(TEXT_ENCODERS))
+    parser.add_argument('--text_encoder', type=str, default=None, choices=list(TEXT_ENCODERS),
+                        help="for datasets with text columns; default: e5-small")
     # E5 LoRA finetuning params (used by the "-tar" text encoders)
     parser.add_argument('--e5_lr', type=float, default=_e5.learning_rate)
     parser.add_argument('--e5_rank', type=int, default=_e5.lora_rank)
@@ -73,10 +75,20 @@ if __name__ == "__main__":
 
     model = SHORT2MODELS[args.model]
     dataset = MulTaBenchDatasetID[args.dataset_name]
-    image_encoder = IMAGE_ENCODERS[args.image_encoder]
-    text_encoder = TEXT_ENCODERS[args.text_encoder]
+    modality = dataset_modality(dataset)
+    if modality.has_text:
+        args.text_encoder = args.text_encoder or 'e5-small'
+    elif args.text_encoder:
+        parser.error(f"{dataset.name} has no text columns, so --text_encoder doesn't apply")
+    if modality.has_images:
+        args.image_encoder = args.image_encoder or 'dino-small'
+    elif args.image_encoder:
+        parser.error(f"{dataset.name} has no images, so --image_encoder doesn't apply")
+    image_encoder = IMAGE_ENCODERS[args.image_encoder] if args.image_encoder else None
+    text_encoder = TEXT_ENCODERS[args.text_encoder] if args.text_encoder else None
     device = get_device(device=args.device)
-    out_path = result_path(args.output_dir, args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
+    run = Run(args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
+    out_path = os.path.join(args.output_dir, f"{run.name}.json")
     if os.path.exists(out_path) and not args.overwrite:
         print(f"Skipping: {out_path} exists (--overwrite to rerun)")
         sys.exit(0)
@@ -88,7 +100,7 @@ if __name__ == "__main__":
         patience=args.dino_patience,
         weight_decay=args.dino_weight_decay,
         batch_size=args.dino_batch_size,
-    ) if image_encoder.tune_encoder else None
+    ) if image_encoder and image_encoder.tune_encoder else None
     e5_train_kwargs = dict(
         lora_rank=args.e5_rank,
         text_layers=args.e5_text_layers,
@@ -97,7 +109,7 @@ if __name__ == "__main__":
         patience=args.e5_patience,
         weight_decay=args.e5_weight_decay,
         batch_size=args.e5_batch_size,
-    ) if text_encoder.tune_encoder else None
+    ) if text_encoder and text_encoder.tune_encoder else None
     try:
         ret = evaluate_on_dataset(
             model_cls=model,
@@ -106,12 +118,12 @@ if __name__ == "__main__":
             size=args.size,
             device=device,
             verbose=args.verbose,
-            tune_dino=image_encoder.tune_encoder,
+            tune_dino=dino_train_kwargs is not None,
             dino_train_kwargs=dino_train_kwargs,
-            dino_model_name=image_encoder.encoder_name,
-            tune_e5=text_encoder.tune_encoder,
+            dino_model_name=image_encoder.encoder_name if image_encoder else None,
+            tune_e5=e5_train_kwargs is not None,
             e5_train_kwargs=e5_train_kwargs,
-            e5_model_name=text_encoder.encoder_name,
+            e5_model_name=text_encoder.encoder_name if text_encoder else None,
         )
         ret[STATUS] = RunStatus.OK
     except Exception as e:

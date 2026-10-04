@@ -22,7 +22,6 @@ file as the PRs that complete them are merged.
 
 ## Runs
 
-- [ ] Image datasets without text columns still run once per text encoder; skip the duplicates.
 - [ ] Run every leaderboard entry on one fixed GPU type.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.

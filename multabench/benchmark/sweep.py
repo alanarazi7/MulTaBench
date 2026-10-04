@@ -2,56 +2,44 @@
 import os
 import shlex
 import subprocess
-from dataclasses import dataclass
-from typing import Iterable, List
+from typing import Iterable, List, Optional, Tuple
 
-from multabench.benchmark.runs import result_path
-from multabench.datasets.all_datasets import MulTaBenchDatasetID, is_image_dataset
+from multabench.benchmark.runs import Run
+from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 
 SLURM_ARRAY_LIMIT = 1000
+# Image datasets with text columns vary only the image encoder; their text is embedded with frozen E5.
+IMAGE_TEXT_TEXT_ENCODER = "e5-small"
 
 
-@dataclass(frozen=True)
-class Job:
-    model: str
-    dataset: str
-    text_encoder: str
-    image_encoder: str
-    size: str
-    fold: int
-
-    def result_path(self, output_dir: str) -> str:
-        return result_path(output_dir, self.model, self.dataset, self.text_encoder, self.image_encoder, self.size, self.fold)
-
-    def command(self, python: str, output_dir: str) -> str:
-        args = [python, "benchmark.py", "--model", self.model, "--dataset_name", self.dataset,
-                "--text_encoder", self.text_encoder, "--image_encoder", self.image_encoder,
-                "--size", self.size, "--fold", str(self.fold), "--output_dir", output_dir]
-        return shlex.join(args)
+def encoder_pairs(modality: Modality, text_encoders: List[str],
+                  image_encoders: List[str]) -> List[Tuple[Optional[str], Optional[str]]]:
+    if modality == Modality.TEXT:
+        return [(text_encoder, None) for text_encoder in text_encoders]
+    if modality == Modality.IMAGE:
+        return [(None, image_encoder) for image_encoder in image_encoders]
+    return [(IMAGE_TEXT_TEXT_ENCODER, image_encoder) for image_encoder in image_encoders]
 
 
-def list_jobs(models: Iterable[str], datasets: Iterable[MulTaBenchDatasetID], text_encoders: List[str],
-              image_encoders: List[str], folds: Iterable[int], size: str) -> List[Job]:
-    """Text datasets have no images, so they run with the first image encoder only."""
-    jobs = []
+def list_runs(models: Iterable[str], datasets: Iterable[MulTaBenchDatasetID], text_encoders: List[str],
+              image_encoders: List[str], folds: Iterable[int], size: str) -> List[Run]:
+    runs = []
     for model in models:
         for dataset in datasets:
-            dataset_image_encoders = image_encoders if is_image_dataset(dataset) else image_encoders[:1]
-            for text_encoder in text_encoders:
-                for image_encoder in dataset_image_encoders:
-                    for fold in folds:
-                        jobs.append(Job(model, dataset.name, text_encoder, image_encoder, size, fold))
-    return jobs
+            for text_encoder, image_encoder in encoder_pairs(dataset_modality(dataset), text_encoders, image_encoders):
+                for fold in folds:
+                    runs.append(Run(model, dataset.name, text_encoder, image_encoder, size, fold))
+    return runs
 
 
-def pending_jobs(jobs: List[Job], output_dir: str) -> List[Job]:
-    return [job for job in jobs if not os.path.exists(job.result_path(output_dir))]
+def pending_runs(runs: List[Run], output_dir: str) -> List[Run]:
+    return [run for run in runs if not os.path.exists(os.path.join(output_dir, f"{run.name}.json"))]
 
 
-def write_jobs_file(jobs: List[Job], path: str, python: str, output_dir: str):
+def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str):
     with open(path, "w") as f:
-        for job in jobs:
-            f.write(job.command(python=python, output_dir=output_dir) + "\n")
+        for run in runs:
+            f.write(run.command(python=python, output_dir=output_dir) + "\n")
 
 
 def run_local(jobs_file: str, repo_dir: str) -> int:

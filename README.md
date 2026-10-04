@@ -24,17 +24,19 @@ python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --
 ```
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
-result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change). A run
+result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change), with
+`none` for an encoder the dataset has no column for. A run
 that fails still writes its JSON, with `"status": "error"` and the error, and exits non-zero; a successful one has
 `"status": "ok"`. A run whose JSON already exists is skipped, so a stopped sweep can be relaunched as is; `--overwrite`
 reruns it. `--help` lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
-`e5-small` or `e5-large`, or `e5-small-tar`, E5 fine-tuned on the task with LoRA (target-aware).
-`--image_encoder` does the same for image columns: frozen `dino-small` or `dino-large`, or
-`dino-small-tar`.
+`e5-small` (the default) or `e5-large`, or `e5-small-tar`, E5 fine-tuned on the task with LoRA (target-aware).
+`--image_encoder` does the same for image columns: frozen `dino-small` (the default) or `dino-large`, or
+`dino-small-tar`. Each applies only to datasets with that kind of column.
 
 `sweep.py` runs `benchmark.py` over models × datasets × encoders × folds. It writes the runs that
 don't have a result yet to `sweep_jobs.txt`, one command per line, which any scheduler can run.
-Text datasets have no images, so they run with the first image encoder only. Each run is its own
+Text datasets run once per text encoder and image datasets once per image encoder; image datasets
+that also have text columns always embed their text with frozen `e5-small`. Each run is its own
 process, and a failed run doesn't stop the others:
 
 ```bash

@@ -104,6 +104,53 @@ def is_text_dataset(dataset_id: MulTaBenchDatasetID) -> bool:
     return dataset_id.name.startswith(_TEXT_PREFIXES)
 
 
+class Modality(Enum):
+    TEXT = "text"
+    IMAGE = "image"
+    IMAGE_TEXT = "image-text"
+
+    @property
+    def has_text(self) -> bool:
+        return self != Modality.IMAGE
+
+    @property
+    def has_images(self) -> bool:
+        return self != Modality.TEXT
+
+
+# Image datasets that also have text columns.
+IMAGE_TEXT_DATASETS: set[MulTaBenchDatasetID] = {
+    MulTaBenchDatasetID.MUL_IMAGE_CSGO_SKIN_PRICE,
+    MulTaBenchDatasetID.MUL_IMAGE_FLOWER_BOUQUETS,
+    MulTaBenchDatasetID.MUL_IMAGE_HUBMAP_HPA,
+    MulTaBenchDatasetID.MUL_IMAGE_PETFINDER,
+    MulTaBenchDatasetID.REG_IMAGE_AMAZON_PACKAGES,
+    MulTaBenchDatasetID.REG_IMAGE_HNM_FASHION,
+    MulTaBenchDatasetID.REG_IMAGE_KHAADI_CLOTHES,
+    MulTaBenchDatasetID.REG_IMAGE_LETTERBOXD_MOVIES,
+    MulTaBenchDatasetID.REG_IMAGE_PAINTING_PRICE,
+    MulTaBenchDatasetID.REG_IMAGE_DVM_CAR,
+    MulTaBenchDatasetID.REG_IMAGE_FLIPKART_RATIO,
+    MulTaBenchDatasetID.REG_IMAGE_LAHAINA_AUCTION,
+    MulTaBenchDatasetID.REG_IMAGE_SOCAL_HOUSES,
+    MulTaBenchDatasetID.MUL_IMAGE_POKEMON_HEIGHT,
+    MulTaBenchDatasetID.MUL_IMAGE_HEARTHSTONE_CLASS,
+    MulTaBenchDatasetID.REG_IMAGE_WATCH_TIER,
+    MulTaBenchDatasetID.REG_IMAGE_GOIAS_HOUSES,
+    MulTaBenchDatasetID.REG_IMAGE_TOKOPEDIA_WEIGHT,
+    MulTaBenchDatasetID.REG_IMAGE_KAMERNET_SIZE,
+    MulTaBenchDatasetID.REG_IMAGE_SAO_PAULO_HOUSES,
+    MulTaBenchDatasetID.REG_IMAGE_ZEPTO_PRICE,
+    MulTaBenchDatasetID.REG_IMAGE_AIRBNB_NYC,
+}
+
+
+def dataset_modality(dataset_id: MulTaBenchDatasetID) -> Modality:
+    if is_text_dataset(dataset_id):
+        return Modality.TEXT
+    return Modality.IMAGE_TEXT if dataset_id in IMAGE_TEXT_DATASETS else Modality.IMAGE
+
+
 MULTABENCH_SOURCES: dict[MulTaBenchDatasetID, str] = {
     MulTaBenchDatasetID.BIN_IMAGE_CELEB_ATTRACTIVENESS: "https://www.kaggle.com/datasets/jessicali9530/celeba-dataset",
     MulTaBenchDatasetID.BIN_IMAGE_HATEFUL_MEME: "https://www.kaggle.com/datasets/parthplc/facebook-hateful-meme-dataset",
@@ -191,3 +238,4 @@ MULTABENCH_SOURCES: dict[MulTaBenchDatasetID, str] = {
 for _d in MulTaBenchDatasetID:
     assert is_image_dataset(_d) != is_text_dataset(_d), f"Dataset {_d.name} must be exactly one of image or text"
     assert _d in MULTABENCH_SOURCES, f"Dataset {_d.name} has no source"
+assert all(is_image_dataset(_d) for _d in IMAGE_TEXT_DATASETS)
