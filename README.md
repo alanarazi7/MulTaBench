@@ -49,6 +49,14 @@ With `--launcher slurm`, each line becomes a task of a Slurm array; `--sbatch=".
 as is (the `=` is needed, since the value starts with `--`), and without `--submit` the `sbatch` commands are only printed. Relaunching a sweep runs only
 what is still missing.
 
+`collect_results.py` gathers the run JSONs into `results.csv`, one row per run, failed runs included: model, dataset,
+encoders, size and fold, the status, the metric with `test_score` (higher is better) and `test_error`, train and
+inference time per 1K rows apart from embedding, embedding time per 1K rows, and the hardware.
+
+```bash
+python collect_results.py --output_dir runs --csv results.csv
+```
+
 To use a benchmark split in your own code, `load_split` downloads the dataset and returns the same
 train and test rows that `benchmark.py` evaluates on:
 
