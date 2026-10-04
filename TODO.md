@@ -22,6 +22,8 @@ file as the PRs that complete them are merged.
 
 ## Runs
 
+- [ ] Split `benchmark.py` into a few functions in `multabench/benchmark/` (argument parsing,
+      encoder resolution, running and writing the result), leaving the script a thin entry point.
 - [ ] Run every leaderboard entry on one fixed GPU type.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
