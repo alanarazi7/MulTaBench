@@ -22,11 +22,8 @@ file as the PRs that complete them are merged.
 
 ## Runs
 
-- [ ] Sweep runner: every model × text encoder in {`tfidf`, `e5-small`, `e5-small-tar`} × image
-      encoder in {`dino-small`, `dino-small-tar`} × dataset × fold at `--size 10k`, skipping encoders
-      for modalities a dataset doesn't have.
-- [ ] A time limit per (model, dataset, fold), enforced by the sweep runner, which kills the job and
-      writes a result row with `"status": "timeout"`.
+- [ ] Split `benchmark.py` into a few functions in `multabench/benchmark/` (argument parsing,
+      encoder resolution, running and writing the result), leaving the script a thin entry point.
 - [ ] Run every leaderboard entry on one fixed GPU type.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
@@ -69,7 +66,7 @@ modality:
 - Hosting the leaderboard as a Hugging Face Space.
 - `e5-large` and `dino-large` stay available as options but are not run.
 - `--size full` results.
-- A generic Slurm template, configured only through environment variables, for running the sweep
-  on other clusters.
+- A time limit per (model, dataset, fold), excluding encoder fine-tuning, with a result row with
+  `"status": "timeout"`.
 - macOS: torch and LightGBM/XGBoost each bundle their own libomp, and the import order decides
   which one breaks.

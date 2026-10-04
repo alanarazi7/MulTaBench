@@ -1,5 +1,7 @@
 """Constants for E5 text encoders (BERT-based)."""
 
+from enum import StrEnum
+
 from multabench.utils.encoders import Encoder
 
 E5_SMALL_V2 = "intfloat/e5-small-v2"
@@ -7,11 +9,20 @@ E5_LARGE_V2 = "intfloat/e5-large-v2"
 
 TF_IDF = "tf-idf"  # skrub StringEncoder (TF-IDF + TruncatedSVD), CPU-only
 
+
+
+class TextEncoder(StrEnum):
+    TFIDF = "tfidf"
+    E5_SMALL = "e5-small"
+    E5_SMALL_TAR = "e5-small-tar"
+    E5_LARGE = "e5-large"
+
+
 TEXT_ENCODERS = {
-    "tfidf": Encoder(encoder_name=TF_IDF, tune_encoder=False),
-    "e5-small": Encoder(encoder_name=E5_SMALL_V2, tune_encoder=False),
-    "e5-small-tar": Encoder(encoder_name=E5_SMALL_V2, tune_encoder=True),
-    "e5-large": Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
+    TextEncoder.TFIDF: Encoder(encoder_name=TF_IDF, tune_encoder=False),
+    TextEncoder.E5_SMALL: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=False),
+    TextEncoder.E5_SMALL_TAR: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=True),
+    TextEncoder.E5_LARGE: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
 }
 
 D_E5_SMALL = 384
