@@ -15,7 +15,9 @@ class Run:
 
     @property
     def name(self) -> str:
-        return f"{self.model}_{self.dataset}_{self.text_encoder or 'none'}_{self.image_encoder or 'none'}_{self.size}_{self.fold}"
+        txt = self.text_encoder or "none"
+        img = self.image_encoder or "none"
+        return f"{self.model}_{self.dataset}_{txt}_{img}_{self.size}_{self.fold}"
 
     def command(self, python: str, output_dir: str) -> str:
         args = [python, "benchmark.py", "--model", self.model, "--dataset_name", self.dataset,
