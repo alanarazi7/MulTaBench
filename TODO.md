@@ -27,8 +27,6 @@ file as the PRs that complete them are merged.
 - [ ] Run every leaderboard entry on one fixed GPU type.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
-- [ ] Collect the run JSONs into one results CSV with `metric`, `test_score`, `test_error`, train and
-      inference time per 1K rows, train and inference embedding time per 1K rows, and hardware.
 - [ ] Rerun every result CSV under `multabench/leaderboard/results/` with the TabArena metrics; the
       current ones still report AUC and R².
 
