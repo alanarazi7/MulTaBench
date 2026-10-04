@@ -24,7 +24,7 @@ from multabench.benchmark.splits import SIZE_10K, SIZES, SPLITS
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.dino.constants import IMAGE_ENCODERS
 from multabench.e5.constants import TEXT_ENCODERS
-from multabench.result_keys import STATUS, STATUS_ERROR, STATUS_OK
+from multabench.result_keys import STATUS, RunStatus
 from multabench.utils.logging import get_current_commit_hash
 
 BASELINES = [TabSTAR,
@@ -113,7 +113,7 @@ if __name__ == "__main__":
             e5_train_kwargs=e5_train_kwargs,
             e5_model_name=text_encoder.encoder_name,
         )
-        ret[STATUS] = STATUS_OK
+        ret[STATUS] = RunStatus.OK
     except Exception as e:
         traceback.print_exc()
         ret = {
@@ -123,7 +123,7 @@ if __name__ == "__main__":
             "dataset": dataset.name,
             "fold": args.fold,
             "size": args.size,
-            STATUS: STATUS_ERROR,
+            STATUS: RunStatus.ERROR,
             "error": f"{type(e).__name__}: {e}",
             "traceback": traceback.format_exc(),
         }
@@ -133,5 +133,5 @@ if __name__ == "__main__":
     with open(out_path, "w") as f:
         json.dump(ret, f, indent=2, default=str)
     print(f"Summary written to {out_path}: {ret}")
-    if ret[STATUS] == STATUS_ERROR:
+    if ret[STATUS] == RunStatus.ERROR:
         sys.exit(1)
