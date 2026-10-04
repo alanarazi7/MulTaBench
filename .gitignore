@@ -7,7 +7,6 @@
 **/temp_*/
 **/check_whl/
 runs/
-/results.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
