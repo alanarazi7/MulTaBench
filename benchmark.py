@@ -1,6 +1,9 @@
 import argparse
 import json
 import os
+import sys
+import time
+import traceback
 
 from multabench.utils.devices import get_device
 from multabench.finetune.train_args import DinoTrainArgs, E5TrainArgs
@@ -21,6 +24,8 @@ from multabench.benchmark.splits import SIZE_10K, SIZES, SPLITS
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.dino.constants import IMAGE_ENCODERS
 from multabench.e5.constants import TEXT_ENCODERS
+from multabench.result_keys import STATUS, RunStatus
+from multabench.utils.logging import get_current_commit_hash
 
 BASELINES = [TabSTAR,
              CatBoost, XGBoost, LightGBM, RandomForest,
@@ -41,6 +46,7 @@ if __name__ == "__main__":
     parser.add_argument('--size', type=str, default=SIZE_10K, choices=SIZES)
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--output_dir', type=str, default='runs')
+    parser.add_argument('--overwrite', action='store_true', default=False, help="rerun even if the result JSON exists")
     parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1 or cpu; default: cuda, then mps, then cpu")
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
@@ -70,6 +76,10 @@ if __name__ == "__main__":
     text_encoder = TEXT_ENCODERS[args.text_encoder]
     device = get_device(device=args.device)
     exp_name = f"{args.model}_{dataset.name}_{args.text_encoder}_{args.image_encoder}_{args.size}_{args.fold}"
+    out_path = os.path.join(args.output_dir, f"{exp_name}.json")
+    if os.path.exists(out_path) and not args.overwrite:
+        print(f"Skipping {exp_name}: {out_path} exists (--overwrite to rerun)")
+        sys.exit(0)
     dino_train_kwargs = dict(
         lora_rank=args.dino_rank,
         img_layers=args.dino_img_layers,
@@ -88,24 +98,40 @@ if __name__ == "__main__":
         weight_decay=args.e5_weight_decay,
         batch_size=args.e5_batch_size,
     ) if text_encoder.tune_encoder else None
-    ret = evaluate_on_dataset(
-        model_cls=model,
-        dataset_id=dataset,
-        fold=args.fold,
-        size=args.size,
-        device=device,
-        verbose=args.verbose,
-        tune_dino=image_encoder.tune_encoder,
-        dino_train_kwargs=dino_train_kwargs,
-        dino_model_name=image_encoder.encoder_name,
-        tune_e5=text_encoder.tune_encoder,
-        e5_train_kwargs=e5_train_kwargs,
-        e5_model_name=text_encoder.encoder_name,
-    )
+    try:
+        ret = evaluate_on_dataset(
+            model_cls=model,
+            dataset_id=dataset,
+            fold=args.fold,
+            size=args.size,
+            device=device,
+            verbose=args.verbose,
+            tune_dino=image_encoder.tune_encoder,
+            dino_train_kwargs=dino_train_kwargs,
+            dino_model_name=image_encoder.encoder_name,
+            tune_e5=text_encoder.tune_encoder,
+            e5_train_kwargs=e5_train_kwargs,
+            e5_model_name=text_encoder.encoder_name,
+        )
+        ret[STATUS] = RunStatus.OK
+    except Exception as e:
+        traceback.print_exc()
+        ret = {
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            "git": get_current_commit_hash(),
+            "model": model.MODEL_NAME,
+            "dataset": dataset.name,
+            "fold": args.fold,
+            "size": args.size,
+            STATUS: RunStatus.ERROR,
+            "error": f"{type(e).__name__}: {e}",
+            "traceback": traceback.format_exc(),
+        }
     ret["text_encoder"] = args.text_encoder
     ret["image_encoder"] = args.image_encoder
     os.makedirs(args.output_dir, exist_ok=True)
-    out_path = os.path.join(args.output_dir, f"{exp_name}.json")
     with open(out_path, "w") as f:
         json.dump(ret, f, indent=2, default=str)
     print(f"Summary written to {out_path}: {ret}")
+    if ret[STATUS] == RunStatus.ERROR:
+        sys.exit(1)
