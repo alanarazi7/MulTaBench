@@ -2,14 +2,17 @@ import shlex
 from dataclasses import dataclass
 from typing import Optional
 
+from multabench.dino.constants import ImageEncoder
+from multabench.e5.constants import TextEncoder
+
 
 @dataclass(frozen=True)
 class Run:
     """One benchmark.py run; an encoder is None when the dataset has no column of its kind."""
     model: str
     dataset: str
-    text_encoder: Optional[str]
-    image_encoder: Optional[str]
+    text_encoder: Optional[TextEncoder]
+    image_encoder: Optional[ImageEncoder]
     size: str
     fold: int
 

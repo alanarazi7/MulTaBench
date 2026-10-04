@@ -6,14 +6,18 @@ from typing import Iterable, List, Optional, Tuple
 
 from multabench.benchmark.runs import Run
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
+from multabench.dino.constants import ImageEncoder
+from multabench.e5.constants import TextEncoder
 
 SLURM_ARRAY_LIMIT = 1000
+DEFAULT_TEXT_ENCODERS = [TextEncoder.TFIDF, TextEncoder.E5_SMALL, TextEncoder.E5_SMALL_TAR]
+DEFAULT_IMAGE_ENCODERS = [ImageEncoder.DINO_SMALL, ImageEncoder.DINO_SMALL_TAR]
 # Image datasets with text columns vary only the image encoder; their text is embedded with frozen E5.
-IMAGE_TEXT_TEXT_ENCODER = "e5-small"
+IMAGE_TEXT_TEXT_ENCODER = TextEncoder.E5_SMALL
 
 
-def encoder_pairs(modality: Modality, text_encoders: List[str],
-                  image_encoders: List[str]) -> List[Tuple[Optional[str], Optional[str]]]:
+def encoder_pairs(modality: Modality, text_encoders: List[TextEncoder],
+                  image_encoders: List[ImageEncoder]) -> List[Tuple[Optional[TextEncoder], Optional[ImageEncoder]]]:
     if modality == Modality.TEXT:
         return [(text_encoder, None) for text_encoder in text_encoders]
     if modality == Modality.IMAGE:
@@ -21,8 +25,8 @@ def encoder_pairs(modality: Modality, text_encoders: List[str],
     return [(IMAGE_TEXT_TEXT_ENCODER, image_encoder) for image_encoder in image_encoders]
 
 
-def list_runs(models: Iterable[str], datasets: Iterable[MulTaBenchDatasetID], text_encoders: List[str],
-              image_encoders: List[str], folds: Iterable[int], size: str) -> List[Run]:
+def list_runs(models: Iterable[str], datasets: Iterable[MulTaBenchDatasetID], text_encoders: List[TextEncoder],
+              image_encoders: List[ImageEncoder], folds: Iterable[int], size: str) -> List[Run]:
     runs = []
     for model in models:
         for dataset in datasets:

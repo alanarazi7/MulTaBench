@@ -23,8 +23,8 @@ from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import SIZE_10K, SIZES, SPLITS
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
-from multabench.dino.constants import IMAGE_ENCODERS
-from multabench.e5.constants import TEXT_ENCODERS
+from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
+from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.result_keys import STATUS, RunStatus
 from multabench.utils.logging import get_current_commit_hash
 
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1 or cpu; default: cuda, then mps, then cpu")
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
-    parser.add_argument('--image_encoder', type=str, default=None, choices=list(IMAGE_ENCODERS),
+    parser.add_argument('--image_encoder', type=ImageEncoder, default=None, choices=list(ImageEncoder),
                         help="for datasets with images; default: dino-small")
     # DINO LoRA finetuning params (used by the "-tar" image encoders)
     parser.add_argument('--dino_lr', type=float, default=_dino.learning_rate)
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     parser.add_argument('--dino_patience', type=int, default=_dino.patience)
     parser.add_argument('--dino_weight_decay', type=float, default=_dino.weight_decay)
     parser.add_argument('--dino_batch_size', type=int, default=_dino.batch_size)
-    parser.add_argument('--text_encoder', type=str, default=None, choices=list(TEXT_ENCODERS),
+    parser.add_argument('--text_encoder', type=TextEncoder, default=None, choices=list(TextEncoder),
                         help="for datasets with text columns; default: e5-small")
     # E5 LoRA finetuning params (used by the "-tar" text encoders)
     parser.add_argument('--e5_lr', type=float, default=_e5.learning_rate)
@@ -77,11 +77,11 @@ if __name__ == "__main__":
     dataset = MulTaBenchDatasetID[args.dataset_name]
     modality = dataset_modality(dataset)
     if modality.has_text:
-        args.text_encoder = args.text_encoder or 'e5-small'
+        args.text_encoder = args.text_encoder or TextEncoder.E5_SMALL
     elif args.text_encoder:
         parser.error(f"{dataset.name} has no text columns, so --text_encoder doesn't apply")
     if modality.has_images:
-        args.image_encoder = args.image_encoder or 'dino-small'
+        args.image_encoder = args.image_encoder or ImageEncoder.DINO_SMALL
     elif args.image_encoder:
         parser.error(f"{dataset.name} has no images, so --image_encoder doesn't apply")
     image_encoder = IMAGE_ENCODERS[args.image_encoder] if args.image_encoder else None
