@@ -8,9 +8,7 @@ import torch
 from multabench.utils.devices import CPU_CORES
 
 
-# Leaderboard runs all use this machine, so their times compare: TabArena's 8 CPU cores and 32 GB of RAM, with one
-# NVIDIA RTX PRO 6000 Blackwell (96 GB) where TabArena used an L40S (48 GB). The name is a prefix, since torch
-# appends the edition (e.g. "Server Edition").
+# A prefix, since torch appends the edition (e.g. "Server Edition").
 OFFICIAL_GPU = "NVIDIA RTX PRO 6000 Blackwell"
 OFFICIAL_CPUS = 8
 OFFICIAL_RAM_GB = 32
