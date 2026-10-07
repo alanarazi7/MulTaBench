@@ -49,10 +49,10 @@ With `--launcher slurm`, each line becomes a task of a Slurm array; `--sbatch=".
 as is (the `=` is needed, since the value starts with `--`), and without `--submit` the `sbatch` commands are only printed. Relaunching a sweep runs only
 what is still missing.
 
-Leaderboard runs must all use the same hardware, so their times compare: one NVIDIA L4 (24 GB),
-8 CPU cores and 32 GB of RAM (`OFFICIAL_*` in `multabench/utils/hardware.py`). With `--official`,
+Leaderboard runs must all use the same hardware, so their times compare: one NVIDIA RTX PRO 6000
+Blackwell (96 GB), 8 CPU cores and 32 GB of RAM (`OFFICIAL_*` in `multabench/utils/hardware.py`). With `--official`,
 `benchmark.py` checks the GPU, the CPUs it may use and its memory limit, and stops before running
-if any differs; on Slurm, request `--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an L4 node. Every
+if any differs; on Slurm, request `--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an RTX PRO 6000 node. Every
 result records `official_hardware`, and `sweep.py --official` passes the flag to every run and
 redoes results from other hardware.
 
@@ -112,7 +112,7 @@ MulTaBench is not an official TabArena leaderboard.
 | Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited: every dataset is split IID. Some datasets may have group or time structure, in which case IID splits can overestimate performance | |
 | Runtime | Train and inference time per 1K rows | Same, with the time spent embedding text and images reported separately | ✅ |
-| Hardware | Recorded per run; 8 CPU cores and 32 GB of RAM, with one NVIDIA L40S (48 GB) for GPU models | Recorded per run; leaderboard runs use 8 CPU cores, 32 GB of RAM and one NVIDIA L4 (24 GB), checked by `--official` | |
+| Hardware | Recorded per run; 8 CPU cores and 32 GB of RAM, with one NVIDIA L40S (48 GB) for GPU models | Recorded per run; leaderboard runs use 8 CPU cores, 32 GB of RAM and one NVIDIA RTX PRO 6000 Blackwell (96 GB), checked by `--official` | |
 | Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 3 folds, repeated twice for every size | |
 | Dataset size | Full size | `--size 10k` (the default, and the one the leaderboard reports) caps train and test at 10K and 5K rows; `--size full` keeps every row | |
 | Inner validation | 8-fold bagging for every model | No bagging: one fit per split, and models that need validation hold out 10% of the training rows (at most 1,000). This favors models that ensemble internally (TabPFN, TabICL, TabDPT, TabM, RandomForest) over single GBDTs and RealMLP | |

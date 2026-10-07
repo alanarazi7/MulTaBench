@@ -14,7 +14,7 @@ RUN = Run("light", "BIN_TEXT_FAKE_JOB_POSTING", "tfidf", None, "10k", 0)
 def test_cpu_is_not_the_official_hardware(monkeypatch):
     monkeypatch.setattr(hardware, "visible_cpus", lambda: OFFICIAL_CPUS)
     monkeypatch.setattr(hardware, "ram_limit_gb", lambda: float(OFFICIAL_RAM_GB))
-    assert official_hardware_mismatches(torch.device("cpu")) == ["GPU is None, not NVIDIA L4"]
+    assert official_hardware_mismatches(torch.device("cpu")) == ["GPU is None, not NVIDIA RTX PRO 6000 Blackwell"]
 
 
 def test_cpus_and_ram_must_match(monkeypatch):

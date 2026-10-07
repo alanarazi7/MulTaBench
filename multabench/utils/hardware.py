@@ -9,8 +9,9 @@ from multabench.utils.devices import CPU_CORES
 
 
 # Leaderboard runs all use this machine, so their times compare: TabArena's 8 CPU cores and 32 GB of RAM, with one
-# NVIDIA L4 (24 GB) where TabArena used an L40S (48 GB).
-OFFICIAL_GPU = "NVIDIA L4"
+# NVIDIA RTX PRO 6000 Blackwell (96 GB) where TabArena used an L40S (48 GB). The name is a prefix, since torch
+# appends the edition (e.g. "Server Edition").
+OFFICIAL_GPU = "NVIDIA RTX PRO 6000 Blackwell"
 OFFICIAL_CPUS = 8
 OFFICIAL_RAM_GB = 32
 
@@ -23,7 +24,7 @@ def official_hardware_mismatches(device: torch.device) -> List[str]:
     """How this process's hardware differs from the official one; empty when it matches."""
     mismatches = []
     gpu = torch.cuda.get_device_name(device) if device.type == "cuda" else None
-    if gpu != OFFICIAL_GPU:
+    if gpu is None or not gpu.startswith(OFFICIAL_GPU):
         mismatches.append(f"GPU is {gpu}, not {OFFICIAL_GPU}")
     elif torch.cuda.device_count() != 1:
         mismatches.append(f"{torch.cuda.device_count()} GPUs are visible, not 1")
