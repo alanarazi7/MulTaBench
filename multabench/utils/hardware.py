@@ -18,8 +18,13 @@ def get_hardware_dict(device: torch.device) -> Dict:
     return {**_get_gpu_dict(device), **_get_cpu_dict(), "visible_cpus": visible_cpus(), "ram_limit_gb": ram_limit_gb()}
 
 
+def assert_official_hardware(device: torch.device):
+    mismatches = official_hardware_mismatches(device)
+    if mismatches:
+        raise RuntimeError(f"Not the official hardware: {'; '.join(mismatches)}")
+
+
 def official_hardware_mismatches(device: torch.device) -> List[str]:
-    """How this process's hardware differs from the official one; empty when it matches."""
     mismatches = []
     gpu = torch.cuda.get_device_name(device) if device.type == "cuda" else None
     if gpu is None or not gpu.startswith(OFFICIAL_GPU):

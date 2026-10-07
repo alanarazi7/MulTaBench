@@ -20,13 +20,13 @@ from multabench.baselines.tabpfnv2 import TabPFNv2, TabPFNv2p5
 from multabench.baselines.tabstar_v1 import TabSTAR
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
-from multabench.benchmark.runs import Run, has_result
+from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import SIZE_10K, SIZES, SPLITS
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
-from multabench.result_keys import OFFICIAL_HARDWARE, STATUS, RunStatus
-from multabench.utils.hardware import official_hardware_mismatches
+from multabench.result_keys import STATUS, RunStatus
+from multabench.utils.hardware import assert_official_hardware
 from multabench.utils.logging import get_current_commit_hash
 
 BASELINES = [TabSTAR,
@@ -49,9 +49,7 @@ if __name__ == "__main__":
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--output_dir', type=str, default='runs')
     parser.add_argument('--overwrite', action='store_true', default=False, help="rerun even if the result JSON exists")
-    parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1 or cpu; default: cuda, then mps, then cpu")
-    parser.add_argument('--official', action='store_true', default=False,
-                        help="fail at start unless this is the leaderboard's hardware (see multabench/utils/hardware.py)")
+    parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1; default: cuda")
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
     parser.add_argument('--image_encoder', type=ImageEncoder, default=None, choices=list(ImageEncoder),
@@ -90,12 +88,10 @@ if __name__ == "__main__":
     image_encoder = IMAGE_ENCODERS[args.image_encoder] if args.image_encoder else None
     text_encoder = TEXT_ENCODERS[args.text_encoder] if args.text_encoder else None
     device = get_device(device=args.device)
-    mismatches = official_hardware_mismatches(device)
-    if args.official and mismatches:
-        parser.error(f"not the official hardware: {'; '.join(mismatches)}")
+    assert_official_hardware(device)
     run = Run(args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
     out_path = os.path.join(args.output_dir, f"{run.name}.json")
-    if has_result(out_path, official=args.official) and not args.overwrite:
+    if os.path.exists(out_path) and not args.overwrite:
         print(f"Skipping: {out_path} exists (--overwrite to rerun)")
         sys.exit(0)
     dino_train_kwargs = dict(
@@ -146,7 +142,6 @@ if __name__ == "__main__":
             "traceback": traceback.format_exc(),
         }
     ret["text_encoder"] = args.text_encoder
-    ret[OFFICIAL_HARDWARE] = not mismatches
     ret["image_encoder"] = args.image_encoder
     os.makedirs(args.output_dir, exist_ok=True)
     with open(out_path, "w") as f:

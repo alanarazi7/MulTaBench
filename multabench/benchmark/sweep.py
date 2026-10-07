@@ -4,7 +4,7 @@ import shlex
 import subprocess
 from typing import Iterable, List, Optional, Tuple
 
-from multabench.benchmark.runs import Run, has_result
+from multabench.benchmark.runs import Run
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
@@ -36,14 +36,14 @@ def list_runs(models: Iterable[str], datasets: Iterable[MulTaBenchDatasetID], te
     return runs
 
 
-def pending_runs(runs: List[Run], output_dir: str, official: bool = False) -> List[Run]:
-    return [run for run in runs if not has_result(os.path.join(output_dir, f"{run.name}.json"), official=official)]
+def pending_runs(runs: List[Run], output_dir: str) -> List[Run]:
+    return [run for run in runs if not os.path.exists(os.path.join(output_dir, f"{run.name}.json"))]
 
 
-def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str, official: bool = False):
+def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str):
     with open(path, "w") as f:
         for run in runs:
-            f.write(run.command(python=python, output_dir=output_dir) + (" --official" if official else "") + "\n")
+            f.write(run.command(python=python, output_dir=output_dir) + "\n")
 
 
 def run_local(jobs_file: str, repo_dir: str) -> int:

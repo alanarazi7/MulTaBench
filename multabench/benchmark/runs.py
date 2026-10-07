@@ -1,12 +1,9 @@
-import json
-import os
 import shlex
 from dataclasses import dataclass
 from typing import Optional
 
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
-from multabench.result_keys import OFFICIAL_HARDWARE
 
 
 @dataclass(frozen=True)
@@ -33,13 +30,3 @@ class Run:
         if self.image_encoder:
             args += ["--image_encoder", self.image_encoder]
         return shlex.join(args)
-
-
-def has_result(path: str, official: bool = False) -> bool:
-    """With official, a result from other hardware doesn't count, so the run is redone on the official one."""
-    if not os.path.exists(path):
-        return False
-    if not official:
-        return True
-    with open(path) as f:
-        return json.load(f).get(OFFICIAL_HARDWARE) is True
