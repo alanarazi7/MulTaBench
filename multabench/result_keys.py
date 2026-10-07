@@ -10,6 +10,7 @@ INFERENCE_TIME_PER_1K = "inference_time_per_1k_s"
 TRAIN_EMBEDDING_TIME_PER_1K = "train_embedding_time_per_1k_s"
 INFERENCE_EMBEDDING_TIME_PER_1K = "inference_embedding_time_per_1k_s"
 STATUS = "status"
+OFFICIAL_HARDWARE = "official_hardware"
 
 
 class RunStatus(StrEnum):

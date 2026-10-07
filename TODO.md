@@ -24,7 +24,7 @@ file as the PRs that complete them are merged.
 
 - [ ] Split `benchmark.py` into a few functions in `multabench/benchmark/` (argument parsing,
       encoder resolution, running and writing the result), leaving the script a thin entry point.
-- [ ] Run every leaderboard entry on one fixed GPU type.
+- [ ] Run every leaderboard entry on the official hardware (`sweep.py --official`).
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
 - [ ] Rerun every result CSV under `multabench/leaderboard/results/` with the TabArena metrics; the
@@ -35,6 +35,7 @@ file as the PRs that complete them are merged.
 - [ ] Elo leaderboard as in TabArena: `bencheval`, RandomForest (default) anchored at 1000, missing
       results imputed with RandomForest and flagged, bootstrapped confidence intervals. Update the
       "Leaderboard" row of the README table.
+- [ ] Keep only results with `official_hardware` in the leaderboard.
 - [ ] Coverage column (share of (dataset, fold) cells each model completed), plus win rate, average
       rank and improvability as secondary columns.
 - [ ] Leaderboard tab reading the new results CSV.

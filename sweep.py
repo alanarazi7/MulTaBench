@@ -36,6 +36,8 @@ if __name__ == "__main__":
     parser.add_argument('--folds', type=_csv([str(f) for f in range(SPLITS)]), default=[str(f) for f in range(SPLITS)])
     parser.add_argument('--size', type=str, default=SIZE_10K, choices=SIZES)
     parser.add_argument('--output_dir', type=str, default='runs')
+    parser.add_argument('--official', action='store_true', default=False,
+                        help="pass --official to every run, so runs on other hardware fail at start")
     parser.add_argument('--jobs_file', type=str, default='sweep_jobs.txt')
     parser.add_argument('--launcher', type=str, default=None, choices=["local", "slurm"],
                         help="default: only write the jobs file, one benchmark.py command per line")
@@ -49,11 +51,11 @@ if __name__ == "__main__":
     datasets = [MulTaBenchDatasetID[d] for d in args.datasets] if args.datasets else list(MulTaBenchDatasetID)
     runs = list_runs(models=args.models, datasets=datasets, text_encoders=args.text_encoders,
                      image_encoders=args.image_encoders, folds=[int(f) for f in args.folds], size=args.size)
-    pending = pending_runs(runs, output_dir=output_dir)
+    pending = pending_runs(runs, output_dir=output_dir, official=args.official)
     print(f"{len(runs)} runs, {len(runs) - len(pending)} already have a result, {len(pending)} to run")
     if not pending:
         sys.exit(0)
-    write_jobs_file(pending, path=jobs_file, python=sys.executable, output_dir=output_dir)
+    write_jobs_file(pending, path=jobs_file, python=sys.executable, output_dir=output_dir, official=args.official)
     print(f"Wrote {jobs_file}", flush=True)
 
     if args.launcher == "local":
