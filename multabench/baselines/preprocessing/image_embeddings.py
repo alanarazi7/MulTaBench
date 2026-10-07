@@ -66,24 +66,10 @@ def fit_image_encoders(
         raise ValueError(f"Image columns {image_features} need an image_folder")
 
     if tune_dino and y is not None:
-        if not is_cls:
-            y = discretize_numerical(y, n_bins=20)
-        x_tr, x_val, y_tr, y_val = split_to_val(x=x, y=y, is_cls=True)
-        first_col = image_features[0]
-        train_imgs = load_images(s=x_tr[first_col], image_folder=image_folder)
-        val_imgs = load_images(s=x_val[first_col], image_folder=image_folder)
-        kwargs = dino_train_kwargs or {}
-        tuned_model, tuned_processor = finetune_dino_with_lora(
-            train_images=train_imgs,
-            train_y=y_tr.values,
-            val_images=val_imgs,
-            val_y=y_val.values,
-            device=device,
-            processor=AutoImageProcessor.from_pretrained(dino_model_name, use_fast=True),
-            model_name=dino_model_name,
-            **kwargs,
-        )
-        tuned_model.to(device)
+        tuned_model, tuned_processor = finetune_dino_on_column(x=x, image_col=image_features[0], y=y, device=device,
+                                                               image_folder=image_folder, is_cls=is_cls,
+                                                               dino_train_kwargs=dino_train_kwargs,
+                                                               dino_model_name=dino_model_name)
         dino_model, img_processor = tuned_model, tuned_processor
     else:
         dino_model, img_processor = get_image_encoder(model_name=dino_model_name)
@@ -101,6 +87,36 @@ def fit_image_encoders(
         train_embeddings[col] = embeddings
 
     return image_encoders, tuned_model, tuned_processor, train_embeddings
+
+def finetune_dino_on_column(
+    x: DataFrame,
+    image_col: str,
+    y: Series,
+    device: torch.device,
+    image_folder: str,
+    is_cls: bool,
+    dino_train_kwargs: Optional[Dict[str, Any]] = None,
+    dino_model_name: str = DINOV3_SMALL,
+) -> Tuple[DINOv3ViTModel, DINOv3ViTImageProcessorFast]:
+    if not is_cls:
+        y = discretize_numerical(y, n_bins=20)
+    x_tr, x_val, y_tr, y_val = split_to_val(x=x, y=y, is_cls=True)
+    train_imgs = load_images(s=x_tr[image_col], image_folder=image_folder)
+    val_imgs = load_images(s=x_val[image_col], image_folder=image_folder)
+    kwargs = dino_train_kwargs or {}
+    tuned_model, tuned_processor = finetune_dino_with_lora(
+        train_images=train_imgs,
+        train_y=y_tr.values,
+        val_images=val_imgs,
+        val_y=y_val.values,
+        device=device,
+        processor=AutoImageProcessor.from_pretrained(dino_model_name, use_fast=True),
+        model_name=dino_model_name,
+        **kwargs,
+    )
+    tuned_model.to(device)
+    return tuned_model, tuned_processor
+
 
 def transform_image_features(
     x: DataFrame,

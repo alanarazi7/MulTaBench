@@ -67,6 +67,33 @@ split = load_split("MUL_IMAGE_PETFINDER", fold=0, size="10k")
 split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split.image_folder, split.image_column
 ```
 
+## Cached embeddings
+
+The text and image embeddings are cached on Hugging Face, one public dataset repo per encoder:
+`multabench/embeddings-e5-small`, `-e5-small-tar`, `-dino-small` and `-dino-small-tar`. A frozen encoder
+doesn't depend on the split, so it embeds every row of a dataset once, under `<dataset>/`. A
+fine-tuned (`-tar`) encoder only sees one split's training rows, so each split has its own
+fine-tune, under `<dataset>/<size>/fold-<k>/`, embedding that split's rows, with its LoRA adapter in
+`adapter/`. Each directory holds `embeddings.npz`, the raw encoder output per feature (PCA is fitted
+per run, on the training rows), and `meta.json`, with the encoding and fine-tuning time and the
+hardware. `load_embeddings` returns them aligned with `load_split`'s rows:
+
+```python
+from multabench import load_embeddings
+
+embeddings = load_embeddings("MUL_IMAGE_PETFINDER", fold=0, size="10k", encoder="dino-small")
+embeddings.train["Pet Image"], embeddings.test["Pet Image"], embeddings.meta
+```
+
+`embed.py` computes one directory, and `embed_sweep.py` runs it over encoders × datasets (× folds
+for `-tar`), with the same `--launcher` and `--sbatch` options as `sweep.py`, and uploads the
+result with `--upload`:
+
+```bash
+python embed_sweep.py --encoders e5-small,dino-small --launcher slurm --sbatch="--partition=gpu --gres=gpu:1" --submit
+python embed_sweep.py --upload
+```
+
 ## Datasets
 
 Every dataset is a public dataset repo in the [`multabench`](https://huggingface.co/multabench)

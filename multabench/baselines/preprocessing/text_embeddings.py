@@ -106,17 +106,16 @@ def fit_text_encoders_vanilla(
     return text_encoders, train_embeddings
 
 
-def fit_text_encoders_tuned(
+def finetune_e5_on_columns(
     x: DataFrame,
     text_features_list: list[str],
     device: torch.device,
     y: Series,
     e5_train_kwargs: Dict[str, Any],
     is_cls: bool,
-    d_output: int,
     e5_model_name: str = E5_SMALL_V2,
-) -> Tuple[Dict[str, E5ColumnEncoder], Dict[str, np.ndarray]]:
-    """Fit a single E5 model for all text columns with passage: col_name: col_val format. Each column gets an E5ColumnEncoder sharing the same tuned model."""
+) -> Tuple[Any, Any]:
+    """Fine-tune a single E5 model with LoRA on every text column at once, as (col_name: col_val, label) pairs."""
     from transformers import AutoTokenizer
 
     from multabench.e5.e5_finetune import finetune_e5_with_lora
@@ -162,7 +161,23 @@ def fit_text_encoders_tuned(
         **kwargs,
     )
     tuned_model.to(device)
+    return tuned_model, tuned_tokenizer
 
+
+def fit_text_encoders_tuned(
+    x: DataFrame,
+    text_features_list: list[str],
+    device: torch.device,
+    y: Series,
+    e5_train_kwargs: Dict[str, Any],
+    is_cls: bool,
+    d_output: int,
+    e5_model_name: str = E5_SMALL_V2,
+) -> Tuple[Dict[str, E5ColumnEncoder], Dict[str, np.ndarray]]:
+    """Fit a single E5 model for all text columns with passage: col_name: col_val format. Each column gets an E5ColumnEncoder sharing the same tuned model."""
+    tuned_model, tuned_tokenizer = finetune_e5_on_columns(x=x, text_features_list=text_features_list, device=device, y=y,
+                                                          e5_train_kwargs=e5_train_kwargs, is_cls=is_cls,
+                                                          e5_model_name=e5_model_name)
     text_encoders: Dict[str, E5ColumnEncoder] = {}
     train_embeddings: Dict[str, np.ndarray] = {}
     for col in text_features_list:

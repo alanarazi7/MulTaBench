@@ -1,4 +1,5 @@
 """Lists the benchmark.py runs of a sweep and runs them, locally or as a Slurm array."""
+import argparse
 import os
 import shlex
 import subprocess
@@ -34,6 +35,16 @@ def list_runs(models: Iterable[str], datasets: Iterable[MulTaBenchDatasetID], te
                 for fold in folds:
                     runs.append(Run(model, dataset.name, text_encoder, image_encoder, size, fold))
     return runs
+
+
+def csv_arg(choices=None, cast=str):
+    def parse(value: str):
+        items = [v for v in value.split(",") if v]
+        unknown = [v for v in items if choices is not None and v not in choices]
+        if unknown:
+            raise argparse.ArgumentTypeError(f"unknown {unknown}; choose from {sorted(map(str, choices))}")
+        return [cast(v) for v in items]
+    return parse
 
 
 def pending_runs(runs: List[Run], output_dir: str) -> List[Run]:
