@@ -26,6 +26,7 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modali
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.result_keys import STATUS, RunStatus
+from multabench.utils.hardware import assert_official_hardware
 from multabench.utils.logging import get_current_commit_hash
 
 BASELINES = [TabSTAR,
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--output_dir', type=str, default='runs')
     parser.add_argument('--overwrite', action='store_true', default=False, help="rerun even if the result JSON exists")
-    parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1 or cpu; default: cuda, then mps, then cpu")
+    parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1; default: cuda")
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
     parser.add_argument('--image_encoder', type=ImageEncoder, default=None, choices=list(ImageEncoder),
@@ -87,6 +88,7 @@ if __name__ == "__main__":
     image_encoder = IMAGE_ENCODERS[args.image_encoder] if args.image_encoder else None
     text_encoder = TEXT_ENCODERS[args.text_encoder] if args.text_encoder else None
     device = get_device(device=args.device)
+    assert_official_hardware(device)
     run = Run(args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
     out_path = os.path.join(args.output_dir, f"{run.name}.json")
     if os.path.exists(out_path) and not args.overwrite:
