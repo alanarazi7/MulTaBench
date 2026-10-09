@@ -113,6 +113,7 @@ class TabularModel:
                 is_cls=self.is_cls,
                 d_output=self.d_output,
                 e5_model_name=self.e5_model_name,
+                dataset=self.dataset,
             )
             self._train_embeddings.update(text_embeddings)
             self.vprint(f"📝 Detected {len(self.text_transformers)} text features: {sorted(self.text_transformers)}")

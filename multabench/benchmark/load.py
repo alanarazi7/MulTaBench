@@ -22,8 +22,8 @@ from multabench.benchmark.splits import SIZE_10K, get_split
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.hub import DATA_PARQUET, extract_images, hf_repo_id
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
-from multabench.embeddings.hub import (EMBEDDINGS_NPZ, META_JSON, REVISIONS, CachedEncoder,
-                                       embeddings_dir, embeddings_repo_id, parse_encoder, read_embeddings, select_rows)
+from multabench.embeddings.hub import (CachedEncoder, download_embeddings, embeddings_repo_id, parse_encoder,
+                                       read_embeddings, select_rows)
 from multabench.benchmark.utils.constants import METADATA_JSON
 from multabench.benchmark.utils.curation import TASK_REG, task_type_from_name
 
@@ -95,11 +95,10 @@ def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: str = S
     encoder = parse_encoder(encoder)
     y, task_type = load_target(dataset)
     train_idx, test_idx = get_split(y.to_numpy(), is_cls=task_type != SupervisedTask.REGRESSION, split=fold, size=size)
-    path_in_repo = embeddings_dir(dataset)
-    dir_path = snapshot_download(repo_id=embeddings_repo_id(encoder), repo_type="dataset",
-                                 revision=revision or REVISIONS[encoder],
-                                 allow_patterns=[f"{path_in_repo}/{EMBEDDINGS_NPZ}", f"{path_in_repo}/{META_JSON}"])
-    rows, embeddings, meta = read_embeddings(join(dir_path, path_in_repo))
+    path = download_embeddings(encoder, dataset, revision=revision)
+    if path is None:
+        raise FileNotFoundError(f"{embeddings_repo_id(encoder)} has no embeddings of {dataset.name}")
+    rows, embeddings, meta = read_embeddings(path)
     return SplitEmbeddings(train=select_rows(rows, embeddings, train_idx), test=select_rows(rows, embeddings, test_idx),
                            meta=meta)
 

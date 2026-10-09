@@ -6,10 +6,13 @@ feature, and meta.json, with the encoding time and the hardware it ran on.
 """
 import json
 import os
+from functools import lru_cache
 from os.path import join
-from typing import Dict, Tuple
+from typing import Dict, Optional, Tuple
 
 import numpy as np
+from huggingface_hub import snapshot_download
+from huggingface_hub.errors import RepositoryNotFoundError, RevisionNotFoundError
 
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.hub import HF_ORG
@@ -45,6 +48,13 @@ def repo_name(encoder: CachedEncoder) -> str:
 
 def embeddings_repo_id(encoder: CachedEncoder) -> str:
     return f"{HF_ORG}/{repo_name(encoder)}"
+
+
+def cached_encoder(model_name: str, tuned: bool) -> Optional[CachedEncoder]:
+    for encoder in CACHED_ENCODERS:
+        if encoder_spec(encoder) == (model_name, tuned):
+            return encoder
+    return None
 
 
 def embeds_dataset(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> bool:
@@ -84,3 +94,28 @@ def select_rows(rows: np.ndarray, embeddings: Dict[str, np.ndarray], idx: np.nda
     if missing.any():
         raise KeyError(f"{missing.sum()} rows have no cached embedding, e.g. row {idx[missing][0]}")
     return {feature: array[pos] for feature, array in embeddings.items()}
+
+
+def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID,
+                        revision: Optional[str] = None) -> Optional[str]:
+    """The local directory of the dataset's cached embeddings, or None when they aren't on the Hub."""
+    path_in_repo = embeddings_dir(dataset_id)
+    files = [EMBEDDINGS_NPZ, META_JSON]
+    try:
+        dir_path = snapshot_download(repo_id=embeddings_repo_id(encoder), repo_type="dataset",
+                                     revision=revision or REVISIONS[encoder],
+                                     allow_patterns=[f"{path_in_repo}/{f}" for f in files])
+    except (RepositoryNotFoundError, RevisionNotFoundError):
+        return None
+    path = join(dir_path, path_in_repo)
+    return path if all(os.path.exists(join(path, f)) for f in files) else None
+
+
+# A run fits and transforms one dataset, and the embeddings of a large one take a few hundred MB.
+@lru_cache(maxsize=1)
+def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> Optional[Tuple[np.ndarray, Dict[str, np.ndarray]]]:
+    path = download_embeddings(encoder, dataset_id)
+    if path is None:
+        return None
+    rows, embeddings, _ = read_embeddings(path)
+    return rows, embeddings
