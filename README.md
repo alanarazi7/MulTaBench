@@ -53,6 +53,8 @@ Every run must use the same hardware, so their times compare: one NVIDIA RTX PRO
 (96 GB), 8 CPU cores and 32 GB of RAM (`OFFICIAL_*` in `multabench/utils/hardware.py`).
 `benchmark.py` checks the GPU, the CPUs it may use and its memory limit, and raises before running
 if any differs; on Slurm, request `--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an RTX PRO 6000 node.
+The cached embeddings are computed on one NVIDIA A100, 6 CPU cores and 32 GB of RAM for now
+(`EMBEDDING_*`), while RTX PRO 6000s are scarce; the hardware they ran on is recorded with them.
 
 `collect_results.py` gathers the run JSONs into `results.csv`, one row per run, failed runs included: model, dataset,
 encoders, size and fold, the status, the metric with `test_score` (higher is better) and `test_error`, train and

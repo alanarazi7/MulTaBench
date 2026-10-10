@@ -12,6 +12,10 @@ from multabench.utils.devices import CPU_CORES
 OFFICIAL_GPU = "NVIDIA RTX PRO 6000 Blackwell"
 OFFICIAL_CPUS = 8
 OFFICIAL_RAM_GB = 32
+# The embedding cache is computed on single-A100 nodes for now, while RTX PRO 6000s are scarce; these nodes have 6 CPUs.
+# Benchmark runs still use the official hardware.
+EMBEDDING_GPU = "NVIDIA A100"
+EMBEDDING_CPUS = 6
 
 
 def get_hardware_dict(device: torch.device) -> Dict:
@@ -24,15 +28,16 @@ def assert_official_hardware(device: torch.device):
         raise RuntimeError(f"Not the official hardware: {'; '.join(mismatches)}")
 
 
-def official_hardware_mismatches(device: torch.device) -> List[str]:
+def official_hardware_mismatches(device: torch.device, official_gpu: str = OFFICIAL_GPU,
+                                 official_cpus: int = OFFICIAL_CPUS) -> List[str]:
     mismatches = []
     gpu = torch.cuda.get_device_name(device) if device.type == "cuda" else None
-    if gpu is None or not gpu.startswith(OFFICIAL_GPU):
-        mismatches.append(f"GPU is {gpu}, not {OFFICIAL_GPU}")
+    if gpu is None or not gpu.startswith(official_gpu):
+        mismatches.append(f"GPU is {gpu}, not {official_gpu}")
     elif torch.cuda.device_count() != 1:
         mismatches.append(f"{torch.cuda.device_count()} GPUs are visible, not 1")
-    if visible_cpus() != OFFICIAL_CPUS:
-        mismatches.append(f"{visible_cpus()} CPUs are available, not {OFFICIAL_CPUS}")
+    if visible_cpus() != official_cpus:
+        mismatches.append(f"{visible_cpus()} CPUs are available, not {official_cpus}")
     if abs(ram_limit_gb() - OFFICIAL_RAM_GB) > 1:
         mismatches.append(f"RAM is limited to {ram_limit_gb():.1f} GB, not {OFFICIAL_RAM_GB} GB")
     return mismatches

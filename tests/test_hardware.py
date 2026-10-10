@@ -2,7 +2,8 @@ import pytest
 import torch
 
 from multabench.utils import hardware
-from multabench.utils.hardware import OFFICIAL_CPUS, OFFICIAL_RAM_GB, assert_official_hardware, official_hardware_mismatches
+from multabench.utils.hardware import (EMBEDDING_CPUS, EMBEDDING_GPU, OFFICIAL_CPUS, OFFICIAL_RAM_GB, assert_official_hardware,
+                                       official_hardware_mismatches)
 
 
 def test_cpu_is_not_the_official_hardware(monkeypatch):
@@ -11,6 +12,17 @@ def test_cpu_is_not_the_official_hardware(monkeypatch):
     assert official_hardware_mismatches(torch.device("cpu")) == ["GPU is None, not NVIDIA RTX PRO 6000 Blackwell"]
     with pytest.raises(RuntimeError, match="Not the official hardware"):
         assert_official_hardware(torch.device("cpu"))
+
+
+def test_the_embedding_cache_is_checked_against_its_own_hardware(monkeypatch):
+    monkeypatch.setattr(hardware, "visible_cpus", lambda: EMBEDDING_CPUS)
+    monkeypatch.setattr(hardware, "ram_limit_gb", lambda: float(OFFICIAL_RAM_GB))
+    monkeypatch.setattr(torch.cuda, "get_device_name", lambda device: "NVIDIA A100-SXM4-40GB")
+    monkeypatch.setattr(torch.cuda, "device_count", lambda: 1)
+    cuda = torch.device("cuda")
+    assert official_hardware_mismatches(cuda, official_gpu=EMBEDDING_GPU, official_cpus=EMBEDDING_CPUS) == []
+    assert official_hardware_mismatches(cuda) == ["GPU is NVIDIA A100-SXM4-40GB, not NVIDIA RTX PRO 6000 Blackwell",
+                                                  "6 CPUs are available, not 8"]
 
 
 def test_cpus_and_ram_must_match(monkeypatch):
