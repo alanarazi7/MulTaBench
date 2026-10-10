@@ -50,10 +50,10 @@ as is (the `=` is needed, since the value starts with `--`), and without `--subm
 what is still missing.
 
 Every run must use the same hardware, so their times compare: one NVIDIA RTX PRO 6000 Blackwell
-(96 GB), an AMD EPYC 9B45 with 8 CPU cores and 32 GB of RAM (`BENCHMARK_HARDWARE` in
+(96 GB), an AMD EPYC 9B45 with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in
 `multabench/utils/hardware.py`). Runs that need no GPU, a CPU model (CatBoost, LightGBM, XGBoost,
 RandomForest) whose text is embedded with TF-IDF, use an Intel Xeon Platinum 8581C with 8 CPU cores
-and 32 GB of RAM instead (`CPU_HARDWARE`). `benchmark.py` checks the GPU, the processor, the CPUs it
+and 32 GB of RAM instead (`CPU_RUN_HARDWARE`). `benchmark.py` checks the GPU, the processor, the CPUs it
 may use and its memory limit, and raises before running if any differs; on Slurm, request
 `--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an RTX PRO 6000 node, or `--cpus-per-task=8 --mem=32G`
 on an 8-core Xeon 8581C node for CPU runs.
