@@ -86,7 +86,10 @@ doesn't depend on the split, so every row of a dataset is embedded once, under `
 `embeddings.npz`, the raw encoder output per feature (PCA is fitted per run, on the training rows),
 and `meta.json`, with the dataset's rows and columns, the encoding time per feature, the hardware it
 ran on, the hardware it should run on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how
-they differ. `load_embeddings` returns them aligned with `load_split`'s rows:
+they differ. The cache is optional: `benchmark.py` reads it when the dataset has embeddings for
+the encoder, and otherwise embeds live, so new encoders and datasets need no cache to run. Only
+the frozen `e5-small` text embeddings are read so far. `load_embeddings` returns them aligned with
+`load_split`'s rows:
 
 ```python
 from multabench import load_embeddings
