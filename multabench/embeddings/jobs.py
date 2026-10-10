@@ -10,7 +10,7 @@ from multabench.embeddings.hub import META_JSON, CachedEncoder, embeddings_dir, 
 
 @dataclass(frozen=True)
 class EmbeddingJob:
-    """One embed.py run: an encoder over every row of a dataset."""
+    """One multabench.embeddings.embed run: an encoder over every row of a dataset."""
     encoder: CachedEncoder
     dataset: MulTaBenchDatasetID
 
@@ -19,7 +19,7 @@ class EmbeddingJob:
         return join(repo_name(self.encoder), embeddings_dir(self.dataset))
 
     def command(self, python: str, output_dir: str) -> str:
-        return shlex.join([python, "embed.py", "--encoder", self.encoder, "--dataset_name", self.dataset.name,
+        return shlex.join([python, "-m", "multabench.embeddings.embed", "--encoder", self.encoder, "--dataset_name", self.dataset.name,
                            "--output_dir", output_dir])
 
 

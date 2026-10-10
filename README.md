@@ -88,12 +88,13 @@ and `meta.json`, with the dataset's rows and columns, the encoding time per feat
 ran on, the hardware it should run on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how
 they differ.
 
-`embed.py` embeds one dataset, and `embed_sweep.py` runs it over encoders × datasets, with the same
-`--launcher` and `--sbatch` options as `sweep.py`, and uploads the result with `--upload`:
+`python -m multabench.embeddings.embed` embeds one dataset, and `python -m
+multabench.embeddings.embed_sweep` runs it over encoders × datasets, with the same `--launcher` and
+`--sbatch` options as `sweep.py`, and uploads the result with `--upload`:
 
 ```bash
-python embed_sweep.py --launcher slurm --sbatch="--partition=a100 --gres=gpu:1 --cpus-per-task=6 --mem=32G" --submit
-python embed_sweep.py --upload
+python -m multabench.embeddings.embed_sweep --launcher slurm --sbatch="--partition=a100 --gres=gpu:1 --cpus-per-task=6 --mem=32G" --submit
+python -m multabench.embeddings.embed_sweep --upload
 ```
 
 ## Datasets

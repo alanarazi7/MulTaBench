@@ -5,11 +5,12 @@ from typing import Any, Dict, List, Tuple
 
 import numpy as np
 import torch
-from pandas import DataFrame
+from pandas import Series
 
 from multabench.baselines.preprocessing.feature_types import detect_feature_types, transform_feature_types
 from multabench.baselines.preprocessing.image_embeddings import get_image_encoder, image_urls_to_embeddings
 from multabench.datasets.objects import MultimodalDataset
+from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
 from multabench.e5.e5_finetune import encode_texts_with_e5, get_vanilla_e5
 from multabench.embeddings.hub import CachedEncoder, encoder_spec, write_embeddings
@@ -48,11 +49,6 @@ def _features(dataset: MultimodalDataset, encoder: CachedEncoder) -> List[str]:
     return [dataset.image_column] if dataset.image_column in dataset.x.columns else []
 
 
-def _text_frame(x: DataFrame, features: List[str]) -> DataFrame:
-    # A run fills missing text before embedding it, so the cache embeds the same strings.
-    return transform_feature_types(x[features], numerical_features=set(), image_features=set())
-
-
 def _load_frozen(encoder: CachedEncoder, device: torch.device) -> Tuple[Any, Any]:
     model_name = encoder_spec(encoder).encoder_name
     if isinstance(encoder, TextEncoder):
@@ -65,17 +61,29 @@ def _encode(dataset: MultimodalDataset, encoder: CachedEncoder, features: List[s
             processor: Any, device: torch.device) -> Tuple[Dict[str, np.ndarray], Dict[str, float]]:
     embeddings, seconds = {}, {}
     x = dataset.x.iloc[rows]
-    if isinstance(encoder, TextEncoder):
-        x = _text_frame(x, features)
     for col in features:
         if isinstance(encoder, TextEncoder):
-            embeddings[col] = encode_texts_with_e5(texts=x[col].tolist(), col_name=str(col), model=model,
-                                                   tokenizer=processor, device=device)
+            embeddings[col] = _embed_texts(x[col], model=model, tokenizer=processor, device=device)
+        elif isinstance(encoder, ImageEncoder):
+            embeddings[col] = _embed_images_in_chunks(x[col], image_folder=dataset.image_folder, model=model,
+                                                      processor=processor)
         else:
-            chunks = [image_urls_to_embeddings(s=x[col].iloc[i:i + IMAGE_CHUNK_ROWS], image_folder=dataset.image_folder,
-                                               processor=processor, model=model)
-                      for i in range(0, len(x), IMAGE_CHUNK_ROWS)]
-            embeddings[col] = np.concatenate(chunks)
+            raise TypeError(f"Unknown encoder {encoder!r}")
         seconds[col] = pop_embedding_seconds()
         print(f"Embedded {col}: {embeddings[col].shape} in {seconds[col]:.0f}s")
     return embeddings, seconds
+
+
+def _embed_texts(texts: Series, model: Any, tokenizer: Any, device: torch.device) -> np.ndarray:
+    # A run fills missing text before embedding it, so the cache embeds the same strings.
+    filled = transform_feature_types(texts.to_frame(), numerical_features=set(), image_features=set())[texts.name]
+    return encode_texts_with_e5(texts=filled.tolist(), col_name=str(texts.name), model=model, tokenizer=tokenizer,
+                                device=device)
+
+
+def _embed_images_in_chunks(urls: Series, image_folder: str, model: Any, processor: Any) -> np.ndarray:
+    chunks = []
+    for start in range(0, len(urls), IMAGE_CHUNK_ROWS):
+        chunk = urls.iloc[start:start + IMAGE_CHUNK_ROWS]
+        chunks.append(image_urls_to_embeddings(s=chunk, image_folder=image_folder, processor=processor, model=model))
+    return np.concatenate(chunks)

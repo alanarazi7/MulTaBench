@@ -47,7 +47,7 @@ def test_jobs_cover_each_dataset_once(tmp_path):
     assert jobs == [EmbeddingJob(TextEncoder.E5_SMALL, TEXT), EmbeddingJob(TextEncoder.E5_SMALL, IMAGE_TEXT),
                     EmbeddingJob(ImageEncoder.DINO_SMALL, IMAGE_TEXT)]
     assert jobs[0].command(python="python", output_dir="out") == (
-        "python embed.py --encoder e5-small --dataset_name BIN_TEXT_FAKE_JOB_POSTING --output_dir out")
+        "python -m multabench.embeddings.embed --encoder e5-small --dataset_name BIN_TEXT_FAKE_JOB_POSTING --output_dir out")
     done = tmp_path / jobs[0].path
     done.mkdir(parents=True)
     (done / META_JSON).touch()
