@@ -19,7 +19,7 @@ tabicl>=2.0.3
 autogluon.multimodal
 tabpfn >= 7.1.1
 tabstar >= 1.1.15
-torch >= 2.6.0
+torch >= 2.8.0  # PyPI's Linux wheels run on Blackwell GPUs (the RTX PRO 6000) from 2.8
 torchvision
 tqdm
 transformers >= 4.49.0
