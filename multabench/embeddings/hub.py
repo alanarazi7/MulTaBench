@@ -119,3 +119,9 @@ def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -
         return None
     rows, embeddings, _ = read_embeddings(path)
     return rows, embeddings
+
+
+def reads_cache(encoder: Encoder, dataset_id: MulTaBenchDatasetID) -> bool:
+    """Whether a run reads this encoder's embeddings from the cache; the runners read only text embeddings so far."""
+    cached = cached_encoder(encoder.encoder_name, encoder.tune_encoder)
+    return isinstance(cached, TextEncoder) and download_embeddings(cached, dataset_id) is not None

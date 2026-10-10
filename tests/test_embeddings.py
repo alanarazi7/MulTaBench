@@ -5,10 +5,12 @@ from pandas import DataFrame
 from multabench.baselines.preprocessing import text_embeddings
 from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders, transform_text_features
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
-from multabench.dino.constants import DINOV3_SMALL, ImageEncoder
-from multabench.e5.constants import E5_SMALL_V2, TF_IDF, TextEncoder
+from multabench.dino.constants import DINOV3_SMALL, IMAGE_ENCODERS, ImageEncoder
+from multabench.e5.constants import E5_SMALL_V2, TEXT_ENCODERS, TF_IDF, TextEncoder
+from multabench.embeddings import hub
 from multabench.embeddings.hub import (CACHED_ENCODERS, META_JSON, cached_encoder, embeddings_dir, embeddings_repo_id,
-                                       embeds_dataset, parse_encoder, read_embeddings, select_rows, write_embeddings)
+                                       embeds_dataset, parse_encoder, read_embeddings, reads_cache, select_rows,
+                                       write_embeddings)
 from multabench.embeddings.jobs import EmbeddingJob, list_jobs, pending_jobs
 
 TEXT = MulTaBenchDatasetID.BIN_TEXT_FAKE_JOB_POSTING
@@ -33,6 +35,16 @@ def test_cached_encoder():
     assert cached_encoder(DINOV3_SMALL, tuned=False) is ImageEncoder.DINO_SMALL
     assert cached_encoder(E5_SMALL_V2, tuned=True) is None
     assert cached_encoder(TF_IDF, tuned=False) is None
+
+
+def test_runs_read_only_cached_text_embeddings(monkeypatch):
+    monkeypatch.setattr(hub, "download_embeddings", lambda encoder, dataset_id: "on the hub")
+    assert reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL], TEXT)
+    assert not reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL_TAR], TEXT)
+    assert not reads_cache(TEXT_ENCODERS[TextEncoder.TFIDF], TEXT)
+    assert not reads_cache(IMAGE_ENCODERS[ImageEncoder.DINO_SMALL], IMAGE_TEXT)
+    monkeypatch.setattr(hub, "download_embeddings", lambda encoder, dataset_id: None)
+    assert not reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL], TEXT)
 
 
 @pytest.mark.parametrize("dataset_id", list(MulTaBenchDatasetID))
