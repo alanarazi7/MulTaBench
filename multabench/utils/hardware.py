@@ -19,6 +19,8 @@ class Hardware:
     ram_gb: int
 
 
+# Measured times are only a proxy for a model's cost, and compare only between runs on the same spec. CPU runs use
+# an Intel Xeon, since the GPU machines' AMD EPYC isn't available without a GPU.
 GPU_RUN_HARDWARE = Hardware(gpu_prefix="NVIDIA RTX PRO 6000 Blackwell", cpu_prefix="AMD EPYC 9B45", cpus=8, ram_gb=32)
 CPU_RUN_HARDWARE = Hardware(gpu_prefix=None, cpu_prefix="INTEL(R) XEON(R) PLATINUM 8581C", cpus=8, ram_gb=32)
 EMBEDDING_HARDWARE = Hardware(gpu_prefix="NVIDIA A100", cpu_prefix=None, cpus=6, ram_gb=32)
