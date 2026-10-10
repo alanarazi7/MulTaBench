@@ -25,6 +25,9 @@ file as the PRs that complete them are merged.
 - [ ] Split `benchmark.py` into a few functions in `multabench/benchmark/` (argument parsing,
       encoder resolution, running and writing the result), leaving the script a thin entry point.
 - [ ] Run every leaderboard entry on the official hardware.
+- [ ] Run CPU models (CatBoost, LightGBM, XGBoost, RandomForest) without a GPU when all their
+      embeddings come from the cache: a `CPU_HARDWARE` spec with no GPU, pinning the CPU model too,
+      since CPU times only compare on the same processor.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
 - [ ] Rerun every result CSV under `multabench/leaderboard/results/` with the TabArena metrics; the
