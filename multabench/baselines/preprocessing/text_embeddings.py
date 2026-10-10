@@ -75,7 +75,7 @@ def fit_text_encoders_skrub(
     for col in text_features_list:
         col_series = x[col].astype(str).fillna("")
         print(f"Fitting SkrubStringEncoder for column {col} with n_components={PCA_COMPONENTS} for {len(col_series)} texts")
-        string_enc = StringEncoder(n_components=PCA_COMPONENTS)
+        string_enc = StringEncoder(n_components=PCA_COMPONENTS, random_state=SEED)
         string_enc.fit(col_series)
         text_encoders[str(col)] = SkrubColumnEncoder(
             string_encoder=string_enc,
