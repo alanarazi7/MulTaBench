@@ -23,6 +23,7 @@ class RandomForest(TabularModel):
     USE_CATEGORICAL_ENCODING = True
     USE_TEXT_EMBEDDINGS = True
     USE_TARGET_ENCODER = True
+    NEEDS_GPU = False
 
     def initialize_model(self) -> RandomForestRegressor | RandomForestClassifier:
         model_cls = RandomForestClassifier if self.is_cls else RandomForestRegressor

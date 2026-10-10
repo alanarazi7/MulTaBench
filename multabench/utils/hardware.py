@@ -1,23 +1,33 @@
 import os
 from dataclasses import dataclass
 from os.path import dirname, join
-from typing import Dict, List, Optional
+from typing import Dict, Iterable, List, Optional
 
 import psutil
 import torch
 
+from multabench.e5.constants import TF_IDF
 from multabench.utils.devices import CPU_CORES
+from multabench.utils.encoders import Encoder
 
 
 @dataclass(frozen=True)
 class Hardware:
-    gpu: str  # A prefix, since torch appends the edition (e.g. "Server Edition").
+    gpu: Optional[str]  # A prefix, since torch appends the edition (e.g. "Server Edition"); None for no GPU.
+    cpu: str  # A prefix of the processor's name.
     cpus: int
     ram_gb: int
 
 
-BENCHMARK_HARDWARE = Hardware(gpu="NVIDIA RTX PRO 6000 Blackwell", cpus=8, ram_gb=32)
-EMBEDDING_HARDWARE = Hardware(gpu="NVIDIA A100", cpus=6, ram_gb=32)
+BENCHMARK_HARDWARE = Hardware(gpu="NVIDIA RTX PRO 6000 Blackwell", cpu="AMD EPYC 9B45", cpus=8, ram_gb=32)
+CPU_HARDWARE = Hardware(gpu=None, cpu="INTEL(R) XEON(R) PLATINUM 8581C", cpus=8, ram_gb=32)
+EMBEDDING_HARDWARE = Hardware(gpu="NVIDIA A100", cpu="Intel(R) Xeon(R) CPU @ 2.20GHz", cpus=6, ram_gb=32)
+
+
+def run_hardware(model_needs_gpu: bool, encoders: Iterable[Optional[Encoder]]) -> Hardware:
+    """A run needs a GPU if its model does, or if it embeds text or images with a neural encoder."""
+    encoder_needs_gpu = any(e is not None and e.encoder_name != TF_IDF for e in encoders)
+    return BENCHMARK_HARDWARE if model_needs_gpu or encoder_needs_gpu else CPU_HARDWARE
 
 
 def get_hardware_dict(device: torch.device) -> Dict:
@@ -33,10 +43,16 @@ def assert_hardware(device: torch.device, expected: Hardware):
 def hardware_mismatches(device: torch.device, expected: Hardware) -> List[str]:
     mismatches = []
     gpu = torch.cuda.get_device_name(device) if device.type == "cuda" else None
-    if gpu is None or not gpu.startswith(expected.gpu):
+    if expected.gpu is None:
+        if device.type != "cpu":
+            mismatches.append(f"Runs on {device}, not the CPU")
+    elif gpu is None or not gpu.startswith(expected.gpu):
         mismatches.append(f"GPU is {gpu}, not {expected.gpu}")
     elif torch.cuda.device_count() != 1:
         mismatches.append(f"{torch.cuda.device_count()} GPUs are visible, not 1")
+    cpu = get_cpu_name_linux()
+    if cpu is None or not cpu.startswith(expected.cpu):
+        mismatches.append(f"CPU is {cpu}, not {expected.cpu}")
     if visible_cpus() != expected.cpus:
         mismatches.append(f"{visible_cpus()} CPUs are available, not {expected.cpus}")
     if abs(ram_limit_gb() - expected.ram_gb) > 1:

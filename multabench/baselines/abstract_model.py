@@ -35,6 +35,7 @@ class TabularModel:
     USE_CATEGORICAL_ENCODING: bool
     USE_TEXT_EMBEDDINGS: bool
     USE_TARGET_ENCODER: bool
+    NEEDS_GPU = True
 
     def __init__(self, problem_type: SupervisedTask, device: torch.device,
                  dataset: MulTaBenchDatasetID | None = None, verbose: bool = False, image_folder: str | None = None,
