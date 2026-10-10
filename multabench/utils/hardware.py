@@ -1,40 +1,64 @@
 import os
+from dataclasses import dataclass
 from os.path import dirname, join
-from typing import Dict, List, Optional
+from typing import Dict, Iterable, List, Optional
 
 import psutil
 import torch
 
+from multabench.e5.constants import TF_IDF
 from multabench.utils.devices import CPU_CORES
+from multabench.utils.encoders import Encoder
 
 
-# A prefix, since torch appends the edition (e.g. "Server Edition").
-OFFICIAL_GPU = "NVIDIA RTX PRO 6000 Blackwell"
-OFFICIAL_CPUS = 8
-OFFICIAL_RAM_GB = 32
+@dataclass(frozen=True)
+class Hardware:
+    gpu_prefix: Optional[str]
+    cpu_prefix: Optional[str]
+    cpus: int
+    ram_gb: int
+
+
+# Measured times are only a proxy for a model's cost, and compare only between runs on the same spec. CPU runs use
+# an Intel Xeon, since the GPU machines' AMD EPYC isn't available without a GPU.
+GPU_RUN_HARDWARE = Hardware(gpu_prefix="NVIDIA RTX PRO 6000 Blackwell", cpu_prefix="AMD EPYC 9B45", cpus=8, ram_gb=32)
+CPU_RUN_HARDWARE = Hardware(gpu_prefix=None, cpu_prefix="INTEL(R) XEON(R) PLATINUM 8581C", cpus=8, ram_gb=32)
+EMBEDDING_HARDWARE = Hardware(gpu_prefix="NVIDIA A100", cpu_prefix=None, cpus=6, ram_gb=32)
+
+
+def run_hardware(model_needs_gpu: bool, encoders: Iterable[Optional[Encoder]]) -> Hardware:
+    """A run needs a GPU if its model does, or if it embeds text or images with a neural encoder."""
+    encoder_needs_gpu = any(e is not None and e.encoder_name != TF_IDF for e in encoders)
+    return GPU_RUN_HARDWARE if model_needs_gpu or encoder_needs_gpu else CPU_RUN_HARDWARE
 
 
 def get_hardware_dict(device: torch.device) -> Dict:
     return {**_get_gpu_dict(device), **_get_cpu_dict(), "visible_cpus": visible_cpus(), "ram_limit_gb": ram_limit_gb()}
 
 
-def assert_official_hardware(device: torch.device):
-    mismatches = official_hardware_mismatches(device)
+def assert_hardware(device: torch.device, expected: Hardware):
+    mismatches = hardware_mismatches(device, expected)
     if mismatches:
-        raise RuntimeError(f"Not the official hardware: {'; '.join(mismatches)}")
+        raise RuntimeError(f"Not the expected hardware: {'; '.join(mismatches)}")
 
 
-def official_hardware_mismatches(device: torch.device) -> List[str]:
+def hardware_mismatches(device: torch.device, expected: Hardware) -> List[str]:
     mismatches = []
     gpu = torch.cuda.get_device_name(device) if device.type == "cuda" else None
-    if gpu is None or not gpu.startswith(OFFICIAL_GPU):
-        mismatches.append(f"GPU is {gpu}, not {OFFICIAL_GPU}")
+    if expected.gpu_prefix is None:
+        if device.type != "cpu":
+            mismatches.append(f"Runs on {device}, not the CPU")
+    elif gpu is None or not gpu.startswith(expected.gpu_prefix):
+        mismatches.append(f"GPU is {gpu}, not {expected.gpu_prefix}")
     elif torch.cuda.device_count() != 1:
         mismatches.append(f"{torch.cuda.device_count()} GPUs are visible, not 1")
-    if visible_cpus() != OFFICIAL_CPUS:
-        mismatches.append(f"{visible_cpus()} CPUs are available, not {OFFICIAL_CPUS}")
-    if abs(ram_limit_gb() - OFFICIAL_RAM_GB) > 1:
-        mismatches.append(f"RAM is limited to {ram_limit_gb():.1f} GB, not {OFFICIAL_RAM_GB} GB")
+    cpu = get_cpu_name_linux()
+    if expected.cpu_prefix is not None and (cpu is None or not cpu.startswith(expected.cpu_prefix)):
+        mismatches.append(f"CPU is {cpu}, not {expected.cpu_prefix}")
+    if visible_cpus() != expected.cpus:
+        mismatches.append(f"{visible_cpus()} CPUs are available, not {expected.cpus}")
+    if abs(ram_limit_gb() - expected.ram_gb) > 1:
+        mismatches.append(f"RAM is limited to {ram_limit_gb():.1f} GB, not {expected.ram_gb} GB")
     return mismatches
 
 

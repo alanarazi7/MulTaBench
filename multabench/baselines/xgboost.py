@@ -27,6 +27,7 @@ class XGBoost(TabularModel):
     USE_CATEGORICAL_ENCODING = True
     USE_TEXT_EMBEDDINGS = True
     USE_TARGET_ENCODER = True
+    NEEDS_GPU = False
 
     def initialize_model(self) -> XGBRegressor | XGBClassifier:
         model_cls = XGBClassifier if self.is_cls else XGBRegressor

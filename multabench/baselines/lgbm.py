@@ -15,6 +15,7 @@ class LightGBM(TabularModel):
     USE_CATEGORICAL_ENCODING = True
     USE_TEXT_EMBEDDINGS = True
     USE_TARGET_ENCODER = True
+    NEEDS_GPU = False
 
     def initialize_model(self) -> LGBMRegressor | LGBMClassifier:
         model_cls = LGBMClassifier if self.is_cls else LGBMRegressor

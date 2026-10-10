@@ -25,6 +25,8 @@ file as the PRs that complete them are merged.
 - [ ] Split `benchmark.py` into a few functions in `multabench/benchmark/` (argument parsing,
       encoder resolution, running and writing the result), leaving the script a thin entry point.
 - [ ] Run every leaderboard entry on the official hardware.
+- [ ] `sweep.py` takes one `--sbatch`, so a sweep mixing CPU and GPU runs has to be split in two by
+      hand. Group its runs by `run_hardware` and take a second set of sbatch arguments for CPU runs.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
 - [ ] Rerun every result CSV under `multabench/leaderboard/results/` with the TabArena metrics; the

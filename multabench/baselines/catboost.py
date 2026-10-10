@@ -26,6 +26,7 @@ class CatBoost(TabularModel):
     USE_CATEGORICAL_ENCODING = False
     USE_TEXT_EMBEDDINGS = True
     USE_TARGET_ENCODER = True
+    NEEDS_GPU = False
 
     def initialize_model(self) -> CatBoostRegressor | CatBoostClassifier:
         model_cls = CatBoostClassifier if self.is_cls else CatBoostRegressor
