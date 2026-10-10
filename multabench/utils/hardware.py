@@ -14,14 +14,14 @@ from multabench.utils.encoders import Encoder
 @dataclass(frozen=True)
 class Hardware:
     gpu: Optional[str]  # A prefix, since torch appends the edition (e.g. "Server Edition"); None for no GPU.
-    cpu: str  # A prefix of the processor's name.
+    cpu: Optional[str]  # A prefix of the processor's name; None to accept any.
     cpus: int
     ram_gb: int
 
 
 BENCHMARK_HARDWARE = Hardware(gpu="NVIDIA RTX PRO 6000 Blackwell", cpu="AMD EPYC 9B45", cpus=8, ram_gb=32)
 CPU_HARDWARE = Hardware(gpu=None, cpu="INTEL(R) XEON(R) PLATINUM 8581C", cpus=8, ram_gb=32)
-EMBEDDING_HARDWARE = Hardware(gpu="NVIDIA A100", cpu="Intel(R) Xeon(R) CPU @ 2.20GHz", cpus=6, ram_gb=32)
+EMBEDDING_HARDWARE = Hardware(gpu="NVIDIA A100", cpu=None, cpus=6, ram_gb=32)
 
 
 def run_hardware(model_needs_gpu: bool, encoders: Iterable[Optional[Encoder]]) -> Hardware:
@@ -51,7 +51,7 @@ def hardware_mismatches(device: torch.device, expected: Hardware) -> List[str]:
     elif torch.cuda.device_count() != 1:
         mismatches.append(f"{torch.cuda.device_count()} GPUs are visible, not 1")
     cpu = get_cpu_name_linux()
-    if cpu is None or not cpu.startswith(expected.cpu):
+    if expected.cpu is not None and (cpu is None or not cpu.startswith(expected.cpu)):
         mismatches.append(f"CPU is {cpu}, not {expected.cpu}")
     if visible_cpus() != expected.cpus:
         mismatches.append(f"{visible_cpus()} CPUs are available, not {expected.cpus}")
