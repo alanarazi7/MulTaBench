@@ -1,4 +1,5 @@
 import os
+from dataclasses import dataclass
 from os.path import dirname, join
 from typing import Dict, List, Optional
 
@@ -8,36 +9,38 @@ import torch
 from multabench.utils.devices import CPU_CORES
 
 
-# A prefix, since torch appends the edition (e.g. "Server Edition").
-OFFICIAL_GPU = "NVIDIA RTX PRO 6000 Blackwell"
-OFFICIAL_CPUS = 8
-OFFICIAL_RAM_GB = 32
-EMBEDDING_GPU = "NVIDIA A100"
-EMBEDDING_CPUS = 6
+@dataclass(frozen=True)
+class Hardware:
+    gpu: str  # A prefix, since torch appends the edition (e.g. "Server Edition").
+    cpus: int
+    ram_gb: int
+
+
+BENCHMARK_HARDWARE = Hardware(gpu="NVIDIA RTX PRO 6000 Blackwell", cpus=8, ram_gb=32)
+EMBEDDING_HARDWARE = Hardware(gpu="NVIDIA A100", cpus=6, ram_gb=32)
 
 
 def get_hardware_dict(device: torch.device) -> Dict:
     return {**_get_gpu_dict(device), **_get_cpu_dict(), "visible_cpus": visible_cpus(), "ram_limit_gb": ram_limit_gb()}
 
 
-def assert_official_hardware(device: torch.device):
-    mismatches = official_hardware_mismatches(device)
+def assert_hardware(device: torch.device, expected: Hardware):
+    mismatches = hardware_mismatches(device, expected)
     if mismatches:
-        raise RuntimeError(f"Not the official hardware: {'; '.join(mismatches)}")
+        raise RuntimeError(f"Not the expected hardware: {'; '.join(mismatches)}")
 
 
-def official_hardware_mismatches(device: torch.device, official_gpu: str = OFFICIAL_GPU,
-                                 official_cpus: int = OFFICIAL_CPUS) -> List[str]:
+def hardware_mismatches(device: torch.device, expected: Hardware) -> List[str]:
     mismatches = []
     gpu = torch.cuda.get_device_name(device) if device.type == "cuda" else None
-    if gpu is None or not gpu.startswith(official_gpu):
-        mismatches.append(f"GPU is {gpu}, not {official_gpu}")
+    if gpu is None or not gpu.startswith(expected.gpu):
+        mismatches.append(f"GPU is {gpu}, not {expected.gpu}")
     elif torch.cuda.device_count() != 1:
         mismatches.append(f"{torch.cuda.device_count()} GPUs are visible, not 1")
-    if visible_cpus() != official_cpus:
-        mismatches.append(f"{visible_cpus()} CPUs are available, not {official_cpus}")
-    if abs(ram_limit_gb() - OFFICIAL_RAM_GB) > 1:
-        mismatches.append(f"RAM is limited to {ram_limit_gb():.1f} GB, not {OFFICIAL_RAM_GB} GB")
+    if visible_cpus() != expected.cpus:
+        mismatches.append(f"{visible_cpus()} CPUs are available, not {expected.cpus}")
+    if abs(ram_limit_gb() - expected.ram_gb) > 1:
+        mismatches.append(f"RAM is limited to {ram_limit_gb():.1f} GB, not {expected.ram_gb} GB")
     return mismatches
 
 

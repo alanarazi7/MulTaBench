@@ -26,7 +26,7 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modali
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.result_keys import STATUS, RunStatus
-from multabench.utils.hardware import assert_official_hardware
+from multabench.utils.hardware import BENCHMARK_HARDWARE, assert_hardware
 from multabench.utils.logging import get_current_commit_hash
 
 BASELINES = [TabSTAR,
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     image_encoder = IMAGE_ENCODERS[args.image_encoder] if args.image_encoder else None
     text_encoder = TEXT_ENCODERS[args.text_encoder] if args.text_encoder else None
     device = get_device(device=args.device)
-    assert_official_hardware(device)
+    assert_hardware(device, BENCHMARK_HARDWARE)
     run = Run(args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
     out_path = os.path.join(args.output_dir, f"{run.name}.json")
     if os.path.exists(out_path) and not args.overwrite:
