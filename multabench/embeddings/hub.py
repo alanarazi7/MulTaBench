@@ -23,6 +23,9 @@ ROWS_KEY = "__rows__"
 
 CachedEncoder = TextEncoder | ImageEncoder
 CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL)
+# The upload's commit; "main" until an encoder's embeddings are on the Hub.
+REVISIONS: Dict[CachedEncoder, str] = {TextEncoder.E5_SMALL: "21bb46972d46c25fe08f035667f4cabdd95bc83e",
+                                       ImageEncoder.DINO_SMALL: "main"}
 
 
 def parse_encoder(encoder: str) -> CachedEncoder:
@@ -72,3 +75,12 @@ def read_embeddings(path: str) -> Tuple[np.ndarray, Dict[str, np.ndarray], dict]
         meta = json.load(f)
     return rows, embeddings, meta
 
+
+def select_rows(rows: np.ndarray, embeddings: Dict[str, np.ndarray], idx: np.ndarray) -> Dict[str, np.ndarray]:
+    """The embeddings of the rows at positions idx of the dataset, in that order."""
+    order = np.argsort(rows)
+    pos = order[np.searchsorted(rows, idx, sorter=order).clip(max=len(rows) - 1)]
+    missing = rows[pos] != idx
+    if missing.any():
+        raise KeyError(f"{missing.sum()} rows have no cached embedding, e.g. row {idx[missing][0]}")
+    return {feature: array[pos] for feature, array in embeddings.items()}

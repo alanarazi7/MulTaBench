@@ -5,10 +5,9 @@ file as the PRs that complete them are merged.
 
 ## Embedding cache
 
-- [ ] Add `load_embeddings(dataset, fold, size, encoder)`, shaped like `load_split`, which downloads
-      cached embeddings from Hugging Face at a pinned revision.
 - [ ] Compute and upload the `dino-small` embeddings for the benchmark datasets with
-      `python -m multabench.embeddings.embed_sweep`.
+      `python -m multabench.embeddings.embed_sweep`, then pin `REVISIONS` in
+      `multabench/embeddings/hub.py` to the uploaded commit.
 - [ ] The 62 uploaded `e5-small` `meta.json` files store `expected_hardware` as `{gpu, cpu, cpus, ram_gb}`,
       while new ones write `{gpu_prefix, cpu_prefix, cpus, ram_gb}`. Rename the keys in the uploaded files
       (a metadata-only upload, then a new pin in `REVISIONS`), or accept the difference.
