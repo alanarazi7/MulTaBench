@@ -86,7 +86,14 @@ doesn't depend on the split, so every row of a dataset is embedded once, under `
 `embeddings.npz`, the raw encoder output per feature (PCA is fitted per run, on the training rows),
 and `meta.json`, with the dataset's rows and columns, the encoding time per feature, the hardware it
 ran on, the hardware it should run on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how
-they differ.
+they differ. `load_embeddings` returns them aligned with `load_split`'s rows:
+
+```python
+from multabench import load_embeddings
+
+embeddings = load_embeddings("MUL_IMAGE_PETFINDER", fold=0, size="10k", encoder="dino-small")
+embeddings.train["Pet Image"], embeddings.test["Pet Image"], embeddings.meta
+```
 
 `python -m multabench.embeddings.embed` embeds one dataset, and `python -m
 multabench.embeddings.embed_sweep` runs it over encoders × datasets, with the same `--launcher` and
