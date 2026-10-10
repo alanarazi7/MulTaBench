@@ -12,8 +12,6 @@ from multabench.utils.devices import CPU_CORES
 OFFICIAL_GPU = "NVIDIA RTX PRO 6000 Blackwell"
 OFFICIAL_CPUS = 8
 OFFICIAL_RAM_GB = 32
-# The embedding cache is computed on single-A100 nodes for now, while RTX PRO 6000s are scarce; these nodes have 6 CPUs.
-# Benchmark runs still use the official hardware.
 EMBEDDING_GPU = "NVIDIA A100"
 EMBEDDING_CPUS = 6
 
