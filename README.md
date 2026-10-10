@@ -52,7 +52,7 @@ what is still missing.
 Every run must use the same hardware, so their times compare: one NVIDIA RTX PRO 6000 Blackwell
 (96 GB), an AMD EPYC 9B45 with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in
 `multabench/utils/hardware.py`). Runs that need no GPU, a CPU model (CatBoost, LightGBM, XGBoost,
-RandomForest) whose text is embedded with TF-IDF, use an Intel Xeon Platinum 8581C with 8 CPU cores
+RandomForest) whose text is embedded with TF-IDF or read from the cache, use an Intel Xeon Platinum 8581C with 8 CPU cores
 and 32 GB of RAM instead (`CPU_RUN_HARDWARE`). `benchmark.py` checks the GPU, the processor, the CPUs it
 may use and its memory limit, and raises before running if any differs; on Slurm, request
 `--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an RTX PRO 6000 node, or `--cpus-per-task=8 --mem=32G`
@@ -86,7 +86,10 @@ doesn't depend on the split, so every row of a dataset is embedded once, under `
 `embeddings.npz`, the raw encoder output per feature (PCA is fitted per run, on the training rows),
 and `meta.json`, with the dataset's rows and columns, the encoding time per feature, the hardware it
 ran on, the hardware it should run on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how
-they differ. `load_embeddings` returns them aligned with `load_split`'s rows:
+they differ. The cache is optional: `benchmark.py` reads it when the dataset has embeddings for
+the encoder, and otherwise embeds live, so new encoders and datasets need no cache to run. Only
+the frozen `e5-small` text embeddings are read so far. `load_embeddings` returns them aligned with
+`load_split`'s rows:
 
 ```python
 from multabench import load_embeddings

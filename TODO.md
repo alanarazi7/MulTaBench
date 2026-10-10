@@ -16,6 +16,9 @@ file as the PRs that complete them are merged.
 - [ ] Make the model runners read the cached embeddings instead of re-embedding, so one fine-tune per
       fold is shared by every model. Each run records how many features had no cached embedding and
       were encoded live.
+- [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
+      today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
+      rows.
 
 ## Runs
 
