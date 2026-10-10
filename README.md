@@ -78,6 +78,24 @@ split = load_split("MUL_IMAGE_PETFINDER", fold=0, size="10k")
 split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split.image_folder, split.image_column
 ```
 
+## Cached embeddings
+
+The frozen text and image embeddings are cached on Hugging Face, one public dataset repo per
+encoder: `multabench/embeddings-e5-small` and `multabench/embeddings-dino-small`. A frozen encoder
+doesn't depend on the split, so every row of a dataset is embedded once, under `<dataset>/`, in
+`embeddings.npz`, the raw encoder output per feature (PCA is fitted per run, on the training rows),
+and `meta.json`, with the dataset's rows and columns, the encoding time per feature, the hardware it
+ran on, the hardware it should run on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how
+they differ.
+
+`embed.py` embeds one dataset, and `embed_sweep.py` runs it over encoders × datasets, with the same
+`--launcher` and `--sbatch` options as `sweep.py`, and uploads the result with `--upload`:
+
+```bash
+python embed_sweep.py --launcher slurm --sbatch="--partition=a100 --gres=gpu:1 --cpus-per-task=6 --mem=32G" --submit
+python embed_sweep.py --upload
+```
+
 ## Datasets
 
 Every dataset is a public dataset repo in the [`multabench`](https://huggingface.co/multabench)

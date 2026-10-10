@@ -7,15 +7,9 @@ file as the PRs that complete them are merged.
 
 - [ ] Add `load_embeddings(dataset, fold, size, encoder)`, shaped like `load_split`, which downloads
       cached embeddings from Hugging Face at a pinned revision.
-- [ ] Add a script that computes the embeddings for every (dataset, size, fold, encoder) and uploads
-      them. Embeddings are stored at full dimension; PCA stays in the pipeline, fitted per fold.
-- [ ] Compute and upload `e5-small`, `e5-small-tar`, `dino-small` and `dino-small-tar` embeddings for
-      the benchmark datasets. Frozen encoders don't depend on the split, so they are stored once per
-      dataset for every row. Each `-tar` fine-tune sees only its fold's training rows, so it is
-      keyed by size and fold.
-- [ ] Record the encoding time with each embedding file, so runs that read cached embeddings still
-      report their embedding time.
-- [ ] Upload the fine-tuned LoRA adapters alongside the embeddings, for reproducibility.
+- [ ] Compute and upload the `dino-small` embeddings for the benchmark datasets with `embed_sweep.py`.
+- [ ] Cache the `e5-small-tar` and `dino-small-tar` embeddings: one fine-tune per (size, fold), each
+      seeing only its fold's training rows, uploaded with its LoRA adapter.
 - [ ] Make the model runners read the cached embeddings instead of re-embedding, so one fine-tune per
       fold is shared by every model. Each run records how many features had no cached embedding and
       were encoded live.
