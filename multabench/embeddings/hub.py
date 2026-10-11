@@ -9,9 +9,12 @@ import json
 import os
 from dataclasses import dataclass
 from os.path import join
-from typing import Dict, List, Sequence
+from functools import lru_cache
+from typing import Dict, List, Optional, Sequence
 
 import numpy as np
+from huggingface_hub import snapshot_download
+from huggingface_hub.errors import RepositoryNotFoundError
 from pandas import DataFrame
 
 from multabench.baselines.preprocessing.feature_types import transform_feature_types
@@ -49,6 +52,13 @@ def repo_name(encoder: CachedEncoder) -> str:
 
 def embeddings_repo_id(encoder: CachedEncoder) -> str:
     return f"{HF_ORG}/{repo_name(encoder)}"
+
+
+def cached_encoder(model_name: str, tuned: bool) -> Optional[CachedEncoder]:
+    for encoder in CACHED_ENCODERS:
+        if encoder_spec(encoder) == (model_name, tuned):
+            return encoder
+    return None
 
 
 def embeds_dataset(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> bool:
@@ -111,3 +121,29 @@ def read_embeddings(path: str) -> CachedEmbeddings:
     with open(join(path, META_JSON)) as f:
         meta = json.load(f)
     return CachedEmbeddings(inputs=inputs, embeddings=embeddings, meta=meta)
+
+
+def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> Optional[str]:
+    """The local directory of the dataset's cached embeddings, or None when they aren't on the Hub."""
+    path_in_repo = embeddings_dir(dataset_id)
+    files = [EMBEDDINGS_NPZ, META_JSON]
+    try:
+        dir_path = snapshot_download(repo_id=embeddings_repo_id(encoder), repo_type="dataset",
+                                     allow_patterns=[f"{path_in_repo}/{f}" for f in files])
+    except RepositoryNotFoundError:
+        return None
+    path = join(dir_path, path_in_repo)
+    return path if all(os.path.exists(join(path, f)) for f in files) else None
+
+
+# A run fits and transforms one dataset, and the embeddings of a large one take a few hundred MB.
+@lru_cache(maxsize=1)
+def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> Optional[CachedEmbeddings]:
+    path = download_embeddings(encoder, dataset_id)
+    return read_embeddings(path) if path is not None else None
+
+
+def reads_cache(encoder: Encoder, dataset_id: MulTaBenchDatasetID) -> bool:
+    """Whether a run reads this encoder's embeddings from the cache; the runners read only text embeddings so far."""
+    cached = cached_encoder(encoder.encoder_name, encoder.tune_encoder)
+    return isinstance(cached, TextEncoder) and download_embeddings(cached, dataset_id) is not None
