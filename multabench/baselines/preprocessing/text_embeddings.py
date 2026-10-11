@@ -17,7 +17,7 @@ import torch
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.e5.constants import E5_SMALL_V2, TF_IDF
 from multabench.e5.e5_finetune import encode_texts_with_e5, get_vanilla_e5
-from multabench.embeddings.hub import CachedEmbeddings, CachedEncoder, cached_embeddings, cached_encoder, encoder_inputs
+from multabench.embeddings.hub import CachedEmbeddings, cached_embeddings, cached_encoder, e5_passages
 from multabench.utils.timing import embedding_step
 
 PCA_COMPONENTS = 30
@@ -49,7 +49,7 @@ class E5ColumnEncoder:
     """Per-column text encoder: holds E5 model, tokenizer (processor), and PCA (or identity). Uses passage: col_name: col_val format."""
 
     def __init__(self, model: Any, tokenizer: Any, encoder: Any, col_name: str,
-                 cache: Optional[Tuple[CachedEncoder, CachedEmbeddings]] = None):
+                 cache: Optional[CachedEmbeddings] = None):
         self.model = model
         self.tokenizer = tokenizer
         self.encoder = encoder
@@ -72,8 +72,7 @@ class E5ColumnEncoder:
         texts = x[self.col_name].astype(str).fillna("").tolist()
         if self.cache is None:
             return self.encode_texts(texts, device)
-        encoder_id, cache = self.cache
-        return cache.lookup(encoder_inputs(encoder_id, self.col_name, texts), feature=self.col_name)
+        return self.cache.lookup(e5_passages(self.col_name, texts), feature=self.col_name)
 
     def transform(self, X: np.ndarray) -> np.ndarray:
         return self.encoder.transform(X)
@@ -109,25 +108,32 @@ def fit_text_encoders_vanilla(
 ) -> Tuple[Dict[str, E5ColumnEncoder], Dict[str, np.ndarray]]:
     """Fit one E5ColumnEncoder per column using shared vanilla E5 + PCA per column. Uses passage: col_name: col_val format.
     Columns with cached embeddings on the Hub are read from there instead of being encoded."""
+    caches = _caches_per_column(e5_model_name, dataset)
+    model, tokenizer = None, None
+    if not set(caches).issuperset(text_features_list):
+        model, tokenizer = get_vanilla_e5(device, model_name=e5_model_name)
     text_encoders: Dict[str, E5ColumnEncoder] = {}
     train_embeddings: Dict[str, np.ndarray] = {}
-    encoder_id = cached_encoder(e5_model_name, tuned=False)
-    cache = cached_embeddings(encoder_id, dataset) if dataset is not None and encoder_id else None
-    cached_features = set(cache.meta["features"]) if cache else set()
-    model, tokenizer = None, None
     for col in text_features_list:
-        col_cache = (encoder_id, cache) if col in cached_features else None
-        if col_cache is None and model is None:
-            model, tokenizer = get_vanilla_e5(device, model_name=e5_model_name)
-        source = f"the cached {encoder_id} embeddings" if col_cache else f"model {e5_model_name}"
-        print(f"Fitting E5ColumnEncoder for column {col} with {source} for {len(x)} texts")
-        wrapper = E5ColumnEncoder(model=model, tokenizer=tokenizer, encoder=PCA(n_components=PCA_COMPONENTS, random_state=SEED),
-                                  col_name=str(col), cache=col_cache)
+        pca = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
+        wrapper = E5ColumnEncoder(model=model, tokenizer=tokenizer, encoder=pca, col_name=str(col), cache=caches.get(col))
         col_embeddings = wrapper.embed(x, device)
-        wrapper.encoder.fit(col_embeddings)
+        pca.fit(col_embeddings)
         text_encoders[str(col)] = wrapper
         train_embeddings[str(col)] = col_embeddings
     return text_encoders, train_embeddings
+
+
+def _caches_per_column(e5_model_name: str, dataset: Optional[MulTaBenchDatasetID]) -> Dict[str, CachedEmbeddings]:
+    """The cached embeddings of each text column that has them."""
+    encoder = cached_encoder(e5_model_name, tuned=False)
+    if encoder is None or dataset is None:
+        return {}
+    cache = cached_embeddings(encoder, dataset)
+    if cache is None:
+        return {}
+    print(f"Reading the text embeddings of {cache.meta['features']} from the cached {encoder} embeddings")
+    return {col: cache for col in cache.meta["features"]}
 
 
 def fit_text_encoders_tuned(

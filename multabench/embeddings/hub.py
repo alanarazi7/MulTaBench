@@ -97,8 +97,12 @@ def input_values(x: DataFrame, encoder: CachedEncoder, col: str) -> List[str]:
 def encoder_inputs(encoder: CachedEncoder, col: str, values: Sequence[str]) -> List[str]:
     """The cache's keys: e5's "passage: <column>: <value>", or the image file name."""
     if isinstance(encoder, TextEncoder):
-        return [format_e5_passage(str(col), col_val=v) for v in values]
+        return e5_passages(col, values)
     return list(values)
+
+
+def e5_passages(col: str, texts: Sequence[str]) -> List[str]:
+    return [format_e5_passage(str(col), col_val=text) for text in texts]
 
 
 def write_embeddings(path: str, inputs: List[str], embeddings: np.ndarray, meta: dict):
