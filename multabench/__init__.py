@@ -1,1 +1,1 @@
-from multabench.benchmark.load import load_split
+from multabench.benchmark.load import load_embeddings, load_split
