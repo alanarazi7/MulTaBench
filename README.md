@@ -49,16 +49,17 @@ With `--launcher slurm`, each line becomes a task of a Slurm array; `--sbatch=".
 as is (the `=` is needed, since the value starts with `--`), and without `--submit` the `sbatch` commands are only printed. Relaunching a sweep runs only
 what is still missing.
 
-Every run must use the same hardware, so their times compare: one NVIDIA RTX PRO 6000 Blackwell
-(96 GB), an AMD EPYC 9B45 with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in
+Every run must use the same hardware, so their times compare: one NVIDIA H100 (80 GB), an Intel
+Xeon Platinum 8481C with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in
 `multabench/utils/hardware.py`). Runs that need no GPU, a CPU model (CatBoost, LightGBM, XGBoost,
 RandomForest) whose text is embedded with TF-IDF, use an Intel Xeon Platinum 8581C with 8 CPU cores
 and 32 GB of RAM instead (`CPU_RUN_HARDWARE`). `benchmark.py` checks the GPU, the processor, the CPUs it
 may use and its memory limit, and raises before running if any differs; on Slurm, request
-`--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an RTX PRO 6000 node, or `--cpus-per-task=8 --mem=32G`
-on an 8-core Xeon 8581C node for CPU runs.
+`--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an H100 node, or `--cpus-per-task=8 --mem=32G`
+on an 8-core Xeon 8581C node for CPU runs. The sweeps' Slurm jobs run under `srun`, so a run sees only
+the CPUs its job asked for, even when Slurm hands it a whole machine.
 The cached embeddings are computed on one NVIDIA A100, 6 CPU cores and 32 GB of RAM for now
-(`EMBEDDING_HARDWARE`), while RTX PRO 6000s are scarce; the hardware they ran on is recorded with them.
+(`EMBEDDING_HARDWARE`); the hardware they ran on is recorded with them.
 
 `collect_results.py` gathers the run JSONs into `results.csv`, one row per run, failed runs included: model, dataset,
 encoders, size and fold, the status, the metric with `test_score` (higher is better) and `test_error`, train and
@@ -135,7 +136,7 @@ MulTaBench is not an official TabArena leaderboard.
 | Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited: every dataset is split IID. Some datasets may have group or time structure, in which case IID splits can overestimate performance | |
 | Runtime | Train and inference time per 1K rows | Same, with the time spent embedding text and images reported separately | ✅ |
-| Hardware | Recorded per run; 8 CPU cores and 32 GB of RAM, with one NVIDIA L40S (48 GB) for GPU models | Recorded per run; every run uses 8 CPU cores, 32 GB of RAM and one NVIDIA RTX PRO 6000 Blackwell (96 GB), checked by `benchmark.py` | |
+| Hardware | Recorded per run; 8 CPU cores and 32 GB of RAM, with one NVIDIA L40S (48 GB) for GPU models | Recorded per run; every run uses 8 CPU cores and 32 GB of RAM, GPU models with one NVIDIA H100 (80 GB), checked by `benchmark.py` | |
 | Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 3 folds, repeated twice for every size | |
 | Dataset size | Full size | `--size 10k` (the default, and the one the leaderboard reports) caps train and test at 10K and 5K rows; `--size full` keeps every row | |
 | Inner validation | 8-fold bagging for every model | No bagging: one fit per split, and models that need validation hold out 10% of the training rows (at most 1,000). This favors models that ensemble internally (TabPFN, TabICL, TabDPT, TabM, RandomForest) over single GBDTs and RealMLP | |
