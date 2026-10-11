@@ -3,7 +3,7 @@ import os
 import subprocess
 import sys
 
-from multabench.benchmark.splits import SIZE_10K, SIZES, SPLITS
+from multabench.benchmark.splits import SPLITS, Size
 from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, csv_arg, list_runs, pending_runs,
                                         run_local, sbatch_commands, write_jobs_file, write_slurm_script)
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument('--image_encoders', type=csv_arg(list(ImageEncoder), cast=ImageEncoder), default=DEFAULT_IMAGE_ENCODERS,
                         help="used on datasets with images")
     parser.add_argument('--folds', type=csv_arg([str(f) for f in range(SPLITS)]), default=[str(f) for f in range(SPLITS)])
-    parser.add_argument('--size', type=str, default=SIZE_10K, choices=SIZES)
+    parser.add_argument('--size', type=Size, default=Size.TEN_K, choices=list(Size))
     parser.add_argument('--output_dir', type=str, default='runs')
     parser.add_argument('--jobs_file', type=str, default='sweep_jobs.txt')
     parser.add_argument('--launcher', type=str, default=None, choices=["local", "slurm"],

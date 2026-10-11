@@ -4,6 +4,7 @@ Split k is fold k % 3 of repeat k // 3, stratified for classification. In the "1
 split's train and test parts are then capped at 10K and 5K rows, keeping the class balance; "full"
 keeps every row. Indices are row positions.
 """
+from enum import StrEnum
 from typing import Tuple
 
 import numpy as np
@@ -15,13 +16,15 @@ SPLITS = FOLDS * REPEATS
 SEED = 42
 MAX_TRAIN_ROWS = 10_000
 MAX_TEST_ROWS = 5_000
-SIZE_10K = "10k"
-SIZE_FULL = "full"
-SIZES = (SIZE_10K, SIZE_FULL)
 
 
-def get_split(y: np.ndarray, is_cls: bool, split: int, size: str = SIZE_10K) -> Tuple[np.ndarray, np.ndarray]:
-    assert size in SIZES, size
+class Size(StrEnum):
+    TEN_K = "10k"
+    FULL = "full"
+
+
+def get_split(y: np.ndarray, is_cls: bool, split: int, size: Size = Size.TEN_K) -> Tuple[np.ndarray, np.ndarray]:
+    size = Size(size)
     y = np.asarray(y)
     if is_cls and _smallest_class_count(y) >= FOLDS:
         cv_cls = RepeatedStratifiedKFold
@@ -29,7 +32,7 @@ def get_split(y: np.ndarray, is_cls: bool, split: int, size: str = SIZE_10K) -> 
         cv_cls = RepeatedKFold
     cv = cv_cls(n_splits=FOLDS, n_repeats=REPEATS, random_state=SEED)
     train, test = list(cv.split(np.zeros(len(y)), y))[split]
-    if size == SIZE_10K:
+    if size == Size.TEN_K:
         train = _cap(train, y=y, is_cls=is_cls, size=MAX_TRAIN_ROWS, seed=SEED + split)
         test = _cap(test, y=y, is_cls=is_cls, size=MAX_TEST_ROWS, seed=SEED + split)
     return np.sort(train), np.sort(test)

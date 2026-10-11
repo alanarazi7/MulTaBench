@@ -72,9 +72,9 @@ To use a benchmark split in your own code, `load_split` downloads the dataset an
 train and test rows that `benchmark.py` evaluates on:
 
 ```python
-from multabench import load_split
+from multabench import Size, load_split
 
-split = load_split("MUL_IMAGE_PETFINDER", fold=0, size="10k")
+split = load_split("MUL_IMAGE_PETFINDER", fold=0, size=Size.TEN_K)
 split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split.image_folder, split.image_column
 ```
 
@@ -89,9 +89,9 @@ ran on, the hardware it should run on (`EMBEDDING_HARDWARE` in `multabench/utils
 they differ. `load_embeddings` returns them aligned with `load_split`'s rows:
 
 ```python
-from multabench import load_embeddings
+from multabench import Size, load_embeddings
 
-embeddings = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size="10k", encoder="e5-small")
+embeddings = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size=Size.TEN_K, encoder="e5-small")
 embeddings.train["description"], embeddings.test["description"], embeddings.meta
 ```
 

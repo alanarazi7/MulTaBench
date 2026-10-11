@@ -6,6 +6,7 @@ import subprocess
 from typing import Iterable, List, Optional, Tuple
 
 from multabench.benchmark.runs import Run
+from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
@@ -27,7 +28,7 @@ def encoder_pairs(modality: Modality, text_encoders: List[TextEncoder],
 
 
 def list_runs(models: Iterable[str], datasets: Iterable[MulTaBenchDatasetID], text_encoders: List[TextEncoder],
-              image_encoders: List[ImageEncoder], folds: Iterable[int], size: str) -> List[Run]:
+              image_encoders: List[ImageEncoder], folds: Iterable[int], size: Size) -> List[Run]:
     runs = []
     for model in models:
         for dataset in datasets:
