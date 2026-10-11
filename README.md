@@ -82,11 +82,15 @@ split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split
 
 The frozen text and image embeddings are cached on Hugging Face, one public dataset repo per
 encoder: `multabench/embeddings-e5-small` and `multabench/embeddings-dino-small`. A frozen encoder
-doesn't depend on the split, so every row of a dataset is embedded once, under `<dataset>/`, in
-`embeddings.npz`, the raw encoder output per feature (PCA is fitted per run, on the training rows),
-and `meta.json`, with the dataset's rows and columns, the encoding time per feature, the hardware it
-ran on, the hardware it should run on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how
-they differ. `load_embeddings` returns them aligned with `load_split`'s rows:
+doesn't depend on the split, so each distinct input of a dataset is embedded once, under
+`<dataset>/`, in `embeddings.npz`, which maps every input, exactly as the encoder got it (e5's
+`"passage: <column>: <value>"` after a run's missing-text fill, or the image file name), to its raw
+encoder output (PCA is fitted per run, on the training rows), and `meta.json`, with the dataset's
+rows and columns, the encoding time per feature, the hardware it ran on, the hardware it should run
+on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how they differ. A run looks its own
+inputs up, so an embedding is never paired with another row's text, and an input missing from the
+cache, e.g. after the dataset changed, raises. `load_embeddings` returns them aligned with
+`load_split`'s rows:
 
 ```python
 from multabench import load_embeddings

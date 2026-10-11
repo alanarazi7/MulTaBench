@@ -1,25 +1,32 @@
 """Cached embeddings on the Hugging Face Hub, one dataset repo per encoder.
 
-The encoders are frozen, so they don't depend on the split: every row of a dataset is embedded once, under
-<dataset>/, in embeddings.npz, with the row positions in the dataset under ROWS_KEY and one (n_rows, dim) array per
-feature, and meta.json, with the encoding time and the hardware it ran on.
+The encoders are frozen, so they don't depend on the split: each distinct encoder input of a dataset is embedded once,
+under <dataset>/, in embeddings.npz, which maps every input, exactly as the encoder got it, to its embedding, and
+meta.json, with the encoding time and the hardware it ran on. A run looks its own inputs up, so a cached embedding is
+never paired with a different text or image, and a changed dataset raises instead.
 """
 import json
 import os
+from dataclasses import dataclass
 from os.path import join
-from typing import Dict, Tuple
+from typing import Dict, List, Sequence
 
 import numpy as np
+from pandas import DataFrame
 
+from multabench.baselines.preprocessing.feature_types import transform_feature_types
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.hub import HF_ORG
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
-from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
+from multabench.e5.constants import TEXT_ENCODERS, TextEncoder, format_e5_passage
 from multabench.utils.encoders import Encoder
 
 EMBEDDINGS_NPZ = "embeddings.npz"
 META_JSON = "meta.json"
-ROWS_KEY = "__rows__"
+# numpy pads a string array to its longest string, so the inputs are stored as one UTF-8 buffer and its offsets.
+INPUTS_UTF8 = "inputs_utf8"
+INPUTS_OFFSETS = "inputs_offsets"
+EMBEDDINGS = "embeddings"
 
 CachedEncoder = TextEncoder | ImageEncoder
 CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL)
@@ -53,31 +60,54 @@ def embeddings_dir(dataset_id: MulTaBenchDatasetID) -> str:
     return dataset_id.value
 
 
-def write_embeddings(path: str, rows: np.ndarray, embeddings: Dict[str, np.ndarray], meta: dict):
+@dataclass
+class CachedEmbeddings:
+    inputs: List[str]
+    embeddings: np.ndarray
+    meta: dict
+
+    def __post_init__(self):
+        self._row = {text: i for i, text in enumerate(self.inputs)}
+
+    def lookup(self, inputs: Sequence[str], feature: str) -> np.ndarray:
+        missing = [text for text in inputs if text not in self._row]
+        if missing:
+            raise KeyError(f"{len(missing)} of {len(inputs)} inputs of {feature!r} have no cached embedding, "
+                           f"e.g. {missing[0][:100]!r}")
+        return self.embeddings[[self._row[text] for text in inputs]]
+
+
+def input_values(x: DataFrame, encoder: CachedEncoder, col: str) -> List[str]:
+    """A feature's value per row as the encoder gets it: text after a run's missing-text fill, or the image file name."""
+    if isinstance(encoder, TextEncoder):
+        return transform_feature_types(x[[col]], numerical_features=set(), image_features=set())[col].tolist()
+    return x[col].astype(str).tolist()
+
+
+def encoder_inputs(encoder: CachedEncoder, col: str, values: Sequence[str]) -> List[str]:
+    """The cache's keys: e5's "passage: <column>: <value>", or the image file name."""
+    if isinstance(encoder, TextEncoder):
+        return [format_e5_passage(str(col), col_val=v) for v in values]
+    return list(values)
+
+
+def write_embeddings(path: str, inputs: List[str], embeddings: np.ndarray, meta: dict):
     """meta.json is written last, so its presence marks a complete directory."""
     os.makedirs(path, exist_ok=True)
-    for feature, array in embeddings.items():
-        assert len(array) == len(rows), f"{feature}: {len(array)} embeddings for {len(rows)} rows"
-    np.savez(join(path, EMBEDDINGS_NPZ), **{ROWS_KEY: np.asarray(rows, dtype=np.int64)},
-             **{feature: np.asarray(array, dtype=np.float32) for feature, array in embeddings.items()})
+    assert len(inputs) == len(embeddings) == len(set(inputs)), f"{len(inputs)} inputs for {len(embeddings)} embeddings"
+    encoded = [text.encode() for text in inputs]
+    np.savez_compressed(join(path, EMBEDDINGS_NPZ), **{
+        INPUTS_UTF8: np.frombuffer(b"".join(encoded), dtype=np.uint8),
+        INPUTS_OFFSETS: np.cumsum([0] + [len(b) for b in encoded], dtype=np.int64),
+        EMBEDDINGS: np.asarray(embeddings, dtype=np.float32)})
     with open(join(path, META_JSON), "w") as f:
         json.dump(meta, f, indent=2, default=str)
 
 
-def read_embeddings(path: str) -> Tuple[np.ndarray, Dict[str, np.ndarray], dict]:
+def read_embeddings(path: str) -> CachedEmbeddings:
     with np.load(join(path, EMBEDDINGS_NPZ)) as npz:
-        rows = npz[ROWS_KEY]
-        embeddings = {feature: npz[feature] for feature in npz.files if feature != ROWS_KEY}
+        buffer, offsets, embeddings = npz[INPUTS_UTF8].tobytes(), npz[INPUTS_OFFSETS], npz[EMBEDDINGS]
+    inputs = [buffer[start:end].decode() for start, end in zip(offsets[:-1], offsets[1:])]
     with open(join(path, META_JSON)) as f:
         meta = json.load(f)
-    return rows, embeddings, meta
-
-
-def select_rows(rows: np.ndarray, embeddings: Dict[str, np.ndarray], idx: np.ndarray) -> Dict[str, np.ndarray]:
-    """The embeddings of the rows at positions idx of the dataset, in that order."""
-    order = np.argsort(rows)
-    pos = order[np.searchsorted(rows, idx, sorter=order).clip(max=len(rows) - 1)]
-    missing = rows[pos] != idx
-    if missing.any():
-        raise KeyError(f"{missing.sum()} rows have no cached embedding, e.g. row {idx[missing][0]}")
-    return {feature: array[pos] for feature, array in embeddings.items()}
+    return CachedEmbeddings(inputs=inputs, embeddings=embeddings, meta=meta)
