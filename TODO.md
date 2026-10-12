@@ -9,8 +9,8 @@ file as the PRs that complete them are merged.
       `python -m multabench.embeddings.embed_sweep`.
 - [ ] Cache the `e5-small-tar` and `dino-small-tar` embeddings: one fine-tune per (size, fold), each
       seeing only its fold's training rows, uploaded with its LoRA adapter.
-- [ ] Make the model runners read the cached `dino-small` and `-tar` embeddings too; only the frozen `e5-small`
-      text embeddings are read so far.
+- [ ] Make the model runners read the cached `-tar` embeddings too; only the frozen `e5-small` and `dino-small`
+      embeddings are read so far.
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
       today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
       rows.
@@ -28,6 +28,27 @@ file as the PRs that complete them are merged.
       AutoGluon multimodal.
 - [ ] Rerun every result CSV under `multabench/leaderboard/results/` with the TabArena metrics; the
       current ones still report AUC and R².
+
+## Per-model dependencies
+
+New models' requirements conflict with the shared `requirements.txt` (torch 2.7.1, tabpfn 7.1.1): Causilo needs
+torch>=2.13, Mitra-v2 autogluon.tabular 1.6, LimiX-2 declares python>=3.12 and torch==2.9.1, TabPFN-3.x tabpfn 9.x,
+TabDPT-1.3 tabdpt 1.3 (which can't load the current TabDPT weights). TabArena declares one extra per model in its
+`pyproject.toml` and imports each model's package lazily, but keeps a single shared torch. Do that here, without
+the single torch:
+
+- [ ] `pyproject.toml` with a lean core (loading, preprocessing, the e5 and DINO encoders) and one extra per model,
+      the current baselines keeping their current pins; git-only packages pinned to a commit.
+- [ ] A lazy registry: `benchmark.py` maps each short name to its wrapper module and imports only the model run,
+      and each wrapper imports its package inside `fit`, so a missing package is an install hint, not an import
+      error.
+- [ ] One venv per model, `uv pip install -e ".[<model>]"`; `sweep.py` runs each model with its venv's python.
+      Packages with wrong declared requirements (LimiX-2's torch pin, EXAONE-Tabular's scikit-learn floor) are
+      installed with `--no-deps`, documented in their wrapper.
+- [ ] Then add the TabArena models at their default configs: Kumo-Tabular, -Medium and -Small, TabPFN-3,
+      TabPFN-3.5 and -3.5-Fast, TabDPT-1.3, LimiX-2, Causilo, TabFM, Mitra-v2, EXAONE-Tabular and Xiaomi-TabLDM.
+      Mitra-v2's default fine-tunes within 8-fold bagging, and TabArena dropped Xiaomi-TabLDM over a prediction
+      bug when a batch has more rows than the training set; both run as they are.
 
 ## Leaderboard
 
