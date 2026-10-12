@@ -10,6 +10,9 @@ INFERENCE_TIME_PER_1K = "inference_time_per_1k_s"
 TRAIN_EMBEDDING_TIME_PER_1K = "train_embedding_time_per_1k_s"
 INFERENCE_EMBEDDING_TIME_PER_1K = "inference_embedding_time_per_1k_s"
 STATUS = "status"
+# Text features whose embeddings were read from the Hugging Face cache, and those encoded during the run.
+CACHED_TEXT_FEATURES = "cached_text_features"
+LIVE_TEXT_FEATURES = "live_text_features"
 
 
 class RunStatus(StrEnum):

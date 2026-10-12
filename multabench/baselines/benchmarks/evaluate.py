@@ -12,8 +12,8 @@ from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
 from multabench.utils.logging import get_current_commit_hash
-from multabench.result_keys import (METRIC, TEST_ERROR, TRAIN_TIME_PER_1K, INFERENCE_TIME_PER_1K,
-                                    TRAIN_EMBEDDING_TIME_PER_1K, INFERENCE_EMBEDDING_TIME_PER_1K)
+from multabench.result_keys import (CACHED_TEXT_FEATURES, LIVE_TEXT_FEATURES, METRIC, TEST_ERROR, TRAIN_TIME_PER_1K,
+                                    INFERENCE_TIME_PER_1K, TRAIN_EMBEDDING_TIME_PER_1K, INFERENCE_EMBEDDING_TIME_PER_1K)
 from multabench.utils.profiling import PeakMemoryTracker
 from multabench.utils.timing import pop_embedding_seconds
 
@@ -47,6 +47,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         metrics = model.score_all_metrics(X=x_test, y=y_test)
     inference_embedding_s = pop_embedding_seconds()
     runtime = time.time() - start_time
+    cached = {col for col, encoder in model.text_transformers.items() if getattr(encoder, "cache", None) is not None}
     d_summary = {
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
         "git": get_current_commit_hash(),
@@ -64,6 +65,8 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         'tune_dino': tune_dino,
         'tune_e5': tune_e5,
         'e5_model_name': e5_model_name,
+        CACHED_TEXT_FEATURES: sorted(cached),
+        LIVE_TEXT_FEATURES: sorted(set(model.text_transformers) - cached),
         "best_val_loss": getattr(model, "best_val_loss", None),
         **train_tracker.summary(),
         **test_tracker.summary(),
