@@ -98,9 +98,8 @@ on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how they differ.
 inputs up, so an embedding is never paired with another row's text, and an input missing from the
 cache, e.g. after the dataset changed, raises. The cache is optional: `benchmark.py` reads it when
 the dataset has embeddings for the encoder, and otherwise embeds live, so new encoders and datasets
-need no cache to run. Only the frozen `e5-small` text embeddings are read so far, and each run lists the text
-features it read from the cache (`cached_text_features`) and those it embedded itself (`live_text_features`).
-`load_embeddings` returns them aligned with `load_split`'s rows:
+need no cache to run. Only the frozen `e5-small` text embeddings are read so far. `load_embeddings`
+returns them aligned with `load_split`'s rows:
 
 ```python
 from multabench import Size, load_embeddings
