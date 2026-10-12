@@ -2,7 +2,8 @@ import numpy as np
 import pytest
 from pandas import DataFrame
 
-from multabench.baselines.preprocessing import text_embeddings
+from multabench.baselines.preprocessing import image_embeddings, text_embeddings
+from multabench.baselines.preprocessing.image_embeddings import fit_image_encoders, transform_image_features
 from multabench.baselines.preprocessing.nulls import MISSING_VALUE
 from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders, transform_text_features
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
@@ -83,11 +84,12 @@ def test_cached_encoder():
     assert cached_encoder(TF_IDF, tuned=False) is None
 
 
-def test_runs_read_only_cached_text_embeddings():
+def test_runs_read_the_frozen_encoders_from_the_cache():
     assert reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL])
+    assert reads_cache(IMAGE_ENCODERS[ImageEncoder.DINO_SMALL])
     assert not reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL_TAR])
     assert not reads_cache(TEXT_ENCODERS[TextEncoder.TFIDF])
-    assert not reads_cache(IMAGE_ENCODERS[ImageEncoder.DINO_SMALL])
+    assert not reads_cache(IMAGE_ENCODERS[ImageEncoder.DINO_SMALL_TAR])
 
 
 def test_missing_cached_embeddings_raise(monkeypatch, tmp_path):
@@ -116,3 +118,21 @@ def test_text_features_look_their_texts_up_in_the_cache(monkeypatch):
     np.testing.assert_allclose(x_test.to_numpy(), encoders["title"].encoder.transform(expected[test_idx]), rtol=1e-6)
     with pytest.raises(KeyError, match="no cached embedding"):
         transform_text_features(DataFrame({"title": ["a text the cache never saw"]}), text_encoders=encoders, device="cpu")
+
+
+def test_image_features_look_their_files_up_in_the_cache(monkeypatch):
+    rng = np.random.default_rng(0)
+    files = [f"images/{i % 40}.jpg" for i in range(60)]
+    distinct = sorted(set(files))
+    vectors = rng.normal(size=(len(distinct), 64)).astype(np.float32)
+    cache = CachedEmbeddings(inputs=distinct, embeddings=vectors, meta={"features": ["photo"]})
+    monkeypatch.setattr(image_embeddings, "cached_embeddings", lambda encoder, dataset: cache)
+    monkeypatch.setattr(image_embeddings, "get_image_encoder", lambda *args, **kwargs: pytest.fail("loaded DINO for a cached column"))
+    x = DataFrame({"photo": files})
+    expected = vectors[[distinct.index(f) for f in files]]
+    train_idx, test_idx = rng.permutation(60)[:45], np.arange(60)[::4]
+    encoders, _, _, train_embeddings = fit_image_encoders(x.iloc[train_idx], image_features={"photo"}, device="cpu",
+                                                          image_folder="unused", is_cls=True, d_output=2, dataset=IMAGE_TEXT)
+    np.testing.assert_array_equal(train_embeddings["photo"], expected[train_idx])
+    x_test = transform_image_features(x.iloc[test_idx], image_transformers=encoders, device="cpu", image_folder="unused")
+    np.testing.assert_allclose(x_test.to_numpy(), encoders["photo"].transform(expected[test_idx]), rtol=1e-5)

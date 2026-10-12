@@ -8,11 +8,13 @@ from pandas import DataFrame, Series
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from multabench.constants import SEED
+from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from transformers import AutoImageProcessor, AutoModel, DINOv3ViTImageProcessorFast, DINOv3ViTModel
 
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.dino.dino_finetune import finetune_dino_with_lora
 from multabench.dino.image_loading import load_images
+from multabench.embeddings.hub import CachedEmbeddings, cached_embeddings, cached_encoder
 from multabench.preprocessing.discretize import discretize_numerical
 from multabench.utils.warnings import suppress_channel_dimension_warning
 from multabench.preprocessing.splits import split_to_val
@@ -27,11 +29,13 @@ IMAGE_ENCODER = {"encoder": None, "processor": None}
 
 
 class _ScaledPCA:
-    """StandardScaler then PCA; exposes .transform(X) and .n_components for drop-in use."""
-    def __init__(self, scaler: StandardScaler, pca: PCA):
+    """StandardScaler then PCA; exposes .transform(X) and .n_components for drop-in use. Holds the column's cached
+    embeddings when it has them."""
+    def __init__(self, scaler: StandardScaler, pca: PCA, cache: Optional[CachedEmbeddings] = None):
         self.scaler = scaler
         self.pca = pca
         self.n_components = pca.n_components
+        self.cache = cache
 
     def transform(self, X: np.ndarray) -> np.ndarray:
         return self.pca.transform(self.scaler.transform(X))
@@ -48,10 +52,12 @@ def fit_image_encoders(
     tune_dino: bool = False,
     dino_train_kwargs: Optional[Dict[str, Any]] = None,
     dino_model_name: str = DINOV3_SMALL,
+    dataset: Optional[MulTaBenchDatasetID] = None,
 ) -> Tuple[Dict[str, Any], Optional[Any], Optional[DINOv3ViTImageProcessorFast], Dict[str, np.ndarray]]:
     """
     Fit PCA per image column. If tune_dino and y is provided,
     finetune DINO with LoRA on train/val split then use the best model for encoding.
+    Otherwise columns with cached embeddings on the Hub are read from there instead of being encoded.
     Returns (image_encoders, tuned_dino_model_or_none, tuned_processor_or_none, train_embeddings per column).
     """
     image_encoders: Dict[str, Any] = {}
@@ -85,22 +91,38 @@ def fit_image_encoders(
         )
         tuned_model.to(device)
         dino_model, img_processor = tuned_model, tuned_processor
-    else:
+    caches = {} if tune_dino else _caches_per_column(dino_model_name, dataset)
+    if not tune_dino and not set(caches).issuperset(image_features):
         dino_model, img_processor = get_image_encoder(model_name=dino_model_name)
         dino_model.to(device)
 
     for col in image_features:
-        images = load_images(s=x[col], image_folder=image_folder)
-        embeddings = encode_images_in_batches(images=images, processor=img_processor, model=dino_model)
+        cache = caches.get(col)
+        if cache is None:
+            images = load_images(s=x[col], image_folder=image_folder)
+            embeddings = encode_images_in_batches(images=images, processor=img_processor, model=dino_model)
+        else:
+            embeddings = cache.lookup(x[col].astype(str).tolist(), feature=col)
         scaler = StandardScaler()
         scaler.fit(embeddings)
         scaled = scaler.transform(embeddings)
         pca_col = PCA(n_components=PCA_COMPONENTS, random_state=SEED)
         pca_col.fit(scaled)
-        image_encoders[col] = _ScaledPCA(scaler, pca_col)
+        image_encoders[col] = _ScaledPCA(scaler, pca_col, cache=cache)
         train_embeddings[col] = embeddings
 
     return image_encoders, tuned_model, tuned_processor, train_embeddings
+
+
+def _caches_per_column(dino_model_name: str, dataset: Optional[MulTaBenchDatasetID]) -> Dict[str, CachedEmbeddings]:
+    """The cached embeddings of each image column that has them."""
+    encoder = cached_encoder(dino_model_name, tuned=False)
+    if encoder is None or dataset is None:
+        return {}
+    cache = cached_embeddings(encoder, dataset)
+    print(f"Reading the image embeddings of {cache.meta['features']} from the cached {encoder} embeddings")
+    return {col: cache for col in cache.meta["features"]}
+
 
 def transform_image_features(
     x: DataFrame,
@@ -116,19 +138,18 @@ def transform_image_features(
     # cache the embeddings, and then apply PCA on the cached embeddings over and over for every train split in every run.
     if not image_transformers:
         return x
-    if dino_model is not None and dino_processor is not None:
-        pass  # use provided tuned model
-    else:
-        dino_model, dino_processor = get_image_encoder(model_name=dino_model_name)
-    dino_model.to(device)
-    img_processor = dino_processor
     train_embeddings = train_embeddings or {}
     for image_col, image_pca in image_transformers.items():
         assert image_col in x.columns, f"Image column {image_col} not found in DataFrame"
         s = x[image_col]
         embeddings = train_embeddings.get(image_col)
+        if embeddings is None and image_pca.cache is not None:
+            embeddings = image_pca.cache.lookup(s.astype(str).tolist(), feature=image_col)
         if embeddings is None:
-            embeddings = image_urls_to_embeddings(s=x[image_col], image_folder=image_folder, processor=img_processor, model=dino_model)
+            if dino_model is None or dino_processor is None:
+                dino_model, dino_processor = get_image_encoder(model_name=dino_model_name)
+            dino_model.to(device)
+            embeddings = image_urls_to_embeddings(s=s, image_folder=image_folder, processor=dino_processor, model=dino_model)
         assert len(embeddings) == len(x)
         pca_vec = image_pca.transform(embeddings).astype(np.float32)
         pca_cols = [f"{image_col}_img_pca_{i}" for i in range(pca_vec.shape[1])]

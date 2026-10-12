@@ -139,13 +139,13 @@ def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID)
     return path
 
 
-# A run fits and transforms one dataset, and the embeddings of a large one take a few hundred MB.
-@lru_cache(maxsize=1)
+# A run fits and transforms one dataset, with up to a text and an image encoder, and the embeddings of a large one take
+# a few hundred MB.
+@lru_cache(maxsize=2)
 def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> CachedEmbeddings:
     return read_embeddings(download_embeddings(encoder, dataset_id))
 
 
 def reads_cache(encoder: Encoder) -> bool:
-    """Whether runs read this encoder's embeddings from the cache, which then must have them, rather than embedding live;
-    the runners read only text embeddings so far."""
-    return isinstance(cached_encoder(encoder.encoder_name, encoder.tune_encoder), TextEncoder)
+    """Whether runs read this encoder's embeddings from the cache, which then must have them, rather than embedding live."""
+    return cached_encoder(encoder.encoder_name, encoder.tune_encoder) is not None
