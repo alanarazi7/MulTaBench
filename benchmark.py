@@ -25,6 +25,7 @@ from multabench.benchmark.splits import SIZE_10K, SIZES, SPLITS
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
+from multabench.embeddings.hub import reads_cache
 from multabench.result_keys import STATUS, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware
 from multabench.utils.logging import get_current_commit_hash
@@ -87,7 +88,8 @@ if __name__ == "__main__":
         parser.error(f"{dataset.name} has no images, so --image_encoder doesn't apply")
     image_encoder = IMAGE_ENCODERS[args.image_encoder] if args.image_encoder else None
     text_encoder = TEXT_ENCODERS[args.text_encoder] if args.text_encoder else None
-    hardware = run_hardware(model.NEEDS_GPU, encoders=[text_encoder, image_encoder])
+    live_encoders = [e for e in (text_encoder, image_encoder) if e and not reads_cache(e, dataset)]
+    hardware = run_hardware(model.NEEDS_GPU, encoders=live_encoders)
     device = get_device(device=args.device or ("cpu" if hardware == CPU_RUN_HARDWARE else None))
     assert_hardware(device, hardware)
     run = Run(args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
