@@ -47,9 +47,10 @@ class PeakMemoryTracker:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        # Before the join, which waits for the sampler's sleep and would round the time up to the next interval.
+        self.end_time = time.time()
         self._stop.set()
         self.thread.join(timeout=self.interval * 2)
-        self.end_time = time.time()
 
     @property
     def wall_time_s(self) -> float:
