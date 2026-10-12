@@ -7,7 +7,7 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.objects import MultimodalDataset
 from multabench.baselines.abstract_model import TabularModel
 from multabench.benchmark.load import load_multabench_dataset, split_dataset
-from multabench.benchmark.splits import SIZE_10K
+from multabench.benchmark.splits import Size
 from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
@@ -21,7 +21,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 dataset: MultimodalDataset,
                                 fold: int,
                                 device: torch.device,
-                                size: str = SIZE_10K,
+                                size: Size = Size.TEN_K,
                                 verbose: bool = False,
                                 tune_dino: bool = False,
                                 dino_train_kwargs: dict | None = None,
@@ -83,7 +83,7 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         dataset_id: MulTaBenchDatasetID,
                         fold: int,
                         device: torch.device,
-                        size: str = SIZE_10K,
+                        size: Size = Size.TEN_K,
                         verbose: bool = False,
                         tune_dino: bool = False,
                         dino_train_kwargs: dict | None = None,

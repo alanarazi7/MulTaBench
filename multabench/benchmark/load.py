@@ -3,10 +3,10 @@ Load a MulTaBench dataset from the Hugging Face Hub: a typed data.parquet, metad
 images-*.zip shards.
 
 Usage:
-    from multabench import load_embeddings, load_split
-    split = load_split("MUL_IMAGE_PETFINDER", fold=0, size="10k")
+    from multabench import Size, load_embeddings, load_split
+    split = load_split("MUL_IMAGE_PETFINDER", fold=0, size=Size.TEN_K)
     split.x_train, split.y_train, split.x_test, split.y_test
-    embeddings = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size="10k", encoder="e5-small")
+    embeddings = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size=Size.TEN_K, encoder="e5-small")
     embeddings.train["description"], embeddings.test["description"]
 """
 import json
@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 from huggingface_hub import snapshot_download
 
-from multabench.benchmark.splits import SIZE_10K, get_split
+from multabench.benchmark.splits import Size, get_split
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.hub import DATA_PARQUET, extract_images, hf_repo_id
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
@@ -63,13 +63,13 @@ def load_multabench_dataset(dataset_id) -> MultimodalDataset:
                              image_folder=image_folder, image_column=meta["image_col"])
 
 
-def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: str = SIZE_10K) -> DatasetSplit:
+def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = Size.TEN_K) -> DatasetSplit:
     if isinstance(dataset, str):
         dataset = MulTaBenchDatasetID[dataset]
     return split_dataset(load_multabench_dataset(dataset), fold=fold, size=size)
 
 
-def split_dataset(dataset: MultimodalDataset, fold: int, size: str = SIZE_10K) -> DatasetSplit:
+def split_dataset(dataset: MultimodalDataset, fold: int, size: Size = Size.TEN_K) -> DatasetSplit:
     train_idx, test_idx = get_split(dataset.y.to_numpy(), is_cls=dataset.is_cls, split=fold, size=size)
     return DatasetSplit(x_train=dataset.x.iloc[train_idx],
                         y_train=dataset.y.iloc[train_idx],
@@ -88,7 +88,7 @@ class SplitEmbeddings:
     meta: dict
 
 
-def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: str = SIZE_10K,
+def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = Size.TEN_K,
                     encoder: str | CachedEncoder = "e5-small") -> SplitEmbeddings:
     if isinstance(dataset, str):
         dataset = MulTaBenchDatasetID[dataset]

@@ -5,7 +5,7 @@ import pytest
 from multabench.benchmark.load import split_dataset
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.objects import MultimodalDataset, SupervisedTask
-from multabench.benchmark.splits import FOLDS, MAX_TEST_ROWS, MAX_TRAIN_ROWS, REPEATS, SIZE_FULL, SPLITS, get_split
+from multabench.benchmark.splits import FOLDS, MAX_TEST_ROWS, MAX_TRAIN_ROWS, REPEATS, SPLITS, Size, get_split
 
 
 @pytest.mark.parametrize("n, is_cls", [(300, True), (60_000, True), (30_000, False)])
@@ -34,7 +34,7 @@ def test_train_test_ratio_is_two_to_one():
 
 
 def test_full_size_keeps_every_row():
-    train, test = get_split(np.random.default_rng(0).normal(size=30_000), is_cls=False, split=0, size=SIZE_FULL)
+    train, test = get_split(np.random.default_rng(0).normal(size=30_000), is_cls=False, split=0, size=Size.FULL)
     assert (len(train), len(test)) == (20_000, 10_000)
 
 
@@ -71,3 +71,11 @@ def test_split_dataset_matches_get_split():
     train, test = get_split(y.to_numpy(), is_cls=True, split=1)
     assert split.x_train["feature"].tolist() == train.tolist()
     assert split.y_test.tolist() == y.iloc[test].tolist()
+
+
+def test_size_accepts_its_string_value():
+    y = np.random.default_rng(0).normal(size=30_000)
+    assert all((a == b).all() for a, b in zip(get_split(y, is_cls=False, split=0, size="10k"),
+                                               get_split(y, is_cls=False, split=0, size=Size.TEN_K)))
+    with pytest.raises(ValueError):
+        get_split(y, is_cls=False, split=0, size="5k")

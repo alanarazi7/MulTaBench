@@ -2,6 +2,7 @@ import shlex
 from dataclasses import dataclass
 from typing import Optional
 
+from multabench.benchmark.splits import Size
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
 
@@ -13,7 +14,7 @@ class Run:
     dataset: str
     text_encoder: Optional[TextEncoder]
     image_encoder: Optional[ImageEncoder]
-    size: str
+    size: Size
     fold: int
 
     @property
