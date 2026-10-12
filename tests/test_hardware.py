@@ -19,7 +19,7 @@ def _machine(monkeypatch, hw: Hardware, gpu_name=None):
 
 def test_cpu_is_not_the_benchmark_hardware(monkeypatch):
     _machine(monkeypatch, GPU_RUN_HARDWARE)
-    assert hardware_mismatches(torch.device("cpu"), GPU_RUN_HARDWARE) == ["GPU is None, not NVIDIA RTX PRO 6000 Blackwell"]
+    assert hardware_mismatches(torch.device("cpu"), GPU_RUN_HARDWARE) == ["GPU is None, not NVIDIA H100"]
     with pytest.raises(RuntimeError, match="Not the expected hardware"):
         assert_hardware(torch.device("cpu"), GPU_RUN_HARDWARE)
 
@@ -28,16 +28,16 @@ def test_the_embedding_cache_is_checked_against_its_own_hardware(monkeypatch):
     _machine(monkeypatch, EMBEDDING_HARDWARE, gpu_name="NVIDIA A100-SXM4-40GB")
     cuda = torch.device("cuda")
     assert hardware_mismatches(cuda, EMBEDDING_HARDWARE) == []
-    assert hardware_mismatches(cuda, GPU_RUN_HARDWARE)[0] == "GPU is NVIDIA A100-SXM4-40GB, not NVIDIA RTX PRO 6000 Blackwell"
+    assert hardware_mismatches(cuda, GPU_RUN_HARDWARE)[0] == "GPU is NVIDIA A100-SXM4-40GB, not NVIDIA H100"
     assert "6 CPUs are available, not 8" in hardware_mismatches(cuda, GPU_RUN_HARDWARE)
 
 
 def test_cpu_hardware_runs_on_the_cpu(monkeypatch):
-    _machine(monkeypatch, CPU_RUN_HARDWARE, gpu_name="NVIDIA RTX PRO 6000 Blackwell Server Edition")
+    _machine(monkeypatch, CPU_RUN_HARDWARE, gpu_name="NVIDIA H100 80GB HBM3")
     assert hardware_mismatches(torch.device("cpu"), CPU_RUN_HARDWARE) == []
     assert hardware_mismatches(torch.device("cuda"), CPU_RUN_HARDWARE) == ["Runs on cuda, not the CPU"]
     assert hardware_mismatches(torch.device("cuda"), GPU_RUN_HARDWARE) == [
-        "CPU is INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz, not AMD EPYC 9B45"]
+        "CPU is INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz, not Intel(R) Xeon(R) Platinum 8481C"]
 
 
 def test_runs_need_a_gpu_for_the_model_or_a_neural_encoder():

@@ -80,7 +80,8 @@ cd {shlex.quote(repo_dir)}
 LINE=$(( ${{OFFSET:-0}} + SLURM_ARRAY_TASK_ID + 1 ))
 COMMAND=$(sed -n "${{LINE}}p" {shlex.quote(jobs_file)})
 echo "$COMMAND"
-eval "$COMMAND"
+# Slurm may give the job a whole machine; srun limits the run to the CPUs the job asked for.
+eval "srun ${{SLURM_CPUS_PER_TASK:+--cpus-per-task=$SLURM_CPUS_PER_TASK}} $COMMAND"
 """
     with open(path, "w") as f:
         f.write(script)
