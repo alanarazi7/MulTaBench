@@ -2,11 +2,13 @@ import argparse
 import os
 import subprocess
 import sys
+import time
 
 from multabench.benchmark.splits import SPLITS, Size
 from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, csv_arg, list_runs, pending_runs,
-                                        run_local, sbatch_commands, write_jobs_file, write_slurm_script)
-from multabench.datasets.all_datasets import MulTaBenchDatasetID
+                                        run_local, sbatch_commands, select_datasets, write_jobs_file,
+                                        write_slurm_script)
+from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
 
@@ -19,6 +21,8 @@ if __name__ == "__main__":
     parser.add_argument('--models', type=csv_arg(), required=True, help="model short names, e.g. light,cat,rf")
     parser.add_argument('--datasets', type=csv_arg([d.name for d in MulTaBenchDatasetID]), default=None,
                         help="dataset names; default: all")
+    parser.add_argument('--modalities', type=csv_arg([m.value for m in Modality], cast=Modality), default=None,
+                        help="keep only the datasets of these modalities: text, image, image-text; default: all")
     parser.add_argument('--text_encoders', type=csv_arg(list(TextEncoder), cast=TextEncoder), default=DEFAULT_TEXT_ENCODERS,
                         help="used on text datasets; image datasets with text columns always use e5-small")
     parser.add_argument('--image_encoders', type=csv_arg(list(ImageEncoder), cast=ImageEncoder), default=DEFAULT_IMAGE_ENCODERS,
@@ -26,7 +30,9 @@ if __name__ == "__main__":
     parser.add_argument('--folds', type=csv_arg([str(f) for f in range(SPLITS)]), default=[str(f) for f in range(SPLITS)])
     parser.add_argument('--size', type=Size, default=Size.TEN_K, choices=list(Size))
     parser.add_argument('--output_dir', type=str, default='runs')
-    parser.add_argument('--jobs_file', type=str, default='sweep_jobs.txt')
+    parser.add_argument('--jobs_file', type=str, default=None,
+                        help="default: sweep_jobs_<timestamp>.txt, so a new sweep never rewrites the file a queued "
+                             "Slurm array reads its commands from")
     parser.add_argument('--launcher', type=str, default=None, choices=["local", "slurm"],
                         help="default: only write the jobs file, one benchmark.py command per line")
     parser.add_argument('--sbatch', type=str, default="", help='extra sbatch arguments, given with "=", e.g. --sbatch="--partition=gpu --gres=gpu:1"')
@@ -35,8 +41,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     output_dir = os.path.abspath(args.output_dir)
-    jobs_file = os.path.abspath(args.jobs_file)
-    datasets = [MulTaBenchDatasetID[d] for d in args.datasets] if args.datasets else list(MulTaBenchDatasetID)
+    jobs_file = os.path.abspath(args.jobs_file or time.strftime("sweep_jobs_%Y%m%d_%H%M%S.txt"))
+    datasets = select_datasets(args.datasets, args.modalities)
     runs = list_runs(models=args.models, datasets=datasets, text_encoders=args.text_encoders,
                      image_encoders=args.image_encoders, folds=[int(f) for f in args.folds], size=args.size)
     pending = pending_runs(runs, output_dir=output_dir)

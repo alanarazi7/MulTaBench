@@ -1,8 +1,9 @@
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
 from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, IMAGE_TEXT_TEXT_ENCODER,
-                                        encoder_pairs, list_runs, pending_runs, sbatch_commands)
-from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID
+                                        encoder_pairs, list_runs, pending_runs, sbatch_commands,
+                                        select_datasets)
+from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.e5.constants import TextEncoder
 
 TEXT = MulTaBenchDatasetID.BIN_TEXT_FAKE_JOB_POSTING
@@ -39,3 +40,10 @@ def test_sbatch_commands_split_large_arrays():
         "sbatch --array=0-999%50 --export=ALL,OFFSET=1000 --gres=gpu:1 s.sbatch",
         "sbatch --array=0-499%50 --export=ALL,OFFSET=2000 --gres=gpu:1 s.sbatch",
     ]
+
+
+def test_select_datasets_by_modality():
+    text = select_datasets(None, [Modality.TEXT])
+    assert len(text) == 40 and all(dataset_modality(d) == Modality.TEXT for d in text)
+    assert select_datasets([TEXT.name, "MUL_IMAGE_PETFINDER"], [Modality.TEXT]) == [TEXT]
+    assert select_datasets(None, None) == list(MulTaBenchDatasetID)

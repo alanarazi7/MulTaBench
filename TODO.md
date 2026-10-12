@@ -7,14 +7,10 @@ file as the PRs that complete them are merged.
 
 - [ ] Compute and upload the `dino-small` embeddings for the benchmark datasets with
       `python -m multabench.embeddings.embed_sweep`.
-- [ ] The 62 uploaded `e5-small` `meta.json` files store `expected_hardware` as `{gpu, cpu, cpus, ram_gb}`,
-      while new ones write `{gpu_prefix, cpu_prefix, cpus, ram_gb}`. Rename the keys in the uploaded files
-      (a metadata-only upload), or accept the difference.
 - [ ] Cache the `e5-small-tar` and `dino-small-tar` embeddings: one fine-tune per (size, fold), each
       seeing only its fold's training rows, uploaded with its LoRA adapter.
-- [ ] Make the model runners read the cached embeddings instead of re-embedding, so one fine-tune per
-      fold is shared by every model. Each run records how many features had no cached embedding and
-      were encoded live.
+- [ ] Make the model runners read the cached `dino-small` and `-tar` embeddings too; only the frozen `e5-small`
+      text embeddings are read so far.
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
       today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
       rows.

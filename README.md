@@ -34,20 +34,26 @@ reruns it. `--help` lists the available models. `--text_encoder` picks how text 
 `dino-small-tar`. Each applies only to datasets with that kind of column.
 
 `sweep.py` runs `benchmark.py` over models × datasets × encoders × folds. It writes the runs that
-don't have a result yet to `sweep_jobs.txt`, one command per line, which any scheduler can run.
-Text datasets run once per text encoder and image datasets once per image encoder; image datasets
-that also have text columns always embed their text with frozen `e5-small`. Each run is its own
-process, and a failed run doesn't stop the others:
+don't have a result yet to a jobs file (`sweep_jobs_<timestamp>.txt`, or `--jobs_file`), one command per line,
+which any scheduler can run. `--modalities text`, `image` or `image-text` keeps only those datasets. Text datasets
+run once per text encoder and image datasets once per image encoder; image datasets that also have text columns
+always embed their text with frozen `e5-small`. The default encoders include the fine-tuned `e5-small-tar` and
+`dino-small-tar`, so pass `--text_encoders`/`--image_encoders` to run fewer. Each run is its own process, and a
+failed run doesn't stop the others:
 
 ```bash
-python sweep.py --models light,cat                        # only write sweep_jobs.txt
-python sweep.py --models light,cat --launcher local       # run them here, one after another
-python sweep.py --models light,cat --launcher slurm --sbatch="--partition=gpu --gres=gpu:1" --submit
+python sweep.py --models light,cat --modalities text --text_encoders e5-small                   # only write the jobs file
+python sweep.py --models light,cat --modalities text --text_encoders e5-small --launcher local  # run them here, one after another
+python sweep.py --models light,cat --modalities text --text_encoders e5-small --launcher slurm \
+    --sbatch="--partition=cpu --cpus-per-task=8 --mem=32G" --submit
+python sweep.py --models tabm,real --modalities text --text_encoders e5-small --launcher slurm \
+    --sbatch="--partition=gpu --gres=gpu:1 --cpus-per-task=8 --mem=32G" --submit
 ```
 
 With `--launcher slurm`, each line becomes a task of a Slurm array; `--sbatch="..."` is passed to `sbatch`
-as is (the `=` is needed, since the value starts with `--`), and without `--submit` the `sbatch` commands are only printed. Relaunching a sweep runs only
-what is still missing.
+as is (the `=` is needed, since the value starts with `--`), and without `--submit` the `sbatch` commands are only
+printed. All the runs of a sweep get the same `--sbatch`, so sweep the runs that need a GPU apart from those that
+don't (see below), as in the last two commands. Relaunching a sweep runs only what is still missing.
 
 Every run must use the same hardware, so their times compare: one NVIDIA H100 (80 GB), an Intel
 Xeon Platinum 8481C with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in

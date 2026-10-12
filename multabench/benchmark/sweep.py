@@ -18,6 +18,11 @@ DEFAULT_IMAGE_ENCODERS = [ImageEncoder.DINO_SMALL, ImageEncoder.DINO_SMALL_TAR]
 IMAGE_TEXT_TEXT_ENCODER = TextEncoder.E5_SMALL
 
 
+def select_datasets(names: Optional[List[str]], modalities: Optional[List[Modality]]) -> List[MulTaBenchDatasetID]:
+    datasets = [MulTaBenchDatasetID[d] for d in names] if names else list(MulTaBenchDatasetID)
+    return [d for d in datasets if not modalities or dataset_modality(d) in modalities]
+
+
 def encoder_pairs(modality: Modality, text_encoders: List[TextEncoder],
                   image_encoders: List[ImageEncoder]) -> List[Tuple[Optional[TextEncoder], Optional[ImageEncoder]]]:
     if modality == Modality.TEXT:
