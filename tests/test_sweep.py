@@ -1,7 +1,8 @@
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
+from multabench.benchmark import sweep
 from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, IMAGE_TEXT_TEXT_ENCODER,
-                                        encoder_pairs, list_runs, pending_runs, sbatch_commands,
+                                        encoder_pairs, list_runs, pending_runs, prefetch, sbatch_commands,
                                         select_datasets)
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.e5.constants import TextEncoder
@@ -47,3 +48,14 @@ def test_select_datasets_by_modality():
     assert len(text) == 40 and all(dataset_modality(d) == Modality.TEXT for d in text)
     assert select_datasets([TEXT.name, "MUL_IMAGE_PETFINDER"], [Modality.TEXT]) == [TEXT]
     assert select_datasets(None, None) == list(MulTaBenchDatasetID)
+
+
+def test_prefetch_downloads_each_dataset_and_its_cached_embeddings_once(monkeypatch):
+    datasets, embeddings = [], []
+    monkeypatch.setattr(sweep, "download_dataset", datasets.append)
+    monkeypatch.setattr(sweep, "download_embeddings", lambda encoder, dataset: embeddings.append((encoder, dataset)))
+    runs = list_runs(models=["light", "cat"], datasets=[TEXT], text_encoders=DEFAULT_TEXT_ENCODERS,
+                     image_encoders=DEFAULT_IMAGE_ENCODERS, folds=[0, 1], size=Size.TEN_K)
+    prefetch(runs)
+    assert datasets == [TEXT]
+    assert embeddings == [(TextEncoder.E5_SMALL, TEXT)]

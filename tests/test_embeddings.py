@@ -9,8 +9,8 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modali
 from multabench.dino.constants import DINOV3_SMALL, IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import E5_SMALL_V2, TEXT_ENCODERS, TF_IDF, TextEncoder, format_e5_passage
 from multabench.embeddings import hub
-from multabench.embeddings.hub import (CACHED_ENCODERS, META_JSON, CachedEmbeddings, cached_encoder, embeddings_dir,
-                                       embeddings_repo_id, embeds_dataset, encoder_inputs, input_values, parse_encoder,
+from multabench.embeddings.hub import (CACHED_ENCODERS, META_JSON, CachedEmbeddings, cached_encoder, download_embeddings,
+                                       embeddings_dir, embeddings_repo_id, embeds_dataset, encoder_inputs, input_values, parse_encoder,
                                        read_embeddings, reads_cache, write_embeddings)
 from multabench.embeddings.jobs import EmbeddingJob, list_jobs, pending_jobs
 
@@ -83,14 +83,19 @@ def test_cached_encoder():
     assert cached_encoder(TF_IDF, tuned=False) is None
 
 
-def test_runs_read_only_cached_text_embeddings(monkeypatch):
-    monkeypatch.setattr(hub, "download_embeddings", lambda encoder, dataset_id: "on the hub")
-    assert reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL], TEXT)
-    assert not reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL_TAR], TEXT)
-    assert not reads_cache(TEXT_ENCODERS[TextEncoder.TFIDF], TEXT)
-    assert not reads_cache(IMAGE_ENCODERS[ImageEncoder.DINO_SMALL], IMAGE_TEXT)
-    monkeypatch.setattr(hub, "download_embeddings", lambda encoder, dataset_id: None)
-    assert not reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL], TEXT)
+def test_runs_read_only_cached_text_embeddings():
+    assert reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL])
+    assert not reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL_TAR])
+    assert not reads_cache(TEXT_ENCODERS[TextEncoder.TFIDF])
+    assert not reads_cache(IMAGE_ENCODERS[ImageEncoder.DINO_SMALL])
+
+
+def test_missing_cached_embeddings_raise(monkeypatch, tmp_path):
+    monkeypatch.setattr(hub, "snapshot_download", lambda **kwargs: str(tmp_path))
+    (tmp_path / embeddings_dir(TEXT)).mkdir()
+    (tmp_path / embeddings_dir(TEXT) / META_JSON).touch()
+    with pytest.raises(FileNotFoundError, match="embeddings.npz"):
+        download_embeddings(TextEncoder.E5_SMALL, TEXT)
 
 
 def test_text_features_look_their_texts_up_in_the_cache(monkeypatch):

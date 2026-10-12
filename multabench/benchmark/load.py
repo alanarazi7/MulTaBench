@@ -22,7 +22,7 @@ from multabench.benchmark.splits import Size, get_split
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.hub import DATA_PARQUET, extract_images, hf_repo_id
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
-from multabench.embeddings.hub import (CachedEmbeddings, CachedEncoder, download_embeddings, embeddings_repo_id,
+from multabench.embeddings.hub import (CachedEmbeddings, CachedEncoder, download_embeddings,
                                        encoder_inputs, input_values, parse_encoder, read_embeddings)
 from multabench.benchmark.utils.constants import METADATA_JSON
 from multabench.benchmark.utils.curation import TASK_REG, task_type_from_name
@@ -43,11 +43,16 @@ def _missing_as_nan(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def load_multabench_dataset(dataset_id) -> MultimodalDataset:
+def download_dataset(dataset_id: MulTaBenchDatasetID) -> str:
     repo_id = hf_repo_id(dataset_id)
     print(f"Downloading {repo_id} from Hugging Face...")
     dir_path = snapshot_download(repo_id=repo_id, repo_type="dataset")
     extract_images(dir_path)
+    return dir_path
+
+
+def load_multabench_dataset(dataset_id) -> MultimodalDataset:
+    dir_path = download_dataset(dataset_id)
     df = _missing_as_nan(pd.read_parquet(join(dir_path, DATA_PARQUET)))
 
     with open(join(dir_path, METADATA_JSON)) as f:
@@ -95,10 +100,7 @@ def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = 
     encoder = parse_encoder(encoder)
     y, task_type = load_target(dataset)
     train_idx, test_idx = get_split(y.to_numpy(), is_cls=task_type != SupervisedTask.REGRESSION, split=fold, size=size)
-    path = download_embeddings(encoder, dataset)
-    if path is None:
-        raise FileNotFoundError(f"{embeddings_repo_id(encoder)} has no embeddings of {dataset.name}")
-    cache = read_embeddings(path)
+    cache = read_embeddings(download_embeddings(encoder, dataset))
     x = _load_columns(dataset, columns=cache.meta["features"])
     return SplitEmbeddings(train=_lookup(cache, x.iloc[train_idx], encoder), test=_lookup(cache, x.iloc[test_idx], encoder),
                            meta=cache.meta)

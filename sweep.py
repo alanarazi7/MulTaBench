@@ -5,7 +5,7 @@ import sys
 import time
 
 from multabench.benchmark.splits import SPLITS, Size
-from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, csv_arg, list_runs, pending_runs,
+from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, csv_arg, list_runs, pending_runs, prefetch,
                                         run_local, sbatch_commands, select_datasets, write_jobs_file,
                                         write_slurm_script)
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID
@@ -52,6 +52,8 @@ if __name__ == "__main__":
     write_jobs_file(pending, path=jobs_file, python=sys.executable, output_dir=output_dir)
     print(f"Wrote {jobs_file}", flush=True)
 
+    if args.launcher:
+        prefetch(pending)
     if args.launcher == "local":
         sys.exit(1 if run_local(jobs_file, repo_dir=REPO_DIR) else 0)
     if args.launcher == "slurm":

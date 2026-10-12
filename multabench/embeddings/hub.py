@@ -14,7 +14,6 @@ from typing import Dict, List, Optional, Sequence
 
 import numpy as np
 from huggingface_hub import snapshot_download
-from huggingface_hub.errors import RepositoryNotFoundError
 from pandas import DataFrame
 
 from multabench.baselines.preprocessing.feature_types import transform_feature_types
@@ -127,27 +126,26 @@ def read_embeddings(path: str) -> CachedEmbeddings:
     return CachedEmbeddings(inputs=inputs, embeddings=embeddings, meta=meta)
 
 
-def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> Optional[str]:
-    """The local directory of the dataset's cached embeddings, or None when they aren't on the Hub."""
+def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> str:
+    """The local directory of the dataset's cached embeddings."""
     path_in_repo = embeddings_dir(dataset_id)
     files = [EMBEDDINGS_NPZ, META_JSON]
-    try:
-        dir_path = snapshot_download(repo_id=embeddings_repo_id(encoder), repo_type="dataset",
-                                     allow_patterns=[f"{path_in_repo}/{f}" for f in files])
-    except RepositoryNotFoundError:
-        return None
+    dir_path = snapshot_download(repo_id=embeddings_repo_id(encoder), repo_type="dataset",
+                                 allow_patterns=[f"{path_in_repo}/{f}" for f in files])
     path = join(dir_path, path_in_repo)
-    return path if all(os.path.exists(join(path, f)) for f in files) else None
+    missing = [f for f in files if not os.path.exists(join(path, f))]
+    if missing:
+        raise FileNotFoundError(f"{embeddings_repo_id(encoder)} has no {path_in_repo}/{missing[0]}")
+    return path
 
 
 # A run fits and transforms one dataset, and the embeddings of a large one take a few hundred MB.
 @lru_cache(maxsize=1)
-def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> Optional[CachedEmbeddings]:
-    path = download_embeddings(encoder, dataset_id)
-    return read_embeddings(path) if path is not None else None
+def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> CachedEmbeddings:
+    return read_embeddings(download_embeddings(encoder, dataset_id))
 
 
-def reads_cache(encoder: Encoder, dataset_id: MulTaBenchDatasetID) -> bool:
-    """Whether a run reads this encoder's embeddings from the cache; the runners read only text embeddings so far."""
-    cached = cached_encoder(encoder.encoder_name, encoder.tune_encoder)
-    return isinstance(cached, TextEncoder) and download_embeddings(cached, dataset_id) is not None
+def reads_cache(encoder: Encoder) -> bool:
+    """Whether runs read this encoder's embeddings from the cache, which then must have them, rather than embedding live;
+    the runners read only text embeddings so far."""
+    return isinstance(cached_encoder(encoder.encoder_name, encoder.tune_encoder), TextEncoder)

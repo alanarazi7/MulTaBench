@@ -88,7 +88,7 @@ if __name__ == "__main__":
         parser.error(f"{dataset.name} has no images, so --image_encoder doesn't apply")
     image_encoder = IMAGE_ENCODERS[args.image_encoder] if args.image_encoder else None
     text_encoder = TEXT_ENCODERS[args.text_encoder] if args.text_encoder else None
-    live_encoders = [e for e in (text_encoder, image_encoder) if e and not reads_cache(e, dataset)]
+    live_encoders = [e for e in (text_encoder, image_encoder) if e and not reads_cache(e)]
     hardware = run_hardware(model.NEEDS_GPU, encoders=live_encoders)
     device = get_device(device=args.device or ("cpu" if hardware == CPU_RUN_HARDWARE else None))
     assert_hardware(device, hardware)
