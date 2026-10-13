@@ -182,6 +182,7 @@ class TabularModel:
             tune_dino=self.tune_dino,
             dino_train_kwargs=self.dino_train_kwargs if self.tune_dino else None,
             dino_model_name=self.dino_model_name,
+            dataset=self.dataset,
         )
         self.vprint(f"📷 Detected {len(self.image_transformers)} image features: {sorted(self.image_transformers)}")
         non_image_columns = [col for col in x.columns if col not in self.image_transformers]
