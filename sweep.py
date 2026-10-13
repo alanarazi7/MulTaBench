@@ -4,6 +4,7 @@ import subprocess
 import sys
 import time
 
+from benchmark import BASELINES
 from multabench.benchmark.splits import SPLITS, Size
 from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, csv_arg, list_runs, pending_runs, prefetch,
                                         run_local, sbatch_commands, select_datasets, write_jobs_file,
@@ -24,7 +25,7 @@ if __name__ == "__main__":
     parser.add_argument('--modalities', type=csv_arg([m.value for m in Modality], cast=Modality), default=None,
                         help="keep only the datasets of these modalities: text, image, image-text; default: all")
     parser.add_argument('--text_encoders', type=csv_arg(list(TextEncoder), cast=TextEncoder), default=DEFAULT_TEXT_ENCODERS,
-                        help="used on text datasets; image datasets with text columns always use e5-small")
+                        help="used on text datasets; image datasets use e5-small; raw-text models get none")
     parser.add_argument('--image_encoders', type=csv_arg(list(ImageEncoder), cast=ImageEncoder), default=DEFAULT_IMAGE_ENCODERS,
                         help="used on datasets with images")
     parser.add_argument('--folds', type=csv_arg([str(f) for f in range(SPLITS)]), default=[str(f) for f in range(SPLITS)])
@@ -44,7 +45,8 @@ if __name__ == "__main__":
     jobs_file = os.path.abspath(args.jobs_file or time.strftime("sweep_jobs_%Y%m%d_%H%M%S.txt"))
     datasets = select_datasets(args.datasets, args.modalities)
     runs = list_runs(models=args.models, datasets=datasets, text_encoders=args.text_encoders,
-                     image_encoders=args.image_encoders, folds=[int(f) for f in args.folds], size=args.size)
+                     image_encoders=args.image_encoders, folds=[int(f) for f in args.folds], size=args.size,
+                     raw_text_models={m.SHORT_NAME for m in BASELINES if not m.USE_TEXT_EMBEDDINGS})
     pending = pending_runs(runs, output_dir=output_dir)
     print(f"{len(runs)} runs, {len(runs) - len(pending)} already have a result, {len(pending)} to run")
     if not pending:
