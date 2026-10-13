@@ -139,8 +139,7 @@ def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID)
     return path
 
 
-# A run fits and transforms one dataset, with up to a text and an image encoder, and the embeddings of a large one take
-# a few hundred MB.
+# Room for a run's text and image embeddings, up to a few hundred MB each.
 @lru_cache(maxsize=2)
 def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> CachedEmbeddings:
     return read_embeddings(download_embeddings(encoder, dataset_id))

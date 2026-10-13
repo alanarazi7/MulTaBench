@@ -78,6 +78,19 @@ modality:
 - [ ] `DinoTrainArgs` / `E5TrainArgs`, and the matching `--dino_*` / `--e5_*` flags and kwargs
       dicts in `benchmark.py`.
 
+## Shared embedding preprocessing
+
+`baselines/preprocessing/text_embeddings.py` and `image_embeddings.py` repeat the same per-column
+steps: read cached embeddings or encode, then reduce each column to `PCA_COMPONENTS`. Extract a
+shared parent, keeping only the encoders themselves (E5, TF-IDF, DINO) per modality:
+
+- [ ] One column-encoder base for `E5ColumnEncoder`, `SkrubColumnEncoder` and `_ScaledPCA`: an
+      optional cache, `embed` (cache lookup, else encode) and `transform` (the fitted reduction).
+- [ ] `_caches_per_column`, defined twice with only "text" / "image" differing in its message.
+- [ ] `PCA_COMPONENTS`, defined in both files, and the fit-PCA-per-column loops in
+      `fit_text_encoders_vanilla` and `fit_image_encoders`.
+- [ ] Decide on scaling: images get `StandardScaler` before PCA, text doesn't.
+
 ## Later, not needed for the first release
 
 - Minimal installation for `load_split` and `load_embeddings`.
