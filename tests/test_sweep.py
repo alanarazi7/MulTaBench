@@ -21,6 +21,23 @@ def test_each_modality_gets_only_its_encoders():
     assert image_text == [(IMAGE_TEXT_TEXT_ENCODER, i) for i in DEFAULT_IMAGE_ENCODERS]
 
 
+def test_raw_text_models_get_no_text_encoder():
+    text = encoder_pairs(Modality.TEXT, DEFAULT_TEXT_ENCODERS, DEFAULT_IMAGE_ENCODERS, embeds_text=False)
+    image_text = encoder_pairs(Modality.IMAGE_TEXT, DEFAULT_TEXT_ENCODERS, DEFAULT_IMAGE_ENCODERS, embeds_text=False)
+    assert text == [(None, None)]
+    assert image_text == [(None, i) for i in DEFAULT_IMAGE_ENCODERS]
+
+
+def test_raw_text_models_run_once_per_dataset_and_fold():
+    runs = list_runs(models=["ctx", "light"], datasets=[TEXT], text_encoders=DEFAULT_TEXT_ENCODERS,
+                     image_encoders=DEFAULT_IMAGE_ENCODERS, folds=[0, 1], size=Size.TEN_K, raw_text_models={"ctx"})
+    ctx = [run for run in runs if run.model == "ctx"]
+    assert [run.name for run in ctx] == ["ctx_BIN_TEXT_FAKE_JOB_POSTING_none_none_10k_0",
+                                         "ctx_BIN_TEXT_FAKE_JOB_POSTING_none_none_10k_1"]
+    assert "--text_encoder" not in ctx[0].command(python="python", output_dir="runs")
+    assert len(runs) - len(ctx) == len(DEFAULT_TEXT_ENCODERS) * 2
+
+
 def test_runs_cover_encoders_and_folds():
     runs = list_runs(models=["light"], datasets=[TEXT], text_encoders=DEFAULT_TEXT_ENCODERS,
                      image_encoders=DEFAULT_IMAGE_ENCODERS, folds=[0, 1], size=Size.TEN_K)

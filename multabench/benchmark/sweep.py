@@ -3,7 +3,7 @@ import argparse
 import os
 import shlex
 import subprocess
-from typing import Iterable, List, Optional, Tuple
+from typing import Iterable, List, Optional, Set, Tuple
 
 from multabench.benchmark.load import download_dataset
 from multabench.benchmark.runs import Run
@@ -25,21 +25,26 @@ def select_datasets(names: Optional[List[str]], modalities: Optional[List[Modali
     return [d for d in datasets if not modalities or dataset_modality(d) in modalities]
 
 
-def encoder_pairs(modality: Modality, text_encoders: List[TextEncoder],
-                  image_encoders: List[ImageEncoder]) -> List[Tuple[Optional[TextEncoder], Optional[ImageEncoder]]]:
+def encoder_pairs(modality: Modality, text_encoders: List[TextEncoder], image_encoders: List[ImageEncoder],
+                  embeds_text: bool = True) -> List[Tuple[Optional[TextEncoder], Optional[ImageEncoder]]]:
+    """A model that reads raw text gets no text encoder, so it runs once per dataset rather than once per encoder."""
     if modality == Modality.TEXT:
-        return [(text_encoder, None) for text_encoder in text_encoders]
+        return [(text_encoder, None) for text_encoder in text_encoders] if embeds_text else [(None, None)]
     if modality == Modality.IMAGE:
         return [(None, image_encoder) for image_encoder in image_encoders]
-    return [(IMAGE_TEXT_TEXT_ENCODER, image_encoder) for image_encoder in image_encoders]
+    text_encoder = IMAGE_TEXT_TEXT_ENCODER if embeds_text else None
+    return [(text_encoder, image_encoder) for image_encoder in image_encoders]
 
 
 def list_runs(models: Iterable[str], datasets: Iterable[MulTaBenchDatasetID], text_encoders: List[TextEncoder],
-              image_encoders: List[ImageEncoder], folds: Iterable[int], size: Size) -> List[Run]:
+              image_encoders: List[ImageEncoder], folds: Iterable[int], size: Size,
+              raw_text_models: Set[str] = frozenset()) -> List[Run]:
     runs = []
     for model in models:
         for dataset in datasets:
-            for text_encoder, image_encoder in encoder_pairs(dataset_modality(dataset), text_encoders, image_encoders):
+            pairs = encoder_pairs(dataset_modality(dataset), text_encoders, image_encoders,
+                                  embeds_text=model not in raw_text_models)
+            for text_encoder, image_encoder in pairs:
                 for fold in folds:
                     runs.append(Run(model, dataset.name, text_encoder, image_encoder, size, fold))
     return runs

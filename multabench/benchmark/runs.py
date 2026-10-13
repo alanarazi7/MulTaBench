@@ -9,7 +9,8 @@ from multabench.e5.constants import TextEncoder
 
 @dataclass(frozen=True)
 class Run:
-    """One benchmark.py run; an encoder is None when the dataset has no column of its kind."""
+    """One benchmark.py run; an encoder is None when the dataset has no column of its kind, or, for text, when the
+    model reads raw text."""
     model: str
     dataset: str
     text_encoder: Optional[TextEncoder]

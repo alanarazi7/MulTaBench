@@ -78,8 +78,10 @@ if __name__ == "__main__":
     model = SHORT2MODELS[args.model]
     dataset = MulTaBenchDatasetID[args.dataset_name]
     modality = dataset_modality(dataset)
-    if modality.has_text:
+    if modality.has_text and model.USE_TEXT_EMBEDDINGS:
         args.text_encoder = args.text_encoder or TextEncoder.E5_SMALL
+    elif args.text_encoder and modality.has_text:
+        parser.error(f"{model.MODEL_NAME} reads raw text, so --text_encoder doesn't apply")
     elif args.text_encoder:
         parser.error(f"{dataset.name} has no text columns, so --text_encoder doesn't apply")
     if modality.has_images:
