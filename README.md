@@ -52,8 +52,9 @@ python sweep.py --models tabm,real --modalities text --text_encoders e5-small --
 
 With `--launcher slurm`, each line becomes a task of a Slurm array; `--sbatch="..."` is passed to `sbatch`
 as is (the `=` is needed, since the value starts with `--`), and without `--submit` the `sbatch` commands are only
-printed. All the runs of a sweep get the same `--sbatch`, so sweep the runs that need a GPU apart from those that
-don't (see below), as in the last two commands. Relaunching a sweep runs only what is still missing.
+printed. With a launcher, the sweep first downloads the runs' datasets and cached embeddings, since runs that
+download the same files at once into a shared Hugging Face cache (e.g. on NFS) can fail. All the runs of a sweep get
+the same `--sbatch`, so sweep the runs that need a GPU apart from those that don't (see below), as in the last two commands. Relaunching a sweep runs only what is still missing.
 
 Every run must use the same hardware, so their times compare: one NVIDIA H100 (80 GB), an Intel
 Xeon Platinum 8481C with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in

@@ -130,8 +130,6 @@ def _caches_per_column(e5_model_name: str, dataset: Optional[MulTaBenchDatasetID
     if encoder is None or dataset is None:
         return {}
     cache = cached_embeddings(encoder, dataset)
-    if cache is None:
-        return {}
     print(f"Reading the text embeddings of {cache.meta['features']} from the cached {encoder} embeddings")
     return {col: cache for col in cache.meta["features"]}
 

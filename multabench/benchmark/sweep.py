@@ -5,11 +5,13 @@ import shlex
 import subprocess
 from typing import Iterable, List, Optional, Tuple
 
+from multabench.benchmark.load import download_dataset
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import ImageEncoder
-from multabench.e5.constants import TextEncoder
+from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
+from multabench.embeddings.hub import cached_encoder, download_embeddings, reads_cache
 
 SLURM_ARRAY_LIMIT = 1000
 DEFAULT_TEXT_ENCODERS = [TextEncoder.TFIDF, TextEncoder.E5_SMALL, TextEncoder.E5_SMALL_TAR]
@@ -55,6 +57,17 @@ def csv_arg(choices=None, cast=str):
 
 def pending_runs(runs: List[Run], output_dir: str) -> List[Run]:
     return [run for run in runs if not os.path.exists(os.path.join(output_dir, f"{run.name}.json"))]
+
+
+def prefetch(runs: List[Run]):
+    """Downloads the runs' datasets and cached embeddings once, before they start: runs that download the same files
+    at once into a Hugging Face cache on NFS fail with stale file handles."""
+    for dataset in sorted({run.dataset for run in runs}):
+        download_dataset(MulTaBenchDatasetID[dataset])
+    for text_encoder, dataset in sorted({(run.text_encoder, run.dataset) for run in runs if run.text_encoder}):
+        encoder = TEXT_ENCODERS[text_encoder]
+        if reads_cache(encoder):
+            download_embeddings(cached_encoder(encoder.encoder_name, encoder.tune_encoder), MulTaBenchDatasetID[dataset])
 
 
 def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str):
