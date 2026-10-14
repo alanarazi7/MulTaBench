@@ -33,8 +33,6 @@ file as the PRs that complete them are merged.
       and feature permutations unseeded (a rerun moved Petfinder 1.4275 → 1.4353). Pass `SEED`, then rerun it.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
-- [ ] TabPFN-3.5-Fast failed every run with `TabPFNLicenseError`: its weights need a `TABPFN_TOKEN` after accepting
-      the licence on ux.priorlabs.ai, not just `HF_TOKEN`. Pass it like `HF_TOKEN`, then rerun it.
 - [ ] Kumo-Tabular ran out of the 32 GB RAM on Hearthstone and Wine Review, and Kumo-Tabular-Medium on Spotify
       Genres. Find what grows (likely the cached context) and fix it within the official hardware, else record
       them as failures.
