@@ -52,13 +52,13 @@ def load_multimodal_leaderboard_data() -> pd.DataFrame:
 
 
 def get_results_data() -> pd.DataFrame:
-    result_dir = join(dirname(__file__), '..', 'results', 'text')
+    result_dir = join(dirname(__file__), '..', 'legacy_results', 'text')
     return pd.concat(_load_result_dir(result_dir, required_cols=[FOLD, MODEL, DATASET]))
 
 
 @st.cache_data
 def load_large_results_data() -> pd.DataFrame:
-    results_root = join(dirname(__file__), '..', 'results')
+    results_root = join(dirname(__file__), '..', 'legacy_results')
     dfs = []
     for subdir in ('images_large', 'text_large'):
         dfs += _load_result_dir(join(results_root, subdir), required_cols=[FOLD, MODEL, DATASET])
@@ -67,7 +67,7 @@ def load_large_results_data() -> pd.DataFrame:
 
 @st.cache_data
 def load_multabench_data() -> pd.DataFrame:
-    results_root = join(dirname(__file__), '..', 'results')
+    results_root = join(dirname(__file__), '..', 'legacy_results')
     dfs = []
     for subdir in ('images', 'text'):
         dfs += _load_result_dir(join(results_root, subdir), required_cols=[MODEL, DATASET, FOLD, MM, TEST_SCORE])
@@ -85,7 +85,7 @@ def load_paper_benchmark_data() -> pd.DataFrame:
     Rows are filtered to all/ft states and dino-small / e5-small only.
     """
     required = [MODEL, DATASET, FOLD, MM, TEST_SCORE]
-    results_root = join(dirname(__file__), '..', 'results')
+    results_root = join(dirname(__file__), '..', 'legacy_results')
     dfs = []
     for subdir in ('images', 'text', 'more_baselines'):
         dfs += _load_result_dir(join(results_root, subdir), required_cols=required)

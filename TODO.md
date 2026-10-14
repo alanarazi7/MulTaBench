@@ -29,8 +29,9 @@ file as the PRs that complete them are merged.
       until then, sweeps pass `--text_encoders e5-small`, since the default also lists TF-IDF.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
-- [ ] Rerun every result CSV under `multabench/leaderboard/results/` with the TabArena metrics; the
-      current ones still report AUC and R².
+- [ ] Rerun what `multabench/leaderboard/legacy_results/` covers with the leaderboard protocol: the
+      frozen small encoders are done; the large and fine-tuned (`-tar`) encoders and TabSTAR and
+      AutoGluon multimodal are left. Then delete the legacy results with the paper analysis code.
 
 ## Per-model dependencies
 
