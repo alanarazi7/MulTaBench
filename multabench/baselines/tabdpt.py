@@ -1,6 +1,8 @@
+import numpy as np
 from pandas import DataFrame, Series
 
 from multabench.baselines.abstract_model import TabularModel
+from multabench.constants import SEED
 
 
 class TabDPT(TabularModel):
@@ -24,3 +26,9 @@ class TabDPT(TabularModel):
         y_train = y_train.to_numpy()
         self.model_.fit(x_train, y_train)
 
+    def predict_from_processed(self, x: DataFrame) -> np.ndarray:
+        """As the base class, with SEED: tabdpt draws its ensemble, permutations and kNN unseeded otherwise."""
+        if not self.is_cls:
+            return self.model_.predict(x, seed=SEED)
+        probs = self.model_.predict_proba(x, seed=SEED)
+        return probs[:, 1] if self.d_output == 2 else probs
