@@ -1,7 +1,8 @@
 import subprocess
 import sys
 
-BENCH_ONLY = ["torch", "torchvision", "transformers", "peft", "PIL", "skrub", "autogluon", "dotenv", "psutil"]
+# Not psutil, which joblib imports when it's installed, nor the bare `autogluon` namespace its .pth files register.
+BENCH_ONLY = ["torch", "torchvision", "transformers", "peft", "PIL", "skrub", "autogluon.core", "dotenv"]
 
 
 def test_the_core_imports_no_bench_package():
