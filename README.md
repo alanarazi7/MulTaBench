@@ -30,20 +30,21 @@ battles there. TabPFN-v2 and v2.5 take at most 10 classes, which leaves out 3 of
 
 | # | Model | Elo, 80 datasets | 95% CI | Text, 40 | Images, 40 | Datasets |
 |---|---|---|---|---|---|---|
-| 1 | TabPFN-3.5 | 2176 | +236 / −173 | 2040 | 2405 | 80 |
-| 2 | Kumo-Tabular-Small | 2138 | +208 / −148 | 2103 | 2256 | 80 |
-| 3 | TabICLv2 | 1756 | +140 / −117 | 1654 | 1941 | 80 |
-| 4 | TabPFN-3 | 1674 | +143 / −118 | 1561 | 1872 | 80 |
-| 5 | TabPFN-v2p5 | 1665 | +131 / −118 | 1653 | 1745 | 77 |
-| 6 | TabPFN-v2 | 1406 | +117 / −97 | 1321 | 1557 | 77 |
-| 7 | TabM | 1367 | +98 / −89 | 1348 | 1434 | 80 |
-| 8 | ConTextTab | 1352 | +112 / −102 | 1274 | 1492 | 80 |
-| 9 | CatBoost | 1297 | +67 / −55 | 1307 | 1319 | 80 |
-| 10 | TabDPT | 1253 | +112 / −93 | 1116 | 1457 | 80 |
-| 11 | RealMLP | 1082 | +81 / −72 | 1104 | 1059 | 80 |
-| 12 | LightGBM | 1057 | +63 / −60 | 1091 | 1013 | 80 |
-| 13 | RandomForest | 1000 | anchor | 1000 | 1000 | 80 |
-| 14 | XGBoost | 986 | +67 / −64 | 1022 | 936 | 80 |
+| 1 | TabPFN-3.5 | 2221 | +230 / −176 | 2080 | 2458 | 80 |
+| 2 | Kumo-Tabular-Small | 2139 | +190 / −151 | 2094 | 2268 | 80 |
+| 3 | TabPFN-3.5-Fast | 2010 | +195 / −149 | 1906 | 2199 | 80 |
+| 4 | TabICLv2 | 1745 | +137 / −115 | 1637 | 1941 | 80 |
+| 5 | TabPFN-3 | 1666 | +145 / −117 | 1554 | 1866 | 80 |
+| 6 | TabPFN-v2p5 | 1661 | +136 / −114 | 1647 | 1743 | 77 |
+| 7 | TabPFN-v2 | 1407 | +117 / −97 | 1322 | 1559 | 77 |
+| 8 | TabM | 1366 | +98 / −89 | 1348 | 1432 | 80 |
+| 9 | ConTextTab | 1353 | +113 / −102 | 1279 | 1490 | 80 |
+| 10 | CatBoost | 1298 | +66 / −55 | 1307 | 1321 | 80 |
+| 11 | TabDPT | 1251 | +112 / −93 | 1116 | 1455 | 80 |
+| 12 | RealMLP | 1082 | +81 / −71 | 1103 | 1059 | 80 |
+| 13 | LightGBM | 1058 | +63 / −61 | 1093 | 1013 | 80 |
+| 14 | RandomForest | 1000 | anchor | 1000 | 1000 | 80 |
+| 15 | XGBoost | 988 | +67 / −65 | 1024 | 936 | 80 |
 
 Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row per (dataset, fold), failed
 runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank and
