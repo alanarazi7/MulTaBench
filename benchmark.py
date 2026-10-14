@@ -28,7 +28,7 @@ from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.embeddings.hub import reads_cache
 from multabench.result_keys import ResultKey, RunStatus
-from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware
+from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, hardware_mismatches, run_hardware
 from multabench.utils.logging import get_current_commit_hash
 
 BASELINES = [TabSTAR,
@@ -53,6 +53,8 @@ if __name__ == "__main__":
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--output_dir', type=str, default='runs')
     parser.add_argument('--overwrite', action='store_true', default=False, help="rerun even if the result JSON exists")
+    parser.add_argument('--official', action='store_true', default=False,
+                        help="raise unless on the leaderboard's hardware, as leaderboard runs must")
     parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1; default: cuda, or cpu for runs that don't need a GPU")
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
@@ -96,7 +98,10 @@ if __name__ == "__main__":
     live_encoders = [e for e in (text_encoder, image_encoder) if e and not reads_cache(e)]
     hardware = run_hardware(model.NEEDS_GPU, encoders=live_encoders)
     device = get_device(device=args.device or ("cpu" if hardware == CPU_RUN_HARDWARE else None))
-    assert_hardware(device, hardware)
+    if args.official:
+        assert_hardware(device, hardware)
+    elif mismatches := hardware_mismatches(device, hardware):
+        print(f"Not the leaderboard's hardware, so times don't compare: {'; '.join(mismatches)}")
     run = Run(args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
     out_path = os.path.join(args.output_dir, f"{run.name}.json")
     if os.path.exists(out_path) and not args.overwrite:

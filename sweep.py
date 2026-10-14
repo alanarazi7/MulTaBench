@@ -31,6 +31,7 @@ if __name__ == "__main__":
     parser.add_argument('--folds', type=csv_arg([str(f) for f in range(SPLITS)]), default=[str(f) for f in range(SPLITS)])
     parser.add_argument('--size', type=Size, default=Size.TEN_K, choices=list(Size))
     parser.add_argument('--output_dir', type=str, default='runs')
+    parser.add_argument('--official', action='store_true', default=False, help="pass --official to every run")
     parser.add_argument('--jobs_file', type=str, default=None,
                         help="default: sweep_jobs_<timestamp>.txt, so a new sweep never rewrites the file a queued "
                              "Slurm array reads its commands from")
@@ -51,7 +52,7 @@ if __name__ == "__main__":
     print(f"{len(runs)} runs, {len(runs) - len(pending)} already have a result, {len(pending)} to run")
     if not pending:
         sys.exit(0)
-    write_jobs_file(pending, path=jobs_file, python=sys.executable, output_dir=output_dir)
+    write_jobs_file(pending, path=jobs_file, python=sys.executable, output_dir=output_dir, official=args.official)
     print(f"Wrote {jobs_file}", flush=True)
 
     if args.launcher:
