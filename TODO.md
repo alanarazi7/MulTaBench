@@ -44,8 +44,8 @@ models can't share:
 - [ ] One venv per model, `uv pip install -e ".[<model>]"`; `sweep.py` runs each model with its venv's python.
       Packages with wrong declared requirements (LimiX-2's torch pin, EXAONE-Tabular's scikit-learn floor) are
       installed with `--no-deps`, documented in their wrapper.
-- [ ] Then add the other TabArena models at their default configs: Kumo-Tabular, -Medium and -Small,
-      TabDPT-1.3, LimiX-2, Causilo, TabFM, Mitra-v2, EXAONE-Tabular and Xiaomi-TabLDM.
+- [ ] Then add the other TabArena models at their default configs: TabDPT-1.3, LimiX-2, Causilo, TabFM,
+      Mitra-v2, EXAONE-Tabular and Xiaomi-TabLDM.
       Mitra-v2's default fine-tunes within 8-fold bagging, and TabArena dropped Xiaomi-TabLDM over a prediction
       bug when a batch has more rows than the training set; both run as they are.
 
