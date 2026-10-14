@@ -58,8 +58,6 @@ models can't share:
 
 ## Leaderboard
 
-- [ ] Decide whether to impute missing results with RandomForest, as TabArena does; the Elo leaves
-      them out for now.
 - [ ] Improvability as a secondary column.
 - [ ] Leaderboard tab reading `multabench/leaderboard/models/`.
 - [ ] README section on submitting a model: open a PR with the model's wrapper (and its

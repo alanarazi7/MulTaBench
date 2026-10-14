@@ -193,7 +193,7 @@ MulTaBench is not an official TabArena leaderboard.
 | | TabArena | MulTaBench | Status |
 |---|---|---|---|
 | Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | ✅ |
-| Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Elo as in the paper, RandomForest anchored at 1000, bootstrapped confidence intervals; missing results are left out, not imputed | |
+| Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Elo as in the paper, RandomForest anchored at 1000, bootstrapped confidence intervals; missing results are left out, neither imputed nor dropping the model, so a model is ranked on the datasets it ran on, which its Datasets column shows | |
 | Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited: every dataset is split IID. Some datasets may have group or time structure, in which case IID splits can overestimate performance | |
 | Runtime | Train and inference time per 1K rows | Same, with the time spent embedding text and images reported separately | ✅ |
