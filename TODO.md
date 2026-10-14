@@ -37,15 +37,10 @@ file as the PRs that complete them are merged.
 
 New models' requirements conflict with the shared `requirements.txt` (torch 2.7.1, tabpfn 7.1.1): Causilo needs
 torch>=2.13, Mitra-v2 autogluon.tabular 1.6, LimiX-2 declares python>=3.12 and torch==2.9.1, TabPFN-3.x tabpfn 9.x,
-TabDPT-1.3 tabdpt 1.3 (which can't load the current TabDPT weights). TabArena declares one extra per model in its
-`pyproject.toml` and imports each model's package lazily, but keeps a single shared torch. Do that here, without
-the single torch:
+TabDPT-1.3 tabdpt 1.3 (which can't load the current TabDPT weights). As in TabArena, `pyproject.toml` has one extra
+per model package and each wrapper imports its package lazily; TabArena then keeps a single shared torch, which these
+models can't share:
 
-- [ ] `pyproject.toml` with a lean core (loading, preprocessing, the e5 and DINO encoders) and one extra per model,
-      the current baselines keeping their current pins; git-only packages pinned to a commit.
-- [ ] A lazy registry: `benchmark.py` maps each short name to its wrapper module and imports only the model run,
-      and each wrapper imports its package inside `fit`, so a missing package is an install hint, not an import
-      error.
 - [ ] One venv per model, `uv pip install -e ".[<model>]"`; `sweep.py` runs each model with its venv's python.
       Packages with wrong declared requirements (LimiX-2's torch pin, EXAONE-Tabular's scikit-learn floor) are
       installed with `--no-deps`, documented in their wrapper.

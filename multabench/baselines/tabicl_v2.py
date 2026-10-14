@@ -1,5 +1,4 @@
 from pandas import DataFrame, Series
-from tabicl import TabICLClassifier, TabICLRegressor
 
 from multabench.baselines.abstract_model import TabularModel
 
@@ -15,6 +14,7 @@ class TabICLv2(TabularModel):
     USE_TARGET_ENCODER = True
 
     def initialize_model(self):
+        from tabicl import TabICLClassifier, TabICLRegressor
         cls = TabICLClassifier if self.is_cls else TabICLRegressor
         return cls(device=str(self.device))
 

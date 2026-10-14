@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from pandas import DataFrame, Series
-from pytabkit import TabM_D_Classifier, TabM_D_Regressor
 
 from multabench.constants import SEED
 from multabench.utils.devices import CPU_CORES
@@ -24,7 +23,8 @@ class TabM(TabularModel):
     USE_TEXT_EMBEDDINGS = True
     USE_TARGET_ENCODER = True
 
-    def initialize_model(self) -> TabM_D_Classifier | TabM_D_Regressor:
+    def initialize_model(self):
+        from pytabkit import TabM_D_Classifier, TabM_D_Regressor
         params = TabMDefaultHyperparams(device=str(self.device))
         params = vars(params)
         model_cls = TabM_D_Classifier if self.is_cls else TabM_D_Regressor

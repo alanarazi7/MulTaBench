@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from catboost import CatBoostRegressor, CatBoostClassifier
 from pandas import DataFrame, Series
 
 from multabench.constants import SEED
@@ -28,7 +27,8 @@ class CatBoost(TabularModel):
     USE_TARGET_ENCODER = True
     NEEDS_GPU = False
 
-    def initialize_model(self) -> CatBoostRegressor | CatBoostClassifier:
+    def initialize_model(self):
+        from catboost import CatBoostRegressor, CatBoostClassifier
         model_cls = CatBoostClassifier if self.is_cls else CatBoostRegressor
         params = vars(CatBoostDefaultHyperparams())
         return model_cls(**params)

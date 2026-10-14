@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multabench"
+version = "0.1.0"
+description = "Benchmarking multimodal tabular learning: tables whose columns include text or images"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "autogluon.core",
+    "huggingface_hub",
+    "numpy",
+    "pandas >= 2.2.2",
+    "peft",
+    "pillow",
+    "psutil",
+    "pyarrow",
+    "python-dotenv",
+    "scikit-learn",
+    "setuptools < 82",
+    "skrub",
+    "torch >= 2.6.0",
+    "torchvision",
+    "transformers >= 4.49.0",
+]
+
+# One extra per model package; requirements.txt locks the shared .venv, which has all of them.
+[project.optional-dependencies]
+catboost = ["catboost"]
+lightgbm = ["lightgbm"]
+xgboost = ["xgboost"]
+pytabkit = ["pytabkit"]
+tabicl = ["tabicl >= 2.0.3"]
+tabdpt = ["tabdpt >= 1.1.9"]
+tabpfn = ["tabpfn >= 7.1.1, < 8"]
+contexttab = ["sap_rpt_oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss@v1.1.2"]
+tabstar = ["tabstar >= 1.1.15"]
+autogluon-mm = ["autogluon.multimodal"]
+dev = ["matplotlib", "pytest", "streamlit"]
+
+[tool.setuptools.packages.find]
+include = ["multabench*"]
