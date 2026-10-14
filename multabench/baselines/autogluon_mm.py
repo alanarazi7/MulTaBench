@@ -7,7 +7,6 @@ import time
 import numpy as np
 from pandas import DataFrame, Series, notna
 
-from autogluon.multimodal import MultiModalPredictor
 
 from multabench.baselines.preprocessing.target import fit_preprocess_y, transform_preprocess_y
 from multabench.baselines.abstract_model import TabularModel
@@ -56,6 +55,7 @@ class AutoGluonMM(TabularModel):
         raise NotImplementedError("AutoGluonMM uses a custom fit() — fit_model() is never called.")
 
     def fit(self, x: DataFrame, y: Series):
+        from autogluon.multimodal import MultiModalPredictor
         # Fit target encoder for consistent scoring with other baselines
         self.target_transformer = fit_preprocess_y(y=y, is_cls=self.is_cls)
         y_enc = transform_preprocess_y(y=y, scaler=self.target_transformer)

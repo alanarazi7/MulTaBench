@@ -1,8 +1,6 @@
 import pandas as pd
 from pandas import DataFrame, Series
 
-from tabstar.tabstar_model import TabSTARClassifier, TabSTARRegressor
-
 from multabench.baselines.abstract_model import TabularModel
 from multabench.constants import SEED
 
@@ -56,7 +54,6 @@ def get_tabstar_paper_mapping(dataset_id: str) -> str | None:
     return NEW2PAPER[dataset_id]
 
 
-
 class TabSTAR(TabularModel):
 
     MODEL_NAME = "TabSTAR"
@@ -69,7 +66,8 @@ class TabSTAR(TabularModel):
 
     IS_PAPER_VERSION = True
 
-    def initialize_model(self) -> TabSTARClassifier | TabSTARRegressor:
+    def initialize_model(self):
+        from tabstar.tabstar_model import TabSTARClassifier, TabSTARRegressor
         # pandas 3's default string dtype breaks TabSTAR's dtype detection; don't run it until TabSTAR v1.1.
         assert int(pd.__version__.split(".")[0]) < 3, f"TabSTAR needs pandas < 3, got {pd.__version__}"
         # TODO: if memory is low, use smaller batch size?

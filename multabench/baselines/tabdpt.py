@@ -1,5 +1,4 @@
 from pandas import DataFrame, Series
-from tabdpt import TabDPTRegressor, TabDPTClassifier
 
 from multabench.baselines.abstract_model import TabularModel
 
@@ -14,7 +13,8 @@ class TabDPT(TabularModel):
     USE_TEXT_EMBEDDINGS = True
     USE_TARGET_ENCODER = True
 
-    def initialize_model(self) -> TabDPTClassifier | TabDPTRegressor:
+    def initialize_model(self):
+        from tabdpt import TabDPTRegressor, TabDPTClassifier
         model_cls = TabDPTClassifier if self.is_cls else TabDPTRegressor
         model = model_cls(device=str(self.device), use_flash=False)
         return model

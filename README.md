@@ -55,6 +55,10 @@ cp .env.example .env     # Hugging Face token
 python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --text_encoder e5-small --image_encoder dino-small
 ```
 
+`pyproject.toml` lists the core dependencies and one extra per model package, so `pip install -e ".[catboost]"`
+installs what one model needs; each wrapper imports its package only when it runs. `init.sh` sets up the shared
+`.venv` from `requirements.txt`, which locks the core and every extra.
+
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
 result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change), with
 `none` for an encoder the dataset has no column for. A run

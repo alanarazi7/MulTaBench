@@ -1,7 +1,6 @@
 import os
 
 from pandas import DataFrame, Series
-from sap_rpt_oss import SAP_RPT_OSS_Classifier, SAP_RPT_OSS_Regressor
 
 from multabench.baselines.abstract_model import TabularModel
 from multabench.constants import HF_TOKEN
@@ -17,7 +16,8 @@ class ConTextTab(TabularModel):
     USE_TEXT_EMBEDDINGS = False
     USE_TARGET_ENCODER = False
 
-    def initialize_model(self) -> SAP_RPT_OSS_Classifier | SAP_RPT_OSS_Regressor:
+    def initialize_model(self):
+        from sap_rpt_oss import SAP_RPT_OSS_Classifier, SAP_RPT_OSS_Regressor
         os.environ["HF_TOKEN"] = HF_TOKEN or ""
         model_cls = SAP_RPT_OSS_Classifier if self.is_cls else SAP_RPT_OSS_Regressor
         # Initialize the regressor, 8k context and 8-fold bagging gives best performance, reduce if running out of memory

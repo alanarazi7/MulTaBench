@@ -2,11 +2,9 @@ import os
 from typing import List
 
 from pandas import DataFrame, Series
-from tabpfn.constants import ModelVersion
 
 from multabench.constants import SEED
 from multabench.baselines.abstract_model import TabularModel
-from tabpfn import TabPFNClassifier, TabPFNRegressor
 
 from multabench.constants import HF_TOKEN
 
@@ -36,7 +34,9 @@ class TabPFNv2(TabularModel):
         self.model_ = self.get_model_instance(cat_feature=cat_feature)
         self.model_.fit(x_train, y_train)
 
-    def get_model_instance(self, cat_feature: List[int]) -> TabPFNClassifier | TabPFNRegressor:
+    def get_model_instance(self, cat_feature: List[int]):
+        from tabpfn import TabPFNClassifier, TabPFNRegressor
+        from tabpfn.constants import ModelVersion
         model_cls = TabPFNRegressor if not self.is_cls else TabPFNClassifier
         return model_cls.create_default_for_version(version=ModelVersion.V2, random_state=SEED,
                                                            categorical_features_indices=cat_feature,
@@ -51,7 +51,9 @@ class TabPFNv2p5(TabPFNv2):
     MAX_ROWS = 50000
     MAX_COLS = 2000
 
-    def get_model_instance(self, cat_feature: List[int]) -> TabPFNClassifier | TabPFNRegressor:
+    def get_model_instance(self, cat_feature: List[int]):
+        from tabpfn import TabPFNClassifier, TabPFNRegressor
+        from tabpfn.constants import ModelVersion
         model_cls = TabPFNRegressor if not self.is_cls else TabPFNClassifier
         return model_cls.create_default_for_version(version=ModelVersion.V2_5, random_state=SEED,
                                                     categorical_features_indices=cat_feature,

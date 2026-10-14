@@ -1,4 +1,3 @@
-from lightgbm import LGBMClassifier, LGBMRegressor
 from pandas import DataFrame, Series
 
 from multabench.constants import SEED
@@ -17,7 +16,8 @@ class LightGBM(TabularModel):
     USE_TARGET_ENCODER = True
     NEEDS_GPU = False
 
-    def initialize_model(self) -> LGBMRegressor | LGBMClassifier:
+    def initialize_model(self):
+        from lightgbm import LGBMClassifier, LGBMRegressor
         model_cls = LGBMClassifier if self.is_cls else LGBMRegressor
         params = {"verbose": -1, "random_state": SEED, "n_jobs": CPU_CORES}
         return model_cls(**params)

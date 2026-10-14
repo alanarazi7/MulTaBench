@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from pandas import DataFrame, Series
-from pytabkit import RealMLP_TD_Classifier, RealMLP_TD_Regressor
 
 from multabench.constants import SEED
 from multabench.utils.devices import CPU_CORES
@@ -26,7 +25,8 @@ class RealMLP(TabularModel):
     USE_TEXT_EMBEDDINGS = True
     USE_TARGET_ENCODER = True
 
-    def initialize_model(self) -> RealMLP_TD_Classifier | RealMLP_TD_Regressor:
+    def initialize_model(self):
+        from pytabkit import RealMLP_TD_Classifier, RealMLP_TD_Regressor
         task2metric = {SupervisedTask.BINARY: 'cross_entropy',
                        SupervisedTask.MULTICLASS: '1-auc_ovr',
                        SupervisedTask.REGRESSION: 'rmse'}

@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from xgboost import XGBRegressor, XGBClassifier
 from pandas import DataFrame, Series
 
 from multabench.constants import SEED
@@ -29,7 +28,8 @@ class XGBoost(TabularModel):
     USE_TARGET_ENCODER = True
     NEEDS_GPU = False
 
-    def initialize_model(self) -> XGBRegressor | XGBClassifier:
+    def initialize_model(self):
+        from xgboost import XGBRegressor, XGBClassifier
         model_cls = XGBClassifier if self.is_cls else XGBRegressor
         params = vars(XGBoostDefaultHyperparams())
         return model_cls(**params)
