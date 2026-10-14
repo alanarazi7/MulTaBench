@@ -9,7 +9,19 @@ description = "Benchmarking multimodal tabular learning: tables whose columns in
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-authors = [{ name = "Alan Arazi" }]
+authors = [
+    { name = "Alan Arazi" },
+    { name = "Eilam Shapira" },
+    { name = "Shoham Grunblat" },
+    { name = "Mor Ventura" },
+    { name = "Elad Hoffer" },
+    { name = "Gioia Blayer" },
+    { name = "David Holzmüller" },
+    { name = "Lennart Purucker" },
+    { name = "Gaël Varoquaux" },
+    { name = "Frank Hutter" },
+    { name = "Roi Reichart" },
+]
 requires-python = ">=3.11"
 # The core: loading the datasets, their splits and the cached embeddings.
 dependencies = [
