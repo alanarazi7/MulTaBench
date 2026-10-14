@@ -3,6 +3,45 @@
 Work in progress towards the first release of the living leaderboard. Items are removed from this
 file as the PRs that complete them are merged.
 
+## Light core package
+
+`multabench` should install as a small library, so that another evaluation harness can depend on it
+for the data, the splits, the scoring and the published results without installing torch or any
+model package. A model then only needs `fit` and `predict`.
+
+- [ ] Shrink `dependencies` to what `load_split`, the metrics and the result files need (`numpy`,
+      `pandas`, `pyarrow`, `scikit-learn`, `huggingface_hub`), and move the rest into extras: `embed`
+      for the E5 and DINO encoders and their fine-tuning, `baselines` for the shared `TabularModel`
+      preprocessing, next to the existing one extra per model. `requirements.txt` keeps locking the
+      full `.venv`.
+- [ ] Make `import multabench` and `load_split` import only the core: `benchmark/load.py` imports
+      `multabench.embeddings.hub`, which pulls in `baselines.preprocessing` and the encoder
+      constants. Move `load_embeddings` and its imports apart from `load_split`, and add a test that
+      importing `multabench` loads no torch, transformers or model package.
+- [ ] Pin a Hugging Face revision per dataset: `download_dataset` calls `snapshot_download` without
+      a revision, so a dataset update changes the rows a given `multabench` commit loads.
+- [ ] Scoring in the core: `calculate_metric` imports AutoGluon's scorers. Either reimplement ROC
+      AUC, log loss and RMSE with scikit-learn, with a test that they match AutoGluon's scores and
+      errors (log loss clipping included), or keep `autogluon.core` as a core dependency.
+- [ ] A public model protocol: any object with `fit(x, y, task_type, image_folder, image_column)`
+      and `predict(x)`, where `predict` returns what `calculate_metric` scores (one probability
+      column per class, in label-encoded order, for classification; values for regression). Decide
+      where the target is label-encoded, which `TabularModel` does today, so a protocol model gets
+      encoded classes and is scored with the same mapping.
+- [ ] `evaluate(model, dataset, fold, size)` in the core: `load_split`, `fit`, `predict`,
+      `calculate_metric` and the timings, returning one row in the `leaderboard/models/*.csv` schema.
+      `benchmark.py` calls it, and the `TabularModel` baselines become implementations of the
+      protocol.
+- [ ] `load_results()`: the per-model CSVs in `leaderboard/models/` as one DataFrame, shipped as
+      package data and importable without streamlit, so a new model can be ranked against the
+      published ones on the same splits.
+- [ ] `featurize(split, text_encoder, image_encoder)` in the `embed` extra: the frozen-encoder plus
+      per-column PCA preprocessing as a standalone step, so a protocol model can use the same features
+      as the baselines. It builds on the shared embedding preprocessing below.
+- [ ] Release: a version tag, and a README section on installing the core alone
+      (`pip install "multabench @ git+https://github.com/alanarazi7/MulTaBench@<tag>"`) with a
+      minimal `fit`/`predict` example.
+
 ## Embedding cache
 
 - [ ] Compute and upload the `dino-small` embeddings for the benchmark datasets with
@@ -97,7 +136,6 @@ shared parent, keeping only the encoders themselves (E5, TF-IDF, DINO) per modal
 
 ## Later, not needed for the first release
 
-- Minimal installation for `load_split` and `load_embeddings`.
 - Hosting the leaderboard as a Hugging Face Space.
 - `e5-large` and `dino-large` stay available as options but are not run.
 - `--size full` results.
