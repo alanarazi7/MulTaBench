@@ -100,8 +100,7 @@ Platinum 8481C with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in `multabe
 no GPU, a CPU model (CatBoost, LightGBM, XGBoost, RandomForest) whose text is embedded with TF-IDF or read from the
 cache, use an Intel Xeon Platinum 8581C with 8 CPU cores and 32 GB of RAM instead (`CPU_RUN_HARDWARE`). With
 `--official` (`sweep.py --official` passes it to every run), `benchmark.py` checks the GPU, the processor, the CPUs it
-may use and its memory limit, and raises before running if any differs; leaderboard runs always pass it. Without it, a
-run on other hardware only prints how it differs. On Slurm, request `--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an
+may use and its memory limit, and raises before running if any differs; leaderboard runs always pass it. On Slurm, request `--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an
 H100 node, or `--cpus-per-task=8 --mem=32G` on an 8-core Xeon 8581C node for CPU runs. The sweeps' Slurm jobs run under
 `srun`, so a run sees only the CPUs its job asked for, even when Slurm hands it a whole machine.
 The cached embeddings are computed on one NVIDIA A100, 6 CPU cores and 32 GB of RAM for now

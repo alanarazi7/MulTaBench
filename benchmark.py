@@ -28,7 +28,7 @@ from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.embeddings.hub import reads_cache
 from multabench.result_keys import ResultKey, RunStatus
-from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, hardware_mismatches, run_hardware
+from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware
 from multabench.utils.logging import get_current_commit_hash
 
 BASELINES = [TabSTAR,
@@ -100,8 +100,6 @@ if __name__ == "__main__":
     device = get_device(device=args.device or ("cpu" if hardware == CPU_RUN_HARDWARE else None))
     if args.official:
         assert_hardware(device, hardware)
-    elif mismatches := hardware_mismatches(device, hardware):
-        print(f"Not the leaderboard's hardware, so times don't compare: {'; '.join(mismatches)}")
     run = Run(args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
     out_path = os.path.join(args.output_dir, f"{run.name}.json")
     if os.path.exists(out_path) and not args.overwrite:
