@@ -56,6 +56,20 @@ ran at `7f28e55`, on the branch of #148, which was squash-merged unchanged.
 
 ## Getting started
 
+To use the datasets from another project, install the core, which needs neither torch nor any model package:
+
+```bash
+pip install "multabench @ git+https://github.com/alanarazi7/MulTaBench"
+```
+
+```python
+from multabench import Size, load_embeddings, load_split
+split = load_split("MUL_IMAGE_PETFINDER", fold=0, size=Size.TEN_K)  # split.x_train, split.y_train, split.x_test, ...
+embeddings = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size=Size.TEN_K, encoder="e5-small")
+```
+
+To run the benchmark:
+
 ```bash
 source init.sh && source .venv/bin/activate
 cp .env.example .env     # Hugging Face token
@@ -63,9 +77,9 @@ cp .env.example .env     # Hugging Face token
 python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --text_encoder e5-small --image_encoder dino-small
 ```
 
-`pyproject.toml` lists the core dependencies and one extra per model package, so `pip install -e ".[catboost]"`
-installs what one model needs; each wrapper imports its package only when it runs. `init.sh` sets up the shared
-`.venv` from `requirements.txt`, which locks the core and every extra.
+`pyproject.toml` lists the core dependencies, a `bench` extra for `benchmark.py` and one extra per model package, so
+`pip install -e ".[bench,catboost]"` installs what one model needs; each wrapper imports its package only when it runs.
+`init.sh` sets up the shared `.venv` from `requirements.txt`, which locks the core and every extra.
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
 result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change), with
