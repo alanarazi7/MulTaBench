@@ -3,8 +3,8 @@ import subprocess
 import sys
 
 REPO_DIR = os.path.join(os.path.dirname(__file__), "..")
-MODEL_PACKAGES = ["autogluon.multimodal", "catboost", "lightgbm", "pytabkit", "sap_rpt_oss", "tabdpt", "tabicl", "tabpfn",
-                  "tabstar", "xgboost"]
+MODEL_PACKAGES = ["autogluon.multimodal", "catboost", "lightgbm", "pytabkit", "sap_rpt_oss", "sdm", "tabdpt", "tabicl",
+                  "tabpfn", "tabstar", "xgboost"]
 BLOCK_AND_IMPORT = f"""
 import importlib.abc, sys
 class Block(importlib.abc.MetaPathFinder):

@@ -10,6 +10,7 @@ from multabench.finetune.train_args import DinoTrainArgs, E5TrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost
 from multabench.baselines.contexttab import ConTextTab
+from multabench.baselines.kumo_tabular import KumoTabular, KumoTabularMedium, KumoTabularSmall
 from multabench.baselines.lgbm import LightGBM
 from multabench.baselines.random_forest import RandomForest
 from multabench.baselines.realmlp import RealMLP
@@ -37,7 +38,8 @@ BASELINES = [TabSTAR,
              AutoGluonMM,
              ConTextTab,
              TabPFNv2, TabPFNv2p5,
-             TabPFN3, TabPFN3p5, TabPFN3p5Fast,]
+             TabPFN3, TabPFN3p5, TabPFN3p5Fast,
+             KumoTabular, KumoTabularMedium, KumoTabularSmall,]
 
 SHORT2MODELS = {model.SHORT_NAME: model for model in BASELINES}
 
