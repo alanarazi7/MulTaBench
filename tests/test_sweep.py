@@ -81,3 +81,9 @@ def test_prefetch_downloads_each_dataset_and_its_cached_embeddings_once(monkeypa
     assert len(datasets) == 2 and set(datasets) == {TEXT, IMAGE_TEXT}
     assert len(embeddings) == 3 and set(embeddings) == {(TextEncoder.E5_SMALL, TEXT), (TextEncoder.E5_SMALL, IMAGE_TEXT),
                                                         (ImageEncoder.DINO_SMALL, IMAGE_TEXT)}
+
+
+def test_official_runs_check_their_hardware():
+    run = Run("light", TEXT.name, TextEncoder.E5_SMALL, None, Size.TEN_K, 0)
+    assert "--official" in run.command(python="python", output_dir="runs", official=True)
+    assert "--official" not in run.command(python="python", output_dir="runs")

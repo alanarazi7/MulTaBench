@@ -76,10 +76,10 @@ def prefetch(runs: List[Run]):
             download_embeddings(cached_encoder(encoder.encoder_name, encoder.tune_encoder), MulTaBenchDatasetID[dataset])
 
 
-def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str):
+def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str, official: bool = False):
     with open(path, "w") as f:
         for run in runs:
-            f.write(run.command(python=python, output_dir=output_dir) + "\n")
+            f.write(run.command(python=python, output_dir=output_dir, official=official) + "\n")
 
 
 def run_local(jobs_file: str, repo_dir: str) -> int:
