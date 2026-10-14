@@ -8,27 +8,31 @@ version = "0.1.0"
 description = "Benchmarking multimodal tabular learning: tables whose columns include text or images"
 readme = "README.md"
 requires-python = ">=3.11"
+# The core: loading the datasets, their splits and the cached embeddings.
 dependencies = [
-    "autogluon.core",
     "huggingface_hub",
     "numpy",
-    "nvidia-ml-py",
     "pandas >= 2.2.2",
+    "pyarrow",
+    "scikit-learn",
+]
+
+# `bench` runs benchmark.py; one extra per model package on top of it. requirements.txt locks the shared .venv,
+# which has all of them.
+[project.optional-dependencies]
+bench = [
+    "autogluon.core",
+    "nvidia-ml-py",
     "peft",
     "pillow",
     "psutil",
-    "pyarrow",
     "python-dotenv",
-    "scikit-learn",
     "setuptools < 82",
     "skrub",
     "torch >= 2.6.0",
     "torchvision",
     "transformers >= 4.49.0",
 ]
-
-# One extra per model package; requirements.txt locks the shared .venv, which has all of them.
-[project.optional-dependencies]
 catboost = ["catboost"]
 lightgbm = ["lightgbm"]
 xgboost = ["xgboost"]

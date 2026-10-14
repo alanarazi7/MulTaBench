@@ -17,3 +17,4 @@ __pycache__/
 # venv legacy
 .TabSTAR-env/
 *.egg-info
+build/
