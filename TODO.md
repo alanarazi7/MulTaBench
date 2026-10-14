@@ -56,12 +56,10 @@ the single torch:
 
 ## Leaderboard
 
-- [ ] Elo leaderboard as in TabArena: `bencheval`, RandomForest (default) anchored at 1000, missing
-      results imputed with RandomForest and flagged, bootstrapped confidence intervals. Update the
-      "Leaderboard" row of the README table.
-- [ ] Coverage column (share of (dataset, fold) cells each model completed), plus win rate, average
-      rank and improvability as secondary columns.
-- [ ] Leaderboard tab reading the new results CSV.
+- [ ] Decide whether to impute missing results with RandomForest, as TabArena does; the Elo leaves
+      them out for now.
+- [ ] Improvability as a secondary column.
+- [ ] Leaderboard tab reading `multabench/leaderboard/models/`.
 - [ ] README section on submitting a model: open a PR with the model's wrapper (and its
       dependencies); maintainers rerun it on the official hardware, and self-reported results are
       not accepted.
