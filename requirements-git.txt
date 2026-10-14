@@ -1,0 +1,4 @@
+# Models pinned to a git commit, which PyPI doesn't allow in pyproject's extras; requirements.txt locks them too.
+sap_rpt_oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss@v1.1.2
+# The commit TabArena benchmarked.
+structured-data-models @ git+https://github.com/NVIDIA/structured-data-models.git@98f61289c7a4e1bce3b33771223ac2e123b63f19
