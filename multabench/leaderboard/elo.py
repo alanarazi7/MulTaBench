@@ -16,7 +16,7 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
-from multabench.result_keys import STATUS, TEST_ERROR, RunStatus
+from multabench.result_keys import ResultKey, RunStatus
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models")
 ANCHOR = "RandomForest"
@@ -29,10 +29,10 @@ def load_runs(results_dir: str = RESULTS_DIR) -> pd.DataFrame:
 
 def error_table(runs: pd.DataFrame, modalities: Optional[List[Modality]] = None) -> pd.DataFrame:
     """Mean test_error over the successful folds, one row per dataset and one column per model."""
-    ok = runs[runs[STATUS] == RunStatus.OK]
+    ok = runs[runs[ResultKey.STATUS] == RunStatus.OK]
     if modalities:
-        ok = ok[ok["dataset"].map(lambda d: dataset_modality(MulTaBenchDatasetID[d]) in modalities)]
-    return ok.groupby(["dataset", "model"])[TEST_ERROR].mean().unstack()
+        ok = ok[ok[ResultKey.DATASET].map(lambda d: dataset_modality(MulTaBenchDatasetID[d]) in modalities)]
+    return ok.groupby([ResultKey.DATASET, ResultKey.MODEL])[ResultKey.TEST_ERROR].mean().unstack()
 
 
 def _battles(table: pd.DataFrame):
@@ -71,7 +71,7 @@ def leaderboard(table: pd.DataFrame, bootstraps: int = 1000, seed: int = 0) -> p
     best, worst = table.min(axis=1), table.max(axis=1)
     normalized = table.sub(best, axis=0).div((worst - best).replace(0, np.nan), axis=0)
     board = pd.DataFrame({
-        "model": models, "elo": elo, "elo_low": low, "elo_high": high,
+        ResultKey.MODEL: models, "elo": elo, "elo_low": low, "elo_high": high,
         "datasets": table.notna().sum().values,
         "win_rate": [_win_rate(table, m) for m in models],
         "avg_rank": table.rank(axis=1).mean().values,

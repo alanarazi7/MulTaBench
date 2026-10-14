@@ -26,7 +26,7 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modali
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.embeddings.hub import reads_cache
-from multabench.result_keys import STATUS, RunStatus
+from multabench.result_keys import ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware
 from multabench.utils.logging import get_current_commit_hash
 
@@ -132,25 +132,25 @@ if __name__ == "__main__":
             e5_train_kwargs=e5_train_kwargs,
             e5_model_name=text_encoder.encoder_name if text_encoder else None,
         )
-        ret[STATUS] = RunStatus.OK
+        ret[ResultKey.STATUS] = RunStatus.OK
     except Exception as e:
         traceback.print_exc()
         ret = {
-            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-            "git": get_current_commit_hash(),
-            "model": model.MODEL_NAME,
-            "dataset": dataset.name,
-            "fold": args.fold,
-            "size": args.size,
-            STATUS: RunStatus.ERROR,
-            "error": f"{type(e).__name__}: {e}",
-            "traceback": traceback.format_exc(),
+            ResultKey.TIMESTAMP: time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            ResultKey.GIT: get_current_commit_hash(),
+            ResultKey.MODEL: model.MODEL_NAME,
+            ResultKey.DATASET: dataset.name,
+            ResultKey.FOLD: args.fold,
+            ResultKey.SIZE: args.size,
+            ResultKey.STATUS: RunStatus.ERROR,
+            ResultKey.ERROR: f"{type(e).__name__}: {e}",
+            ResultKey.TRACEBACK: traceback.format_exc(),
         }
-    ret["text_encoder"] = args.text_encoder
-    ret["image_encoder"] = args.image_encoder
+    ret[ResultKey.TEXT_ENCODER] = args.text_encoder
+    ret[ResultKey.IMAGE_ENCODER] = args.image_encoder
     os.makedirs(args.output_dir, exist_ok=True)
     with open(out_path, "w") as f:
         json.dump(ret, f, indent=2, default=str)
     print(f"Summary written to {out_path}: {ret}")
-    if ret[STATUS] == RunStatus.ERROR:
+    if ret[ResultKey.STATUS] == RunStatus.ERROR:
         sys.exit(1)

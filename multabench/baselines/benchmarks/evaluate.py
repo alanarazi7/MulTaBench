@@ -12,8 +12,7 @@ from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import DINOV3_SMALL
 from multabench.e5.constants import E5_SMALL_V2
 from multabench.utils.logging import get_current_commit_hash
-from multabench.result_keys import (METRIC, TEST_ERROR, TRAIN_TIME_PER_1K, INFERENCE_TIME_PER_1K,
-                                    TRAIN_EMBEDDING_TIME_PER_1K, INFERENCE_EMBEDDING_TIME_PER_1K)
+from multabench.result_keys import ResultKey
 from multabench.utils.profiling import PeakMemoryTracker
 from multabench.utils.timing import pop_embedding_seconds
 
@@ -48,34 +47,35 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
     inference_embedding_s = pop_embedding_seconds()
     runtime = time.time() - start_time
     d_summary = {
-        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-        "git": get_current_commit_hash(),
-        "model": model_cls.MODEL_NAME,
-        "dataset": dataset_id.name,
-        "task_type": str(dataset_id.name)[:3],
-        "train_type": "benchmark",
-        "fold": fold,
-        "size": size,
+        ResultKey.TIMESTAMP: time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+        ResultKey.GIT: get_current_commit_hash(),
+        ResultKey.MODEL: model_cls.MODEL_NAME,
+        ResultKey.DATASET: dataset_id.name,
+        ResultKey.TASK_TYPE: str(dataset_id.name)[:3],
+        ResultKey.TRAIN_TYPE: "benchmark",
+        ResultKey.FOLD: fold,
+        ResultKey.SIZE: size,
         **metrics,
-        "runtime": runtime,
-        "n_train": len(y_train),
-        "n_test": len(y_test),
-        "m_features": x_train.shape[1],
-        'tune_dino': tune_dino,
-        'tune_e5': tune_e5,
-        'e5_model_name': e5_model_name,
-        "best_val_loss": getattr(model, "best_val_loss", None),
+        ResultKey.RUNTIME: runtime,
+        ResultKey.N_TRAIN: len(y_train),
+        ResultKey.N_TEST: len(y_test),
+        ResultKey.M_FEATURES: x_train.shape[1],
+        ResultKey.TUNE_DINO: tune_dino,
+        ResultKey.TUNE_E5: tune_e5,
+        ResultKey.E5_MODEL_NAME: e5_model_name,
+        ResultKey.BEST_VAL_LOSS: getattr(model, "best_val_loss", None),
         **train_tracker.summary(),
         **test_tracker.summary(),
-        TRAIN_TIME_PER_1K: (train_tracker.wall_time_s - train_embedding_s) / len(y_train) * 1000,
-        INFERENCE_TIME_PER_1K: (test_tracker.wall_time_s - inference_embedding_s) / len(y_test) * 1000,
-        TRAIN_EMBEDDING_TIME_PER_1K: train_embedding_s / len(y_train) * 1000,
-        INFERENCE_EMBEDDING_TIME_PER_1K: inference_embedding_s / len(y_test) * 1000,
+        ResultKey.TRAIN_TIME_PER_1K: (train_tracker.wall_time_s - train_embedding_s) / len(y_train) * 1000,
+        ResultKey.INFERENCE_TIME_PER_1K: (test_tracker.wall_time_s - inference_embedding_s) / len(y_test) * 1000,
+        ResultKey.TRAIN_EMBEDDING_TIME_PER_1K: train_embedding_s / len(y_train) * 1000,
+        ResultKey.INFERENCE_EMBEDDING_TIME_PER_1K: inference_embedding_s / len(y_test) * 1000,
         **get_hardware_dict(device),
         **(dino_train_kwargs or {}),
         **(e5_train_kwargs or {}),
     }
-    print(f"{dataset_id.name} fold {fold}: {metrics[METRIC]} error {metrics[TEST_ERROR]:.4f} ({runtime:.0f}s)")
+    metric, error = metrics[ResultKey.METRIC], metrics[ResultKey.TEST_ERROR]
+    print(f"{dataset_id.name} fold {fold}: {metric} error {error:.4f} ({runtime:.0f}s)")
     return d_summary
 
 

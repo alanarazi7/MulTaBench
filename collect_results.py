@@ -2,7 +2,7 @@ import argparse
 
 from multabench.benchmark.collect import collect_results, write_model_csvs
 from multabench.leaderboard.elo import RESULTS_DIR
-from multabench.result_keys import STATUS, RunStatus
+from multabench.result_keys import ResultKey, RunStatus
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Collect the run JSONs written by benchmark.py into one CSV per model.")
@@ -12,5 +12,5 @@ if __name__ == "__main__":
 
     df = collect_results(args.output_dir)
     paths = write_model_csvs(df, args.results_dir)
-    n_failed = (df[STATUS] == RunStatus.ERROR).sum()
+    n_failed = (df[ResultKey.STATUS] == RunStatus.ERROR).sum()
     print(f"Collected {len(df)} runs ({n_failed} failed) into {len(paths)} files in {args.results_dir}")
