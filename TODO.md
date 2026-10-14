@@ -29,6 +29,13 @@ file as the PRs that complete them are merged.
       until then, sweeps pass `--text_encoders e5-small`, since the default also lists TF-IDF.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
+- [ ] TabDPT isn't reproducible: our wrapper passes no `seed` to `predict_proba`, so `tabdpt` draws its ensemble
+      and feature permutations unseeded (a rerun moved Petfinder 1.4275 → 1.4353). Pass `SEED`, then rerun it.
+- [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
+      CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
+- [ ] Kumo-Tabular ran out of the 32 GB RAM on Hearthstone and Wine Review, and Kumo-Tabular-Medium on Spotify
+      Genres. Find what grows (likely the cached context) and fix it within the official hardware, else record
+      them as failures.
 - [ ] Rerun what `multabench/leaderboard/legacy_results/` covers with the leaderboard protocol: the
       frozen small encoders are done; the large and fine-tuned (`-tar`) encoders and TabSTAR and
       AutoGluon multimodal are left. Then delete the legacy results with the paper analysis code.
