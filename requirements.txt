@@ -41,8 +41,6 @@ autogluon-features==1.5.0
     # via autogluon-multimodal
 autogluon-multimodal==1.5.0
     # via multabench (pyproject.toml)
-backoff==2.2.1
-    # via posthog
 beautifulsoup4==4.14.3
     # via gdown
 blinker==1.9.0
@@ -75,7 +73,9 @@ click==8.2.1
     #   ray
     #   streamlit
 cloudpickle==3.1.2
-    # via hyperopt
+    # via
+    #   hyperopt
+    #   skrub
 colorama==0.4.6
     # via
     #   opendatalab
@@ -99,14 +99,10 @@ dill==0.3.8
     #   multiprocess
 distlib==0.4.0
     # via virtualenv
-distro==1.9.0
-    # via posthog
 einops==0.8.1
     # via
     #   tabicl
     #   tabpfn
-eval-type-backport==0.3.0
-    # via tabpfn
 evaluate==0.4.6
     # via autogluon-multimodal
 faiss-cpu==1.12.0
@@ -119,7 +115,6 @@ filelock==3.25.2
     #   python-discovery
     #   ray
     #   tabpfn
-    #   tabpfn-common-utils
     #   torch
     #   transformers
     #   virtualenv
@@ -203,6 +198,7 @@ joblib==1.5.2
     #   autogluon-common
     #   nltk
     #   scikit-learn
+    #   skrub
     #   tabpfn
     #   tabstar
 jsonschema==4.23.0
@@ -217,7 +213,9 @@ kiwisolver==1.4.9
 lazy-loader==0.5
     # via scikit-image
 lightgbm==4.6.0
-    # via multabench (pyproject.toml)
+    # via
+    #   multabench (pyproject.toml)
+    #   tabpfn
 lightning==2.5.6
     # via autogluon-multimodal
 lightning-utilities==0.15.2
@@ -241,6 +239,7 @@ matplotlib==3.10.7
     #   autogluon-core
     #   catboost
     #   skrub
+    #   tabpfn
 mdurl==0.1.2
     # via markdown-it-py
 model-index==0.1.11
@@ -303,7 +302,6 @@ numpy==2.3.5
     #   tabdpt
     #   tabicl
     #   tabpfn
-    #   tabpfn-common-utils
     #   tabstar
     #   tensorboard
     #   tensorboardx
@@ -340,7 +338,7 @@ nvidia-cusparse-cu12==12.5.4.2
 nvidia-cusparselt-cu12==0.6.3
     # via torch
 nvidia-ml-py==13.595.45
-    # via tabpfn-common-utils
+    # via multabench (pyproject.toml)
 nvidia-ml-py3==7.352.0
     # via autogluon-multimodal
 nvidia-nccl-cu12==2.26.2
@@ -428,7 +426,6 @@ pandas==2.3.3
     #   skrub
     #   streamlit
     #   tabpfn
-    #   tabpfn-common-utils
     #   tabstar
 pbr==7.0.3
     # via stevedore
@@ -455,14 +452,11 @@ pip==26.0.1
 platformdirs==4.5.0
     # via
     #   python-discovery
-    #   tabpfn-common-utils
     #   virtualenv
 plotly==6.5.0
     # via catboost
 pluggy==1.6.0
     # via pytest
-posthog==6.9.3
-    # via tabpfn-common-utils
 prometheus-client==0.24.1
     # via
     #   opentelemetry-exporter-prometheus
@@ -547,7 +541,6 @@ python-dateutil==2.9.0.post0
     #   botocore
     #   matplotlib
     #   pandas
-    #   posthog
 python-discovery==1.2.2
     # via virtualenv
 python-dotenv==1.2.1
@@ -599,11 +592,9 @@ requests==2.32.5
     #   nlpaug
     #   opendatalab
     #   openmim
-    #   posthog
     #   ray
     #   skrub
     #   streamlit
-    #   tabpfn-common-utils
     #   transformers
 rich==14.3.3
     # via
@@ -613,8 +604,6 @@ rpds-py==0.29.0
     # via
     #   jsonschema
     #   referencing
-ruff==0.15.10
-    # via tabpfn-common-utils
 s3transfer==0.16.0
     # via boto3
 safetensors==0.7.0
@@ -622,6 +611,7 @@ safetensors==0.7.0
     #   accelerate
     #   peft
     #   tabdpt
+    #   tabpfn
     #   timm
     #   transformers
 sap-rpt-oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss@4310453f3bbb9c9c403b029e966565e7fe652d97
@@ -642,7 +632,6 @@ scikit-learn==1.6.1
     #   tabdpt
     #   tabicl
     #   tabpfn
-    #   tabpfn-common-utils
     #   tabstar
 scipy==1.16.3
     # via
@@ -674,11 +663,11 @@ six==1.17.0
     #   catboost
     #   hyperopt
     #   opencensus
-    #   posthog
     #   python-dateutil
-skrub==0.6.2
+skrub==0.10.1
     # via
     #   multabench (pyproject.toml)
+    #   tabpfn
     #   tabstar
 smart-open==7.5.1
     # via ray
@@ -696,10 +685,8 @@ tabdpt==1.1.10
     # via multabench (pyproject.toml)
 tabicl==2.0.3
     # via multabench (pyproject.toml)
-tabpfn==7.1.1
+tabpfn==9.2.0
     # via multabench (pyproject.toml)
-tabpfn-common-utils==0.2.19
-    # via tabpfn
 tabstar==1.1.15
     # via multabench (pyproject.toml)
 tabulate==0.10.0
@@ -775,6 +762,7 @@ tqdm==4.67.1
     #   pytorch-metric-learning
     #   tabdpt
     #   tabicl
+    #   tabpfn
     #   tabstar
     #   transformers
 transformers==4.57.3
@@ -798,14 +786,12 @@ typing-extensions==4.15.0
     #   opentelemetry-api
     #   opentelemetry-sdk
     #   opentelemetry-semantic-conventions
-    #   posthog
     #   pydantic
     #   pydantic-core
     #   pytorch-lightning
     #   referencing
     #   streamlit
     #   tabpfn
-    #   tabpfn-common-utils
     #   torch
     #   torcheval
     #   typing-inspection
