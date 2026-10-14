@@ -1,4 +1,9 @@
-# MulTaBench
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg">
+    <img src="assets/logo.svg" alt="MulTaBench: Benchmarking Multimodal Tabular Learning" width="640">
+  </picture>
+</h1>
 
 > **Work in progress:** MulTaBench is moving towards a living leaderboard, and `master` will change
 > gradually on the way there. To reproduce the paper, use the tag

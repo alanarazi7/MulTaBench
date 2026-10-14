@@ -94,6 +94,13 @@ shared parent, keeping only the encoders themselves (E5, TF-IDF, DINO) per modal
       `fit_text_encoders_vanilla` and `fit_image_encoders`.
 - [ ] Decide on scaling: images get `StandardScaler` before PCA, text doesn't.
 
+## README
+
+- [ ] Rework the README the way the [TabSTAR README](https://github.com/alanarazi7/TabSTAR) is laid out: a row of
+      badges (arXiv, NeurIPS 2026, the Hugging Face datasets, the leaderboard Space, the licence once there is
+      one), a short welcome and a Resources list, a figure of the benchmark, and a quick start before the details,
+      with the reference sections (protocol, cached embeddings, datasets) further down.
+
 ## Later, not needed for the first release
 
 - Minimal installation for `load_split` and `load_embeddings`.
