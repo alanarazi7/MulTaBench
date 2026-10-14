@@ -49,8 +49,8 @@ Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row pe
 runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank and
 normalized error; `--modalities text` or `--modalities image,image-text` restricts it to those datasets.
 
-Leaderboard runs are launched from a commit on `master`, after the code they use is merged, so the `git` column of
-every row names a commit anyone can check out; a branch is only used to try a model on a few runs. The image runs
+Leaderboard runs are launched with `--official` from a commit on `master`, after the code they use is merged, so the
+`git` column of every row names a commit anyone can check out; a branch is only used to try a model on a few runs. The image runs
 of the 11 first models are the one exception: they ran at `7f28e55`, the branch of #148, which was squash-merged
 with the same code.
 
