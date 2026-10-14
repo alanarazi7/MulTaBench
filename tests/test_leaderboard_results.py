@@ -63,7 +63,7 @@ def test_the_only_failures_are_tabpfn_on_more_than_ten_classes(runs):
     failed = df[df[ResultKey.STATUS] != RunStatus.OK]
     assert (failed[ResultKey.STATUS] == RunStatus.ERROR).all()
     if name.startswith("TabPFN"):
-        assert failed[ResultKey.ERROR].str.contains(TOO_MANY_CLASSES).all()
+        assert failed[ResultKey.ERROR].astype(str).str.contains(TOO_MANY_CLASSES).all()
         assert set(failed[ResultKey.DATASET].str[:3]) <= {"MUL"}
     else:
         assert failed.empty
