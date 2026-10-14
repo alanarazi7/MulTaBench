@@ -24,6 +24,9 @@ file as the PRs that complete them are merged.
 - [ ] Run every leaderboard entry on the official hardware.
 - [ ] `sweep.py` takes one `--sbatch`, so a sweep mixing CPU and GPU runs has to be split in two by
       hand. Group its runs by `run_hardware` and take a second set of sbatch arguments for CPU runs.
+- [ ] TF-IDF runs, deferred: the first release uses one text preprocessing per model, e5-small. Run
+      the models that embed text with `--text_encoders tfidf` as their own leaderboard entries;
+      until then, sweeps pass `--text_encoders e5-small`, since the default also lists TF-IDF.
 - [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
       AutoGluon multimodal.
 - [ ] Rerun every result CSV under `multabench/leaderboard/results/` with the TabArena metrics; the
