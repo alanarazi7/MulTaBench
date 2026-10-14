@@ -58,7 +58,9 @@ models can't share:
 ## Leaderboard
 
 - [ ] Improvability as a secondary column.
-- [ ] Leaderboard tab reading `multabench/leaderboard/models/`.
+- [ ] Update the Space from `master` with a GitHub Action: rerun `multabench.leaderboard.export` and upload
+      `space/` when `multabench/leaderboard/models/` changes. It is uploaded by hand for now.
+- [ ] Move the leaderboard out of the README once the Space is announced.
 - [ ] README section on submitting a model: open a PR with the model's wrapper (and its
       dependencies); maintainers rerun it on the official hardware, and self-reported results are
       not accepted.
@@ -102,7 +104,6 @@ shared parent, keeping only the encoders themselves (E5, TF-IDF, DINO) per modal
 ## Later, not needed for the first release
 
 - Minimal installation for `load_split` and `load_embeddings`.
-- Hosting the leaderboard as a Hugging Face Space.
 - `e5-large` and `dino-large` stay available as options but are not run.
 - `--size full` results.
 - A time limit per (model, dataset, fold), excluding encoder fine-tuning, with a result row with
