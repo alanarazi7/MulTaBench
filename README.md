@@ -1,7 +1,7 @@
 <h1 align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg">
-    <img src="assets/logo.svg" alt="MulTaBench: Benchmarking Multimodal Tabular Learning" width="640">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/alanarazi7/MulTaBench/master/assets/logo-dark.svg">
+    <img src="https://raw.githubusercontent.com/alanarazi7/MulTaBench/master/assets/logo.svg" alt="MulTaBench: Benchmarking Multimodal Tabular Learning" width="640">
   </picture>
 </h1>
 
@@ -59,7 +59,7 @@ ran at `7f28e55`, on the branch of #148, which was squash-merged unchanged.
 To use the datasets from another project, install the core, which needs neither torch nor any model package:
 
 ```bash
-pip install "multabench @ git+https://github.com/alanarazi7/MulTaBench"
+pip install multabench
 ```
 
 ```python
@@ -79,7 +79,8 @@ python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --
 
 `pyproject.toml` lists the core dependencies, a `bench` extra for `benchmark.py` and one extra per model package, so
 `pip install -e ".[bench,catboost]"` installs what one model needs; each wrapper imports its package only when it runs.
-`init.sh` sets up the shared `.venv` from `requirements.txt`, which locks the core and every extra.
+ConTextTab and Kumo are pinned to a git commit, which PyPI doesn't allow in extras, so `requirements-git.txt` lists them.
+`init.sh` sets up the shared `.venv` from `requirements.txt`, which locks the core, every extra and those two.
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
 result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change), with

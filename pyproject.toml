@@ -1,12 +1,27 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "multabench"
-version = "0.1.0"
+version = "0.0.1"
 description = "Benchmarking multimodal tabular learning: tables whose columns include text or images"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Alan Arazi" },
+    { name = "Eilam Shapira" },
+    { name = "Shoham Grunblat" },
+    { name = "Mor Ventura" },
+    { name = "Elad Hoffer" },
+    { name = "Gioia Blayer" },
+    { name = "David Holzmüller" },
+    { name = "Lennart Purucker" },
+    { name = "Gaël Varoquaux" },
+    { name = "Frank Hutter" },
+    { name = "Roi Reichart" },
+]
 requires-python = ">=3.11"
 # The core: loading the datasets, their splits and the cached embeddings.
 dependencies = [
@@ -17,8 +32,8 @@ dependencies = [
     "scikit-learn",
 ]
 
-# `bench` runs benchmark.py; one extra per model package on top of it. requirements.txt locks the shared .venv,
-# which has all of them.
+# `bench` runs benchmark.py; one extra per model package on top of it, except the models pinned to a git commit, which
+# PyPI doesn't allow in extras and requirements-git.txt lists. requirements.txt locks the shared .venv, which has all.
 [project.optional-dependencies]
 bench = [
     "autogluon.core",
@@ -40,14 +55,14 @@ pytabkit = ["pytabkit"]
 tabicl = ["tabicl >= 2.0.3"]
 tabdpt = ["tabdpt >= 1.1.9"]
 tabpfn = ["tabpfn >= 9.2.0"]
-contexttab = ["sap_rpt_oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss@v1.1.2"]
 tabstar = ["tabstar >= 1.1.15"]
-# Not on PyPI yet; the commit TabArena benchmarked.
-kumo = [
-    "structured-data-models @ git+https://github.com/NVIDIA/structured-data-models.git@98f61289c7a4e1bce3b33771223ac2e123b63f19",
-]
 autogluon-mm = ["autogluon.multimodal"]
 dev = ["matplotlib", "pytest", "streamlit"]
+
+[project.urls]
+Repository = "https://github.com/alanarazi7/MulTaBench"
+Leaderboard = "https://huggingface.co/spaces/multabench/leaderboard"
+Paper = "https://arxiv.org/abs/2605.10616"
 
 [tool.setuptools.packages.find]
 include = ["multabench*"]
