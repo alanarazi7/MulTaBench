@@ -1,4 +1,6 @@
-from multabench.result_keys import TEST_SCORE  # noqa: F401
+from multabench.result_keys import ResultKey
+
+TEST_SCORE = ResultKey.TEST_SCORE
 
 # Column keys
 MODEL = "model"

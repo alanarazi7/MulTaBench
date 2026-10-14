@@ -7,6 +7,7 @@ import psutil
 import torch
 
 from multabench.e5.constants import TF_IDF
+from multabench.result_keys import ResultKey
 from multabench.utils.devices import CPU_CORES
 from multabench.utils.encoders import Encoder
 
@@ -32,7 +33,8 @@ def run_hardware(model_needs_gpu: bool, encoders: Iterable[Optional[Encoder]]) -
 
 
 def get_hardware_dict(device: torch.device) -> Dict:
-    return {**_get_gpu_dict(device), **_get_cpu_dict(), "visible_cpus": visible_cpus(), "ram_limit_gb": ram_limit_gb()}
+    return {**_get_gpu_dict(device), **_get_cpu_dict(), ResultKey.VISIBLE_CPUS: visible_cpus(),
+            ResultKey.RAM_LIMIT_GB: ram_limit_gb()}
 
 
 def assert_hardware(device: torch.device, expected: Hardware):
@@ -117,14 +119,14 @@ def _get_gpu_dict(device: torch.device) -> Dict:
         gpu_type = torch.cuda.get_device_name(gpu_index)
         gpu_total_mem = torch.cuda.get_device_properties(gpu_index).total_memory
         gpu_total_mem_gb = byte_to_gb(gpu_total_mem)
-    return {"gpu_type": gpu_type, "gpu_total_memory_gb": gpu_total_mem_gb, "use_gpu": use_gpu}
+    return {ResultKey.GPU_TYPE: gpu_type, ResultKey.GPU_TOTAL_MEMORY_GB: gpu_total_mem_gb, ResultKey.USE_GPU: use_gpu}
 
 
 def _get_cpu_dict() -> Dict:
     ram_bytes = psutil.virtual_memory().total
     ram_gb = byte_to_gb(ram_bytes)
     cpu_name = get_cpu_name_linux()
-    return {"cpu_cores": CPU_CORES, "system_ram_gb": ram_gb, "cpu_name": cpu_name}
+    return {ResultKey.CPU_CORES: CPU_CORES, ResultKey.SYSTEM_RAM_GB: ram_gb, ResultKey.CPU_NAME: cpu_name}
 
 
 def byte_to_gb(byte_size: int) -> float:

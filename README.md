@@ -21,6 +21,31 @@ than used frozen.
 **Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616) (NeurIPS 2026 Spotlight)  
 **Datasets**: [huggingface.co/multabench](https://huggingface.co/multabench)
 
+## Leaderboard
+
+Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino-small` image embeddings
+(ConTextTab reads raw text itself). Elo is fit on one battle per dataset and model pair, with RandomForest
+at 1000 and 95% intervals from bootstrapping the datasets; a model with no result on a dataset has no
+battles there. TabPFN-v2 and v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
+
+| # | Model | Elo, 80 datasets | 95% CI | Text, 40 | Images, 40 | Datasets |
+|---|---|---|---|---|---|---|
+| 1 | TabICLv2 | 1788 | +141 / −112 | 1674 | 1996 | 80 |
+| 2 | TabPFN-v2p5 | 1685 | +140 / −117 | 1670 | 1772 | 77 |
+| 3 | TabPFN-v2 | 1414 | +113 / −97 | 1321 | 1576 | 77 |
+| 4 | TabM | 1372 | +102 / −90 | 1350 | 1447 | 80 |
+| 5 | ConTextTab | 1351 | +110 / −99 | 1264 | 1504 | 80 |
+| 6 | CatBoost | 1303 | +67 / −56 | 1316 | 1326 | 80 |
+| 7 | TabDPT | 1254 | +107 / −90 | 1113 | 1463 | 80 |
+| 8 | RealMLP | 1084 | +81 / −72 | 1102 | 1066 | 80 |
+| 9 | LightGBM | 1057 | +60 / −58 | 1087 | 1019 | 80 |
+| 10 | RandomForest | 1000 | anchor | 1000 | 1000 | 80 |
+| 11 | XGBoost | 984 | +63 / −62 | 1017 | 938 | 80 |
+
+Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row per (dataset, fold), failed
+runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank and
+normalized error; `--modalities text` or `--modalities image,image-text` restricts it to those datasets.
+
 ## Getting started
 
 ```bash
@@ -75,12 +100,13 @@ the CPUs its job asked for, even when Slurm hands it a whole machine.
 The cached embeddings are computed on one NVIDIA A100, 6 CPU cores and 32 GB of RAM for now
 (`EMBEDDING_HARDWARE`); the hardware they ran on is recorded with them.
 
-`collect_results.py` gathers the run JSONs into `results.csv`, one row per run, failed runs included: model, dataset,
-encoders, size and fold, the status, the metric with `test_score` (higher is better) and `test_error`, train and
-inference time per 1K rows apart from embedding, embedding time per 1K rows, and the hardware.
+`collect_results.py` gathers the run JSONs into one CSV per model in `multabench/leaderboard/models/`, one row per
+run, failed runs included: model, dataset, encoders, size and fold, the status, the metric with `test_score` (higher
+is better) and `test_error`, train and inference time per 1K rows apart from embedding, embedding time per 1K rows,
+and the hardware. A run already in a model's file is replaced by its rerun; the other rows are kept.
 
 ```bash
-python collect_results.py --output_dir runs --csv results.csv
+python collect_results.py --output_dir runs
 ```
 
 To use a benchmark split in your own code, `load_split` downloads the dataset and returns the same
@@ -159,7 +185,7 @@ MulTaBench is not an official TabArena leaderboard.
 | | TabArena | MulTaBench | Status |
 |---|---|---|---|
 | Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | ✅ |
-| Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Normalized scores per dataset | |
+| Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Elo as in the paper, RandomForest anchored at 1000, bootstrapped confidence intervals; missing results are left out, not imputed | |
 | Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited: every dataset is split IID. Some datasets may have group or time structure, in which case IID splits can overestimate performance | |
 | Runtime | Train and inference time per 1K rows | Same, with the time spent embedding text and images reported separately | ✅ |
