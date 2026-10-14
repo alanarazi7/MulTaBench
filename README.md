@@ -4,6 +4,8 @@
 > gradually on the way there. To reproduce the paper, use the tag
 > [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) or the
 > [`official-paper-version`](https://github.com/alanarazi7/MulTaBench/tree/official-paper-version) branch.
+> The paper's results are kept in `multabench/leaderboard/legacy_results/` while every model is rerun under the
+> leaderboard protocol.
 
 A benchmark for multimodal tabular learning: tables whose columns include images or free text, not
 just numbers and categories. It is 20 image-tabular and 20 text-tabular curated datasets, with 40
