@@ -16,7 +16,7 @@ from multabench.baselines.realmlp import RealMLP
 from multabench.baselines.tabdpt import TabDPT
 from multabench.baselines.tabicl_v2 import TabICLv2
 from multabench.baselines.tabm import TabM
-from multabench.baselines.tabpfnv2 import TabPFNv2, TabPFNv2p5
+from multabench.baselines.tabpfn import TabPFN3, TabPFN3p5, TabPFN3p5Fast, TabPFNv2, TabPFNv2p5
 from multabench.baselines.tabstar_v1 import TabSTAR
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
@@ -36,7 +36,8 @@ BASELINES = [TabSTAR,
              TabICLv2, TabDPT,
              AutoGluonMM,
              ConTextTab,
-             TabPFNv2, TabPFNv2p5,]
+             TabPFNv2, TabPFNv2p5,
+             TabPFN3, TabPFN3p5, TabPFN3p5Fast,]
 
 SHORT2MODELS = {model.SHORT_NAME: model for model in BASELINES}
 

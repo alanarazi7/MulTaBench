@@ -12,6 +12,7 @@ dependencies = [
     "autogluon.core",
     "huggingface_hub",
     "numpy",
+    "nvidia-ml-py",
     "pandas >= 2.2.2",
     "peft",
     "pillow",
@@ -34,7 +35,7 @@ xgboost = ["xgboost"]
 pytabkit = ["pytabkit"]
 tabicl = ["tabicl >= 2.0.3"]
 tabdpt = ["tabdpt >= 1.1.9"]
-tabpfn = ["tabpfn >= 7.1.1, < 8"]
+tabpfn = ["tabpfn >= 9.2.0"]
 contexttab = ["sap_rpt_oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss@v1.1.2"]
 tabstar = ["tabstar >= 1.1.15"]
 autogluon-mm = ["autogluon.multimodal"]
