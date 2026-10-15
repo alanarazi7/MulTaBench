@@ -79,7 +79,7 @@ def leaderboard(table: pd.DataFrame, bootstraps: int = 1000, seed: int = 0) -> p
     normalized = table.sub(best, axis=0).div((worst - best).replace(0, np.nan), axis=0)
     board = pd.DataFrame({
         ResultKey.MODEL: models, "elo": elo, "elo_low": low, "elo_high": high,
-        "datasets": table.notna().groupby(_datasets(table)).any().sum().values,
+        "datasets": table.notna().groupby(_datasets(table)).any().sum().astype(int).values,
         "win_rate": [_win_rate(table, m) for m in models],
         "avg_rank": table.rank(axis=1).mean().values,
         "normalized_error": normalized.mean().values,

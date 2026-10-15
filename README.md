@@ -40,23 +40,23 @@ top model was at 2670 rather than 2347), while the ranking was the same.
 
 | # | Model | Elo, 80 datasets | 95% CI | Text, 40 | Images, 40 | Datasets |
 |---|---|---|---|---|---|---|
-| 1 | Kumo-Tabular | 2670 | +320 / −232 | 2821 | 2680 | 80 |
-| 2 | Kumo-Tabular-Medium | 2385 | +271 / −201 | 2482 | 2424 | 80 |
-| 3 | TabPFN-3.5 | 2194 | +227 / −184 | 2086 | 2362 | 80 |
-| 4 | Kumo-Tabular-Small | 2098 | +204 / −163 | 2082 | 2189 | 80 |
-| 5 | TabPFN-3.5-Fast | 1995 | +195 / −148 | 1902 | 2152 | 80 |
-| 6 | TabICLv2 | 1735 | +144 / −119 | 1635 | 1907 | 80 |
-| 7 | TabPFN-3 | 1660 | +146 / −122 | 1552 | 1841 | 80 |
-| 8 | TabPFN-v2p5 | 1654 | +140 / −117 | 1645 | 1724 | 77 |
-| 9 | TabPFN-v2 | 1402 | +119 / −100 | 1322 | 1542 | 77 |
-| 10 | TabM | 1364 | +96 / −89 | 1348 | 1424 | 80 |
-| 11 | ConTextTab | 1349 | +115 / −105 | 1279 | 1475 | 80 |
-| 12 | CatBoost | 1296 | +65 / −54 | 1306 | 1315 | 80 |
-| 13 | TabDPT | 1248 | +114 / −95 | 1116 | 1441 | 80 |
-| 14 | RealMLP | 1079 | +82 / −75 | 1103 | 1052 | 80 |
-| 15 | LightGBM | 1055 | +65 / −63 | 1093 | 1006 | 80 |
-| 16 | RandomForest | 1000 | anchor | 1000 | 1000 | 80 |
-| 17 | XGBoost | 985 | +67 / −65 | 1024 | 930 | 80 |
+| 1 | Kumo-Tabular | 2347 | +231 / −175 | 2410 | 2385 | 80 |
+| 2 | Kumo-Tabular-Medium | 2163 | +187 / −145 | 2203 | 2214 | 80 |
+| 3 | TabPFN-3.5 | 2019 | +175 / −143 | 1947 | 2155 | 80 |
+| 4 | Kumo-Tabular-Small | 1957 | +152 / −121 | 1947 | 2037 | 80 |
+| 5 | TabPFN-3.5-Fast | 1881 | +151 / −126 | 1810 | 2014 | 80 |
+| 6 | TabICLv2 | 1674 | +115 / −102 | 1593 | 1814 | 80 |
+| 7 | TabPFN-3 | 1610 | +119 / −101 | 1516 | 1764 | 80 |
+| 8 | TabPFN-v2p5 | 1606 | +110 / −101 | 1590 | 1676 | 77 |
+| 9 | TabPFN-v2 | 1382 | +102 / −85 | 1305 | 1508 | 77 |
+| 10 | TabM | 1341 | +82 / −75 | 1331 | 1386 | 80 |
+| 11 | ConTextTab | 1339 | +97 / −85 | 1272 | 1453 | 80 |
+| 12 | CatBoost | 1276 | +59 / −54 | 1293 | 1280 | 80 |
+| 13 | TabDPT | 1239 | +98 / −82 | 1114 | 1412 | 80 |
+| 14 | RealMLP | 1101 | +65 / −61 | 1113 | 1092 | 80 |
+| 15 | LightGBM | 1059 | +54 / −51 | 1092 | 1018 | 80 |
+| 16 | XGBoost | 1004 | +58 / −58 | 1040 | 957 | 80 |
+| 17 | RandomForest | 1000 | anchor | 1000 | 1000 | 80 |
 
 Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row per (dataset, fold), failed
 runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank, normalized
