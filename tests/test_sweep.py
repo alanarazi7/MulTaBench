@@ -72,15 +72,19 @@ def test_select_datasets_by_modality():
 def test_prefetch_downloads_each_dataset_and_its_cached_embeddings_once(monkeypatch):
     datasets, embeddings = [], []
     monkeypatch.setattr(sweep, "download_dataset", datasets.append)
-    monkeypatch.setattr(sweep, "download_embeddings", lambda encoder, dataset: embeddings.append((encoder, dataset)))
+    monkeypatch.setattr(sweep, "download_embeddings",
+                        lambda encoder, dataset, size, fold: embeddings.append((encoder, dataset, size, fold)))
     runs = list_runs(models=["light", "cat"], datasets=[TEXT], text_encoders=DEFAULT_TEXT_ENCODERS,
                      image_encoders=DEFAULT_IMAGE_ENCODERS, folds=[0, 1], size=Size.TEN_K)
     runs += list_runs(models=["light"], datasets=[IMAGE_TEXT], text_encoders=DEFAULT_TEXT_ENCODERS,
                       image_encoders=DEFAULT_IMAGE_ENCODERS, folds=[0], size=Size.TEN_K)
     prefetch(runs)
     assert len(datasets) == 2 and set(datasets) == {TEXT, IMAGE_TEXT}
-    assert len(embeddings) == 3 and set(embeddings) == {(TextEncoder.E5_SMALL, TEXT), (TextEncoder.E5_SMALL, IMAGE_TEXT),
-                                                        (ImageEncoder.DINO_SMALL, IMAGE_TEXT)}
+    tuned = [(TextEncoder.E5_SMALL_TAR, TEXT, Size.TEN_K, 0), (TextEncoder.E5_SMALL_TAR, TEXT, Size.TEN_K, 1),
+             (ImageEncoder.DINO_SMALL_TAR, IMAGE_TEXT, Size.TEN_K, 0)]
+    frozen = [(TextEncoder.E5_SMALL, TEXT, None, None), (TextEncoder.E5_SMALL, IMAGE_TEXT, None, None),
+              (ImageEncoder.DINO_SMALL, IMAGE_TEXT, None, None)]
+    assert sorted(embeddings, key=str) == sorted(tuned + frozen, key=str)
 
 
 def test_official_runs_check_their_hardware():

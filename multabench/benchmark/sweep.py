@@ -9,9 +9,9 @@ from multabench.benchmark.load import download_dataset
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
-from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
-from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
-from multabench.embeddings.hub import cached_encoder, download_embeddings, reads_cache
+from multabench.dino.constants import ImageEncoder
+from multabench.e5.constants import TextEncoder
+from multabench.embeddings.hub import CACHED_ENCODERS, download_embeddings, is_tuned
 
 SLURM_ARRAY_LIMIT = 1000
 DEFAULT_TEXT_ENCODERS = [TextEncoder.TFIDF, TextEncoder.E5_SMALL, TextEncoder.E5_SMALL_TAR]
@@ -69,11 +69,10 @@ def prefetch(runs: List[Run]):
     at once into a Hugging Face cache on NFS fail with stale file handles."""
     for dataset in sorted({run.dataset for run in runs}):
         download_dataset(MulTaBenchDatasetID[dataset])
-    pairs = {(TEXT_ENCODERS[run.text_encoder], run.dataset) for run in runs if run.text_encoder}
-    pairs |= {(IMAGE_ENCODERS[run.image_encoder], run.dataset) for run in runs if run.image_encoder}
-    for encoder, dataset in sorted(pairs):
-        if reads_cache(encoder):
-            download_embeddings(cached_encoder(encoder.encoder_name, encoder.tune_encoder), MulTaBenchDatasetID[dataset])
+    caches = {(encoder, run.dataset, *((run.size, run.fold) if is_tuned(encoder) else (None, None)))
+              for run in runs for encoder in (run.text_encoder, run.image_encoder) if encoder in CACHED_ENCODERS}
+    for encoder, dataset, size, fold in sorted(caches, key=str):
+        download_embeddings(encoder, MulTaBenchDatasetID[dataset], size=size, fold=fold)
 
 
 def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str, official: bool = False):
