@@ -33,9 +33,8 @@ file as the PRs that complete them are merged.
       reproduce them exactly.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
-- [ ] Kumo-Tabular ran out of the 32 GB RAM on Hearthstone and Wine Review, and Kumo-Tabular-Medium on Spotify
-      Genres. Find what grows (likely the cached context) and fix it within the official hardware, else record
-      them as failures.
+- [ ] Rerun the Kumo models when they next need rerunning: only their 24 out-of-memory runs postdate the cache fix
+      (#170), which also speeds up fit, so their timings mix two code versions.
 - [ ] Rerun what `multabench/leaderboard/legacy_results/` covers with the leaderboard protocol: the
       frozen small encoders are done; the large and fine-tuned (`-tar`) encoders and TabSTAR and
       AutoGluon multimodal are left. Then delete the legacy results with the paper analysis code.
