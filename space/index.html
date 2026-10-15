@@ -249,13 +249,14 @@ function toggles(container, items, field, storeKey) {
 }
 
 function drawElo(board) {
-  const rows = board, W = 520, rowH = 30, top = 18, bottom = 34, left = 118, right = 20;
+  const rows = board, W = 520, rowH = 30, top = 18, bottom = 34, left = 142, right = 20;
   const H = top + rows.length * rowH + bottom;
   const lo = Math.min(...rows.map(r => r.lo)), hi = Math.max(...rows.map(r => r.hi));
-  const min = Math.floor((Math.min(lo, 1000) - 50) / 200) * 200, max = Math.ceil((hi + 50) / 200) * 200;
+  const step = hi - Math.min(lo, 1000) > 1600 ? 400 : 200;
+  const min = Math.floor((Math.min(lo, 1000) - 50) / step) * step, max = Math.ceil((hi + 50) / step) * step;
   const x = v => left + (v - min) / (max - min) * (W - left - right);
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elo ratings with 95% intervals">`;
-  for (let t = min; t <= max; t += 200) {
+  for (let t = min; t <= max; t += step) {
     s += `<line x1="${x(t)}" x2="${x(t)}" y1="${top - 6}" y2="${H - bottom + 4}" stroke="var(--soft)" stroke-width="1"/>`;
     s += `<text x="${x(t)}" y="${H - bottom + 20}" text-anchor="middle">${t}</text>`;
   }
