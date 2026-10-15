@@ -1,8 +1,9 @@
-"""Elo leaderboard over the per-model run CSVs, computed as in the paper's elo_leaderboard.py.
+"""Elo leaderboard over the per-model run CSVs, as TabArena computes it.
 
-One battle per dataset and model pair on the mean test_error over the folds, fit as a Bradley-Terry model with
-RandomForest at 1000, and 95% intervals from bootstrapping the datasets. A model with no successful run on a dataset
-has no battles there: nothing is imputed.
+One battle per dataset fold and model pair, on that fold's test_error, fit as a Bradley-Terry model with RandomForest
+at 1000, and 95% intervals from bootstrapping the datasets, each drawn with all its folds. Win rate, average rank,
+normalized error and best-on count are per fold too. A model with no successful run on a fold has no battles there:
+nothing is imputed.
 """
 import argparse
 import glob
@@ -28,17 +29,22 @@ def load_runs(results_dir: str = RESULTS_DIR) -> pd.DataFrame:
 
 
 def error_table(runs: pd.DataFrame, modalities: Optional[List[Modality]] = None) -> pd.DataFrame:
-    """Mean test_error over the successful folds, one row per dataset and one column per model."""
+    """The successful runs' test_error, one row per dataset and fold and one column per model."""
     ok = runs[runs[ResultKey.STATUS] == RunStatus.OK]
     if modalities:
         ok = ok[ok[ResultKey.DATASET].map(lambda d: dataset_modality(MulTaBenchDatasetID[d]) in modalities)]
-    return ok.groupby([ResultKey.DATASET, ResultKey.MODEL])[ResultKey.TEST_ERROR].mean().unstack()
+    return ok.groupby([ResultKey.DATASET, ResultKey.FOLD, ResultKey.MODEL])[ResultKey.TEST_ERROR].mean().unstack()
+
+
+def _datasets(table: pd.DataFrame) -> pd.Index:
+    """The dataset of each row: the first index level of a per-fold table."""
+    return table.index.get_level_values(0)
 
 
 def _battles(table: pd.DataFrame):
-    """The logistic regression rows of every battle, and the dataset each row comes from."""
+    """The logistic regression rows of every battle, and the table row (dataset fold) each comes from."""
     models = list(table.columns)
-    X, y, w, rows_dataset = [], [], [], []
+    X, y, w, battle_rows = [], [], [], []
     for i, (_, errors) in enumerate(table.iterrows()):
         present = [m for m in models if pd.notna(errors[m])]
         for a, b in itertools.combinations(present, 2):
@@ -49,8 +55,8 @@ def _battles(table: pd.DataFrame):
                 X.append(x)
                 y.append(outcome)
                 w.append(weight)
-                rows_dataset.append(i)
-    return np.array(X), np.array(y), np.array(w), np.array(rows_dataset)
+                battle_rows.append(i)
+    return np.array(X), np.array(y), np.array(w), np.array(battle_rows)
 
 
 def _fit(X: np.ndarray, y: np.ndarray, w: np.ndarray, models: List[str]) -> np.ndarray:
@@ -61,18 +67,19 @@ def _fit(X: np.ndarray, y: np.ndarray, w: np.ndarray, models: List[str]) -> np.n
 
 def leaderboard(table: pd.DataFrame, bootstraps: int = 1000, seed: int = 0) -> pd.DataFrame:
     models = list(table.columns)
-    X, y, w, rows_dataset = _battles(table)
+    X, y, w, battle_rows = _battles(table)
     elo = _fit(X, y, w, models)
     rng = np.random.default_rng(seed)
-    # Resampling the datasets with replacement weighs each dataset's battles by how often it was drawn.
-    draws = [np.bincount(rng.choice(len(table), len(table)), minlength=len(table)) for _ in range(bootstraps)]
-    boot = np.array([_fit(X, y, w * counts[rows_dataset], models) for counts in draws])
+    codes, datasets = pd.factorize(_datasets(table))
+    # Resampling the datasets with replacement weighs the battles of all a dataset's folds by how often it was drawn.
+    draws = [np.bincount(rng.choice(len(datasets), len(datasets)), minlength=len(datasets)) for _ in range(bootstraps)]
+    boot = np.array([_fit(X, y, w * counts[codes[battle_rows]], models) for counts in draws])
     low, high = np.percentile(boot, [2.5, 97.5], axis=0)
     best, worst = table.min(axis=1), table.max(axis=1)
     normalized = table.sub(best, axis=0).div((worst - best).replace(0, np.nan), axis=0)
     board = pd.DataFrame({
         ResultKey.MODEL: models, "elo": elo, "elo_low": low, "elo_high": high,
-        "datasets": table.notna().sum().values,
+        "datasets": table.notna().groupby(_datasets(table)).any().sum().values,
         "win_rate": [_win_rate(table, m) for m in models],
         "avg_rank": table.rank(axis=1).mean().values,
         "normalized_error": normalized.mean().values,

@@ -27,9 +27,16 @@ The leaderboard lives at [huggingface.co/spaces/multabench/leaderboard](https://
 with per-dataset results and cost; `space/` holds its app and data.
 
 Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino-small` image embeddings
-(ConTextTab reads raw text itself). Elo is fit on one battle per dataset and model pair, with RandomForest
-at 1000 and 95% intervals from bootstrapping the datasets; a model with no result on a dataset has no
-battles there. TabPFN-v2 and v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
+(ConTextTab reads raw text itself). TabPFN-v2 and v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
+
+**How Elo is computed.** As in TabArena, every fold is its own battle: on each of a dataset's 6 folds, each pair of
+models plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a
+Bradley–Terry model, with RandomForest anchored at 1000. The 95% intervals come from 1,000 bootstrap resamples of the
+datasets, each drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many
+folds. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
+error and best-on count are per fold as well. Until October 2026 the leaderboard, like the paper, played one battle
+per dataset on the mean error over its folds. That makes each dataset winner-take-all, which stretches the scale (the
+top model was at 2670 rather than 2347), while the ranking was the same.
 
 | # | Model | Elo, 80 datasets | 95% CI | Text, 40 | Images, 40 | Datasets |
 |---|---|---|---|---|---|---|
@@ -52,8 +59,9 @@ battles there. TabPFN-v2 and v2.5 take at most 10 classes, which leaves out 3 of
 | 17 | XGBoost | 985 | +67 / −65 | 1024 | 930 | 80 |
 
 Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row per (dataset, fold), failed
-runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank and
-normalized error; `--modalities text` or `--modalities image,image-text` restricts it to those datasets.
+runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank, normalized
+error and the number of folds each model is best on; `--modalities text` or `--modalities image,image-text` restricts
+it to those datasets.
 
 Leaderboard runs pass `--official`, which also requires a clean checkout of a commit on `master`, so the `git`
 column of every row names code anyone can check out. The image runs of the first 11 models are the one exception: they
@@ -219,7 +227,7 @@ MulTaBench is not an official TabArena leaderboard.
 | | TabArena | MulTaBench | Status |
 |---|---|---|---|
 | Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | ✅ |
-| Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Elo as in the paper, RandomForest anchored at 1000, bootstrapped confidence intervals; missing results are left out, neither imputed nor dropping the model, so a model is ranked on the datasets it ran on, which its Datasets column shows | |
+| Leaderboard | Elo via `bencheval`, one battle per task fold, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Same Elo, one battle per dataset fold; missing results are left out, neither imputed nor dropping the model, so a model is ranked on the datasets it ran on, which its Datasets column shows | |
 | Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited: every dataset is split IID. Some datasets may have group or time structure, in which case IID splits can overestimate performance | |
 | Runtime | Train and inference time per 1K rows | Same, with the time spent embedding text and images reported separately | ✅ |
