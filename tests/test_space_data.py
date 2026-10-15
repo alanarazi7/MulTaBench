@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from multabench.leaderboard.elo import error_table, leaderboard, load_runs
-from multabench.leaderboard.export import DATASET_GROUPS, SPACE_DATA_DIR, per_dataset
+from multabench.leaderboard.elo import load_runs
+from multabench.leaderboard.export import SPACE_DATA_DIR, leaderboards, per_dataset
 from multabench.result_keys import ResultKey
 
 
@@ -14,13 +14,13 @@ def runs():
     return load_runs()
 
 
-@pytest.mark.parametrize("group", DATASET_GROUPS)
-def test_the_space_leaderboards_follow_the_results(runs, group):
-    shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, f"leaderboard_{group}.csv"))
-    board = leaderboard(error_table(runs, DATASET_GROUPS[group]), bootstraps=2)
-    assert list(shown[ResultKey.MODEL]) == list(board[ResultKey.MODEL])
-    assert np.allclose(shown["elo"], board["elo"], atol=1e-3)
-    assert (shown["datasets"] == board["datasets"]).all()
+def test_the_space_leaderboards_follow_the_results(runs):
+    shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "leaderboards.csv"))
+    boards = leaderboards(runs, bootstraps=2)
+    assert len(boards.groupby(["task", "modality"])) == 21
+    for column in ["task", "modality", ResultKey.MODEL, "datasets"]:
+        assert (shown[column] == boards[column]).all()
+    assert np.allclose(shown["elo"], boards["elo"], atol=1e-3)
 
 
 def test_the_space_per_dataset_results_follow_the_results(runs):

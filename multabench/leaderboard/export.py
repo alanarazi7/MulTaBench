@@ -1,5 +1,6 @@
 """Writes the CSVs the leaderboard Space shows, computed from the per-model run CSVs."""
 import argparse
+import itertools
 import os
 
 import pandas as pd
@@ -9,13 +10,30 @@ from multabench.leaderboard.elo import RESULTS_DIR, error_table, leaderboard, lo
 from multabench.result_keys import ResultKey, RunStatus
 
 SPACE_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "space", "data")
-DATASET_GROUPS = {
-    "all": None,
-    "text": [Modality.TEXT],
-    "image": [Modality.IMAGE, Modality.IMAGE_TEXT],
-    "image_only": [Modality.IMAGE],
-    "image_text": [Modality.IMAGE_TEXT],
-}
+TASKS = ["classification", "regression"]
+MODALITIES = [m.value for m in Modality]
+
+
+def dataset_task(dataset: str) -> str:
+    return "regression" if dataset.startswith("REG_") else "classification"
+
+
+def subsets(values: list[str]) -> list[list[str]]:
+    return [list(c) for n in range(1, len(values) + 1) for c in itertools.combinations(values, n)]
+
+
+def leaderboards(runs: pd.DataFrame, bootstraps: int = 1000) -> pd.DataFrame:
+    """One Elo leaderboard per combination of tasks and modalities, keyed by `task` and `modality`."""
+    datasets = runs[ResultKey.DATASET]
+    modality = datasets.map(lambda d: dataset_modality(MulTaBenchDatasetID[d]).value)
+    boards = []
+    for tasks, modalities in itertools.product(subsets(TASKS), subsets(MODALITIES)):
+        keep = datasets.map(dataset_task).isin(tasks) & modality.isin(modalities)
+        board = leaderboard(error_table(runs[keep]), bootstraps=bootstraps)
+        board.insert(0, "modality", "all" if len(modalities) == len(MODALITIES) else "+".join(modalities))
+        board.insert(0, "task", "all" if len(tasks) == len(TASKS) else "+".join(tasks))
+        boards.append(board)
+    return pd.concat(boards, ignore_index=True)
 
 
 def per_dataset(runs: pd.DataFrame) -> pd.DataFrame:
@@ -26,6 +44,7 @@ def per_dataset(runs: pd.DataFrame) -> pd.DataFrame:
         "folds": (ResultKey.FOLD, "nunique"), ResultKey.N_TRAIN: (ResultKey.N_TRAIN, "max")}).reset_index()
     modality = df[ResultKey.DATASET].map(lambda d: dataset_modality(MulTaBenchDatasetID[d]).value)
     df.insert(1, "modality", modality)
+    df.insert(1, "task", df[ResultKey.DATASET].map(dataset_task))
     return df
 
 
@@ -41,9 +60,7 @@ def cost(runs: pd.DataFrame) -> pd.DataFrame:
 def export(out_dir: str, results_dir: str = RESULTS_DIR, bootstraps: int = 1000):
     os.makedirs(out_dir, exist_ok=True)
     runs = load_runs(results_dir)
-    for group, modalities in DATASET_GROUPS.items():
-        board = leaderboard(error_table(runs, modalities), bootstraps=bootstraps)
-        board.round(4).to_csv(os.path.join(out_dir, f"leaderboard_{group}.csv"), index=False)
+    leaderboards(runs, bootstraps).round(4).to_csv(os.path.join(out_dir, "leaderboards.csv"), index=False)
     per_dataset(runs).round(6).to_csv(os.path.join(out_dir, "per_dataset.csv"), index=False)
     cost(runs).round(4).to_csv(os.path.join(out_dir, "cost.csv"), index=False)
 
