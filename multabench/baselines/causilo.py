@@ -8,10 +8,11 @@ from multabench.constants import SEED
 
 
 class Causilo(TabularModel):
-    """Nums AI's Causilo at TabArena's default; it needs torch>=2.13, so it runs from its own venv (.venv-causilo)."""
+    """Nums AI's Causilo at TabArena's default; it needs torch>=2.13, so it runs in its own venv."""
 
     MODEL_NAME = "Causilo"
     SHORT_NAME = "causilo"
+    ENV = "causilo"
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = False
     USE_CATEGORICAL_ENCODING = False

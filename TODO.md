@@ -43,12 +43,11 @@ file as the PRs that complete them are merged.
 
 New models' requirements conflict with the shared `requirements.txt` (torch 2.7.1): Mitra-v2 needs autogluon.tabular
 1.6, LimiX-2 declares python>=3.12 and torch==2.9.1, TabDPT-1.3 tabdpt 1.3 (which can't load the current TabDPT
-weights). Causilo, which needs torch>=2.13, has its own lock and venv (`source init.sh causilo`):
+weights). A model declares its venv in its wrapper (`ENV`), with its own lock, as Causilo does for torch>=2.13, and
+`sweep.py` runs it with that venv's python. Packages with wrong declared requirements (LimiX-2's torch pin,
+EXAONE-Tabular's scikit-learn floor) are installed with `--no-deps`, documented in their wrapper.
 
-- [ ] `sweep.py` runs each model with its venv's python, rather than a sweep per venv started from that venv.
-      Packages with wrong declared requirements (LimiX-2's torch pin, EXAONE-Tabular's scikit-learn floor) are
-      installed with `--no-deps`, documented in their wrapper.
-- [ ] Then add the other TabArena models at their default configs: TabDPT-1.3, LimiX-2, Mitra-v2, EXAONE-Tabular
+- [ ] Add the other TabArena models at their default configs: TabDPT-1.3, LimiX-2, Mitra-v2, EXAONE-Tabular
       and Xiaomi-TabLDM.
       Mitra-v2's default fine-tunes within 8-fold bagging, and TabArena dropped Xiaomi-TabLDM over a prediction
       bug when a batch has more rows than the training set; both run as they are.

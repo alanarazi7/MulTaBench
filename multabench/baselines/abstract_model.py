@@ -36,6 +36,8 @@ class TabularModel:
     USE_TEXT_EMBEDDINGS: bool
     USE_TARGET_ENCODER: bool
     NEEDS_GPU = True
+    # A model whose requirements conflict with the shared .venv runs in its own, .venv-<ENV>, from requirements-<ENV>.txt.
+    ENV: Optional[str] = None
 
     def __init__(self, problem_type: SupervisedTask, device: torch.device,
                  dataset: MulTaBenchDatasetID | None = None, verbose: bool = False, image_folder: str | None = None,
