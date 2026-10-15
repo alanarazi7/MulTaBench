@@ -20,7 +20,7 @@ from pandas import DataFrame
 
 from multabench.baselines.preprocessing.feature_types import transform_feature_types
 from multabench.benchmark.splits import Size
-from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
+from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.hub import HF_ORG
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder, format_e5_passage
@@ -68,8 +68,11 @@ def cached_encoder(model_name: str, tuned: bool) -> Optional[CachedEncoder]:
 
 
 def embeds_dataset(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> bool:
+    """Whether the benchmark's runs use the encoder on the dataset: datasets with images embed their text with e5-small."""
     modality = dataset_modality(dataset_id)
-    return modality.has_images if isinstance(encoder, ImageEncoder) else modality.has_text
+    if isinstance(encoder, ImageEncoder):
+        return modality.has_images
+    return modality == Modality.TEXT if is_tuned(encoder) else modality.has_text
 
 
 def embeddings_dir(dataset_id: MulTaBenchDatasetID, size: Optional[Size] = None, fold: Optional[int] = None) -> str:

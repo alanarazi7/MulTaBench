@@ -8,7 +8,7 @@ from multabench.baselines.preprocessing.image_embeddings import fit_image_encode
 from multabench.baselines.preprocessing.nulls import MISSING_VALUE
 from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
 from multabench.benchmark.splits import Size
-from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
+from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import DINOV3_SMALL, IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import E5_SMALL_V2, TEXT_ENCODERS, TF_IDF, TextEncoder, format_e5_passage
 from multabench.embeddings import hub
@@ -45,6 +45,8 @@ def test_encoders_follow_the_benchmark_runs(dataset_id):
     modality = dataset_modality(dataset_id)
     assert embeds_dataset(TextEncoder.E5_SMALL, dataset_id) == modality.has_text
     assert embeds_dataset(ImageEncoder.DINO_SMALL, dataset_id) == modality.has_images
+    assert embeds_dataset(TextEncoder.E5_SMALL_TAR, dataset_id) == (modality == Modality.TEXT)
+    assert embeds_dataset(ImageEncoder.DINO_SMALL_TAR, dataset_id) == modality.has_images
 
 
 def test_round_trip_and_lookup(tmp_path):
@@ -93,7 +95,7 @@ def test_tuned_jobs_cover_each_fold(tmp_path):
     assert jobs[1].command(python="python", output_dir="out") == (
         "python -m multabench.embeddings.embed --encoder dino-small-tar --dataset_name MUL_IMAGE_PETFINDER --size 10k "
         "--fold 4 --output_dir out")
-    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6 + 6
+    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6
 
 
 def test_cached_encoder():
