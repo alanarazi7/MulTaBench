@@ -1,0 +1,3 @@
+# Requirements the locks override (uv pip compile --override): exaonetabular declares scikit-learn>=1.7.2, but its code
+# only uses APIs scikit-learn 1.6.1 has, which the other models' lock pins.
+scikit-learn==1.6.1
