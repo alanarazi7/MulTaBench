@@ -18,9 +18,9 @@ IMAGE_ENCODERS = {
     ImageEncoder.DINO_LARGE: Encoder(encoder_name=DINOV3_LARGE, tune_encoder=False),
 }
 
-# The modules LoRA adapts in each tuned ViT layer, layer.{i}. The MLP's are written under attention, where DINOv3 has
-# none, so only the attention projections are adapted, as in the paper's runs.
+# The modules LoRA adapts in each tuned ViT layer, layer.{i}: attention and MLP, as in E5. The paper's runs named the
+# MLP's under attention, which matched nothing, so they adapted the attention projections alone.
 LORA_IMAGE_TARGET_MODULES = [
     "attention.q_proj", "attention.k_proj", "attention.v_proj", "attention.o_proj",
-    "attention.mlp.up_proj", "attention.mlp.down_proj",
+    "mlp.up_proj", "mlp.down_proj",
 ]
