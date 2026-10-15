@@ -1,6 +1,9 @@
 #!/bin/bash
+# `source init.sh` sets up .venv from requirements.txt; `source init.sh causilo` sets up .venv-causilo from
+# requirements-causilo.txt, for a model whose requirements conflict with the shared lock.
 
-ENV_DIR=".venv"
+ENV_DIR=".venv${1:+-$1}"
+REQUIREMENTS="requirements${1:+-$1}.txt"
 VENV_PY="$ENV_DIR/bin/python"
 
 echo "🐍 Checking for python3.11..."
@@ -120,13 +123,13 @@ echo "📦 Ensuring uv is installed inside the venv..."
 $VENV_PY -m pip install --upgrade uv || { echo "❌ Failed to install uv in venv"; return 1; }
 
 # Install dependencies using uv
-if [ -f "requirements.txt" ]; then
+if [ -f "$REQUIREMENTS" ]; then
     # Increase timeout for slow/large package downloads (default is 30s)
     export UV_HTTP_TIMEOUT=120
-    echo "📄 Installing dependencies from requirements.txt using uv"
-    $VENV_PY -m uv pip install -r requirements.txt || { echo "❌ Dependency install failed"; return 1; }
+    echo "📄 Installing dependencies from $REQUIREMENTS using uv"
+    $VENV_PY -m uv pip install -r "$REQUIREMENTS" || { echo "❌ Dependency install failed"; return 1; }
 else
-    echo "⚠️ requirements.txt not found; skipping dependency install."
+    echo "⚠️ $REQUIREMENTS not found; skipping dependency install."
 fi
 
 

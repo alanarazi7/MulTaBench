@@ -1,6 +1,6 @@
 from typing import Set, Dict
 
-from pandas import Series, DataFrame
+from pandas import CategoricalDtype, Series, DataFrame
 from sklearn.preprocessing import LabelEncoder
 
 from multabench.baselines.preprocessing.nulls import MISSING_VALUE
@@ -22,3 +22,7 @@ def transform_categorical_features(x: DataFrame, categorical_encoders: Dict[str,
         s = encoder.transform(s).astype(int)
         x[col] = s
     return x
+
+def fit_category_dtypes(x: DataFrame, categorical_features: Set[str]) -> Dict[str, CategoricalDtype]:
+    """The train values of each categorical column, for models that read pandas' category dtype; unseen ones are NaN."""
+    return {col: CategoricalDtype(sorted(x[col].unique())) for col in categorical_features}
