@@ -1,6 +1,8 @@
 dataset,task,modality,model,metric,test_error,test_error_std,test_score,folds,n_train
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,CatBoost,roc_auc,0.096204,0.003273,0.903796,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,ConTextTab,roc_auc,0.094719,0.003129,0.905281,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,Kumo-Tabular,roc_auc,0.08931,0.004147,0.91069,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,Kumo-Tabular-Medium,roc_auc,0.089452,0.003985,0.910548,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,Kumo-Tabular-Small,roc_auc,0.089873,0.003529,0.910127,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,LightGBM,roc_auc,0.101041,0.003906,0.898959,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,RandomForest,roc_auc,0.108301,0.004207,0.891699,6,10000.0
@@ -16,6 +18,8 @@ BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,TabPFN-v2p5,roc_auc,0.090704
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,XGBoost,roc_auc,0.10787,0.003478,0.89213,6,10000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,CatBoost,roc_auc,0.256522,0.005162,0.743478,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,ConTextTab,roc_auc,0.25616,0.009628,0.74384,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,classification,image,Kumo-Tabular,roc_auc,0.199876,0.005299,0.800124,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,classification,image,Kumo-Tabular-Medium,roc_auc,0.18031,0.005627,0.81969,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,Kumo-Tabular-Small,roc_auc,0.22085,0.00691,0.77915,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,LightGBM,roc_auc,0.272765,0.00211,0.727235,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,RandomForest,roc_auc,0.290779,0.00497,0.709221,6,6000.0
@@ -31,6 +35,8 @@ BIN_IMAGE_HATEFUL_MEME,classification,image,TabPFN-v2p5,roc_auc,0.226522,0.00653
 BIN_IMAGE_HATEFUL_MEME,classification,image,XGBoost,roc_auc,0.29582,0.004643,0.70418,6,6000.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,CatBoost,roc_auc,0.250659,0.008673,0.749341,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,ConTextTab,roc_auc,0.238045,0.012386,0.761955,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,Kumo-Tabular,roc_auc,0.14258,0.017018,0.85742,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,Kumo-Tabular-Medium,roc_auc,0.147006,0.013007,0.852994,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,Kumo-Tabular-Small,roc_auc,0.156098,0.013882,0.843902,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,LightGBM,roc_auc,0.267999,0.007242,0.732001,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,RandomForest,roc_auc,0.27978,0.01298,0.72022,6,3468.0
@@ -46,6 +52,8 @@ BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,TabPFN-v2p5,roc_auc,0.212729,0.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,XGBoost,roc_auc,0.276838,0.01779,0.723162,6,3468.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,CatBoost,roc_auc,0.084054,0.012555,0.915946,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,ConTextTab,roc_auc,0.086042,0.010494,0.913958,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,Kumo-Tabular,roc_auc,0.074153,0.012867,0.925847,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,Kumo-Tabular-Medium,roc_auc,0.076575,0.008801,0.923425,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,Kumo-Tabular-Small,roc_auc,0.0818,0.011347,0.9182,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,LightGBM,roc_auc,0.09078,0.012306,0.90922,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,RandomForest,roc_auc,0.090337,0.007624,0.909663,6,291.0
@@ -61,6 +69,8 @@ BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,TabPFN-v2p5,roc_auc,0.075556,0.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,XGBoost,roc_auc,0.108274,0.016402,0.891726,6,291.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,CatBoost,roc_auc,0.337732,0.01353,0.662268,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,ConTextTab,roc_auc,0.321502,0.019702,0.678498,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,classification,image,Kumo-Tabular,roc_auc,0.316786,0.018576,0.683214,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,classification,image,Kumo-Tabular-Medium,roc_auc,0.314561,0.019818,0.685439,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,Kumo-Tabular-Small,roc_auc,0.316863,0.015803,0.683137,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,LightGBM,roc_auc,0.35958,0.010932,0.64042,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,RandomForest,roc_auc,0.334342,0.015036,0.665658,6,1003.0
@@ -76,6 +86,8 @@ BIN_IMAGE_PINTEREST_POPULAR,classification,image,TabPFN-v2p5,roc_auc,0.322047,0.
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,XGBoost,roc_auc,0.377935,0.032686,0.622065,6,1003.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,CatBoost,roc_auc,0.007273,0.000534,0.992727,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,ConTextTab,roc_auc,0.00584,0.000556,0.99416,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,classification,text,Kumo-Tabular,roc_auc,0.005444,0.000435,0.994556,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,classification,text,Kumo-Tabular-Medium,roc_auc,0.005326,0.000537,0.994674,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,Kumo-Tabular-Small,roc_auc,0.005575,0.000532,0.994425,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,LightGBM,roc_auc,0.007301,0.000575,0.992699,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,RandomForest,roc_auc,0.011563,0.00084,0.988437,6,10000.0
@@ -91,6 +103,8 @@ BIN_TEXT_CALIFORNIA_PRICES,classification,text,TabPFN-v2p5,roc_auc,0.006021,0.00
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,XGBoost,roc_auc,0.007969,0.000481,0.992031,6,10000.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,CatBoost,roc_auc,0.083603,0.008983,0.916397,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,ConTextTab,roc_auc,0.083535,0.008282,0.916465,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,classification,text,Kumo-Tabular,roc_auc,0.032316,0.004166,0.967684,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,classification,text,Kumo-Tabular-Medium,roc_auc,0.035728,0.00396,0.964272,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,Kumo-Tabular-Small,roc_auc,0.040389,0.004688,0.959611,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,LightGBM,roc_auc,0.083891,0.00848,0.916109,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,RandomForest,roc_auc,0.105649,0.01323,0.894351,6,8484.0
@@ -106,6 +120,8 @@ BIN_TEXT_FAKE_JOB_POSTING,classification,text,TabPFN-v2p5,roc_auc,0.057164,0.007
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,XGBoost,roc_auc,0.102043,0.00992,0.897957,6,8484.0
 BIN_TEXT_IMDB_GENRE,classification,text,CatBoost,roc_auc,0.174988,0.011565,0.825012,6,534.0
 BIN_TEXT_IMDB_GENRE,classification,text,ConTextTab,roc_auc,0.144399,0.019612,0.855601,6,534.0
+BIN_TEXT_IMDB_GENRE,classification,text,Kumo-Tabular,roc_auc,0.126228,0.018328,0.873772,6,534.0
+BIN_TEXT_IMDB_GENRE,classification,text,Kumo-Tabular-Medium,roc_auc,0.127807,0.020343,0.872193,6,534.0
 BIN_TEXT_IMDB_GENRE,classification,text,Kumo-Tabular-Small,roc_auc,0.131612,0.022799,0.868388,6,534.0
 BIN_TEXT_IMDB_GENRE,classification,text,LightGBM,roc_auc,0.182717,0.016716,0.817283,6,534.0
 BIN_TEXT_IMDB_GENRE,classification,text,RandomForest,roc_auc,0.171949,0.008812,0.828051,6,534.0
@@ -121,6 +137,8 @@ BIN_TEXT_IMDB_GENRE,classification,text,TabPFN-v2p5,roc_auc,0.139266,0.022654,0.
 BIN_TEXT_IMDB_GENRE,classification,text,XGBoost,roc_auc,0.221148,0.024268,0.778852,6,534.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,CatBoost,roc_auc,0.162883,0.007671,0.837117,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,ConTextTab,roc_auc,0.369995,0.019981,0.630005,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,classification,text,Kumo-Tabular,roc_auc,0.146827,0.005534,0.853173,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,classification,text,Kumo-Tabular-Medium,roc_auc,0.147881,0.005942,0.852119,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,Kumo-Tabular-Small,roc_auc,0.147587,0.005955,0.852413,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,LightGBM,roc_auc,0.177522,0.010744,0.822478,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,RandomForest,roc_auc,0.210138,0.004881,0.789862,6,10000.0
@@ -136,6 +154,8 @@ BIN_TEXT_JIGSAW_TOXICITY,classification,text,TabPFN-v2p5,roc_auc,0.150321,0.0073
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,XGBoost,roc_auc,0.196231,0.007055,0.803769,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,CatBoost,roc_auc,0.263654,0.004855,0.736346,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,ConTextTab,roc_auc,0.344561,0.010115,0.655439,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,classification,text,Kumo-Tabular,roc_auc,0.234457,0.004264,0.765543,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,classification,text,Kumo-Tabular-Medium,roc_auc,0.236548,0.004267,0.763452,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,Kumo-Tabular-Small,roc_auc,0.24612,0.005587,0.75388,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,LightGBM,roc_auc,0.275039,0.003688,0.724961,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,RandomForest,roc_auc,0.292114,0.005524,0.707886,6,10000.0
@@ -151,6 +171,8 @@ BIN_TEXT_KICKSTARTER_FUNDING,classification,text,TabPFN-v2p5,roc_auc,0.251661,0.
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,XGBoost,roc_auc,0.292863,0.008242,0.707137,6,10000.0
 BIN_TEXT_OSHA_INJURY,classification,text,CatBoost,roc_auc,0.411084,0.009143,0.588916,6,3232.0
 BIN_TEXT_OSHA_INJURY,classification,text,ConTextTab,roc_auc,0.411062,0.018437,0.588938,6,3232.0
+BIN_TEXT_OSHA_INJURY,classification,text,Kumo-Tabular,roc_auc,0.382257,0.016588,0.617743,6,3232.0
+BIN_TEXT_OSHA_INJURY,classification,text,Kumo-Tabular-Medium,roc_auc,0.384485,0.014037,0.615515,6,3232.0
 BIN_TEXT_OSHA_INJURY,classification,text,Kumo-Tabular-Small,roc_auc,0.388364,0.022137,0.611636,6,3232.0
 BIN_TEXT_OSHA_INJURY,classification,text,LightGBM,roc_auc,0.433023,0.013793,0.566977,6,3232.0
 BIN_TEXT_OSHA_INJURY,classification,text,RandomForest,roc_auc,0.425723,0.008287,0.574277,6,3232.0
@@ -166,6 +188,8 @@ BIN_TEXT_OSHA_INJURY,classification,text,TabPFN-v2p5,roc_auc,0.400463,0.014956,0
 BIN_TEXT_OSHA_INJURY,classification,text,XGBoost,roc_auc,0.450749,0.01585,0.549251,6,3232.0
 MUL_IMAGE_CBIS_DDSM,classification,image,CatBoost,log_loss,0.84956,0.019007,-0.84956,6,1131.0
 MUL_IMAGE_CBIS_DDSM,classification,image,ConTextTab,log_loss,0.787193,0.024966,-0.787193,6,1131.0
+MUL_IMAGE_CBIS_DDSM,classification,image,Kumo-Tabular,log_loss,0.695162,0.02548,-0.695162,6,1131.0
+MUL_IMAGE_CBIS_DDSM,classification,image,Kumo-Tabular-Medium,log_loss,0.711325,0.021894,-0.711325,6,1131.0
 MUL_IMAGE_CBIS_DDSM,classification,image,Kumo-Tabular-Small,log_loss,0.717372,0.018757,-0.717372,6,1131.0
 MUL_IMAGE_CBIS_DDSM,classification,image,LightGBM,log_loss,1.132601,0.054328,-1.132601,6,1131.0
 MUL_IMAGE_CBIS_DDSM,classification,image,RandomForest,log_loss,0.934228,0.020437,-0.934228,6,1131.0
@@ -181,6 +205,8 @@ MUL_IMAGE_CBIS_DDSM,classification,image,TabPFN-v2p5,log_loss,0.771844,0.020552,
 MUL_IMAGE_CBIS_DDSM,classification,image,XGBoost,log_loss,0.937132,0.035563,-0.937132,6,1131.0
 MUL_IMAGE_CHEXPERT,classification,image,CatBoost,log_loss,0.723795,0.003535,-0.723795,6,10000.0
 MUL_IMAGE_CHEXPERT,classification,image,ConTextTab,log_loss,0.707598,0.005789,-0.707598,6,10000.0
+MUL_IMAGE_CHEXPERT,classification,image,Kumo-Tabular,log_loss,0.697849,0.006782,-0.697849,6,10000.0
+MUL_IMAGE_CHEXPERT,classification,image,Kumo-Tabular-Medium,log_loss,0.705405,0.005928,-0.705405,6,10000.0
 MUL_IMAGE_CHEXPERT,classification,image,Kumo-Tabular-Small,log_loss,0.702032,0.005751,-0.702032,6,10000.0
 MUL_IMAGE_CHEXPERT,classification,image,LightGBM,log_loss,0.728645,0.007632,-0.728645,6,10000.0
 MUL_IMAGE_CHEXPERT,classification,image,RandomForest,log_loss,0.823595,0.003908,-0.823595,6,10000.0
@@ -196,6 +222,8 @@ MUL_IMAGE_CHEXPERT,classification,image,TabPFN-v2p5,log_loss,0.701811,0.006573,-
 MUL_IMAGE_CHEXPERT,classification,image,XGBoost,log_loss,0.812374,0.005671,-0.812374,6,10000.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,CatBoost,log_loss,1.511401,0.030972,-1.511401,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,ConTextTab,log_loss,1.384185,0.056038,-1.384185,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,Kumo-Tabular,log_loss,1.114127,0.022545,-1.114127,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,Kumo-Tabular-Medium,log_loss,1.144475,0.033935,-1.144475,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,Kumo-Tabular-Small,log_loss,1.175945,0.032028,-1.175945,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,LightGBM,log_loss,2.52005,0.134924,-2.52005,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,RandomForest,log_loss,1.755426,0.142252,-1.755426,6,638.0
@@ -211,6 +239,8 @@ MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,TabPFN-v2p5,log_loss,1.25650
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,XGBoost,log_loss,1.755922,0.055089,-1.755922,6,638.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,CatBoost,log_loss,1.476522,0.03412,-1.476522,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,ConTextTab,log_loss,1.445897,0.064996,-1.445897,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,Kumo-Tabular,log_loss,1.401009,0.036813,-1.401009,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,Kumo-Tabular-Medium,log_loss,1.398806,0.038191,-1.398806,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,Kumo-Tabular-Small,log_loss,1.406225,0.0311,-1.406225,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,LightGBM,log_loss,2.191169,0.159227,-2.191169,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,RandomForest,log_loss,1.488415,0.032428,-1.488415,6,400.0
@@ -226,6 +256,8 @@ MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,TabPFN-v2p5,log_loss,1.42496
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,XGBoost,log_loss,1.542488,0.030159,-1.542488,6,400.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,CatBoost,log_loss,0.33106,0.009686,-0.33106,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,ConTextTab,log_loss,0.318434,0.007887,-0.318434,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,classification,image,Kumo-Tabular,log_loss,0.274623,0.00677,-0.274623,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,classification,image,Kumo-Tabular-Medium,log_loss,0.277589,0.006773,-0.277589,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,Kumo-Tabular-Small,log_loss,0.283026,0.007295,-0.283026,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,LightGBM,log_loss,0.369651,0.012248,-0.369651,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,RandomForest,log_loss,0.426682,0.019784,-0.426682,6,8300.0
@@ -241,6 +273,8 @@ MUL_IMAGE_GLAUCOMA_SMDG,classification,image,TabPFN-v2p5,log_loss,0.300008,0.008
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,XGBoost,log_loss,0.347625,0.009456,-0.347625,6,8300.0
 MUL_IMAGE_HAM10000_LESION,classification,image,CatBoost,log_loss,0.503299,0.011958,-0.503299,6,4980.0
 MUL_IMAGE_HAM10000_LESION,classification,image,ConTextTab,log_loss,0.482928,0.012995,-0.482928,6,4980.0
+MUL_IMAGE_HAM10000_LESION,classification,image,Kumo-Tabular,log_loss,0.413627,0.013519,-0.413627,6,4980.0
+MUL_IMAGE_HAM10000_LESION,classification,image,Kumo-Tabular-Medium,log_loss,0.416501,0.013256,-0.416501,6,4980.0
 MUL_IMAGE_HAM10000_LESION,classification,image,Kumo-Tabular-Small,log_loss,0.4188,0.011778,-0.4188,6,4980.0
 MUL_IMAGE_HAM10000_LESION,classification,image,LightGBM,log_loss,0.701219,0.02008,-0.701219,6,4980.0
 MUL_IMAGE_HAM10000_LESION,classification,image,RandomForest,log_loss,0.636939,0.02245,-0.636939,6,4980.0
@@ -256,6 +290,8 @@ MUL_IMAGE_HAM10000_LESION,classification,image,TabPFN-v2p5,log_loss,0.443342,0.0
 MUL_IMAGE_HAM10000_LESION,classification,image,XGBoost,log_loss,0.575367,0.013554,-0.575367,6,4980.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,CatBoost,log_loss,1.199941,0.027796,-1.199941,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,ConTextTab,log_loss,1.220128,0.032302,-1.220128,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,Kumo-Tabular,log_loss,0.931244,0.022868,-0.931244,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,Kumo-Tabular-Medium,log_loss,0.9707,0.021354,-0.9707,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,Kumo-Tabular-Small,log_loss,1.000838,0.017525,-1.000838,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,LightGBM,log_loss,1.794924,0.057138,-1.794924,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,RandomForest,log_loss,1.542034,0.032308,-1.542034,6,2854.0
@@ -269,6 +305,8 @@ MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,TabPFN-3.5-Fast,log_loss,1
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,XGBoost,log_loss,1.358017,0.034431,-1.358017,6,2854.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,CatBoost,log_loss,0.879203,0.012365,-0.879203,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,ConTextTab,log_loss,0.843348,0.006487,-0.843348,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,classification,image-text,Kumo-Tabular,log_loss,0.469899,0.009035,-0.469899,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,classification,image-text,Kumo-Tabular-Medium,log_loss,0.503468,0.012149,-0.503468,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,Kumo-Tabular-Small,log_loss,0.545994,0.009883,-0.545994,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,LightGBM,log_loss,0.986338,0.015206,-0.986338,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,RandomForest,log_loss,1.255433,0.012428,-1.255433,6,8388.0
@@ -284,6 +322,8 @@ MUL_IMAGE_HUBMAP_HPA,classification,image-text,TabPFN-v2p5,log_loss,0.747937,0.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,XGBoost,log_loss,0.983587,0.016273,-0.983587,6,8388.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,CatBoost,log_loss,0.373954,0.006247,-0.373954,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,ConTextTab,log_loss,0.383313,0.005567,-0.383313,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,Kumo-Tabular,log_loss,0.291567,0.002523,-0.291567,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,Kumo-Tabular-Medium,log_loss,0.295359,0.00296,-0.295359,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,Kumo-Tabular-Small,log_loss,0.303811,0.002841,-0.303811,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,LightGBM,log_loss,0.450318,0.010176,-0.450318,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,RandomForest,log_loss,0.532926,0.048492,-0.532926,6,6880.0
@@ -299,6 +339,8 @@ MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,TabPFN-v2p5,log_loss,0.328418,0.
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,XGBoost,log_loss,0.412079,0.006172,-0.412079,6,6880.0
 MUL_IMAGE_MINECRAFT,classification,image,CatBoost,log_loss,0.362352,0.020073,-0.362352,6,4060.0
 MUL_IMAGE_MINECRAFT,classification,image,ConTextTab,log_loss,0.291921,0.021297,-0.291921,6,4060.0
+MUL_IMAGE_MINECRAFT,classification,image,Kumo-Tabular,log_loss,0.235651,0.020751,-0.235651,6,4060.0
+MUL_IMAGE_MINECRAFT,classification,image,Kumo-Tabular-Medium,log_loss,0.237619,0.019635,-0.237619,6,4060.0
 MUL_IMAGE_MINECRAFT,classification,image,Kumo-Tabular-Small,log_loss,0.246402,0.018707,-0.246402,6,4060.0
 MUL_IMAGE_MINECRAFT,classification,image,LightGBM,log_loss,0.500464,0.034464,-0.500464,6,4060.0
 MUL_IMAGE_MINECRAFT,classification,image,RandomForest,log_loss,0.484577,0.027454,-0.484577,6,4060.0
@@ -314,6 +356,8 @@ MUL_IMAGE_MINECRAFT,classification,image,TabPFN-v2p5,log_loss,0.26466,0.021451,-
 MUL_IMAGE_MINECRAFT,classification,image,XGBoost,log_loss,0.401589,0.018756,-0.401589,6,4060.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,CatBoost,log_loss,0.611728,0.029034,-0.611728,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,ConTextTab,log_loss,0.532177,0.027625,-0.532177,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,classification,image,Kumo-Tabular,log_loss,0.490728,0.019078,-0.490728,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,classification,image,Kumo-Tabular-Medium,log_loss,0.492226,0.019801,-0.492226,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,Kumo-Tabular-Small,log_loss,0.498562,0.015417,-0.498562,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,LightGBM,log_loss,0.979065,0.070113,-0.979065,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,RandomForest,log_loss,0.728691,0.01258,-0.728691,6,1094.0
@@ -329,6 +373,8 @@ MUL_IMAGE_PAD_UFES_LESION,classification,image,TabPFN-v2p5,log_loss,0.513231,0.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,XGBoost,log_loss,0.736726,0.07718,-0.736726,6,1094.0
 MUL_IMAGE_PETFINDER,classification,image-text,CatBoost,log_loss,1.409253,0.006031,-1.409253,6,9768.0
 MUL_IMAGE_PETFINDER,classification,image-text,ConTextTab,log_loss,1.413453,0.014389,-1.413453,6,9768.0
+MUL_IMAGE_PETFINDER,classification,image-text,Kumo-Tabular,log_loss,1.26309,0.007478,-1.26309,6,9768.0
+MUL_IMAGE_PETFINDER,classification,image-text,Kumo-Tabular-Medium,log_loss,1.279239,0.004407,-1.279239,6,9768.0
 MUL_IMAGE_PETFINDER,classification,image-text,Kumo-Tabular-Small,log_loss,1.278747,0.002508,-1.278747,6,9768.0
 MUL_IMAGE_PETFINDER,classification,image-text,LightGBM,log_loss,1.492023,0.009195,-1.492023,6,9768.0
 MUL_IMAGE_PETFINDER,classification,image-text,RandomForest,log_loss,1.570346,0.006342,-1.570346,6,9768.0
@@ -344,6 +390,8 @@ MUL_IMAGE_PETFINDER,classification,image-text,TabPFN-v2p5,log_loss,1.341594,0.00
 MUL_IMAGE_PETFINDER,classification,image-text,XGBoost,log_loss,1.510679,0.008845,-1.510679,6,9768.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,CatBoost,log_loss,1.591194,0.05114,-1.591194,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,ConTextTab,log_loss,1.444188,0.054791,-1.444188,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,Kumo-Tabular,log_loss,1.239512,0.031329,-1.239512,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,Kumo-Tabular-Medium,log_loss,1.269018,0.037113,-1.269018,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,Kumo-Tabular-Small,log_loss,1.308299,0.035087,-1.308299,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,LightGBM,log_loss,2.523563,0.103739,-2.523563,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,RandomForest,log_loss,1.716003,0.04365,-1.716003,6,718.0
@@ -359,6 +407,8 @@ MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,TabPFN-v2p5,log_loss,1.382621
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,XGBoost,log_loss,1.781914,0.028859,-1.781914,6,718.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,CatBoost,log_loss,1.025598,0.020119,-1.025598,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,ConTextTab,log_loss,0.849195,0.029627,-0.849195,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,classification,image,Kumo-Tabular,log_loss,0.603156,0.018382,-0.603156,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,classification,image,Kumo-Tabular-Medium,log_loss,0.612877,0.017103,-0.612877,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,Kumo-Tabular-Small,log_loss,0.626737,0.017217,-0.626737,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,LightGBM,log_loss,1.101021,0.03193,-1.101021,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,RandomForest,log_loss,1.212708,0.007958,-1.212708,6,3214.0
@@ -374,6 +424,8 @@ MUL_IMAGE_REDDIT_MEMES,classification,image,TabPFN-v2p5,log_loss,0.771691,0.0119
 MUL_IMAGE_REDDIT_MEMES,classification,image,XGBoost,log_loss,1.050102,0.019826,-1.050102,6,3214.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,CatBoost,log_loss,0.420513,0.01345,-0.420513,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,ConTextTab,log_loss,0.424028,0.012478,-0.424028,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,Kumo-Tabular,log_loss,0.272174,0.015333,-0.272174,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,Kumo-Tabular-Medium,log_loss,0.279365,0.014316,-0.279365,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,Kumo-Tabular-Small,log_loss,0.292231,0.014656,-0.292231,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,LightGBM,log_loss,0.532532,0.020067,-0.532532,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,RandomForest,log_loss,0.704913,0.022637,-0.704913,6,10000.0
@@ -389,6 +441,8 @@ MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,TabPFN-v2p5,log_loss,0.347514
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,XGBoost,log_loss,0.505179,0.025077,-0.505179,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,CatBoost,log_loss,0.122978,0.004951,-0.122978,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,ConTextTab,log_loss,0.117184,0.011458,-0.117184,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,Kumo-Tabular,log_loss,0.081838,0.008268,-0.081838,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,Kumo-Tabular-Medium,log_loss,0.087559,0.007911,-0.087559,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,Kumo-Tabular-Small,log_loss,0.08867,0.007787,-0.08867,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,LightGBM,log_loss,0.148794,0.009718,-0.148794,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,RandomForest,log_loss,0.239537,0.032277,-0.239537,6,10000.0
@@ -404,6 +458,8 @@ MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,TabPFN-v2p5,log_loss,0.094299
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,XGBoost,log_loss,0.11613,0.006932,-0.11613,6,10000.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,CatBoost,log_loss,0.888001,0.009512,-0.888001,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,ConTextTab,log_loss,0.936164,0.022061,-0.936164,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,classification,text,Kumo-Tabular,log_loss,0.809278,0.008085,-0.809278,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,classification,text,Kumo-Tabular-Medium,log_loss,0.811165,0.009693,-0.811165,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,Kumo-Tabular-Small,log_loss,0.816905,0.012587,-0.816905,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,LightGBM,log_loss,0.941932,0.015501,-0.941932,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,RandomForest,log_loss,0.900076,0.009751,-0.900076,6,2645.0
@@ -419,6 +475,8 @@ MUL_TEXT_BOOKS_GOODREADS,classification,text,TabPFN-v2p5,log_loss,0.92234,0.0070
 MUL_TEXT_BOOKS_GOODREADS,classification,text,XGBoost,log_loss,0.92173,0.018377,-0.92173,6,2645.0
 MUL_TEXT_BOX_OFFICE,classification,text,CatBoost,log_loss,1.017531,0.015226,-1.017531,6,4939.0
 MUL_TEXT_BOX_OFFICE,classification,text,ConTextTab,log_loss,0.957796,0.021439,-0.957796,6,4939.0
+MUL_TEXT_BOX_OFFICE,classification,text,Kumo-Tabular,log_loss,0.877475,0.01756,-0.877475,6,4939.0
+MUL_TEXT_BOX_OFFICE,classification,text,Kumo-Tabular-Medium,log_loss,0.882479,0.017773,-0.882479,6,4939.0
 MUL_TEXT_BOX_OFFICE,classification,text,Kumo-Tabular-Small,log_loss,0.895491,0.019498,-0.895491,6,4939.0
 MUL_TEXT_BOX_OFFICE,classification,text,LightGBM,log_loss,1.082374,0.026893,-1.082374,6,4939.0
 MUL_TEXT_BOX_OFFICE,classification,text,RandomForest,log_loss,1.156595,0.013436,-1.156595,6,4939.0
@@ -434,6 +492,8 @@ MUL_TEXT_BOX_OFFICE,classification,text,TabPFN-v2p5,log_loss,0.909377,0.01843,-0
 MUL_TEXT_BOX_OFFICE,classification,text,XGBoost,log_loss,1.057872,0.022229,-1.057872,6,4939.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,CatBoost,log_loss,0.571736,0.006147,-0.571736,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,ConTextTab,log_loss,0.539372,0.003814,-0.539372,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,classification,text,Kumo-Tabular,log_loss,0.515787,0.002801,-0.515787,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,classification,text,Kumo-Tabular-Medium,log_loss,0.519416,0.003173,-0.519416,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,Kumo-Tabular-Small,log_loss,0.522731,0.004253,-0.522731,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,LightGBM,log_loss,0.700604,0.016362,-0.700604,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,RandomForest,log_loss,0.671237,0.032814,-0.671237,6,10000.0
@@ -449,6 +509,8 @@ MUL_TEXT_CONSUMER_COMPLAINT,classification,text,TabPFN-v2p5,log_loss,0.527535,0.
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,XGBoost,log_loss,0.581759,0.003172,-0.581759,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,CatBoost,log_loss,1.243147,0.016186,-1.243147,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,ConTextTab,log_loss,1.281445,0.011448,-1.281445,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,Kumo-Tabular,log_loss,1.130496,0.008555,-1.130496,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,Kumo-Tabular-Medium,log_loss,1.136117,0.007298,-1.136117,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,Kumo-Tabular-Small,log_loss,1.146359,0.008382,-1.146359,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,LightGBM,log_loss,1.389282,0.013244,-1.389282,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,RandomForest,log_loss,1.613705,0.028694,-1.613705,6,10000.0
@@ -464,6 +526,8 @@ MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,TabPFN-v2p5,log_loss,1.174458
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,XGBoost,log_loss,1.297979,0.010992,-1.297979,6,10000.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,CatBoost,log_loss,2.076442,0.03166,-2.076442,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,ConTextTab,log_loss,1.984127,0.028548,-1.984127,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,classification,text,Kumo-Tabular,log_loss,1.88479,0.014625,-1.88479,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,classification,text,Kumo-Tabular-Medium,log_loss,1.890484,0.012816,-1.890484,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,Kumo-Tabular-Small,log_loss,1.912686,0.012948,-1.912686,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,LightGBM,log_loss,2.861044,0.081979,-2.861044,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,RandomForest,log_loss,2.138028,0.031246,-2.138028,6,1098.0
@@ -479,6 +543,8 @@ MUL_TEXT_KOREAN_DRAMA,classification,text,TabPFN-v2p5,log_loss,1.944414,0.017224
 MUL_TEXT_KOREAN_DRAMA,classification,text,XGBoost,log_loss,2.220321,0.035963,-2.220321,6,1098.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,CatBoost,log_loss,1.550659,0.00652,-1.550659,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,ConTextTab,log_loss,1.523507,0.008724,-1.523507,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,classification,text,Kumo-Tabular,log_loss,1.390904,0.01266,-1.390904,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,classification,text,Kumo-Tabular-Medium,log_loss,1.400262,0.014036,-1.400262,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,Kumo-Tabular-Small,log_loss,1.433786,0.015894,-1.433786,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,LightGBM,log_loss,1.679913,0.01427,-1.679913,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,RandomForest,log_loss,1.733292,0.025935,-1.733292,6,10000.0
@@ -494,6 +560,8 @@ MUL_TEXT_MELBOURNE_AIRBNB,classification,text,TabPFN-v2p5,log_loss,1.592883,0.01
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,XGBoost,log_loss,1.636268,0.006206,-1.636268,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,CatBoost,log_loss,0.631676,0.003551,-0.631676,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,ConTextTab,log_loss,0.659081,0.0048,-0.659081,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,Kumo-Tabular,log_loss,0.592518,0.00429,-0.592518,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,Kumo-Tabular-Medium,log_loss,0.593698,0.003855,-0.593698,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,Kumo-Tabular-Small,log_loss,0.597712,0.003816,-0.597712,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,LightGBM,log_loss,0.713469,0.007191,-0.713469,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,RandomForest,log_loss,0.799697,0.018604,-0.799697,6,10000.0
@@ -509,6 +577,8 @@ MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,TabPFN-v2p5,log_loss,0.60277,0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,XGBoost,log_loss,0.695955,0.007642,-0.695955,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,CatBoost,log_loss,1.283036,0.008004,-1.283036,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,ConTextTab,log_loss,1.285942,0.011051,-1.285942,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,classification,text,Kumo-Tabular,log_loss,1.157869,0.0054,-1.157869,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,classification,text,Kumo-Tabular-Medium,log_loss,1.166139,0.004679,-1.166139,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,Kumo-Tabular-Small,log_loss,1.177173,0.004466,-1.177173,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,LightGBM,log_loss,1.312693,0.012794,-1.312693,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,RandomForest,log_loss,1.39807,0.017752,-1.39807,6,10000.0
@@ -524,6 +594,8 @@ MUL_TEXT_NEWS_CHANNEL,classification,text,TabPFN-v2p5,log_loss,1.201475,0.007207
 MUL_TEXT_NEWS_CHANNEL,classification,text,XGBoost,log_loss,1.319599,0.011702,-1.319599,6,10000.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,CatBoost,log_loss,0.392415,0.012536,-0.392415,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,ConTextTab,log_loss,0.442474,0.019203,-0.442474,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,classification,text,Kumo-Tabular,log_loss,0.35826,0.006444,-0.35826,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,classification,text,Kumo-Tabular-Medium,log_loss,0.361534,0.006721,-0.361534,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,Kumo-Tabular-Small,log_loss,0.363335,0.006312,-0.363335,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,LightGBM,log_loss,0.624319,0.035917,-0.624319,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,RandomForest,log_loss,0.51349,0.030046,-0.51349,6,3394.0
@@ -539,6 +611,8 @@ MUL_TEXT_PRODUCT_SENTIMENT,classification,text,TabPFN-v2p5,log_loss,0.375129,0.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,XGBoost,log_loss,0.413338,0.018397,-0.413338,6,3394.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,CatBoost,log_loss,2.053761,0.021379,-2.053761,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,ConTextTab,log_loss,2.027827,0.024808,-2.027827,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,classification,text,Kumo-Tabular,log_loss,1.383569,0.012804,-1.383569,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,classification,text,Kumo-Tabular-Medium,log_loss,1.409231,0.014447,-1.409231,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,Kumo-Tabular-Small,log_loss,1.552599,0.012525,-1.552599,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,LightGBM,log_loss,3.25342,0.06364,-3.25342,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,RandomForest,log_loss,4.246058,0.019562,-4.246058,6,10000.0
@@ -552,6 +626,8 @@ MUL_TEXT_SPOTIFY_GENRES,classification,text,TabPFN-3.5-Fast,log_loss,1.496383,0.
 MUL_TEXT_SPOTIFY_GENRES,classification,text,XGBoost,log_loss,2.52181,0.027071,-2.52181,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,CatBoost,log_loss,0.212624,0.006801,-0.212624,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,ConTextTab,log_loss,0.241363,0.006959,-0.241363,6,10000.0
+MUL_TEXT_US_ACCIDENTS,classification,text,Kumo-Tabular,log_loss,0.156589,0.007982,-0.156589,6,10000.0
+MUL_TEXT_US_ACCIDENTS,classification,text,Kumo-Tabular-Medium,log_loss,0.157727,0.008278,-0.157727,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,Kumo-Tabular-Small,log_loss,0.163756,0.007411,-0.163756,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,LightGBM,log_loss,0.258927,0.014566,-0.258927,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,RandomForest,log_loss,0.285156,0.016553,-0.285156,6,10000.0
@@ -567,6 +643,8 @@ MUL_TEXT_US_ACCIDENTS,classification,text,TabPFN-v2p5,log_loss,0.173604,0.007934
 MUL_TEXT_US_ACCIDENTS,classification,text,XGBoost,log_loss,0.219064,0.007386,-0.219064,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,CatBoost,log_loss,0.921158,0.015043,-0.921158,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,ConTextTab,log_loss,1.353735,0.010812,-1.353735,6,10000.0
+MUL_TEXT_WINE_REVIEW,classification,text,Kumo-Tabular,log_loss,0.752638,0.016021,-0.752638,6,10000.0
+MUL_TEXT_WINE_REVIEW,classification,text,Kumo-Tabular-Medium,log_loss,0.763012,0.016461,-0.763012,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,Kumo-Tabular-Small,log_loss,0.779584,0.015742,-0.779584,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,LightGBM,log_loss,1.368792,0.028421,-1.368792,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,RandomForest,log_loss,1.597172,0.088122,-1.597172,6,10000.0
@@ -580,6 +658,8 @@ MUL_TEXT_WINE_REVIEW,classification,text,TabPFN-3.5-Fast,log_loss,0.766334,0.015
 MUL_TEXT_WINE_REVIEW,classification,text,XGBoost,log_loss,1.090897,0.019382,-1.090897,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,CatBoost,log_loss,0.677652,0.004374,-0.677652,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,ConTextTab,log_loss,0.84218,0.007369,-0.84218,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,Kumo-Tabular,log_loss,0.649797,0.006021,-0.649797,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,Kumo-Tabular-Medium,log_loss,0.651346,0.005766,-0.651346,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,Kumo-Tabular-Small,log_loss,0.654785,0.005085,-0.654785,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,LightGBM,log_loss,0.734227,0.006181,-0.734227,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,RandomForest,log_loss,0.758164,0.011707,-0.758164,6,10000.0
@@ -595,6 +675,8 @@ MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,TabPFN-v2p5,log_loss,0.656626
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,XGBoost,log_loss,0.709258,0.005363,-0.709258,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,CatBoost,root_mean_squared_error,0.400654,0.007606,-0.400654,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,ConTextTab,root_mean_squared_error,0.395656,0.010805,-0.395656,6,10000.0
+REG_IMAGE_AIRBNB_NYC,regression,image-text,Kumo-Tabular,root_mean_squared_error,0.37192,0.010557,-0.37192,6,10000.0
+REG_IMAGE_AIRBNB_NYC,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,0.372291,0.009878,-0.372291,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,0.38113,0.009179,-0.38113,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,LightGBM,root_mean_squared_error,0.41369,0.008504,-0.41369,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,RandomForest,root_mean_squared_error,0.444246,0.006815,-0.444246,6,10000.0
@@ -610,6 +692,8 @@ REG_IMAGE_AIRBNB_NYC,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,XGBoost,root_mean_squared_error,0.434752,0.007751,-0.434752,6,10000.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,CatBoost,root_mean_squared_error,0.705732,0.022244,-0.705732,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,ConTextTab,root_mean_squared_error,0.672908,0.027067,-0.672908,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,regression,image,Kumo-Tabular,root_mean_squared_error,0.610474,0.022848,-0.610474,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,regression,image,Kumo-Tabular-Medium,root_mean_squared_error,0.620921,0.020941,-0.620921,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,Kumo-Tabular-Small,root_mean_squared_error,0.621013,0.022518,-0.621013,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,LightGBM,root_mean_squared_error,0.738006,0.021673,-0.738006,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,RandomForest,root_mean_squared_error,0.752138,0.027117,-0.752138,6,2326.0
@@ -625,6 +709,8 @@ REG_IMAGE_AMAZON_BEST_SELLER,regression,image,TabPFN-v2p5,root_mean_squared_erro
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,XGBoost,root_mean_squared_error,0.78168,0.019887,-0.78168,6,2326.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,CatBoost,root_mean_squared_error,3.24181,0.134003,-3.24181,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,ConTextTab,root_mean_squared_error,3.305507,0.11791,-3.305507,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,regression,image-text,Kumo-Tabular,root_mean_squared_error,3.014341,0.117568,-3.014341,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,3.030901,0.119111,-3.030901,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,3.047771,0.118454,-3.047771,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,LightGBM,root_mean_squared_error,3.308201,0.132025,-3.308201,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,RandomForest,root_mean_squared_error,3.478982,0.118629,-3.478982,6,10000.0
@@ -640,6 +726,8 @@ REG_IMAGE_AMAZON_PACKAGES,regression,image-text,TabPFN-v2p5,root_mean_squared_er
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,XGBoost,root_mean_squared_error,3.497709,0.134171,-3.497709,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,CatBoost,root_mean_squared_error,17477.235171,11641.358895,-17477.235171,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,ConTextTab,root_mean_squared_error,23391.493165,13074.967727,-23391.493165,6,10000.0
+REG_IMAGE_DVM_CAR,regression,image-text,Kumo-Tabular,root_mean_squared_error,18376.242072,13789.557523,-18376.242072,6,10000.0
+REG_IMAGE_DVM_CAR,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,18451.358529,13245.714324,-18451.358529,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,18679.263203,14273.934438,-18679.263203,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,LightGBM,root_mean_squared_error,20967.842063,13521.034069,-20967.842063,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,RandomForest,root_mean_squared_error,17879.234234,8762.450609,-17879.234234,6,10000.0
@@ -655,6 +743,8 @@ REG_IMAGE_DVM_CAR,regression,image-text,TabPFN-v2p5,root_mean_squared_error,1969
 REG_IMAGE_DVM_CAR,regression,image-text,XGBoost,root_mean_squared_error,19380.429593,12600.806316,-19380.429593,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,CatBoost,root_mean_squared_error,0.099343,0.000663,-0.099343,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,ConTextTab,root_mean_squared_error,0.08938,0.001543,-0.08938,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,regression,image-text,Kumo-Tabular,root_mean_squared_error,0.081892,0.001303,-0.081892,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,0.083328,0.000892,-0.083328,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,0.085321,0.001302,-0.085321,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,LightGBM,root_mean_squared_error,0.107792,0.00067,-0.107792,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,RandomForest,root_mean_squared_error,0.101818,0.001502,-0.101818,6,10000.0
@@ -670,6 +760,8 @@ REG_IMAGE_FLIPKART_RATIO,regression,image-text,TabPFN-v2p5,root_mean_squared_err
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,XGBoost,root_mean_squared_error,0.103777,0.001027,-0.103777,6,10000.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,CatBoost,root_mean_squared_error,0.158361,0.004826,-0.158361,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,ConTextTab,root_mean_squared_error,0.153438,0.003147,-0.153438,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,regression,image-text,Kumo-Tabular,root_mean_squared_error,0.118584,0.003327,-0.118584,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,0.120091,0.002528,-0.120091,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,0.124398,0.003141,-0.124398,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,LightGBM,root_mean_squared_error,0.171572,0.002291,-0.171572,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,RandomForest,root_mean_squared_error,0.171836,0.00358,-0.171836,6,6554.0
@@ -685,6 +777,8 @@ REG_IMAGE_GOIAS_HOUSES,regression,image-text,TabPFN-v2p5,root_mean_squared_error
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,XGBoost,root_mean_squared_error,0.169569,0.002204,-0.169569,6,6554.0
 REG_IMAGE_HNM_FASHION,regression,image-text,CatBoost,root_mean_squared_error,4.459836,0.095555,-4.459836,6,10000.0
 REG_IMAGE_HNM_FASHION,regression,image-text,ConTextTab,root_mean_squared_error,4.418822,0.087353,-4.418822,6,10000.0
+REG_IMAGE_HNM_FASHION,regression,image-text,Kumo-Tabular,root_mean_squared_error,4.284853,0.092563,-4.284853,6,10000.0
+REG_IMAGE_HNM_FASHION,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,4.298014,0.092625,-4.298014,6,10000.0
 REG_IMAGE_HNM_FASHION,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,4.310499,0.090042,-4.310499,6,10000.0
 REG_IMAGE_HNM_FASHION,regression,image-text,LightGBM,root_mean_squared_error,4.484479,0.083587,-4.484479,6,10000.0
 REG_IMAGE_HNM_FASHION,regression,image-text,RandomForest,root_mean_squared_error,4.507867,0.101106,-4.507867,6,10000.0
@@ -700,6 +794,8 @@ REG_IMAGE_HNM_FASHION,regression,image-text,TabPFN-v2p5,root_mean_squared_error,
 REG_IMAGE_HNM_FASHION,regression,image-text,XGBoost,root_mean_squared_error,4.621915,0.091688,-4.621915,6,10000.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,CatBoost,root_mean_squared_error,0.528724,0.013585,-0.528724,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,ConTextTab,root_mean_squared_error,0.500828,0.010006,-0.500828,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,regression,image-text,Kumo-Tabular,root_mean_squared_error,0.494368,0.00731,-0.494368,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,0.494457,0.007845,-0.494457,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,0.49902,0.012216,-0.49902,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,LightGBM,root_mean_squared_error,0.538437,0.012122,-0.538437,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,RandomForest,root_mean_squared_error,0.531382,0.00927,-0.531382,6,1092.0
@@ -715,6 +811,8 @@ REG_IMAGE_KAMERNET_SIZE,regression,image-text,TabPFN-v2p5,root_mean_squared_erro
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,XGBoost,root_mean_squared_error,0.552177,0.015056,-0.552177,6,1092.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,CatBoost,root_mean_squared_error,3321.888734,863.799252,-3321.888734,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,ConTextTab,root_mean_squared_error,2126.507724,383.261055,-2126.507724,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,regression,image-text,Kumo-Tabular,root_mean_squared_error,1790.286645,463.191244,-1790.286645,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,1873.760077,518.419362,-1873.760077,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,2024.657393,553.984377,-2024.657393,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,LightGBM,root_mean_squared_error,3606.567237,688.070112,-3606.567237,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,RandomForest,root_mean_squared_error,3797.777747,893.265405,-3797.777747,6,267.0
@@ -730,6 +828,8 @@ REG_IMAGE_KHAADI_CLOTHES,regression,image-text,TabPFN-v2p5,root_mean_squared_err
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,XGBoost,root_mean_squared_error,3982.623003,958.360828,-3982.623003,6,267.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,CatBoost,root_mean_squared_error,457.88482,53.024454,-457.88482,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,ConTextTab,root_mean_squared_error,446.421652,47.837633,-446.421652,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,regression,image-text,Kumo-Tabular,root_mean_squared_error,424.113768,38.344827,-424.113768,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,422.469587,38.196382,-422.469587,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,424.157884,32.503928,-424.157884,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,LightGBM,root_mean_squared_error,478.076931,48.497215,-478.076931,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,RandomForest,root_mean_squared_error,468.813603,53.467061,-468.813603,6,646.0
@@ -745,6 +845,8 @@ REG_IMAGE_LAHAINA_AUCTION,regression,image-text,TabPFN-v2p5,root_mean_squared_er
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,XGBoost,root_mean_squared_error,509.158341,51.547554,-509.158341,6,646.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,CatBoost,root_mean_squared_error,0.333496,0.00327,-0.333496,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,ConTextTab,root_mean_squared_error,0.327809,0.002952,-0.327809,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,Kumo-Tabular,root_mean_squared_error,0.312429,0.003782,-0.312429,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,0.313505,0.003199,-0.313505,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,0.316263,0.003072,-0.316263,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,LightGBM,root_mean_squared_error,0.335451,0.002251,-0.335451,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,RandomForest,root_mean_squared_error,0.342489,0.002446,-0.342489,6,8376.0
@@ -760,6 +862,8 @@ REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,TabPFN-v2p5,root_mean_squared_
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,XGBoost,root_mean_squared_error,0.348182,0.002772,-0.348182,6,8376.0
 REG_IMAGE_MANGO_MASS,regression,image,CatBoost,root_mean_squared_error,0.060541,0.002406,-0.060541,6,364.0
 REG_IMAGE_MANGO_MASS,regression,image,ConTextTab,root_mean_squared_error,0.054429,0.00312,-0.054429,6,364.0
+REG_IMAGE_MANGO_MASS,regression,image,Kumo-Tabular,root_mean_squared_error,0.052409,0.003726,-0.052409,6,364.0
+REG_IMAGE_MANGO_MASS,regression,image,Kumo-Tabular-Medium,root_mean_squared_error,0.052877,0.003475,-0.052877,6,364.0
 REG_IMAGE_MANGO_MASS,regression,image,Kumo-Tabular-Small,root_mean_squared_error,0.05258,0.003738,-0.05258,6,364.0
 REG_IMAGE_MANGO_MASS,regression,image,LightGBM,root_mean_squared_error,0.061955,0.002105,-0.061955,6,364.0
 REG_IMAGE_MANGO_MASS,regression,image,RandomForest,root_mean_squared_error,0.064836,0.003108,-0.064836,6,364.0
@@ -775,6 +879,8 @@ REG_IMAGE_MANGO_MASS,regression,image,TabPFN-v2p5,root_mean_squared_error,0.0559
 REG_IMAGE_MANGO_MASS,regression,image,XGBoost,root_mean_squared_error,0.068796,0.003703,-0.068796,6,364.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,CatBoost,root_mean_squared_error,0.103084,0.001451,-0.103084,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,ConTextTab,root_mean_squared_error,0.100498,0.001321,-0.100498,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,regression,image,Kumo-Tabular,root_mean_squared_error,0.088451,0.001277,-0.088451,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,regression,image,Kumo-Tabular-Medium,root_mean_squared_error,0.090752,0.001438,-0.090752,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,Kumo-Tabular-Small,root_mean_squared_error,0.09366,0.001183,-0.09366,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,LightGBM,root_mean_squared_error,0.104681,0.001577,-0.104681,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,RandomForest,root_mean_squared_error,0.102555,0.000948,-0.102555,6,9166.0
@@ -790,6 +896,8 @@ REG_IMAGE_MKPHOTO_BOTS,regression,image,TabPFN-v2p5,root_mean_squared_error,0.10
 REG_IMAGE_MKPHOTO_BOTS,regression,image,XGBoost,root_mean_squared_error,0.107204,0.001239,-0.107204,6,9166.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,CatBoost,root_mean_squared_error,3427.973819,359.358154,-3427.973819,6,8246.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,ConTextTab,root_mean_squared_error,3400.396765,400.99163,-3400.396765,6,8246.0
+REG_IMAGE_PAINTING_PRICE,regression,image-text,Kumo-Tabular,root_mean_squared_error,2966.898325,357.160035,-2966.898325,6,8246.0
+REG_IMAGE_PAINTING_PRICE,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,3054.115434,427.930983,-3054.115434,6,8246.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,3062.905322,389.147709,-3062.905322,6,8246.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,LightGBM,root_mean_squared_error,3475.482041,348.427163,-3475.482041,6,8246.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,RandomForest,root_mean_squared_error,3575.456586,297.553438,-3575.456586,6,8246.0
@@ -805,6 +913,8 @@ REG_IMAGE_PAINTING_PRICE,regression,image-text,TabPFN-v2p5,root_mean_squared_err
 REG_IMAGE_PAINTING_PRICE,regression,image-text,XGBoost,root_mean_squared_error,3697.589993,340.157513,-3697.589993,6,8246.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,CatBoost,root_mean_squared_error,0.66839,0.0032,-0.66839,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,ConTextTab,root_mean_squared_error,0.637971,0.009022,-0.637971,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,regression,image,Kumo-Tabular,root_mean_squared_error,0.576966,0.008904,-0.576966,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,regression,image,Kumo-Tabular-Medium,root_mean_squared_error,0.578596,0.008766,-0.578596,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,Kumo-Tabular-Small,root_mean_squared_error,0.582841,0.008649,-0.582841,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,LightGBM,root_mean_squared_error,0.679573,0.007081,-0.679573,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,RandomForest,root_mean_squared_error,0.695107,0.011317,-0.695107,6,10000.0
@@ -820,6 +930,8 @@ REG_IMAGE_ROMANIA_PRICE,regression,image,TabPFN-v2p5,root_mean_squared_error,0.6
 REG_IMAGE_ROMANIA_PRICE,regression,image,XGBoost,root_mean_squared_error,0.730609,0.010242,-0.730609,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,CatBoost,root_mean_squared_error,0.355518,0.026495,-0.355518,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,ConTextTab,root_mean_squared_error,0.348198,0.025104,-0.348198,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,Kumo-Tabular,root_mean_squared_error,0.309406,0.026949,-0.309406,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,0.31714,0.027775,-0.31714,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,0.323912,0.027035,-0.323912,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,LightGBM,root_mean_squared_error,0.371184,0.024954,-0.371184,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,RandomForest,root_mean_squared_error,0.391514,0.026579,-0.391514,6,10000.0
@@ -835,6 +947,8 @@ REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,TabPFN-v2p5,root_mean_squared_e
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,XGBoost,root_mean_squared_error,0.384039,0.021252,-0.384039,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,CatBoost,root_mean_squared_error,184887.598152,2924.124424,-184887.598152,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,ConTextTab,root_mean_squared_error,166649.223066,3803.54615,-166649.223066,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,regression,image-text,Kumo-Tabular,root_mean_squared_error,151984.571828,5118.024531,-151984.571828,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,153129.765009,5381.238063,-153129.765009,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,156728.114522,5086.745153,-156728.114522,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,LightGBM,root_mean_squared_error,198663.486299,3694.109336,-198663.486299,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,RandomForest,root_mean_squared_error,198566.049509,3898.615348,-198566.049509,6,10000.0
@@ -850,6 +964,8 @@ REG_IMAGE_SOCAL_HOUSES,regression,image-text,TabPFN-v2p5,root_mean_squared_error
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,XGBoost,root_mean_squared_error,198778.302719,3956.662776,-198778.302719,6,10000.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,CatBoost,root_mean_squared_error,0.988766,0.050032,-0.988766,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,ConTextTab,root_mean_squared_error,0.925544,0.033472,-0.925544,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,Kumo-Tabular,root_mean_squared_error,0.8445,0.042496,-0.8445,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,0.859996,0.037981,-0.859996,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,0.861845,0.042123,-0.861845,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,LightGBM,root_mean_squared_error,1.027713,0.056846,-1.027713,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,RandomForest,root_mean_squared_error,1.052907,0.043179,-1.052907,6,798.0
@@ -865,6 +981,8 @@ REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,TabPFN-v2p5,root_mean_squared_e
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,XGBoost,root_mean_squared_error,1.082134,0.020131,-1.082134,6,798.0
 REG_IMAGE_WATCH_TIER,regression,image-text,CatBoost,root_mean_squared_error,0.370784,0.07296,-0.370784,6,840.0
 REG_IMAGE_WATCH_TIER,regression,image-text,ConTextTab,root_mean_squared_error,0.312135,0.072592,-0.312135,6,840.0
+REG_IMAGE_WATCH_TIER,regression,image-text,Kumo-Tabular,root_mean_squared_error,0.285358,0.074287,-0.285358,6,840.0
+REG_IMAGE_WATCH_TIER,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,0.28498,0.069415,-0.28498,6,840.0
 REG_IMAGE_WATCH_TIER,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,0.284317,0.071817,-0.284317,6,840.0
 REG_IMAGE_WATCH_TIER,regression,image-text,LightGBM,root_mean_squared_error,0.354231,0.064172,-0.354231,6,840.0
 REG_IMAGE_WATCH_TIER,regression,image-text,RandomForest,root_mean_squared_error,0.40927,0.071392,-0.40927,6,840.0
@@ -880,6 +998,8 @@ REG_IMAGE_WATCH_TIER,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0
 REG_IMAGE_WATCH_TIER,regression,image-text,XGBoost,root_mean_squared_error,0.41138,0.068653,-0.41138,6,840.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,CatBoost,root_mean_squared_error,0.521227,0.004505,-0.521227,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,ConTextTab,root_mean_squared_error,0.489086,0.006913,-0.489086,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,regression,image-text,Kumo-Tabular,root_mean_squared_error,0.422386,0.006017,-0.422386,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,regression,image-text,Kumo-Tabular-Medium,root_mean_squared_error,0.427862,0.006038,-0.427862,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,Kumo-Tabular-Small,root_mean_squared_error,0.438347,0.004982,-0.438347,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,LightGBM,root_mean_squared_error,0.559696,0.00401,-0.559696,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,RandomForest,root_mean_squared_error,0.551254,0.00653,-0.551254,6,8897.0
@@ -895,6 +1015,8 @@ REG_IMAGE_ZEPTO_PRICE,regression,image-text,TabPFN-v2p5,root_mean_squared_error,
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,XGBoost,root_mean_squared_error,0.560718,0.005326,-0.560718,6,8897.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,CatBoost,root_mean_squared_error,53.75974,4.782144,-53.75974,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,ConTextTab,root_mean_squared_error,51.352412,5.400147,-51.352412,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,regression,text,Kumo-Tabular,root_mean_squared_error,48.759657,5.315075,-48.759657,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,49.104471,5.562471,-49.104471,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,Kumo-Tabular-Small,root_mean_squared_error,50.057017,5.547106,-50.057017,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,LightGBM,root_mean_squared_error,55.680029,4.053218,-55.680029,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,RandomForest,root_mean_squared_error,59.629881,4.456761,-59.629881,6,2546.0
@@ -910,6 +1032,8 @@ REG_TEXT_AIRBNB_SEATTLE,regression,text,TabPFN-v2p5,root_mean_squared_error,50.5
 REG_TEXT_AIRBNB_SEATTLE,regression,text,XGBoost,root_mean_squared_error,60.475602,2.995659,-60.475602,6,2546.0
 REG_TEXT_ANIME_PLANET,regression,text,CatBoost,root_mean_squared_error,0.449683,0.007153,-0.449683,6,9594.0
 REG_TEXT_ANIME_PLANET,regression,text,ConTextTab,root_mean_squared_error,0.440692,0.005561,-0.440692,6,9594.0
+REG_TEXT_ANIME_PLANET,regression,text,Kumo-Tabular,root_mean_squared_error,0.394598,0.006885,-0.394598,6,9594.0
+REG_TEXT_ANIME_PLANET,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,0.401884,0.007207,-0.401884,6,9594.0
 REG_TEXT_ANIME_PLANET,regression,text,Kumo-Tabular-Small,root_mean_squared_error,0.409125,0.006677,-0.409125,6,9594.0
 REG_TEXT_ANIME_PLANET,regression,text,LightGBM,root_mean_squared_error,0.462159,0.005163,-0.462159,6,9594.0
 REG_TEXT_ANIME_PLANET,regression,text,RandomForest,root_mean_squared_error,0.489628,0.006127,-0.489628,6,9594.0
@@ -925,6 +1049,8 @@ REG_TEXT_ANIME_PLANET,regression,text,TabPFN-v2p5,root_mean_squared_error,0.4218
 REG_TEXT_ANIME_PLANET,regression,text,XGBoost,root_mean_squared_error,0.484846,0.004193,-0.484846,6,9594.0
 REG_TEXT_BABIES_PRICES,regression,text,CatBoost,root_mean_squared_error,19.99073,3.124694,-19.99073,6,3390.0
 REG_TEXT_BABIES_PRICES,regression,text,ConTextTab,root_mean_squared_error,19.740747,3.092495,-19.740747,6,3390.0
+REG_TEXT_BABIES_PRICES,regression,text,Kumo-Tabular,root_mean_squared_error,14.43758,3.744057,-14.43758,6,3390.0
+REG_TEXT_BABIES_PRICES,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,14.877447,3.817456,-14.877447,6,3390.0
 REG_TEXT_BABIES_PRICES,regression,text,Kumo-Tabular-Small,root_mean_squared_error,14.98895,3.794612,-14.98895,6,3390.0
 REG_TEXT_BABIES_PRICES,regression,text,LightGBM,root_mean_squared_error,21.300877,2.802517,-21.300877,6,3390.0
 REG_TEXT_BABIES_PRICES,regression,text,RandomForest,root_mean_squared_error,22.567813,2.885658,-22.567813,6,3390.0
@@ -940,6 +1066,8 @@ REG_TEXT_BABIES_PRICES,regression,text,TabPFN-v2p5,root_mean_squared_error,16.70
 REG_TEXT_BABIES_PRICES,regression,text,XGBoost,root_mean_squared_error,21.708008,2.559621,-21.708008,6,3390.0
 REG_TEXT_BOOK_PRICE,regression,text,CatBoost,root_mean_squared_error,0.228361,0.007487,-0.228361,6,3326.0
 REG_TEXT_BOOK_PRICE,regression,text,ConTextTab,root_mean_squared_error,0.229697,0.009086,-0.229697,6,3326.0
+REG_TEXT_BOOK_PRICE,regression,text,Kumo-Tabular,root_mean_squared_error,0.205648,0.006994,-0.205648,6,3326.0
+REG_TEXT_BOOK_PRICE,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,0.207575,0.007132,-0.207575,6,3326.0
 REG_TEXT_BOOK_PRICE,regression,text,Kumo-Tabular-Small,root_mean_squared_error,0.210279,0.007676,-0.210279,6,3326.0
 REG_TEXT_BOOK_PRICE,regression,text,LightGBM,root_mean_squared_error,0.235291,0.00816,-0.235291,6,3326.0
 REG_TEXT_BOOK_PRICE,regression,text,RandomForest,root_mean_squared_error,0.240314,0.008216,-0.240314,6,3326.0
@@ -955,6 +1083,8 @@ REG_TEXT_BOOK_PRICE,regression,text,TabPFN-v2p5,root_mean_squared_error,0.220577
 REG_TEXT_BOOK_PRICE,regression,text,XGBoost,root_mean_squared_error,0.248667,0.008481,-0.248667,6,3326.0
 REG_TEXT_BOOK_READABILITY,regression,text,CatBoost,root_mean_squared_error,0.834727,0.020199,-0.834727,6,3150.0
 REG_TEXT_BOOK_READABILITY,regression,text,ConTextTab,root_mean_squared_error,0.819701,0.026703,-0.819701,6,3150.0
+REG_TEXT_BOOK_READABILITY,regression,text,Kumo-Tabular,root_mean_squared_error,0.769084,0.029128,-0.769084,6,3150.0
+REG_TEXT_BOOK_READABILITY,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,0.773806,0.031853,-0.773806,6,3150.0
 REG_TEXT_BOOK_READABILITY,regression,text,Kumo-Tabular-Small,root_mean_squared_error,0.780553,0.03255,-0.780553,6,3150.0
 REG_TEXT_BOOK_READABILITY,regression,text,LightGBM,root_mean_squared_error,0.856504,0.031797,-0.856504,6,3150.0
 REG_TEXT_BOOK_READABILITY,regression,text,RandomForest,root_mean_squared_error,0.909703,0.029935,-0.909703,6,3150.0
@@ -970,6 +1100,8 @@ REG_TEXT_BOOK_READABILITY,regression,text,TabPFN-v2p5,root_mean_squared_error,0.
 REG_TEXT_BOOK_READABILITY,regression,text,XGBoost,root_mean_squared_error,0.910202,0.018195,-0.910202,6,3150.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,CatBoost,root_mean_squared_error,0.43162,0.014427,-0.43162,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,ConTextTab,root_mean_squared_error,0.407805,0.010014,-0.407805,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,Kumo-Tabular,root_mean_squared_error,0.404422,0.010635,-0.404422,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,0.404476,0.010143,-0.404476,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,Kumo-Tabular-Small,root_mean_squared_error,0.406917,0.013294,-0.406917,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,LightGBM,root_mean_squared_error,0.438114,0.016383,-0.438114,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,RandomForest,root_mean_squared_error,0.427283,0.012316,-0.427283,6,1197.0
@@ -985,6 +1117,8 @@ REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,TabPFN-v2p5,root_mean_squared_err
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,XGBoost,root_mean_squared_error,0.449318,0.018608,-0.449318,6,1197.0
 REG_TEXT_FIFA22_WAGES,regression,text,CatBoost,root_mean_squared_error,9034.947062,140.790454,-9034.947062,6,10000.0
 REG_TEXT_FIFA22_WAGES,regression,text,ConTextTab,root_mean_squared_error,10938.469017,406.364059,-10938.469017,6,10000.0
+REG_TEXT_FIFA22_WAGES,regression,text,Kumo-Tabular,root_mean_squared_error,8544.959216,358.464029,-8544.959216,6,10000.0
+REG_TEXT_FIFA22_WAGES,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,8590.514772,349.861132,-8590.514772,6,10000.0
 REG_TEXT_FIFA22_WAGES,regression,text,Kumo-Tabular-Small,root_mean_squared_error,8732.9182,382.578707,-8732.9182,6,10000.0
 REG_TEXT_FIFA22_WAGES,regression,text,LightGBM,root_mean_squared_error,9289.942934,185.820743,-9289.942934,6,10000.0
 REG_TEXT_FIFA22_WAGES,regression,text,RandomForest,root_mean_squared_error,9338.479997,217.38115,-9338.479997,6,10000.0
@@ -1000,6 +1134,8 @@ REG_TEXT_FIFA22_WAGES,regression,text,TabPFN-v2p5,root_mean_squared_error,8893.7
 REG_TEXT_FIFA22_WAGES,regression,text,XGBoost,root_mean_squared_error,9633.588368,352.782592,-9633.588368,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,CatBoost,root_mean_squared_error,0.560883,0.013707,-0.560883,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,ConTextTab,root_mean_squared_error,0.573634,0.01592,-0.573634,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,regression,text,Kumo-Tabular,root_mean_squared_error,0.526666,0.013364,-0.526666,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,0.531052,0.013529,-0.531052,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,Kumo-Tabular-Small,root_mean_squared_error,0.536808,0.013313,-0.536808,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,LightGBM,root_mean_squared_error,0.574762,0.012939,-0.574762,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,RandomForest,root_mean_squared_error,0.593151,0.013464,-0.593151,6,10000.0
@@ -1015,6 +1151,8 @@ REG_TEXT_MERCARI_MARKETPLACE,regression,text,TabPFN-v2p5,root_mean_squared_error
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,XGBoost,root_mean_squared_error,0.600483,0.016373,-0.600483,6,10000.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,CatBoost,root_mean_squared_error,4156.845889,451.742098,-4156.845889,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,ConTextTab,root_mean_squared_error,4624.299836,729.752202,-4624.299836,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,regression,text,Kumo-Tabular,root_mean_squared_error,2657.039891,286.428272,-2657.039891,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,2762.867497,298.508589,-2762.867497,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,Kumo-Tabular-Small,root_mean_squared_error,2922.243788,332.57035,-2922.243788,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,LightGBM,root_mean_squared_error,4478.16395,538.797085,-4478.16395,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,RandomForest,root_mean_squared_error,4806.394518,527.281071,-4806.394518,6,6152.0
@@ -1030,6 +1168,8 @@ REG_TEXT_MONTGOMERY_SALARIES,regression,text,TabPFN-v2p5,root_mean_squared_error
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,XGBoost,root_mean_squared_error,4809.188391,417.957012,-4809.188391,6,6152.0
 REG_TEXT_RAMEN_RATINGS,regression,text,CatBoost,root_mean_squared_error,0.949058,0.028329,-0.949058,6,2737.0
 REG_TEXT_RAMEN_RATINGS,regression,text,ConTextTab,root_mean_squared_error,0.931618,0.022144,-0.931618,6,2737.0
+REG_TEXT_RAMEN_RATINGS,regression,text,Kumo-Tabular,root_mean_squared_error,0.910599,0.022794,-0.910599,6,2737.0
+REG_TEXT_RAMEN_RATINGS,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,0.914746,0.022787,-0.914746,6,2737.0
 REG_TEXT_RAMEN_RATINGS,regression,text,Kumo-Tabular-Small,root_mean_squared_error,0.919333,0.025142,-0.919333,6,2737.0
 REG_TEXT_RAMEN_RATINGS,regression,text,LightGBM,root_mean_squared_error,0.95561,0.021621,-0.95561,6,2737.0
 REG_TEXT_RAMEN_RATINGS,regression,text,RandomForest,root_mean_squared_error,0.94652,0.021672,-0.94652,6,2737.0
@@ -1045,6 +1185,8 @@ REG_TEXT_RAMEN_RATINGS,regression,text,TabPFN-v2p5,root_mean_squared_error,0.931
 REG_TEXT_RAMEN_RATINGS,regression,text,XGBoost,root_mean_squared_error,0.995432,0.035433,-0.995432,6,2737.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,CatBoost,root_mean_squared_error,0.81528,0.013748,-0.81528,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,ConTextTab,root_mean_squared_error,0.753968,0.017422,-0.753968,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,regression,text,Kumo-Tabular,root_mean_squared_error,0.735727,0.012981,-0.735727,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,0.745142,0.014066,-0.745142,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,Kumo-Tabular-Small,root_mean_squared_error,0.760475,0.015868,-0.760475,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,LightGBM,root_mean_squared_error,0.828184,0.012261,-0.828184,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,RandomForest,root_mean_squared_error,0.864307,0.012336,-0.864307,6,4772.0
@@ -1060,6 +1202,8 @@ REG_TEXT_ROTTEN_TOMATOES,regression,text,TabPFN-v2p5,root_mean_squared_error,0.7
 REG_TEXT_ROTTEN_TOMATOES,regression,text,XGBoost,root_mean_squared_error,0.872355,0.014561,-0.872355,6,4772.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,CatBoost,root_mean_squared_error,22.609587,3.018022,-22.609587,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,ConTextTab,root_mean_squared_error,24.294395,3.646352,-24.294395,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,regression,text,Kumo-Tabular,root_mean_squared_error,17.591803,0.927149,-17.591803,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,18.002558,1.101358,-18.002558,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,Kumo-Tabular-Small,root_mean_squared_error,18.521582,1.197157,-18.521582,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,LightGBM,root_mean_squared_error,23.453959,2.633058,-23.453959,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,RandomForest,root_mean_squared_error,25.760204,2.751704,-25.760204,6,10000.0
@@ -1075,6 +1219,8 @@ REG_TEXT_SCIMAGOJR_IMPACT,regression,text,TabPFN-v2p5,root_mean_squared_error,20
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,XGBoost,root_mean_squared_error,24.801408,2.371404,-24.801408,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,CatBoost,root_mean_squared_error,890286.433959,188996.851049,-890286.433959,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,ConTextTab,root_mean_squared_error,1613139.259047,134664.708417,-1613139.259047,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,regression,text,Kumo-Tabular,root_mean_squared_error,745403.103957,103448.056351,-745403.103957,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,780553.510936,121723.966021,-780553.510936,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,Kumo-Tabular-Small,root_mean_squared_error,793331.349946,110271.894349,-793331.349946,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,LightGBM,root_mean_squared_error,980048.354798,158404.201907,-980048.354798,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,RandomForest,root_mean_squared_error,965027.592341,185847.052465,-965027.592341,6,10000.0
@@ -1090,6 +1236,8 @@ REG_TEXT_USED_CAR_PAKISTAN,regression,text,TabPFN-v2p5,root_mean_squared_error,1
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,XGBoost,root_mean_squared_error,1021788.177278,217853.776807,-1021788.177278,6,10000.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,CatBoost,root_mean_squared_error,26607.516828,2836.378898,-26607.516828,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,ConTextTab,root_mean_squared_error,25662.33885,3297.554565,-25662.33885,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,regression,text,Kumo-Tabular,root_mean_squared_error,21360.753769,2376.879997,-21360.753769,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,20894.730028,1966.305541,-20894.730028,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,Kumo-Tabular-Small,root_mean_squared_error,21812.244659,2971.804607,-21812.244659,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,LightGBM,root_mean_squared_error,26928.878949,2422.798322,-26928.878949,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,RandomForest,root_mean_squared_error,28740.746884,2989.137879,-28740.746884,6,5357.0
@@ -1105,6 +1253,8 @@ REG_TEXT_USED_CAR_SAUDI,regression,text,TabPFN-v2p5,root_mean_squared_error,2453
 REG_TEXT_USED_CAR_SAUDI,regression,text,XGBoost,root_mean_squared_error,28209.134469,3256.261626,-28209.134469,6,5357.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,CatBoost,root_mean_squared_error,13217.760237,570.13807,-13217.760237,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,ConTextTab,root_mean_squared_error,13395.496778,796.289974,-13395.496778,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,regression,text,Kumo-Tabular,root_mean_squared_error,11384.093573,458.199615,-11384.093573,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,11594.213893,461.694802,-11594.213893,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,Kumo-Tabular-Small,root_mean_squared_error,12016.688512,359.433332,-12016.688512,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,LightGBM,root_mean_squared_error,14066.046818,726.91125,-14066.046818,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,RandomForest,root_mean_squared_error,14266.421379,726.65452,-14266.421379,6,10000.0
@@ -1120,6 +1270,8 @@ REG_TEXT_VANCOUVER_SALARIES,regression,text,TabPFN-v2p5,root_mean_squared_error,
 REG_TEXT_VANCOUVER_SALARIES,regression,text,XGBoost,root_mean_squared_error,14246.889787,579.804175,-14246.889787,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,CatBoost,root_mean_squared_error,1.290136,0.235006,-1.290136,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,ConTextTab,root_mean_squared_error,1.291089,0.229619,-1.291089,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,regression,text,Kumo-Tabular,root_mean_squared_error,1.053133,0.241247,-1.053133,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,1.058593,0.245116,-1.058593,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,Kumo-Tabular-Small,root_mean_squared_error,1.099092,0.235282,-1.099092,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,LightGBM,root_mean_squared_error,1.236494,0.204706,-1.236494,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,RandomForest,root_mean_squared_error,1.457708,0.235952,-1.457708,6,10000.0
@@ -1135,6 +1287,8 @@ REG_TEXT_VIDEO_GAMES_SALES,regression,text,TabPFN-v2p5,root_mean_squared_error,1
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,XGBoost,root_mean_squared_error,1.453709,0.280193,-1.453709,6,10000.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,CatBoost,root_mean_squared_error,818.142359,132.313197,-818.142359,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,ConTextTab,root_mean_squared_error,865.118612,138.042835,-865.118612,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,regression,text,Kumo-Tabular,root_mean_squared_error,674.02209,101.181684,-674.02209,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,683.732295,104.064562,-683.732295,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,Kumo-Tabular-Small,root_mean_squared_error,675.426598,123.363206,-675.426598,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,LightGBM,root_mean_squared_error,782.761847,148.906961,-782.761847,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,RandomForest,root_mean_squared_error,786.732068,130.883363,-786.732068,6,8380.0
@@ -1150,6 +1304,8 @@ REG_TEXT_WIKILIQ_PRICES,regression,text,TabPFN-v2p5,root_mean_squared_error,775.
 REG_TEXT_WIKILIQ_PRICES,regression,text,XGBoost,root_mean_squared_error,850.695154,126.462113,-850.695154,6,8380.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,CatBoost,root_mean_squared_error,302.520632,82.716394,-302.520632,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,ConTextTab,root_mean_squared_error,300.850688,80.29879,-300.850688,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,regression,text,Kumo-Tabular,root_mean_squared_error,238.635187,60.067395,-238.635187,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,237.564713,66.27466,-237.564713,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,Kumo-Tabular-Small,root_mean_squared_error,252.919606,71.079962,-252.919606,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,LightGBM,root_mean_squared_error,309.419468,85.382449,-309.419468,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,RandomForest,root_mean_squared_error,287.926348,80.098396,-287.926348,6,1498.0
@@ -1165,6 +1321,8 @@ REG_TEXT_WINE_POLISH_MARKET,regression,text,TabPFN-v2p5,root_mean_squared_error,
 REG_TEXT_WINE_POLISH_MARKET,regression,text,XGBoost,root_mean_squared_error,318.268847,81.421215,-318.268847,6,1498.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,CatBoost,root_mean_squared_error,0.089794,0.002584,-0.089794,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,ConTextTab,root_mean_squared_error,0.092296,0.002392,-0.092296,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,regression,text,Kumo-Tabular,root_mean_squared_error,0.086505,0.002298,-0.086505,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,0.086334,0.002472,-0.086334,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,Kumo-Tabular-Small,root_mean_squared_error,0.087998,0.002139,-0.087998,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,LightGBM,root_mean_squared_error,0.092231,0.002619,-0.092231,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,RandomForest,root_mean_squared_error,0.091508,0.002797,-0.091508,6,5767.0
@@ -1180,6 +1338,8 @@ REG_TEXT_WINE_VIVINO_SPAIN,regression,text,TabPFN-v2p5,root_mean_squared_error,0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,XGBoost,root_mean_squared_error,0.09417,0.002745,-0.09417,6,5767.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,CatBoost,root_mean_squared_error,0.183298,0.003786,-0.183298,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,ConTextTab,root_mean_squared_error,0.172712,0.002875,-0.172712,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,regression,text,Kumo-Tabular,root_mean_squared_error,0.143726,0.004084,-0.143726,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,regression,text,Kumo-Tabular-Medium,root_mean_squared_error,0.145102,0.004519,-0.145102,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,Kumo-Tabular-Small,root_mean_squared_error,0.150452,0.004496,-0.150452,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,LightGBM,root_mean_squared_error,0.206748,0.004516,-0.206748,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,RandomForest,root_mean_squared_error,0.196365,0.005839,-0.196365,6,10000.0
