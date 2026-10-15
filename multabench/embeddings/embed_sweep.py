@@ -5,6 +5,7 @@ import sys
 
 from huggingface_hub import HfApi
 
+from multabench.benchmark.splits import SPLITS
 from multabench.benchmark.sweep import csv_arg, run_local, sbatch_commands, write_jobs_file, write_slurm_script
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.embeddings.hub import CACHED_ENCODERS, embeddings_repo_id, parse_encoder, repo_name
@@ -34,6 +35,8 @@ if __name__ == "__main__":
     parser.add_argument('--encoders', type=csv_arg(list(CACHED_ENCODERS), cast=parse_encoder), default=list(CACHED_ENCODERS))
     parser.add_argument('--datasets', type=csv_arg([d.name for d in MulTaBenchDatasetID]), default=None,
                         help="dataset names; default: every dataset the encoder applies to")
+    folds = [str(f) for f in range(SPLITS)]
+    parser.add_argument('--folds', type=csv_arg(folds), default=folds, help="the folds a tuned encoder is tuned on")
     parser.add_argument('--output_dir', type=str, default='embeddings')
     parser.add_argument('--jobs_file', type=str, default='embed_jobs.txt')
     parser.add_argument('--launcher', type=str, default=None, choices=["local", "slurm"],
@@ -51,7 +54,7 @@ if __name__ == "__main__":
         sys.exit(0)
     jobs_file = os.path.abspath(args.jobs_file)
     datasets = [MulTaBenchDatasetID[d] for d in args.datasets] if args.datasets else list(MulTaBenchDatasetID)
-    jobs = list_jobs(encoders=args.encoders, datasets=datasets)
+    jobs = list_jobs(encoders=args.encoders, datasets=datasets, folds=[int(f) for f in args.folds])
     pending = pending_jobs(jobs, output_dir=output_dir)
     print(f"{len(jobs)} jobs, {len(jobs) - len(pending)} already have their embeddings, {len(pending)} to run")
     if not pending:
