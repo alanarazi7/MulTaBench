@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MulTaBench Leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --bg: #F3F5F2; --surface: #FFFFFF; --ink: #1C2228; --muted: #5C666F; --line: #D9DED7; --soft: #EBEEE9;
+  --accent: #2C5C8A; --text-mod: #A4581B; --image-mod: #2D7653; --best: #2C5C8A; --warn: #A33A2A;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
+    --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
+  --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); padding-inline: 16px; padding-block: 28px 64px; }
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 40px; }
+h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(28px, 4.4vw, 40px); font-weight: 800; }
+h2 { font-size: 21px; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.muted { color: var(--muted); }
+.mono, td.num, th.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+header { display: grid; gap: 14px; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; font: 13px/1.4 var(--mono); color: var(--muted); }
+.facts b { color: var(--ink); font-weight: 500; }
+section { display: grid; gap: 16px; }
+.head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button { font: 500 13px/1 var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+.tabs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tabs button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th { font: 500 11.5px/1.2 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 12px 12px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 9px 12px; border-bottom: 1px solid var(--soft); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; }
+.rank { color: var(--muted); font-family: var(--mono); width: 2.5em; }
+.model { font-weight: 600; }
+.anchor { font: 500 11px/1 var(--mono); color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 2px 5px; margin-left: 6px; }
+.dev { font: 500 11px/1 var(--mono); border-radius: 4px; padding: 3px 6px; background: var(--soft); color: var(--muted); }
+.ci { color: var(--muted); font-size: 12.5px; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart text { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
+.chart .lbl { font-family: var(--body); font-size: 13px; fill: var(--ink); font-weight: 500; }
+.grid-2 { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 16px; align-items: start; }
+@media (max-width: 1000px) { .grid-2 { grid-template-columns: 1fr; } }
+#boardTable th, #boardTable td { padding-inline: 9px; }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; font-size: 13px; color: var(--muted); }
+.ramp { display: inline-flex; align-items: center; gap: 8px; }
+.ramp i { display: inline-block; width: 120px; height: 10px; border-radius: 3px; background: linear-gradient(90deg, var(--best), var(--surface)); border: 1px solid var(--line); }
+.heat td { padding: 0; border-bottom: 1px solid var(--surface); }
+.heat td.ds { padding: 6px 12px; font-size: 13px; background: var(--surface); position: sticky; left: 0; z-index: 1; border-right: 1px solid var(--line); }
+.heat td.cell { font: 12px/1 var(--mono); font-variant-numeric: tabular-nums; text-align: right; padding: 7px 9px; min-width: 64px; border-left: 1px solid var(--surface); }
+.heat td.cell.win { font-weight: 600; box-shadow: inset 0 0 0 2px var(--ink); }
+.heat td.cell.na { color: var(--warn); text-align: center; background: var(--soft); }
+.heat th { position: sticky; top: 0; background: var(--surface); z-index: 2; }
+.heat th.ds { left: 0; z-index: 3; }
+.heat th.m { writing-mode: vertical-rl; transform: rotate(180deg); text-align: left; padding: 10px 6px; height: 118px; vertical-align: bottom; }
+.mod { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+.mod.text { background: var(--text-mod); } .mod.image { background: var(--image-mod); } .mod.image-text { background: linear-gradient(90deg, var(--text-mod) 50%, var(--image-mod) 50%); }
+.task { font: 11px/1 var(--mono); color: var(--muted); margin-left: 6px; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+.note { padding: 16px 18px; display: grid; gap: 8px; align-content: start; font-size: 14px; }
+.note h3 { margin: 0; font: 600 14px/1.3 var(--body); }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+select { font: 13px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; }
+.bar { display: inline-block; height: 8px; border-radius: 2px; background: var(--accent); vertical-align: middle; margin-right: 8px; opacity: .75; }
+.flag { color: var(--warn); }
+
+.filters { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; background: var(--bg); border-bottom: 1px solid var(--line); }
+.filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
+.links a { color: var(--accent); }
+code { font-family: var(--mono); font-size: 0.92em; }
+.note a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">MulTaBench · frozen encoders · 10K rows</div>
+    <h1>Which tabular models handle text and images best?</h1>
+    <p class="muted" id="intro">Tabular models on 80 multimodal datasets. Text columns are embedded with frozen e5-small and images with frozen DINOv3-small, each reduced to 30 PCA components per column; ConTextTab reads raw text itself. Default hyperparameters, no bagging, 3 folds × 2 repeats, up to 10K training rows.</p>
+    <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="data/leaderboards.csv">CSV</a></p>
+    <div class="facts" id="facts"></div>
+  </header>
+
+  <div class="filters">
+    <div class="group tabs" id="taskTabs" role="group" aria-label="Task"><span class="label">Task</span></div>
+    <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
+  </div>
+
+  <section>
+    <div class="head">
+      <h2>Elo rating</h2>
+    </div>
+    <p class="muted" id="boardNote"></p>
+    <div class="grid-2">
+      <div class="panel chart" id="eloChart"></div>
+      <div class="panel scroll"><table id="boardTable"></table></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <h2>Per-dataset results</h2>
+      <div class="controls">
+        <label class="muted" for="sortBy" style="font-size:13px">Sort</label>
+        <select id="sortBy">
+          <option value="name">Dataset name</option>
+          <option value="spread">Hardest to separate first</option>
+          <option value="winner">By winning model</option>
+        </select>
+      </div>
+    </div>
+    <div class="legend">
+      <span class="ramp">best <i></i> worst</span>
+      <span>cell = test error, mean of 6 folds · outlined = best on the dataset · shading normalized per dataset</span>
+      <span><span class="mod text"></span>text <span class="mod image" style="margin-left:10px"></span>image <span class="mod image-text" style="margin-left:10px"></span>image + text</span>
+    </div>
+    <div class="panel scroll" style="max-height: 640px; overflow: auto"><table class="heat" id="heat"></table></div>
+  </section>
+
+  <section>
+    <h2>Cost</h2>
+    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Embedding time is excluded: every run reads the cached embeddings.</p>
+    <div class="panel scroll"><table id="cost"></table></div>
+  </section>
+
+  <section>
+    <h2>How to read this</h2>
+    <div class="notes">
+      <div class="panel note"><h3>Elo</h3><p class="muted">Bradley–Terry fit over one battle per dataset and model pair, on the mean test error over folds. RandomForest is fixed at 1000. The interval is the 95% range over 1,000 bootstrap resamples of datasets.</p></div>
+      <div class="panel note"><h3>Missing results are not imputed</h3><p class="muted" id="missingNote"></p></div>
+      <div class="panel note"><h3>Data</h3><p class="muted">Every run is in <a href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models"><code>multabench/leaderboard/models/&lt;model&gt;.csv</code></a>. The tables here are plain CSVs in this Space's <a href="https://huggingface.co/spaces/multabench/leaderboard/tree/main/data">data</a> folder: <code>leaderboards.csv</code> (one leaderboard per <code>task</code> and <code>modality</code> filter), <code>per_dataset.csv</code> and <code>cost.csv</code>.</p></div>
+      <div class="panel note"><h3>Metrics</h3><p class="muted">Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized error rescales each dataset to 0 (best model) – 1 (worst).</p></div>
+      <div class="panel note"><h3>Hardware</h3><p class="muted">Each run gets 8 CPUs and 32 GB. Tree models run on CPU (Xeon 8581C); the others on one H100 80 GB (Xeon 8481C).</p></div>
+    </div>
+  </section>
+</div>
+<script>
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') quoted = false;
+      else field += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ',') { row.push(field); field = ''; }
+    else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+    else if (c !== '\r') field += c;
+  }
+  if (field || row.length) { row.push(field); rows.push(row); }
+  const [header, ...body] = rows;
+  return body.map(r => Object.fromEntries(header.map((h, i) => {
+    const v = r[i];
+    return [h, v === '' || v === undefined ? null : isNaN(Number(v)) ? v : Number(v)];
+  })));
+}
+async function load() {
+  const get = async name => parseCSV(await (await fetch(`data/${name}.csv`)).text());
+  const boards = {};
+  (await get('leaderboards')).forEach(r => {
+    (boards[r.task + '|' + r.modality] ||= []).push({ ...r, lo: r.elo_low, hi: r.elo_high, norm_error: r.normalized_error, champions: r.best_on });
+  });
+  const per_dataset = (await get('per_dataset')).map(r => ({ ...r, task_type: r.dataset.slice(0, 3) }));
+  const cost = await get('cost');
+  const models = boards['all|all'].map(r => r.model).sort();
+  const datasets = [...new Set(per_dataset.map(r => r.dataset))];
+  const have = new Set(per_dataset.map(r => r.model + '|' + r.dataset));
+  const errors = [];
+  models.forEach(m => datasets.forEach(d => { if (!have.has(m + '|' + d)) errors.push({ model: m, dataset: d }); }));
+  const runs = per_dataset.reduce((n, r) => n + r.folds, 0);
+  return { boards, per_dataset, cost, errors, meta: { models, datasets: datasets.length, runs } };
+}
+load().then(start).catch(err => {
+  document.querySelector('.wrap').insertAdjacentHTML('afterbegin', `<p class="flag">Could not load the leaderboard data: ${err.message}</p>`);
+});
+function start(D) {
+
+const MODELS = D.meta.models;
+const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
+const MODS = [['text', 'Text'], ['image', 'Image'], ['image-text', 'Image + text']];
+const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+const fmt = (x, d = 0) => x == null ? '—' : Number(x).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const el = (tag, attrs = {}, html = '') => Object.assign(document.createElement(tag), attrs, html ? { innerHTML: html } : {});
+
+document.getElementById('intro').textContent = document.getElementById('intro').textContent.replace('Tabular models', `${MODELS.length} tabular models`);
+document.getElementById('facts').innerHTML = [
+  ['datasets', D.meta.datasets], ['models', MODELS.length], ['successful runs', fmt(D.meta.runs)],
+  ['missing', D.errors.length + ' model-dataset pairs (TabPFN, >10 classes)']
+].map(([k, v]) => `<span>${k} <b>${v}</b></span>`).join('');
+
+const errByModel = {};
+D.errors.forEach(e => { (errByModel[e.model] ||= new Set()).add(e.dataset); });
+document.getElementById('missingNote').textContent =
+  `A model with no successful run on a dataset simply has no battles there. TabPFN-v2 and v2.5 support at most 10 classes, so they are rated on ${D.meta.datasets - (errByModel['TabPFN-v2'] || new Set()).size} datasets: ${[...(errByModel['TabPFN-v2'] || [])].sort().join(', ')}.`;
+
+const dsInfo = {};
+D.per_dataset.forEach(r => { dsInfo[r.dataset] = { task: taskOf(r.dataset), modality: r.modality }; });
+const restore = (k, all) => { try { const v = JSON.parse(store.get(k)); return v.length && v.every(x => all.includes(x)) ? v : all; } catch (e) { return all; } };
+const sel = { task: restore('tasks', TASKS.map(t => t[0])), modality: restore('mods', MODS.map(m => m[0])) };
+const keyOf = (picked, all) => picked.length === all.length ? 'all' : all.map(a => a[0]).filter(a => picked.includes(a)).join('+');
+const inFilter = d => sel.task.includes(dsInfo[d].task) && sel.modality.includes(dsInfo[d].modality);
+
+function toggles(container, items, field, storeKey) {
+  container.querySelectorAll('button').forEach(b => b.remove());
+  items.forEach(([key, label]) => {
+    const n = Object.values(dsInfo).filter(i => i[field] === key && (field === 'task' ? sel.modality : sel.task).includes(field === 'task' ? i.modality : i.task)).length;
+    const b = el('button', { type: 'button' }, `${label}<span class="n">${n}</span>`);
+    const on = sel[field].includes(key);
+    b.setAttribute('aria-pressed', on);
+    b.title = on && sel[field].length === 1 ? 'Keep at least one selected' : '';
+    b.onclick = () => {
+      if (on && sel[field].length === 1) return;
+      sel[field] = on ? sel[field].filter(k => k !== key) : [...sel[field], key];
+      store.set(storeKey, JSON.stringify(sel[field]));
+      render();
+    };
+    container.appendChild(b);
+  });
+}
+
+function drawElo(board) {
+  const rows = board, W = 520, rowH = 30, top = 18, bottom = 34, left = 142, right = 20;
+  const H = top + rows.length * rowH + bottom;
+  const lo = Math.min(...rows.map(r => r.lo)), hi = Math.max(...rows.map(r => r.hi));
+  const step = hi - Math.min(lo, 1000) > 1600 ? 400 : 200;
+  const min = Math.floor((Math.min(lo, 1000) - 50) / step) * step, max = Math.ceil((hi + 50) / step) * step;
+  const x = v => left + (v - min) / (max - min) * (W - left - right);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elo ratings with 95% intervals">`;
+  for (let t = min; t <= max; t += step) {
+    s += `<line x1="${x(t)}" x2="${x(t)}" y1="${top - 6}" y2="${H - bottom + 4}" stroke="var(--soft)" stroke-width="1"/>`;
+    s += `<text x="${x(t)}" y="${H - bottom + 20}" text-anchor="middle">${t}</text>`;
+  }
+  s += `<line x1="${x(1000)}" x2="${x(1000)}" y1="${top - 6}" y2="${H - bottom + 4}" stroke="var(--muted)" stroke-dasharray="3 3" stroke-width="1"/>`;
+  rows.forEach((r, i) => {
+    const y = top + i * rowH + rowH / 2;
+    s += `<text class="lbl" x="${left - 12}" y="${y + 4}" text-anchor="end">${r.model}</text>`;
+    if (r.model !== 'RandomForest') s += `<line x1="${x(r.lo)}" x2="${x(r.hi)}" y1="${y}" y2="${y}" stroke="var(--accent)" stroke-opacity=".45" stroke-width="6" stroke-linecap="round"/>`;
+    s += `<circle cx="${x(r.elo)}" cy="${y}" r="5" fill="${i === 0 ? 'var(--accent)' : 'var(--surface)'}" stroke="var(--accent)" stroke-width="2"/>`;
+  });
+  s += '</svg>';
+  document.getElementById('eloChart').innerHTML = `<div style="padding:12px 8px 4px">${s}</div>`;
+}
+
+function drawBoard(board) {
+  const t = document.getElementById('boardTable');
+  const maxN = Math.max(...board.map(r => r.datasets));
+  t.innerHTML = `<thead><tr><th></th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num">Win rate</th><th class="num">Avg rank</th><th class="num">Norm. err</th><th class="num">Best on</th></tr></thead>`;
+  const tb = el('tbody');
+  board.forEach((r, i) => {
+    const ci = r.model === 'RandomForest' ? '<span class="anchor">anchor</span>' : `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
+    const n = r.datasets < maxN ? ` <span class="flag" title="Rated on ${r.datasets} of ${maxN} datasets">${r.datasets}/${maxN}</span>` : '';
+    tb.appendChild(el('tr', {}, `<td class="rank">${i + 1}</td><td class="model">${r.model}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td><td class="num">${fmt(r.avg_rank, 2)}</td><td class="num">${fmt(r.norm_error, 3)}</td><td class="num">${r.champions}</td>`));
+  });
+  t.appendChild(tb);
+}
+
+const MOD_NAMES = { text: 'text', image: 'image', 'image-text': 'image + text' };
+function renderBoard() {
+  const board = D.boards[keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS)];
+  const names = Object.keys(dsInfo).filter(inFilter);
+  const count = (field, key) => names.filter(d => dsInfo[d][field] === key).length;
+  const parts = [...TASKS.map(([k]) => [count('task', k), k]), ...MODS.map(([k]) => [count('modality', k), MOD_NAMES[k]])].filter(([n]) => n);
+  document.getElementById('boardNote').textContent = `${names.length} datasets: ${parts.map(([n, k]) => `${n} ${k}`).join(', ')}.` + (names.length < 10 ? ' Few datasets, so wide intervals.' : '');
+  drawElo(board);
+  drawBoard(board);
+}
+
+const byDs = {};
+D.per_dataset.forEach(r => { (byDs[r.dataset] ||= { modality: r.modality, task: r.task_type, metric: r.metric, m: {} }).m[r.model] = r; });
+const errSet = new Set(D.errors.map(e => e.model + '|' + e.dataset));
+const order = D.boards['all|all'].map(r => r.model);
+const sortSel = document.getElementById('sortBy');
+sortSel.value = store.get('heatSort') || 'name';
+sortSel.onchange = () => { store.set('heatSort', sortSel.value); renderHeat(); };
+
+function renderHeat() {
+  let names = Object.keys(byDs).filter(inFilter);
+  const stats = {};
+  names.forEach(n => {
+    const v = order.map(m => byDs[n].m[m]?.test_error).filter(x => x != null);
+    const mn = Math.min(...v), mx = Math.max(...v);
+    const winner = order.find(m => byDs[n].m[m]?.test_error === mn);
+    stats[n] = { mn, mx, winner, spread: mx > 0 ? (mx - mn) / Math.abs(mx) : 0 };
+  });
+  if (sortSel.value === 'spread') names.sort((a, b) => stats[a].spread - stats[b].spread);
+  else if (sortSel.value === 'winner') names.sort((a, b) => order.indexOf(stats[a].winner) - order.indexOf(stats[b].winner) || a.localeCompare(b));
+  else names.sort();
+  const t = document.getElementById('heat');
+  t.innerHTML = `<thead><tr><th class="ds">Dataset (${names.length})</th>${order.map(m => `<th class="m">${m}</th>`).join('')}</tr></thead>`;
+  const tb = el('tbody');
+  names.forEach(n => {
+    const ds = byDs[n], s = stats[n];
+    const label = n.replace(/^(BIN|MUL|REG)_(TEXT|IMAGE)_/, '').replace(/_/g, ' ').toLowerCase();
+    let row = `<td class="ds" title="${n} · ${ds.metric}"><span class="mod ${ds.modality}"></span>${label}<span class="task">${ds.task}</span></td>`;
+    order.forEach(m => {
+      const r = ds.m[m];
+      if (!r) { row += `<td class="cell na" title="${errSet.has(m + '|' + n) ? 'Failed: more than 10 classes' : 'No result'}">✕</td>`; return; }
+      const norm = s.mx > s.mn ? (r.test_error - s.mn) / (s.mx - s.mn) : 0;
+      const pct = Math.round((1 - norm) * 78);
+      const ink = pct > 48 ? 'color:var(--surface)' : '';
+      const v = r.test_error >= 100 ? fmt(r.test_error, 0) : r.test_error >= 1 ? fmt(r.test_error, 2) : fmt(r.test_error, 3);
+      row += `<td class="cell${r.test_error === s.mn ? ' win' : ''}" style="background:color-mix(in oklab, var(--best) ${pct}%, var(--surface));${ink}" title="${m} · ${ds.metric} error ${r.test_error.toPrecision(5)} ± ${(r.test_error_std ?? 0).toPrecision(3)}">${v}</td>`;
+    });
+    tb.appendChild(el('tr', {}, row));
+  });
+  t.appendChild(tb);
+}
+function render() {
+  toggles(document.getElementById('taskTabs'), TASKS, 'task', 'tasks');
+  toggles(document.getElementById('modTabs'), MODS, 'modality', 'mods');
+  renderBoard();
+  renderHeat();
+}
+render();
+
+(function renderCost() {
+  const rows = [...D.cost].sort((a, b) => order.indexOf(a.model) - order.indexOf(b.model));
+  const maxT = Math.max(...rows.map(r => r.train_s_per_1k + r.inference_s_per_1k));
+  const t = document.getElementById('cost');
+  t.innerHTML = `<thead><tr><th>Model</th><th>Device</th><th>Train + predict s / 1K rows</th><th class="num">Train</th><th class="num">Predict</th></tr></thead>`;
+  const tb = el('tbody');
+  rows.forEach(r => {
+    const total = r.train_s_per_1k + r.inference_s_per_1k;
+    tb.appendChild(el('tr', {}, `<td class="model">${r.model}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td>`));
+  });
+  t.appendChild(tb);
+})();
+}
+</script>
+</body>
+</html>

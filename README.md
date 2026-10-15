@@ -23,6 +23,9 @@ than used frozen.
 
 ## Leaderboard
 
+The leaderboard lives at [huggingface.co/spaces/multabench/leaderboard](https://huggingface.co/spaces/multabench/leaderboard),
+with per-dataset results and cost; `space/` holds its app and data.
+
 Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino-small` image embeddings
 (ConTextTab reads raw text itself). Elo is fit on one battle per dataset and model pair, with RandomForest
 at 1000 and 95% intervals from bootstrapping the datasets; a model with no result on a dataset has no
