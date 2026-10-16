@@ -82,10 +82,17 @@ pip install multabench
 ```
 
 ```python
-from multabench import Size, load_embeddings, load_split
+from multabench import Size, list_datasets, load_embeddings, load_published_results, load_split, score
+datasets = list_datasets(modality="text", task="regression", tier="core")  # DatasetInfo: id, hf_repo, modality, ...
 split = load_split("MUL_IMAGE_PETFINDER", fold=0, size=Size.TEN_K)  # split.x_train, split.y_train, split.x_test, ...
 embeddings = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size=Size.TEN_K, encoder="e5-small")
+result = score(split.task_type, y_true=y_test, y_pred=proba)  # metric, test_score, test_error, as the leaderboard
+published = load_published_results()  # every leaderboard run, in the columns of multabench/leaderboard/models/
 ```
+
+Each package version reads every dataset and embeddings repo at the commit pinned in
+`multabench/datasets/revisions.json`, and ships the leaderboard's runs as of its release. After uploading to one of
+those repos, `python -m multabench.datasets.revisions` pins them all to their current `main`.
 
 To run the benchmark:
 

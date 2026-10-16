@@ -6,18 +6,18 @@ import os
 import pandas as pd
 
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
+from multabench.datasets.info import Tier, dataset_info
 from multabench.leaderboard.elo import RESULTS_DIR, error_table, leaderboard, load_runs
 from multabench.result_keys import ResultKey, RunStatus
 
 SPACE_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "space", "data")
-TIERS = ["core", "extended"]
+TIERS = [t.value for t in Tier]
 TASKS = ["classification", "regression"]
 MODALITIES = [m.value for m in Modality]
 
 
 def dataset_tier(dataset: str) -> str:
-    """core or extended, from the dataset's Hugging Face repo name."""
-    return MulTaBenchDatasetID[dataset].value.split("-")[0]
+    return dataset_info(dataset).tier.value
 
 
 def dataset_task(dataset: str) -> str:
