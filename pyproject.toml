@@ -55,7 +55,7 @@ pytabkit = ["pytabkit"]
 tabicl = ["tabicl >= 2.0.3"]
 tabdpt = ["tabdpt >= 1.1.9"]
 tabpfn = ["tabpfn >= 9.2.0"]
-tabstar = ["tabstar >= 1.2.1"]
+tabstar = ["tabstar >= 1.2.2"]
 # TabFM itself is git-pinned; this is the output coding of more than ten classes.
 tabfm = ["tabpfn-extensions[many_class] >= 0.6.1"]
 # Needs torch>=2.13, so it has its own lock, requirements-causilo.txt, and venv.
