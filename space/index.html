@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MulTaBench Leaderboard</title>
+<link rel="icon" type="image/svg+xml" href="assets/mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -37,6 +38,15 @@ p { margin: 0; max-width: 68ch; }
 .muted { color: var(--muted); }
 .mono, td.num, th.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 header { display: grid; gap: 14px; }
+.logo { display: block; width: min(420px, 100%); }
+.logo img { display: block; width: 100%; height: auto; }
+.logo .dark { display: none; }
+:root[data-theme="dark"] .logo .light { display: none; }
+:root[data-theme="dark"] .logo .dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo .light { display: none; }
+  :root:not([data-theme="light"]) .logo .dark { display: block; }
+}
 .eyebrow { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
 .facts { display: flex; flex-wrap: wrap; gap: 8px 22px; font: 13px/1.4 var(--mono); color: var(--muted); }
 .facts b { color: var(--ink); font-weight: 500; }
@@ -97,6 +107,7 @@ code { font-family: var(--mono); font-size: 0.92em; }
 <body>
 <div class="wrap">
   <header>
+    <a class="logo" href="https://github.com/alanarazi7/MulTaBench"><img class="light" src="assets/logo.svg" alt="MulTaBench: Benchmarking Multimodal Tabular Learning"><img class="dark" src="assets/logo-dark.svg" alt="MulTaBench: Benchmarking Multimodal Tabular Learning"></a>
     <div class="eyebrow">MulTaBench · frozen encoders · 10K rows</div>
     <h1>Which tabular models handle text and images best?</h1>
     <p class="muted" id="intro">Tabular models on 80 multimodal datasets. Text columns are embedded with frozen e5-small and images with frozen DINOv3-small, each reduced to 30 PCA components per column; ConTextTab and TabSTAR read raw text themselves. Default hyperparameters, no bagging, 3 folds × 2 repeats, up to 10K training rows.</p>
@@ -105,6 +116,7 @@ code { font-family: var(--mono); font-size: 0.92em; }
   </header>
 
   <div class="filters">
+    <div class="group tabs" id="tierTabs" role="group" aria-label="Datasets"><span class="label">Datasets</span></div>
     <div class="group tabs" id="taskTabs" role="group" aria-label="Task"><span class="label">Task</span></div>
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
   </div>
@@ -151,7 +163,8 @@ code { font-family: var(--mono); font-size: 0.92em; }
     <div class="notes">
       <div class="panel note"><h3>Elo</h3><p class="muted">As in TabArena, every fold is its own battle: on each of a dataset's 6 folds, each pair of models plays one battle, won by the lower test error. The battles are fit as a Bradley–Terry model, with RandomForest fixed at 1000, by TabArena's bencheval. The interval is the 95% range over 1,000 bootstrap resamples of datasets, each with all its folds, bootstrapped before anchoring, so each is the model's own. Win rate, average rank, normalized error and best-on count are per fold as well.</p></div>
       <div class="panel note"><h3>Missing results are not imputed</h3><p class="muted" id="missingNote"></p></div>
-      <div class="panel note"><h3>Data</h3><p class="muted">Every run is in <a href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models"><code>multabench/leaderboard/models/&lt;model&gt;.csv</code></a>. The tables here are plain CSVs in this Space's <a href="https://huggingface.co/spaces/multabench/leaderboard/tree/main/data">data</a> folder: <code>leaderboards.csv</code> (one leaderboard per <code>task</code> and <code>modality</code> filter), <code>per_dataset.csv</code> and <code>cost.csv</code>.</p></div>
+      <div class="panel note"><h3>Datasets</h3><p class="muted">The benchmark's 80 datasets are 40 core and 40 extended ones, as their Hugging Face repos are named (<code>core-…</code>, <code>extended-…</code>); the Datasets filter keeps either half.</p></div>
+      <div class="panel note"><h3>Data</h3><p class="muted">Every run is in <a href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models"><code>multabench/leaderboard/models/&lt;model&gt;.csv</code></a>. The tables here are plain CSVs in this Space's <a href="https://huggingface.co/spaces/multabench/leaderboard/tree/main/data">data</a> folder: <code>leaderboards.csv</code> (one leaderboard per <code>tier</code>, <code>task</code> and <code>modality</code> filter), <code>per_dataset.csv</code> and <code>cost.csv</code>.</p></div>
       <div class="panel note"><h3>Metrics</h3><p class="muted">Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized error rescales each dataset to 0 (best model) – 1 (worst).</p></div>
       <div class="panel note"><h3>Hardware</h3><p class="muted">Each run gets 8 CPUs and 32 GB. Tree models run on CPU (Xeon 8581C); the others on one H100 80 GB (Xeon 8481C).</p></div>
     </div>
@@ -183,11 +196,11 @@ async function load() {
   const get = async name => parseCSV(await (await fetch(`data/${name}.csv`)).text());
   const boards = {};
   (await get('leaderboards')).forEach(r => {
-    (boards[r.task + '|' + r.modality] ||= []).push({ ...r, lo: r.elo_low, hi: r.elo_high, norm_error: r.normalized_error, champions: r.best_on });
+    (boards[r.tier + '|' + r.task + '|' + r.modality] ||= []).push({ ...r, lo: r.elo_low, hi: r.elo_high, norm_error: r.normalized_error, champions: r.best_on });
   });
   const per_dataset = (await get('per_dataset')).map(r => ({ ...r, task_type: r.dataset.slice(0, 3) }));
   const cost = await get('cost');
-  const models = boards['all|all'].map(r => r.model).sort();
+  const models = boards['all|all|all'].map(r => r.model).sort();
   const datasets = [...new Set(per_dataset.map(r => r.dataset))];
   const have = new Set(per_dataset.map(r => r.model + '|' + r.dataset));
   const errors = [];
@@ -201,6 +214,7 @@ load().then(start).catch(err => {
 function start(D) {
 
 const MODELS = D.meta.models;
+const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image'], ['image-text', 'Image + text']];
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
@@ -223,16 +237,18 @@ document.getElementById('missingNote').textContent =
   `A model with no successful run on a dataset simply has no battles there. TabPFN-v2 and v2.5 support at most 10 classes, so they are rated on ${D.meta.datasets - (errByModel['TabPFN-v2'] || new Set()).size} datasets: ${[...(errByModel['TabPFN-v2'] || [])].sort().join(', ')}.`;
 
 const dsInfo = {};
-D.per_dataset.forEach(r => { dsInfo[r.dataset] = { task: taskOf(r.dataset), modality: r.modality }; });
+D.per_dataset.forEach(r => { dsInfo[r.dataset] = { tier: r.tier, task: taskOf(r.dataset), modality: r.modality }; });
 const restore = (k, all) => { try { const v = JSON.parse(store.get(k)); return v.length && v.every(x => all.includes(x)) ? v : all; } catch (e) { return all; } };
-const sel = { task: restore('tasks', TASKS.map(t => t[0])), modality: restore('mods', MODS.map(m => m[0])) };
+const sel = { tier: restore('tiers', TIERS.map(t => t[0])), task: restore('tasks', TASKS.map(t => t[0])),
+  modality: restore('mods', MODS.map(m => m[0])) };
+const FIELDS = Object.keys(sel);
 const keyOf = (picked, all) => picked.length === all.length ? 'all' : all.map(a => a[0]).filter(a => picked.includes(a)).join('+');
-const inFilter = d => sel.task.includes(dsInfo[d].task) && sel.modality.includes(dsInfo[d].modality);
+const inFilter = d => FIELDS.every(f => sel[f].includes(dsInfo[d][f]));
 
 function toggles(container, items, field, storeKey) {
   container.querySelectorAll('button').forEach(b => b.remove());
   items.forEach(([key, label]) => {
-    const n = Object.values(dsInfo).filter(i => i[field] === key && (field === 'task' ? sel.modality : sel.task).includes(field === 'task' ? i.modality : i.task)).length;
+    const n = Object.values(dsInfo).filter(i => i[field] === key && FIELDS.every(f => f === field || sel[f].includes(i[f]))).length;
     const b = el('button', { type: 'button' }, `${label}<span class="n">${n}</span>`);
     const on = sel[field].includes(key);
     b.setAttribute('aria-pressed', on);
@@ -285,10 +301,11 @@ function drawBoard(board) {
 
 const MOD_NAMES = { text: 'text', image: 'image', 'image-text': 'image + text' };
 function renderBoard() {
-  const board = D.boards[keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS)];
+  const board = D.boards[keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS)];
   const names = Object.keys(dsInfo).filter(inFilter);
   const count = (field, key) => names.filter(d => dsInfo[d][field] === key).length;
-  const parts = [...TASKS.map(([k]) => [count('task', k), k]), ...MODS.map(([k]) => [count('modality', k), MOD_NAMES[k]])].filter(([n]) => n);
+  const parts = [...TIERS.map(([k]) => [count('tier', k), k]), ...TASKS.map(([k]) => [count('task', k), k]),
+    ...MODS.map(([k]) => [count('modality', k), MOD_NAMES[k]])].filter(([n]) => n);
   document.getElementById('boardNote').textContent = `${names.length} datasets: ${parts.map(([n, k]) => `${n} ${k}`).join(', ')}.` + (names.length < 10 ? ' Few datasets, so wide intervals.' : '');
   drawElo(board);
   drawBoard(board);
@@ -297,7 +314,7 @@ function renderBoard() {
 const byDs = {};
 D.per_dataset.forEach(r => { (byDs[r.dataset] ||= { modality: r.modality, task: r.task_type, metric: r.metric, m: {} }).m[r.model] = r; });
 const errSet = new Set(D.errors.map(e => e.model + '|' + e.dataset));
-const order = D.boards['all|all'].map(r => r.model);
+const order = D.boards['all|all|all'].map(r => r.model);
 const sortSel = document.getElementById('sortBy');
 sortSel.value = store.get('heatSort') || 'name';
 sortSel.onchange = () => { store.set('heatSort', sortSel.value); renderHeat(); };
@@ -335,6 +352,7 @@ function renderHeat() {
   t.appendChild(tb);
 }
 function render() {
+  toggles(document.getElementById('tierTabs'), TIERS, 'tier', 'tiers');
   toggles(document.getElementById('taskTabs'), TASKS, 'task', 'tasks');
   toggles(document.getElementById('modTabs'), MODS, 'modality', 'mods');
   renderBoard();
