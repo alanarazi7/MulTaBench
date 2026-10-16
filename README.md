@@ -30,11 +30,13 @@ Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino
 (ConTextTab and TabSTAR read raw text themselves; TabSTAR loads, for each dataset it was pretrained on, the
 checkpoint that held that dataset out). TabPFN-v2 and v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
 
-**How Elo is computed.** As in TabArena, every fold is its own battle: on each of a dataset's 6 folds, each pair of
-models plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a
-Bradley–Terry model, with RandomForest anchored at 1000. The 95% intervals come from 1,000 bootstrap resamples of the
-datasets, each drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many
-folds. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
+**How Elo is computed.** With TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
+pinned in the `leaderboard` extra. Every fold is its own battle: on each of a dataset's 6 folds, each pair of models
+plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a Bradley–Terry
+model, with RandomForest anchored at 1000. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
+drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many folds. They
+are bootstrapped before anchoring, so each model's interval is its own, RandomForest's included, rather than relative
+to RandomForest. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
 error and best-on count are per fold as well. Until October 2026 the leaderboard, like the paper, played one battle
 per dataset on the mean error over its folds. That makes each dataset winner-take-all, which stretches the scale: on
 the then 17 models, Kumo-Tabular was at 2670 rather than 2347, with the same ranking.
