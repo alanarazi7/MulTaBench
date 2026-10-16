@@ -3,7 +3,8 @@ import pytest
 from sklearn.metrics import log_loss, mean_squared_error, roc_auc_score
 
 from multabench.baselines.autogluon_mm import TASK2METRIC
-from multabench.baselines.training.metrics import calculate_metric, get_scorer
+from multabench.baselines.training.metrics import calculate_metric
+from multabench.benchmark.metrics import METRICS, score
 from multabench.datasets.objects import SupervisedTask
 from multabench.result_keys import ResultKey
 
@@ -12,7 +13,7 @@ TASK2D_OUTPUT = {SupervisedTask.REGRESSION: 1, SupervisedTask.BINARY: 2, Supervi
 
 @pytest.mark.parametrize("task", list(TASK2D_OUTPUT))
 def test_autogluon_mm_optimizes_the_scored_metric(task):
-    assert TASK2METRIC[task] == get_scorer(TASK2D_OUTPUT[task]).name
+    assert TASK2METRIC[task] == METRICS[task]
 
 
 def test_regression_error_is_rmse():
@@ -39,3 +40,24 @@ def test_multiclass_error_is_log_loss():
     m = calculate_metric(y_true=y_true, y_pred=y_pred, d_output=3)
     assert m[ResultKey.METRIC] == "log_loss"
     assert m[ResultKey.TEST_ERROR] == pytest.approx(log_loss(y_true, y_pred))
+
+
+@pytest.mark.parametrize("task", list(TASK2D_OUTPUT))
+@pytest.mark.parametrize("seed", range(5))
+def test_score_agrees_with_autogluon(task, seed):
+    metrics = pytest.importorskip("autogluon.core.metrics")
+    scorer = {SupervisedTask.REGRESSION: metrics.root_mean_squared_error, SupervisedTask.BINARY: metrics.roc_auc,
+              SupervisedTask.MULTICLASS: metrics.log_loss}[task]
+    rng = np.random.default_rng(seed)
+    n, k = 200, 5
+    if task == SupervisedTask.REGRESSION:
+        y_true, y_pred = rng.normal(size=n), rng.normal(size=n)
+    elif task == SupervisedTask.BINARY:
+        y_true, y_pred = rng.integers(0, 2, size=n), rng.random(n)
+    else:
+        y_true, y_pred = rng.integers(0, k, size=n), rng.dirichlet(np.ones(k), size=n)
+    expected = float(scorer(y_true, y_pred))
+    s = score(task, y_true=y_true, y_pred=y_pred)
+    # AutoGluon's AUC is a faster rewrite of sklearn's, a few ulps apart.
+    assert s.metric == scorer.name
+    assert (s.test_score, s.test_error) == pytest.approx((expected, scorer.convert_score_to_error(expected)), rel=1e-12)
