@@ -17,6 +17,7 @@ BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,TabPFN-3.5,roc_auc,0.0898,0.
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,TabPFN-3.5-Fast,roc_auc,0.090579,0.003661,0.909421,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,TabPFN-v2,roc_auc,0.092732,0.002914,0.907268,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,TabPFN-v2p5,roc_auc,0.090704,0.003579,0.909296,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,TabSTAR,roc_auc,0.09581,0.00452,0.90419,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,classification,image,XGBoost,roc_auc,0.10787,0.003478,0.89213,6,10000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,CatBoost,roc_auc,0.256522,0.005162,0.743478,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,Causilo,roc_auc,0.221443,0.00608,0.778557,6,6000.0
@@ -36,6 +37,7 @@ BIN_IMAGE_HATEFUL_MEME,classification,image,TabPFN-3.5,roc_auc,0.211919,0.004978
 BIN_IMAGE_HATEFUL_MEME,classification,image,TabPFN-3.5-Fast,roc_auc,0.214658,0.005875,0.785342,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,TabPFN-v2,roc_auc,0.238518,0.009336,0.761482,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,TabPFN-v2p5,roc_auc,0.226522,0.006538,0.773478,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,classification,image,TabSTAR,roc_auc,0.259294,0.009948,0.740706,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,classification,image,XGBoost,roc_auc,0.29582,0.004643,0.70418,6,6000.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,CatBoost,roc_auc,0.250659,0.008673,0.749341,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,Causilo,roc_auc,0.176586,0.00697,0.823414,6,3468.0
@@ -55,6 +57,7 @@ BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,TabPFN-3.5,roc_auc,0.164165,0.01
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,TabPFN-3.5-Fast,roc_auc,0.168586,0.018,0.831414,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,TabPFN-v2,roc_auc,0.216055,0.010325,0.783945,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,TabPFN-v2p5,roc_auc,0.212729,0.014339,0.787271,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,TabSTAR,roc_auc,0.275464,0.013729,0.724536,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,classification,image,XGBoost,roc_auc,0.276838,0.01779,0.723162,6,3468.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,CatBoost,roc_auc,0.084054,0.012555,0.915946,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,Causilo,roc_auc,0.071864,0.009016,0.928136,6,291.0
@@ -74,6 +77,7 @@ BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,TabPFN-3.5,roc_auc,0.069899,0.01
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,TabPFN-3.5-Fast,roc_auc,0.070318,0.011037,0.929682,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,TabPFN-v2,roc_auc,0.077717,0.008107,0.922283,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,TabPFN-v2p5,roc_auc,0.075556,0.008545,0.924444,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,TabSTAR,roc_auc,0.11225,0.026323,0.88775,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,classification,image,XGBoost,roc_auc,0.108274,0.016402,0.891726,6,291.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,CatBoost,roc_auc,0.337732,0.01353,0.662268,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,Causilo,roc_auc,0.320653,0.017295,0.679347,6,1003.0
@@ -93,6 +97,7 @@ BIN_IMAGE_PINTEREST_POPULAR,classification,image,TabPFN-3.5,roc_auc,0.317806,0.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,TabPFN-3.5-Fast,roc_auc,0.318394,0.015837,0.681606,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,TabPFN-v2,roc_auc,0.329286,0.014001,0.670714,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,TabPFN-v2p5,roc_auc,0.322047,0.018616,0.677953,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,classification,image,TabSTAR,roc_auc,0.348806,0.018074,0.651194,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,classification,image,XGBoost,roc_auc,0.377935,0.032686,0.622065,6,1003.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,CatBoost,roc_auc,0.007273,0.000534,0.992727,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,Causilo,roc_auc,0.005897,0.000683,0.994103,6,10000.0
@@ -112,6 +117,7 @@ BIN_TEXT_CALIFORNIA_PRICES,classification,text,TabPFN-3.5,roc_auc,0.006285,0.000
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,TabPFN-3.5-Fast,roc_auc,0.006367,0.000458,0.993633,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,TabPFN-v2,roc_auc,0.006456,0.000613,0.993544,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,TabPFN-v2p5,roc_auc,0.006021,0.000516,0.993979,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,classification,text,TabSTAR,roc_auc,0.007212,0.001071,0.992788,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,classification,text,XGBoost,roc_auc,0.007969,0.000481,0.992031,6,10000.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,CatBoost,roc_auc,0.083603,0.008983,0.916397,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,Causilo,roc_auc,0.042889,0.006222,0.957111,6,8484.0
@@ -131,6 +137,7 @@ BIN_TEXT_FAKE_JOB_POSTING,classification,text,TabPFN-3.5,roc_auc,0.038622,0.0043
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,TabPFN-3.5-Fast,roc_auc,0.040353,0.005024,0.959647,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,TabPFN-v2,roc_auc,0.089466,0.008612,0.910534,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,TabPFN-v2p5,roc_auc,0.057164,0.007252,0.942836,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,classification,text,TabSTAR,roc_auc,0.065615,0.010675,0.934385,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,classification,text,XGBoost,roc_auc,0.102043,0.00992,0.897957,6,8484.0
 BIN_TEXT_IMDB_GENRE,classification,text,CatBoost,roc_auc,0.174988,0.011565,0.825012,6,534.0
 BIN_TEXT_IMDB_GENRE,classification,text,Causilo,roc_auc,0.134827,0.015301,0.865173,6,534.0
@@ -150,6 +157,7 @@ BIN_TEXT_IMDB_GENRE,classification,text,TabPFN-3.5,roc_auc,0.131013,0.018242,0.8
 BIN_TEXT_IMDB_GENRE,classification,text,TabPFN-3.5-Fast,roc_auc,0.134491,0.015689,0.865509,6,534.0
 BIN_TEXT_IMDB_GENRE,classification,text,TabPFN-v2,roc_auc,0.143493,0.022818,0.856507,6,534.0
 BIN_TEXT_IMDB_GENRE,classification,text,TabPFN-v2p5,roc_auc,0.139266,0.022654,0.860734,6,534.0
+BIN_TEXT_IMDB_GENRE,classification,text,TabSTAR,roc_auc,0.17565,0.018574,0.82435,6,534.0
 BIN_TEXT_IMDB_GENRE,classification,text,XGBoost,roc_auc,0.221148,0.024268,0.778852,6,534.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,CatBoost,roc_auc,0.162883,0.007671,0.837117,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,Causilo,roc_auc,0.148111,0.006423,0.851889,6,10000.0
@@ -169,6 +177,7 @@ BIN_TEXT_JIGSAW_TOXICITY,classification,text,TabPFN-3.5,roc_auc,0.14582,0.005876
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,TabPFN-3.5-Fast,roc_auc,0.14737,0.006033,0.85263,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,TabPFN-v2,roc_auc,0.156979,0.008736,0.843021,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,TabPFN-v2p5,roc_auc,0.150321,0.007393,0.849679,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,classification,text,TabSTAR,roc_auc,0.053108,0.005066,0.946892,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,classification,text,XGBoost,roc_auc,0.196231,0.007055,0.803769,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,CatBoost,roc_auc,0.263654,0.004855,0.736346,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,Causilo,roc_auc,0.245559,0.00482,0.754441,6,10000.0
@@ -188,6 +197,7 @@ BIN_TEXT_KICKSTARTER_FUNDING,classification,text,TabPFN-3.5,roc_auc,0.23861,0.00
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,TabPFN-3.5-Fast,roc_auc,0.241314,0.005023,0.758686,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,TabPFN-v2,roc_auc,0.268802,0.006399,0.731198,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,TabPFN-v2p5,roc_auc,0.251661,0.004795,0.748339,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,classification,text,TabSTAR,roc_auc,0.23916,0.00962,0.76084,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,classification,text,XGBoost,roc_auc,0.292863,0.008242,0.707137,6,10000.0
 BIN_TEXT_OSHA_INJURY,classification,text,CatBoost,roc_auc,0.411084,0.009143,0.588916,6,3232.0
 BIN_TEXT_OSHA_INJURY,classification,text,Causilo,roc_auc,0.393467,0.0153,0.606533,6,3232.0
@@ -207,6 +217,7 @@ BIN_TEXT_OSHA_INJURY,classification,text,TabPFN-3.5,roc_auc,0.389658,0.011844,0.
 BIN_TEXT_OSHA_INJURY,classification,text,TabPFN-3.5-Fast,roc_auc,0.395333,0.011485,0.604667,6,3232.0
 BIN_TEXT_OSHA_INJURY,classification,text,TabPFN-v2,roc_auc,0.406707,0.013912,0.593293,6,3232.0
 BIN_TEXT_OSHA_INJURY,classification,text,TabPFN-v2p5,roc_auc,0.400463,0.014956,0.599537,6,3232.0
+BIN_TEXT_OSHA_INJURY,classification,text,TabSTAR,roc_auc,0.434554,0.020522,0.565446,6,3232.0
 BIN_TEXT_OSHA_INJURY,classification,text,XGBoost,roc_auc,0.450749,0.01585,0.549251,6,3232.0
 MUL_IMAGE_CBIS_DDSM,classification,image,CatBoost,log_loss,0.84956,0.019007,-0.84956,6,1131.0
 MUL_IMAGE_CBIS_DDSM,classification,image,Causilo,log_loss,0.723761,0.021502,-0.723761,6,1131.0
@@ -226,6 +237,7 @@ MUL_IMAGE_CBIS_DDSM,classification,image,TabPFN-3.5,log_loss,0.708028,0.021398,-
 MUL_IMAGE_CBIS_DDSM,classification,image,TabPFN-3.5-Fast,log_loss,0.707048,0.021247,-0.707048,6,1131.0
 MUL_IMAGE_CBIS_DDSM,classification,image,TabPFN-v2,log_loss,0.792314,0.014464,-0.792314,6,1131.0
 MUL_IMAGE_CBIS_DDSM,classification,image,TabPFN-v2p5,log_loss,0.771844,0.020552,-0.771844,6,1131.0
+MUL_IMAGE_CBIS_DDSM,classification,image,TabSTAR,log_loss,0.883632,0.051856,-0.883632,6,1131.0
 MUL_IMAGE_CBIS_DDSM,classification,image,XGBoost,log_loss,0.937132,0.035563,-0.937132,6,1131.0
 MUL_IMAGE_CHEXPERT,classification,image,CatBoost,log_loss,0.723795,0.003535,-0.723795,6,10000.0
 MUL_IMAGE_CHEXPERT,classification,image,Causilo,log_loss,0.692714,0.00565,-0.692714,6,10000.0
@@ -245,6 +257,7 @@ MUL_IMAGE_CHEXPERT,classification,image,TabPFN-3.5,log_loss,0.691123,0.006416,-0
 MUL_IMAGE_CHEXPERT,classification,image,TabPFN-3.5-Fast,log_loss,0.698982,0.004811,-0.698982,6,10000.0
 MUL_IMAGE_CHEXPERT,classification,image,TabPFN-v2,log_loss,0.705796,0.005911,-0.705796,6,10000.0
 MUL_IMAGE_CHEXPERT,classification,image,TabPFN-v2p5,log_loss,0.701811,0.006573,-0.701811,6,10000.0
+MUL_IMAGE_CHEXPERT,classification,image,TabSTAR,log_loss,0.718061,0.007928,-0.718061,6,10000.0
 MUL_IMAGE_CHEXPERT,classification,image,XGBoost,log_loss,0.812374,0.005671,-0.812374,6,10000.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,CatBoost,log_loss,1.511401,0.030972,-1.511401,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,Causilo,log_loss,1.168285,0.032791,-1.168285,6,638.0
@@ -264,6 +277,7 @@ MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,TabPFN-3.5,log_loss,1.16078,
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,TabPFN-3.5-Fast,log_loss,1.183047,0.033615,-1.183047,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,TabPFN-v2,log_loss,1.288289,0.042392,-1.288289,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,TabPFN-v2p5,log_loss,1.256507,0.053601,-1.256507,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,TabSTAR,log_loss,1.469905,0.041634,-1.469905,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,classification,image-text,XGBoost,log_loss,1.755922,0.055089,-1.755922,6,638.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,CatBoost,log_loss,1.476522,0.03412,-1.476522,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,Causilo,log_loss,1.412495,0.039191,-1.412495,6,400.0
@@ -283,6 +297,7 @@ MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,TabPFN-3.5,log_loss,1.401513
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,TabPFN-3.5-Fast,log_loss,1.40914,0.034065,-1.40914,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,TabPFN-v2,log_loss,1.416922,0.041697,-1.416922,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,TabPFN-v2p5,log_loss,1.424964,0.045662,-1.424964,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,TabSTAR,log_loss,1.528561,0.013559,-1.528561,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,classification,image-text,XGBoost,log_loss,1.542488,0.030159,-1.542488,6,400.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,CatBoost,log_loss,0.33106,0.009686,-0.33106,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,Causilo,log_loss,0.282409,0.007811,-0.282409,6,8300.0
@@ -302,6 +317,7 @@ MUL_IMAGE_GLAUCOMA_SMDG,classification,image,TabPFN-3.5,log_loss,0.276693,0.0072
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,TabPFN-3.5-Fast,log_loss,0.280006,0.007142,-0.280006,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,TabPFN-v2,log_loss,0.309227,0.009669,-0.309227,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,TabPFN-v2p5,log_loss,0.300008,0.008398,-0.300008,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,classification,image,TabSTAR,log_loss,0.332919,0.011522,-0.332919,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,classification,image,XGBoost,log_loss,0.347625,0.009456,-0.347625,6,8300.0
 MUL_IMAGE_HAM10000_LESION,classification,image,CatBoost,log_loss,0.503299,0.011958,-0.503299,6,4980.0
 MUL_IMAGE_HAM10000_LESION,classification,image,Causilo,log_loss,0.420809,0.011631,-0.420809,6,4980.0
@@ -321,6 +337,7 @@ MUL_IMAGE_HAM10000_LESION,classification,image,TabPFN-3.5,log_loss,0.414023,0.01
 MUL_IMAGE_HAM10000_LESION,classification,image,TabPFN-3.5-Fast,log_loss,0.419111,0.011611,-0.419111,6,4980.0
 MUL_IMAGE_HAM10000_LESION,classification,image,TabPFN-v2,log_loss,0.459362,0.007321,-0.459362,6,4980.0
 MUL_IMAGE_HAM10000_LESION,classification,image,TabPFN-v2p5,log_loss,0.443342,0.010471,-0.443342,6,4980.0
+MUL_IMAGE_HAM10000_LESION,classification,image,TabSTAR,log_loss,0.514422,0.014465,-0.514422,6,4980.0
 MUL_IMAGE_HAM10000_LESION,classification,image,XGBoost,log_loss,0.575367,0.013554,-0.575367,6,4980.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,CatBoost,log_loss,1.199941,0.027796,-1.199941,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,Causilo,log_loss,1.015633,0.020055,-1.015633,6,2854.0
@@ -338,6 +355,7 @@ MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,TabM,log_loss,1.155452,0.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,TabPFN-3,log_loss,1.195052,0.020974,-1.195052,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,TabPFN-3.5,log_loss,1.020394,0.017854,-1.020394,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,TabPFN-3.5-Fast,log_loss,1.043712,0.017041,-1.043712,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,TabSTAR,log_loss,1.407053,0.022108,-1.407053,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,classification,image-text,XGBoost,log_loss,1.358017,0.034431,-1.358017,6,2854.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,CatBoost,log_loss,0.879203,0.012365,-0.879203,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,Causilo,log_loss,0.550338,0.010883,-0.550338,6,8388.0
@@ -357,6 +375,7 @@ MUL_IMAGE_HUBMAP_HPA,classification,image-text,TabPFN-3.5,log_loss,0.51681,0.009
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,TabPFN-3.5-Fast,log_loss,0.529166,0.008307,-0.529166,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,TabPFN-v2,log_loss,0.875361,0.006414,-0.875361,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,TabPFN-v2p5,log_loss,0.747937,0.008921,-0.747937,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,classification,image-text,TabSTAR,log_loss,0.894426,0.027484,-0.894426,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,classification,image-text,XGBoost,log_loss,0.983587,0.016273,-0.983587,6,8388.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,CatBoost,log_loss,0.373954,0.006247,-0.373954,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,Causilo,log_loss,0.304719,0.00369,-0.304719,6,6880.0
@@ -376,6 +395,7 @@ MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,TabPFN-3.5,log_loss,0.297548,0.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,TabPFN-3.5-Fast,log_loss,0.304008,0.004059,-0.304008,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,TabPFN-v2,log_loss,0.353673,0.003707,-0.353673,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,TabPFN-v2p5,log_loss,0.328418,0.004495,-0.328418,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,TabSTAR,log_loss,0.398276,0.00615,-0.398276,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,classification,image,XGBoost,log_loss,0.412079,0.006172,-0.412079,6,6880.0
 MUL_IMAGE_MINECRAFT,classification,image,CatBoost,log_loss,0.362352,0.020073,-0.362352,6,4060.0
 MUL_IMAGE_MINECRAFT,classification,image,Causilo,log_loss,0.245074,0.020667,-0.245074,6,4060.0
@@ -395,6 +415,7 @@ MUL_IMAGE_MINECRAFT,classification,image,TabPFN-3.5,log_loss,0.241658,0.019292,-
 MUL_IMAGE_MINECRAFT,classification,image,TabPFN-3.5-Fast,log_loss,0.243771,0.020585,-0.243771,6,4060.0
 MUL_IMAGE_MINECRAFT,classification,image,TabPFN-v2,log_loss,0.277481,0.021815,-0.277481,6,4060.0
 MUL_IMAGE_MINECRAFT,classification,image,TabPFN-v2p5,log_loss,0.26466,0.021451,-0.26466,6,4060.0
+MUL_IMAGE_MINECRAFT,classification,image,TabSTAR,log_loss,0.388747,0.028284,-0.388747,6,4060.0
 MUL_IMAGE_MINECRAFT,classification,image,XGBoost,log_loss,0.401589,0.018756,-0.401589,6,4060.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,CatBoost,log_loss,0.611728,0.029034,-0.611728,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,Causilo,log_loss,0.495459,0.015378,-0.495459,6,1094.0
@@ -414,6 +435,7 @@ MUL_IMAGE_PAD_UFES_LESION,classification,image,TabPFN-3.5,log_loss,0.49521,0.014
 MUL_IMAGE_PAD_UFES_LESION,classification,image,TabPFN-3.5-Fast,log_loss,0.499781,0.010126,-0.499781,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,TabPFN-v2,log_loss,0.522308,0.021841,-0.522308,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,TabPFN-v2p5,log_loss,0.513231,0.020658,-0.513231,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,classification,image,TabSTAR,log_loss,0.702368,0.059809,-0.702368,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,classification,image,XGBoost,log_loss,0.736726,0.07718,-0.736726,6,1094.0
 MUL_IMAGE_PETFINDER,classification,image-text,CatBoost,log_loss,1.409253,0.006031,-1.409253,6,9768.0
 MUL_IMAGE_PETFINDER,classification,image-text,Causilo,log_loss,1.254319,0.003846,-1.254319,6,9768.0
@@ -433,6 +455,7 @@ MUL_IMAGE_PETFINDER,classification,image-text,TabPFN-3.5,log_loss,1.266883,0.006
 MUL_IMAGE_PETFINDER,classification,image-text,TabPFN-3.5-Fast,log_loss,1.288508,0.003959,-1.288508,6,9768.0
 MUL_IMAGE_PETFINDER,classification,image-text,TabPFN-v2,log_loss,1.385455,0.004761,-1.385455,6,9768.0
 MUL_IMAGE_PETFINDER,classification,image-text,TabPFN-v2p5,log_loss,1.341594,0.002987,-1.341594,6,9768.0
+MUL_IMAGE_PETFINDER,classification,image-text,TabSTAR,log_loss,1.351814,0.014885,-1.351814,6,9768.0
 MUL_IMAGE_PETFINDER,classification,image-text,XGBoost,log_loss,1.510679,0.008845,-1.510679,6,9768.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,CatBoost,log_loss,1.591194,0.05114,-1.591194,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,Causilo,log_loss,1.323115,0.033435,-1.323115,6,718.0
@@ -452,6 +475,7 @@ MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,TabPFN-3.5,log_loss,1.324394,
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,TabPFN-3.5-Fast,log_loss,1.389085,0.041531,-1.389085,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,TabPFN-v2,log_loss,1.388754,0.038826,-1.388754,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,TabPFN-v2p5,log_loss,1.382621,0.039721,-1.382621,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,TabSTAR,log_loss,1.555319,0.083626,-1.555319,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,classification,image-text,XGBoost,log_loss,1.781914,0.028859,-1.781914,6,718.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,CatBoost,log_loss,1.025598,0.020119,-1.025598,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,Causilo,log_loss,0.640555,0.022019,-0.640555,6,3214.0
@@ -471,6 +495,7 @@ MUL_IMAGE_REDDIT_MEMES,classification,image,TabPFN-3.5,log_loss,0.614209,0.02087
 MUL_IMAGE_REDDIT_MEMES,classification,image,TabPFN-3.5-Fast,log_loss,0.627199,0.024753,-0.627199,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,TabPFN-v2,log_loss,0.709805,0.016571,-0.709805,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,TabPFN-v2p5,log_loss,0.771691,0.011938,-0.771691,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,classification,image,TabSTAR,log_loss,1.117813,0.013355,-1.117813,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,classification,image,XGBoost,log_loss,1.050102,0.019826,-1.050102,6,3214.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,CatBoost,log_loss,0.420513,0.01345,-0.420513,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,Causilo,log_loss,0.29245,0.013974,-0.29245,6,10000.0
@@ -490,6 +515,7 @@ MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,TabPFN-3.5,log_loss,0.27732,0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,TabPFN-3.5-Fast,log_loss,0.288246,0.013931,-0.288246,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,TabPFN-v2,log_loss,0.416072,0.011315,-0.416072,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,TabPFN-v2p5,log_loss,0.347514,0.011067,-0.347514,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,TabSTAR,log_loss,0.459717,0.014863,-0.459717,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,classification,image,XGBoost,log_loss,0.505179,0.025077,-0.505179,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,CatBoost,log_loss,0.122978,0.004951,-0.122978,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,Causilo,log_loss,0.091723,0.008263,-0.091723,6,10000.0
@@ -509,6 +535,7 @@ MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,TabPFN-3.5,log_loss,0.15981,0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,TabPFN-3.5-Fast,log_loss,0.160559,0.007812,-0.160559,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,TabPFN-v2,log_loss,0.15659,0.011005,-0.15659,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,TabPFN-v2p5,log_loss,0.094299,0.009743,-0.094299,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,TabSTAR,log_loss,0.122931,0.010342,-0.122931,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,classification,text,XGBoost,log_loss,0.11613,0.006932,-0.11613,6,10000.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,CatBoost,log_loss,0.888001,0.009512,-0.888001,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,Causilo,log_loss,0.825856,0.009904,-0.825856,6,2645.0
@@ -528,6 +555,7 @@ MUL_TEXT_BOOKS_GOODREADS,classification,text,TabPFN-3.5,log_loss,0.815567,0.0113
 MUL_TEXT_BOOKS_GOODREADS,classification,text,TabPFN-3.5-Fast,log_loss,0.8181,0.010124,-0.8181,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,TabPFN-v2,log_loss,0.927004,0.00593,-0.927004,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,TabPFN-v2p5,log_loss,0.92234,0.007006,-0.92234,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,classification,text,TabSTAR,log_loss,0.919429,0.011282,-0.919429,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,classification,text,XGBoost,log_loss,0.92173,0.018377,-0.92173,6,2645.0
 MUL_TEXT_BOX_OFFICE,classification,text,CatBoost,log_loss,1.017531,0.015226,-1.017531,6,4939.0
 MUL_TEXT_BOX_OFFICE,classification,text,Causilo,log_loss,0.907294,0.018226,-0.907294,6,4939.0
@@ -547,6 +575,7 @@ MUL_TEXT_BOX_OFFICE,classification,text,TabPFN-3.5,log_loss,0.904147,0.019446,-0
 MUL_TEXT_BOX_OFFICE,classification,text,TabPFN-3.5-Fast,log_loss,0.923903,0.023397,-0.923903,6,4939.0
 MUL_TEXT_BOX_OFFICE,classification,text,TabPFN-v2,log_loss,0.931563,0.017361,-0.931563,6,4939.0
 MUL_TEXT_BOX_OFFICE,classification,text,TabPFN-v2p5,log_loss,0.909377,0.01843,-0.909377,6,4939.0
+MUL_TEXT_BOX_OFFICE,classification,text,TabSTAR,log_loss,0.989188,0.024032,-0.989188,6,4939.0
 MUL_TEXT_BOX_OFFICE,classification,text,XGBoost,log_loss,1.057872,0.022229,-1.057872,6,4939.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,CatBoost,log_loss,0.571736,0.006147,-0.571736,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,Causilo,log_loss,0.529441,0.002769,-0.529441,6,10000.0
@@ -566,6 +595,7 @@ MUL_TEXT_CONSUMER_COMPLAINT,classification,text,TabPFN-3.5,log_loss,0.523197,0.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,TabPFN-3.5-Fast,log_loss,0.528029,0.003157,-0.528029,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,TabPFN-v2,log_loss,0.55933,0.005584,-0.55933,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,TabPFN-v2p5,log_loss,0.527535,0.002195,-0.527535,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,classification,text,TabSTAR,log_loss,0.569512,0.006525,-0.569512,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,classification,text,XGBoost,log_loss,0.581759,0.003172,-0.581759,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,CatBoost,log_loss,1.243147,0.016186,-1.243147,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,Causilo,log_loss,1.137927,0.009175,-1.137927,6,10000.0
@@ -585,6 +615,7 @@ MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,TabPFN-3.5,log_loss,1.132566,
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,TabPFN-3.5-Fast,log_loss,1.141408,0.008699,-1.141408,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,TabPFN-v2,log_loss,1.203455,0.010656,-1.203455,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,TabPFN-v2p5,log_loss,1.174458,0.012189,-1.174458,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,TabSTAR,log_loss,1.207467,0.009095,-1.207467,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,classification,text,XGBoost,log_loss,1.297979,0.010992,-1.297979,6,10000.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,CatBoost,log_loss,2.076442,0.03166,-2.076442,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,Causilo,log_loss,1.917139,0.013024,-1.917139,6,1098.0
@@ -604,6 +635,7 @@ MUL_TEXT_KOREAN_DRAMA,classification,text,TabPFN-3.5,log_loss,1.917613,0.013796,
 MUL_TEXT_KOREAN_DRAMA,classification,text,TabPFN-3.5-Fast,log_loss,1.911049,0.012776,-1.911049,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,TabPFN-v2,log_loss,1.946708,0.019462,-1.946708,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,TabPFN-v2p5,log_loss,1.944414,0.017224,-1.944414,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,classification,text,TabSTAR,log_loss,2.0303,0.035317,-2.0303,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,classification,text,XGBoost,log_loss,2.220321,0.035963,-2.220321,6,1098.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,CatBoost,log_loss,1.550659,0.00652,-1.550659,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,Causilo,log_loss,1.418522,0.011994,-1.418522,6,10000.0
@@ -623,6 +655,7 @@ MUL_TEXT_MELBOURNE_AIRBNB,classification,text,TabPFN-3.5,log_loss,1.435397,0.012
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,TabPFN-3.5-Fast,log_loss,1.43918,0.012868,-1.43918,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,TabPFN-v2,log_loss,1.530658,0.005758,-1.530658,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,TabPFN-v2p5,log_loss,1.592883,0.013859,-1.592883,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,classification,text,TabSTAR,log_loss,1.5474,0.01538,-1.5474,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,classification,text,XGBoost,log_loss,1.636268,0.006206,-1.636268,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,CatBoost,log_loss,0.631676,0.003551,-0.631676,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,Causilo,log_loss,0.599672,0.004217,-0.599672,6,10000.0
@@ -642,6 +675,7 @@ MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,TabPFN-3.5,log_loss,0.595659,0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,TabPFN-3.5-Fast,log_loss,0.600826,0.004378,-0.600826,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,TabPFN-v2,log_loss,0.623281,0.007452,-0.623281,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,TabPFN-v2p5,log_loss,0.60277,0.004593,-0.60277,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,TabSTAR,log_loss,0.609268,0.012117,-0.609268,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,classification,text,XGBoost,log_loss,0.695955,0.007642,-0.695955,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,CatBoost,log_loss,1.283036,0.008004,-1.283036,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,Causilo,log_loss,1.174458,0.005657,-1.174458,6,10000.0
@@ -661,6 +695,7 @@ MUL_TEXT_NEWS_CHANNEL,classification,text,TabPFN-3.5,log_loss,1.167919,0.004508,
 MUL_TEXT_NEWS_CHANNEL,classification,text,TabPFN-3.5-Fast,log_loss,1.170526,0.00503,-1.170526,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,TabPFN-v2,log_loss,1.222451,0.007997,-1.222451,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,TabPFN-v2p5,log_loss,1.201475,0.007207,-1.201475,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,classification,text,TabSTAR,log_loss,1.297999,0.016879,-1.297999,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,classification,text,XGBoost,log_loss,1.319599,0.011702,-1.319599,6,10000.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,CatBoost,log_loss,0.392415,0.012536,-0.392415,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,Causilo,log_loss,0.365696,0.006699,-0.365696,6,3394.0
@@ -680,6 +715,7 @@ MUL_TEXT_PRODUCT_SENTIMENT,classification,text,TabPFN-3.5,log_loss,0.36022,0.006
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,TabPFN-3.5-Fast,log_loss,0.362608,0.00813,-0.362608,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,TabPFN-v2,log_loss,0.378269,0.013018,-0.378269,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,TabPFN-v2p5,log_loss,0.375129,0.011092,-0.375129,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,classification,text,TabSTAR,log_loss,0.390277,0.012678,-0.390277,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,classification,text,XGBoost,log_loss,0.413338,0.018397,-0.413338,6,3394.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,CatBoost,log_loss,2.053761,0.021379,-2.053761,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,Causilo,log_loss,1.609036,0.013989,-1.609036,6,10000.0
@@ -697,6 +733,7 @@ MUL_TEXT_SPOTIFY_GENRES,classification,text,TabM,log_loss,2.140381,0.031981,-2.1
 MUL_TEXT_SPOTIFY_GENRES,classification,text,TabPFN-3,log_loss,1.777136,0.013365,-1.777136,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,TabPFN-3.5,log_loss,1.422015,0.019335,-1.422015,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,TabPFN-3.5-Fast,log_loss,1.496383,0.020614,-1.496383,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,classification,text,TabSTAR,log_loss,2.081342,0.032016,-2.081342,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,classification,text,XGBoost,log_loss,2.52181,0.027071,-2.52181,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,CatBoost,log_loss,0.212624,0.006801,-0.212624,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,Causilo,log_loss,0.165026,0.007573,-0.165026,6,10000.0
@@ -716,6 +753,7 @@ MUL_TEXT_US_ACCIDENTS,classification,text,TabPFN-3.5,log_loss,0.160908,0.008319,
 MUL_TEXT_US_ACCIDENTS,classification,text,TabPFN-3.5-Fast,log_loss,0.166546,0.007527,-0.166546,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,TabPFN-v2,log_loss,0.194586,0.008432,-0.194586,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,TabPFN-v2p5,log_loss,0.173604,0.007934,-0.173604,6,10000.0
+MUL_TEXT_US_ACCIDENTS,classification,text,TabSTAR,log_loss,0.171699,0.009491,-0.171699,6,10000.0
 MUL_TEXT_US_ACCIDENTS,classification,text,XGBoost,log_loss,0.219064,0.007386,-0.219064,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,CatBoost,log_loss,0.921158,0.015043,-0.921158,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,Causilo,log_loss,0.787556,0.016908,-0.787556,6,10000.0
@@ -733,6 +771,7 @@ MUL_TEXT_WINE_REVIEW,classification,text,TabM,log_loss,0.882635,0.017173,-0.8826
 MUL_TEXT_WINE_REVIEW,classification,text,TabPFN-3,log_loss,0.818334,0.016566,-0.818334,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,TabPFN-3.5,log_loss,0.761336,0.016281,-0.761336,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,TabPFN-3.5-Fast,log_loss,0.766334,0.015576,-0.766334,6,10000.0
+MUL_TEXT_WINE_REVIEW,classification,text,TabSTAR,log_loss,0.768842,0.014342,-0.768842,6,10000.0
 MUL_TEXT_WINE_REVIEW,classification,text,XGBoost,log_loss,1.090897,0.019382,-1.090897,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,CatBoost,log_loss,0.677652,0.004374,-0.677652,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,Causilo,log_loss,0.654039,0.005142,-0.654039,6,10000.0
@@ -752,6 +791,7 @@ MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,TabPFN-3.5,log_loss,0.652102,
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,TabPFN-3.5-Fast,log_loss,0.653396,0.005094,-0.653396,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,TabPFN-v2,log_loss,0.661963,0.006586,-0.661963,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,TabPFN-v2p5,log_loss,0.656626,0.006446,-0.656626,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,TabSTAR,log_loss,0.660188,0.011107,-0.660188,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,classification,text,XGBoost,log_loss,0.709258,0.005363,-0.709258,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,CatBoost,root_mean_squared_error,0.400654,0.007606,-0.400654,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,Causilo,root_mean_squared_error,0.383617,0.010351,-0.383617,6,10000.0
@@ -771,6 +811,7 @@ REG_IMAGE_AIRBNB_NYC,regression,image-text,TabPFN-3.5,root_mean_squared_error,0.
 REG_IMAGE_AIRBNB_NYC,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,0.383125,0.010988,-0.383125,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,TabPFN-v2,root_mean_squared_error,0.397914,0.009711,-0.397914,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0.385622,0.009285,-0.385622,6,10000.0
+REG_IMAGE_AIRBNB_NYC,regression,image-text,TabSTAR,root_mean_squared_error,0.412907,0.010616,-0.412907,6,10000.0
 REG_IMAGE_AIRBNB_NYC,regression,image-text,XGBoost,root_mean_squared_error,0.434752,0.007751,-0.434752,6,10000.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,CatBoost,root_mean_squared_error,0.705732,0.022244,-0.705732,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,Causilo,root_mean_squared_error,0.619945,0.024309,-0.619945,6,2326.0
@@ -790,6 +831,7 @@ REG_IMAGE_AMAZON_BEST_SELLER,regression,image,TabPFN-3.5,root_mean_squared_error
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,TabPFN-3.5-Fast,root_mean_squared_error,0.624002,0.022039,-0.624002,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,TabPFN-v2,root_mean_squared_error,0.675904,0.018689,-0.675904,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,TabPFN-v2p5,root_mean_squared_error,0.655333,0.018432,-0.655333,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,regression,image,TabSTAR,root_mean_squared_error,0.747049,0.022814,-0.747049,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,regression,image,XGBoost,root_mean_squared_error,0.78168,0.019887,-0.78168,6,2326.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,CatBoost,root_mean_squared_error,3.24181,0.134003,-3.24181,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,Causilo,root_mean_squared_error,3.02857,0.114827,-3.02857,6,10000.0
@@ -809,6 +851,7 @@ REG_IMAGE_AMAZON_PACKAGES,regression,image-text,TabPFN-3.5,root_mean_squared_err
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,3.052275,0.117457,-3.052275,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,TabPFN-v2,root_mean_squared_error,3.145823,0.119802,-3.145823,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,TabPFN-v2p5,root_mean_squared_error,3.097531,0.117095,-3.097531,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,regression,image-text,TabSTAR,root_mean_squared_error,3.077445,0.139489,-3.077445,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,regression,image-text,XGBoost,root_mean_squared_error,3.497709,0.134171,-3.497709,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,CatBoost,root_mean_squared_error,17477.235171,11641.358895,-17477.235171,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,Causilo,root_mean_squared_error,20390.116418,13279.004879,-20390.116418,6,10000.0
@@ -828,6 +871,7 @@ REG_IMAGE_DVM_CAR,regression,image-text,TabPFN-3.5,root_mean_squared_error,17577
 REG_IMAGE_DVM_CAR,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,17686.261325,11678.195795,-17686.261325,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,TabPFN-v2,root_mean_squared_error,20840.904925,14504.906072,-20840.904925,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,TabPFN-v2p5,root_mean_squared_error,19699.472803,11048.194314,-19699.472803,6,10000.0
+REG_IMAGE_DVM_CAR,regression,image-text,TabSTAR,root_mean_squared_error,23926.857933,12681.359176,-23926.857933,6,10000.0
 REG_IMAGE_DVM_CAR,regression,image-text,XGBoost,root_mean_squared_error,19380.429593,12600.806316,-19380.429593,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,CatBoost,root_mean_squared_error,0.099343,0.000663,-0.099343,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,Causilo,root_mean_squared_error,0.087142,0.001486,-0.087142,6,10000.0
@@ -847,6 +891,7 @@ REG_IMAGE_FLIPKART_RATIO,regression,image-text,TabPFN-3.5,root_mean_squared_erro
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,0.083222,0.001325,-0.083222,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,TabPFN-v2,root_mean_squared_error,0.095744,0.001308,-0.095744,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0.088689,0.001342,-0.088689,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,regression,image-text,TabSTAR,root_mean_squared_error,0.104882,0.001351,-0.104882,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,regression,image-text,XGBoost,root_mean_squared_error,0.103777,0.001027,-0.103777,6,10000.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,CatBoost,root_mean_squared_error,0.158361,0.004826,-0.158361,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,Causilo,root_mean_squared_error,0.124365,0.003634,-0.124365,6,6554.0
@@ -866,6 +911,7 @@ REG_IMAGE_GOIAS_HOUSES,regression,image-text,TabPFN-3.5,root_mean_squared_error,
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,0.122813,0.003599,-0.122813,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,TabPFN-v2,root_mean_squared_error,0.152207,0.002599,-0.152207,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0.133386,0.002808,-0.133386,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,regression,image-text,TabSTAR,root_mean_squared_error,0.178385,0.004764,-0.178385,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,regression,image-text,XGBoost,root_mean_squared_error,0.169569,0.002204,-0.169569,6,6554.0
 REG_IMAGE_HNM_FASHION,regression,image-text,CatBoost,root_mean_squared_error,4.459836,0.095555,-4.459836,6,10000.0
 REG_IMAGE_HNM_FASHION,regression,image-text,Causilo,root_mean_squared_error,4.327867,0.088753,-4.327867,6,10000.0
@@ -885,6 +931,7 @@ REG_IMAGE_HNM_FASHION,regression,image-text,TabPFN-3.5,root_mean_squared_error,4
 REG_IMAGE_HNM_FASHION,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,4.327959,0.091093,-4.327959,6,10000.0
 REG_IMAGE_HNM_FASHION,regression,image-text,TabPFN-v2,root_mean_squared_error,4.447506,0.089515,-4.447506,6,10000.0
 REG_IMAGE_HNM_FASHION,regression,image-text,TabPFN-v2p5,root_mean_squared_error,4.382283,0.086805,-4.382283,6,10000.0
+REG_IMAGE_HNM_FASHION,regression,image-text,TabSTAR,root_mean_squared_error,4.530787,0.09268,-4.530787,6,10000.0
 REG_IMAGE_HNM_FASHION,regression,image-text,XGBoost,root_mean_squared_error,4.621915,0.091688,-4.621915,6,10000.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,CatBoost,root_mean_squared_error,0.528724,0.013585,-0.528724,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,Causilo,root_mean_squared_error,0.496026,0.007219,-0.496026,6,1092.0
@@ -904,6 +951,7 @@ REG_IMAGE_KAMERNET_SIZE,regression,image-text,TabPFN-3.5,root_mean_squared_error
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,0.496588,0.007323,-0.496588,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,TabPFN-v2,root_mean_squared_error,0.504975,0.014962,-0.504975,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0.502447,0.01112,-0.502447,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,regression,image-text,TabSTAR,root_mean_squared_error,0.524817,0.008877,-0.524817,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,regression,image-text,XGBoost,root_mean_squared_error,0.552177,0.015056,-0.552177,6,1092.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,CatBoost,root_mean_squared_error,3321.888734,863.799252,-3321.888734,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,Causilo,root_mean_squared_error,2187.37704,525.735592,-2187.37704,6,267.0
@@ -923,6 +971,7 @@ REG_IMAGE_KHAADI_CLOTHES,regression,image-text,TabPFN-3.5,root_mean_squared_erro
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,2099.131081,519.879823,-2099.131081,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,TabPFN-v2,root_mean_squared_error,2489.890112,760.933771,-2489.890112,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,TabPFN-v2p5,root_mean_squared_error,3669.998918,1933.516769,-3669.998918,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,regression,image-text,TabSTAR,root_mean_squared_error,3171.796692,657.657947,-3171.796692,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,regression,image-text,XGBoost,root_mean_squared_error,3982.623003,958.360828,-3982.623003,6,267.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,CatBoost,root_mean_squared_error,457.88482,53.024454,-457.88482,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,Causilo,root_mean_squared_error,428.827521,40.444986,-428.827521,6,646.0
@@ -942,6 +991,7 @@ REG_IMAGE_LAHAINA_AUCTION,regression,image-text,TabPFN-3.5,root_mean_squared_err
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,429.424272,39.374242,-429.424272,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,TabPFN-v2,root_mean_squared_error,427.563936,41.623388,-427.563936,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,TabPFN-v2p5,root_mean_squared_error,429.138108,43.267322,-429.138108,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,regression,image-text,TabSTAR,root_mean_squared_error,448.335123,49.642105,-448.335123,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,regression,image-text,XGBoost,root_mean_squared_error,509.158341,51.547554,-509.158341,6,646.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,CatBoost,root_mean_squared_error,0.333496,0.00327,-0.333496,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,Causilo,root_mean_squared_error,0.318553,0.002792,-0.318553,6,8376.0
@@ -961,6 +1011,7 @@ REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,TabPFN-3.5,root_mean_squared_e
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,0.318811,0.001822,-0.318811,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,TabPFN-v2,root_mean_squared_error,0.32561,0.003201,-0.32561,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0.320017,0.003492,-0.320017,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,TabSTAR,root_mean_squared_error,0.335134,0.003074,-0.335134,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,regression,image-text,XGBoost,root_mean_squared_error,0.348182,0.002772,-0.348182,6,8376.0
 REG_IMAGE_MANGO_MASS,regression,image,CatBoost,root_mean_squared_error,0.060541,0.002406,-0.060541,6,364.0
 REG_IMAGE_MANGO_MASS,regression,image,Causilo,root_mean_squared_error,0.052595,0.003597,-0.052595,6,364.0
@@ -980,6 +1031,7 @@ REG_IMAGE_MANGO_MASS,regression,image,TabPFN-3.5,root_mean_squared_error,0.05284
 REG_IMAGE_MANGO_MASS,regression,image,TabPFN-3.5-Fast,root_mean_squared_error,0.052883,0.003403,-0.052883,6,364.0
 REG_IMAGE_MANGO_MASS,regression,image,TabPFN-v2,root_mean_squared_error,0.055115,0.003284,-0.055115,6,364.0
 REG_IMAGE_MANGO_MASS,regression,image,TabPFN-v2p5,root_mean_squared_error,0.055944,0.002524,-0.055944,6,364.0
+REG_IMAGE_MANGO_MASS,regression,image,TabSTAR,root_mean_squared_error,0.063634,0.002969,-0.063634,6,364.0
 REG_IMAGE_MANGO_MASS,regression,image,XGBoost,root_mean_squared_error,0.068796,0.003703,-0.068796,6,364.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,CatBoost,root_mean_squared_error,0.103084,0.001451,-0.103084,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,Causilo,root_mean_squared_error,0.093258,0.001289,-0.093258,6,9166.0
@@ -999,6 +1051,7 @@ REG_IMAGE_MKPHOTO_BOTS,regression,image,TabPFN-3.5,root_mean_squared_error,0.091
 REG_IMAGE_MKPHOTO_BOTS,regression,image,TabPFN-3.5-Fast,root_mean_squared_error,0.092844,0.001345,-0.092844,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,TabPFN-v2,root_mean_squared_error,0.103963,0.001328,-0.103963,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,TabPFN-v2p5,root_mean_squared_error,0.100397,0.001019,-0.100397,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,regression,image,TabSTAR,root_mean_squared_error,0.102968,0.00109,-0.102968,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,regression,image,XGBoost,root_mean_squared_error,0.107204,0.001239,-0.107204,6,9166.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,CatBoost,root_mean_squared_error,3427.973819,359.358154,-3427.973819,6,8246.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,Causilo,root_mean_squared_error,3200.100705,384.57713,-3200.100705,6,8246.0
@@ -1018,6 +1071,7 @@ REG_IMAGE_PAINTING_PRICE,regression,image-text,TabPFN-3.5,root_mean_squared_erro
 REG_IMAGE_PAINTING_PRICE,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,2919.49993,376.322248,-2919.49993,6,8246.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,TabPFN-v2,root_mean_squared_error,3455.433489,392.334776,-3455.433489,6,8246.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,TabPFN-v2p5,root_mean_squared_error,3226.423905,439.765816,-3226.423905,6,8246.0
+REG_IMAGE_PAINTING_PRICE,regression,image-text,TabSTAR,root_mean_squared_error,3518.872385,363.826346,-3518.872385,6,8246.0
 REG_IMAGE_PAINTING_PRICE,regression,image-text,XGBoost,root_mean_squared_error,3697.589993,340.157513,-3697.589993,6,8246.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,CatBoost,root_mean_squared_error,0.66839,0.0032,-0.66839,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,Causilo,root_mean_squared_error,0.582783,0.009148,-0.582783,6,10000.0
@@ -1037,6 +1091,7 @@ REG_IMAGE_ROMANIA_PRICE,regression,image,TabPFN-3.5,root_mean_squared_error,0.58
 REG_IMAGE_ROMANIA_PRICE,regression,image,TabPFN-3.5-Fast,root_mean_squared_error,0.582774,0.009271,-0.582774,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,TabPFN-v2,root_mean_squared_error,0.629336,0.007645,-0.629336,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,TabPFN-v2p5,root_mean_squared_error,0.606364,0.010516,-0.606364,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,regression,image,TabSTAR,root_mean_squared_error,0.704872,0.010052,-0.704872,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,regression,image,XGBoost,root_mean_squared_error,0.730609,0.010242,-0.730609,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,CatBoost,root_mean_squared_error,0.355518,0.026495,-0.355518,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,Causilo,root_mean_squared_error,0.321838,0.02512,-0.321838,6,10000.0
@@ -1056,6 +1111,7 @@ REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,TabPFN-3.5,root_mean_squared_er
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,0.316237,0.026379,-0.316237,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,TabPFN-v2,root_mean_squared_error,0.345207,0.025411,-0.345207,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0.333213,0.028708,-0.333213,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,TabSTAR,root_mean_squared_error,0.363963,0.028903,-0.363963,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,regression,image-text,XGBoost,root_mean_squared_error,0.384039,0.021252,-0.384039,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,CatBoost,root_mean_squared_error,184887.598152,2924.124424,-184887.598152,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,Causilo,root_mean_squared_error,156122.405792,4764.475058,-156122.405792,6,10000.0
@@ -1075,6 +1131,7 @@ REG_IMAGE_SOCAL_HOUSES,regression,image-text,TabPFN-3.5,root_mean_squared_error,
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,154794.173076,4835.786038,-154794.173076,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,TabPFN-v2,root_mean_squared_error,177607.887355,4054.91232,-177607.887355,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,TabPFN-v2p5,root_mean_squared_error,163821.499847,5063.386146,-163821.499847,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,regression,image-text,TabSTAR,root_mean_squared_error,191672.359781,3133.907547,-191672.359781,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,regression,image-text,XGBoost,root_mean_squared_error,198778.302719,3956.662776,-198778.302719,6,10000.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,CatBoost,root_mean_squared_error,0.988766,0.050032,-0.988766,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,Causilo,root_mean_squared_error,0.880119,0.046228,-0.880119,6,798.0
@@ -1094,6 +1151,7 @@ REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,TabPFN-3.5,root_mean_squared_er
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,0.878578,0.043192,-0.878578,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,TabPFN-v2,root_mean_squared_error,0.901421,0.051384,-0.901421,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0.911008,0.040996,-0.911008,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,TabSTAR,root_mean_squared_error,1.087054,0.033248,-1.087054,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,regression,image-text,XGBoost,root_mean_squared_error,1.082134,0.020131,-1.082134,6,798.0
 REG_IMAGE_WATCH_TIER,regression,image-text,CatBoost,root_mean_squared_error,0.370784,0.07296,-0.370784,6,840.0
 REG_IMAGE_WATCH_TIER,regression,image-text,Causilo,root_mean_squared_error,0.283665,0.069027,-0.283665,6,840.0
@@ -1113,6 +1171,7 @@ REG_IMAGE_WATCH_TIER,regression,image-text,TabPFN-3.5,root_mean_squared_error,0.
 REG_IMAGE_WATCH_TIER,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,0.287996,0.073362,-0.287996,6,840.0
 REG_IMAGE_WATCH_TIER,regression,image-text,TabPFN-v2,root_mean_squared_error,0.332779,0.071013,-0.332779,6,840.0
 REG_IMAGE_WATCH_TIER,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0.32625,0.07232,-0.32625,6,840.0
+REG_IMAGE_WATCH_TIER,regression,image-text,TabSTAR,root_mean_squared_error,0.347787,0.068722,-0.347787,6,840.0
 REG_IMAGE_WATCH_TIER,regression,image-text,XGBoost,root_mean_squared_error,0.41138,0.068653,-0.41138,6,840.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,CatBoost,root_mean_squared_error,0.521227,0.004505,-0.521227,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,Causilo,root_mean_squared_error,0.441589,0.004655,-0.441589,6,8897.0
@@ -1132,6 +1191,7 @@ REG_IMAGE_ZEPTO_PRICE,regression,image-text,TabPFN-3.5,root_mean_squared_error,0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,TabPFN-3.5-Fast,root_mean_squared_error,0.454208,0.005801,-0.454208,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,TabPFN-v2,root_mean_squared_error,0.514514,0.004479,-0.514514,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,TabPFN-v2p5,root_mean_squared_error,0.474485,0.006451,-0.474485,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,regression,image-text,TabSTAR,root_mean_squared_error,0.562695,0.005878,-0.562695,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,regression,image-text,XGBoost,root_mean_squared_error,0.560718,0.005326,-0.560718,6,8897.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,CatBoost,root_mean_squared_error,53.75974,4.782144,-53.75974,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,Causilo,root_mean_squared_error,50.395253,5.55958,-50.395253,6,2546.0
@@ -1151,6 +1211,7 @@ REG_TEXT_AIRBNB_SEATTLE,regression,text,TabPFN-3.5,root_mean_squared_error,51.76
 REG_TEXT_AIRBNB_SEATTLE,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,52.908103,5.508617,-52.908103,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,TabPFN-v2,root_mean_squared_error,52.117419,5.120816,-52.117419,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,TabPFN-v2p5,root_mean_squared_error,50.54484,5.321873,-50.54484,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,regression,text,TabSTAR,root_mean_squared_error,55.44929,4.396608,-55.44929,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,regression,text,XGBoost,root_mean_squared_error,60.475602,2.995659,-60.475602,6,2546.0
 REG_TEXT_ANIME_PLANET,regression,text,CatBoost,root_mean_squared_error,0.449683,0.007153,-0.449683,6,9594.0
 REG_TEXT_ANIME_PLANET,regression,text,Causilo,root_mean_squared_error,0.409407,0.006306,-0.409407,6,9594.0
@@ -1170,6 +1231,7 @@ REG_TEXT_ANIME_PLANET,regression,text,TabPFN-3.5,root_mean_squared_error,0.40737
 REG_TEXT_ANIME_PLANET,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,0.413688,0.007411,-0.413688,6,9594.0
 REG_TEXT_ANIME_PLANET,regression,text,TabPFN-v2,root_mean_squared_error,0.438186,0.008324,-0.438186,6,9594.0
 REG_TEXT_ANIME_PLANET,regression,text,TabPFN-v2p5,root_mean_squared_error,0.421852,0.007776,-0.421852,6,9594.0
+REG_TEXT_ANIME_PLANET,regression,text,TabSTAR,root_mean_squared_error,0.459665,0.003999,-0.459665,6,9594.0
 REG_TEXT_ANIME_PLANET,regression,text,XGBoost,root_mean_squared_error,0.484846,0.004193,-0.484846,6,9594.0
 REG_TEXT_BABIES_PRICES,regression,text,CatBoost,root_mean_squared_error,19.99073,3.124694,-19.99073,6,3390.0
 REG_TEXT_BABIES_PRICES,regression,text,Causilo,root_mean_squared_error,15.115932,3.757118,-15.115932,6,3390.0
@@ -1189,6 +1251,7 @@ REG_TEXT_BABIES_PRICES,regression,text,TabPFN-3.5,root_mean_squared_error,14.993
 REG_TEXT_BABIES_PRICES,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,15.155778,3.546373,-15.155778,6,3390.0
 REG_TEXT_BABIES_PRICES,regression,text,TabPFN-v2,root_mean_squared_error,17.68662,3.179368,-17.68662,6,3390.0
 REG_TEXT_BABIES_PRICES,regression,text,TabPFN-v2p5,root_mean_squared_error,16.70649,3.058908,-16.70649,6,3390.0
+REG_TEXT_BABIES_PRICES,regression,text,TabSTAR,root_mean_squared_error,18.579459,3.086181,-18.579459,6,3390.0
 REG_TEXT_BABIES_PRICES,regression,text,XGBoost,root_mean_squared_error,21.708008,2.559621,-21.708008,6,3390.0
 REG_TEXT_BOOK_PRICE,regression,text,CatBoost,root_mean_squared_error,0.228361,0.007487,-0.228361,6,3326.0
 REG_TEXT_BOOK_PRICE,regression,text,Causilo,root_mean_squared_error,0.210138,0.007124,-0.210138,6,3326.0
@@ -1208,6 +1271,7 @@ REG_TEXT_BOOK_PRICE,regression,text,TabPFN-3.5,root_mean_squared_error,0.209333,
 REG_TEXT_BOOK_PRICE,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,0.210402,0.006759,-0.210402,6,3326.0
 REG_TEXT_BOOK_PRICE,regression,text,TabPFN-v2,root_mean_squared_error,0.230449,0.008363,-0.230449,6,3326.0
 REG_TEXT_BOOK_PRICE,regression,text,TabPFN-v2p5,root_mean_squared_error,0.220577,0.008017,-0.220577,6,3326.0
+REG_TEXT_BOOK_PRICE,regression,text,TabSTAR,root_mean_squared_error,0.228658,0.008083,-0.228658,6,3326.0
 REG_TEXT_BOOK_PRICE,regression,text,XGBoost,root_mean_squared_error,0.248667,0.008481,-0.248667,6,3326.0
 REG_TEXT_BOOK_READABILITY,regression,text,CatBoost,root_mean_squared_error,0.834727,0.020199,-0.834727,6,3150.0
 REG_TEXT_BOOK_READABILITY,regression,text,Causilo,root_mean_squared_error,0.782639,0.024651,-0.782639,6,3150.0
@@ -1227,6 +1291,7 @@ REG_TEXT_BOOK_READABILITY,regression,text,TabPFN-3.5,root_mean_squared_error,0.7
 REG_TEXT_BOOK_READABILITY,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,0.793413,0.023795,-0.793413,6,3150.0
 REG_TEXT_BOOK_READABILITY,regression,text,TabPFN-v2,root_mean_squared_error,0.803651,0.022873,-0.803651,6,3150.0
 REG_TEXT_BOOK_READABILITY,regression,text,TabPFN-v2p5,root_mean_squared_error,0.794583,0.027899,-0.794583,6,3150.0
+REG_TEXT_BOOK_READABILITY,regression,text,TabSTAR,root_mean_squared_error,0.801098,0.032305,-0.801098,6,3150.0
 REG_TEXT_BOOK_READABILITY,regression,text,XGBoost,root_mean_squared_error,0.910202,0.018195,-0.910202,6,3150.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,CatBoost,root_mean_squared_error,0.43162,0.014427,-0.43162,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,Causilo,root_mean_squared_error,0.409826,0.011546,-0.409826,6,1197.0
@@ -1246,6 +1311,7 @@ REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,TabPFN-3.5,root_mean_squared_erro
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,0.407302,0.012133,-0.407302,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,TabPFN-v2,root_mean_squared_error,0.424048,0.014128,-0.424048,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,TabPFN-v2p5,root_mean_squared_error,0.414777,0.009582,-0.414777,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,TabSTAR,root_mean_squared_error,0.445739,0.015503,-0.445739,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,regression,text,XGBoost,root_mean_squared_error,0.449318,0.018608,-0.449318,6,1197.0
 REG_TEXT_FIFA22_WAGES,regression,text,CatBoost,root_mean_squared_error,9034.947062,140.790454,-9034.947062,6,10000.0
 REG_TEXT_FIFA22_WAGES,regression,text,Causilo,root_mean_squared_error,8845.304911,390.509568,-8845.304911,6,10000.0
@@ -1265,6 +1331,7 @@ REG_TEXT_FIFA22_WAGES,regression,text,TabPFN-3.5,root_mean_squared_error,8597.08
 REG_TEXT_FIFA22_WAGES,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,8745.923,281.983781,-8745.923,6,10000.0
 REG_TEXT_FIFA22_WAGES,regression,text,TabPFN-v2,root_mean_squared_error,10066.347019,656.634627,-10066.347019,6,10000.0
 REG_TEXT_FIFA22_WAGES,regression,text,TabPFN-v2p5,root_mean_squared_error,8893.706761,320.02837,-8893.706761,6,10000.0
+REG_TEXT_FIFA22_WAGES,regression,text,TabSTAR,root_mean_squared_error,12396.633203,504.400491,-12396.633203,6,10000.0
 REG_TEXT_FIFA22_WAGES,regression,text,XGBoost,root_mean_squared_error,9633.588368,352.782592,-9633.588368,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,CatBoost,root_mean_squared_error,0.560883,0.013707,-0.560883,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,Causilo,root_mean_squared_error,0.536609,0.013686,-0.536609,6,10000.0
@@ -1284,6 +1351,7 @@ REG_TEXT_MERCARI_MARKETPLACE,regression,text,TabPFN-3.5,root_mean_squared_error,
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,0.542808,0.015481,-0.542808,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,TabPFN-v2,root_mean_squared_error,0.568493,0.01458,-0.568493,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,TabPFN-v2p5,root_mean_squared_error,0.548636,0.014575,-0.548636,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,regression,text,TabSTAR,root_mean_squared_error,0.604684,0.095526,-0.604684,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,regression,text,XGBoost,root_mean_squared_error,0.600483,0.016373,-0.600483,6,10000.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,CatBoost,root_mean_squared_error,4156.845889,451.742098,-4156.845889,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,Causilo,root_mean_squared_error,3168.142834,514.529362,-3168.142834,6,6152.0
@@ -1303,6 +1371,7 @@ REG_TEXT_MONTGOMERY_SALARIES,regression,text,TabPFN-3.5,root_mean_squared_error,
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,3200.457351,415.486135,-3200.457351,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,TabPFN-v2,root_mean_squared_error,3810.60858,728.55584,-3810.60858,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,TabPFN-v2p5,root_mean_squared_error,3422.498076,424.411536,-3422.498076,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,regression,text,TabSTAR,root_mean_squared_error,5213.136758,521.046402,-5213.136758,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,regression,text,XGBoost,root_mean_squared_error,4809.188391,417.957012,-4809.188391,6,6152.0
 REG_TEXT_RAMEN_RATINGS,regression,text,CatBoost,root_mean_squared_error,0.949058,0.028329,-0.949058,6,2737.0
 REG_TEXT_RAMEN_RATINGS,regression,text,Causilo,root_mean_squared_error,0.914456,0.022797,-0.914456,6,2737.0
@@ -1322,6 +1391,7 @@ REG_TEXT_RAMEN_RATINGS,regression,text,TabPFN-3.5,root_mean_squared_error,0.9140
 REG_TEXT_RAMEN_RATINGS,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,0.915532,0.020312,-0.915532,6,2737.0
 REG_TEXT_RAMEN_RATINGS,regression,text,TabPFN-v2,root_mean_squared_error,0.969381,0.035015,-0.969381,6,2737.0
 REG_TEXT_RAMEN_RATINGS,regression,text,TabPFN-v2p5,root_mean_squared_error,0.93181,0.02468,-0.93181,6,2737.0
+REG_TEXT_RAMEN_RATINGS,regression,text,TabSTAR,root_mean_squared_error,0.969077,0.033341,-0.969077,6,2737.0
 REG_TEXT_RAMEN_RATINGS,regression,text,XGBoost,root_mean_squared_error,0.995432,0.035433,-0.995432,6,2737.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,CatBoost,root_mean_squared_error,0.81528,0.013748,-0.81528,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,Causilo,root_mean_squared_error,0.772011,0.01536,-0.772011,6,4772.0
@@ -1341,6 +1411,7 @@ REG_TEXT_ROTTEN_TOMATOES,regression,text,TabPFN-3.5,root_mean_squared_error,0.77
 REG_TEXT_ROTTEN_TOMATOES,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,0.779046,0.020488,-0.779046,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,TabPFN-v2,root_mean_squared_error,0.792841,0.014961,-0.792841,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,TabPFN-v2p5,root_mean_squared_error,0.767598,0.016042,-0.767598,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,regression,text,TabSTAR,root_mean_squared_error,0.82441,0.015035,-0.82441,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,regression,text,XGBoost,root_mean_squared_error,0.872355,0.014561,-0.872355,6,4772.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,CatBoost,root_mean_squared_error,22.609587,3.018022,-22.609587,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,Causilo,root_mean_squared_error,20.331991,1.788479,-20.331991,6,10000.0
@@ -1360,6 +1431,7 @@ REG_TEXT_SCIMAGOJR_IMPACT,regression,text,TabPFN-3.5,root_mean_squared_error,18.
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,19.082535,1.073633,-19.082535,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,TabPFN-v2,root_mean_squared_error,21.170016,2.541349,-21.170016,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,TabPFN-v2p5,root_mean_squared_error,20.817505,2.156434,-20.817505,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,regression,text,TabSTAR,root_mean_squared_error,27.574992,4.101184,-27.574992,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,regression,text,XGBoost,root_mean_squared_error,24.801408,2.371404,-24.801408,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,CatBoost,root_mean_squared_error,890286.433959,188996.851049,-890286.433959,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,Causilo,root_mean_squared_error,781697.080685,115739.684563,-781697.080685,6,10000.0
@@ -1379,6 +1451,7 @@ REG_TEXT_USED_CAR_PAKISTAN,regression,text,TabPFN-3.5,root_mean_squared_error,86
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,812970.168079,79477.67987,-812970.168079,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,TabPFN-v2,root_mean_squared_error,1430252.259626,455549.676667,-1430252.259626,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,TabPFN-v2p5,root_mean_squared_error,1084990.334854,282122.861906,-1084990.334854,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,regression,text,TabSTAR,root_mean_squared_error,2121195.381123,175520.801464,-2121195.381123,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,regression,text,XGBoost,root_mean_squared_error,1021788.177278,217853.776807,-1021788.177278,6,10000.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,CatBoost,root_mean_squared_error,26607.516828,2836.378898,-26607.516828,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,Causilo,root_mean_squared_error,24075.252143,2143.866082,-24075.252143,6,5357.0
@@ -1398,6 +1471,7 @@ REG_TEXT_USED_CAR_SAUDI,regression,text,TabPFN-3.5,root_mean_squared_error,21525
 REG_TEXT_USED_CAR_SAUDI,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,21882.373249,1868.389837,-21882.373249,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,TabPFN-v2,root_mean_squared_error,26295.765253,2734.526542,-26295.765253,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,TabPFN-v2p5,root_mean_squared_error,24531.800018,2250.705454,-24531.800018,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,regression,text,TabSTAR,root_mean_squared_error,31339.545327,4043.640723,-31339.545327,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,regression,text,XGBoost,root_mean_squared_error,28209.134469,3256.261626,-28209.134469,6,5357.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,CatBoost,root_mean_squared_error,13217.760237,570.13807,-13217.760237,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,Causilo,root_mean_squared_error,12080.681264,331.52802,-12080.681264,6,10000.0
@@ -1417,6 +1491,7 @@ REG_TEXT_VANCOUVER_SALARIES,regression,text,TabPFN-3.5,root_mean_squared_error,1
 REG_TEXT_VANCOUVER_SALARIES,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,12030.889443,356.899431,-12030.889443,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,TabPFN-v2,root_mean_squared_error,13740.182014,703.534732,-13740.182014,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,TabPFN-v2p5,root_mean_squared_error,12287.730617,466.276428,-12287.730617,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,regression,text,TabSTAR,root_mean_squared_error,14058.050059,719.592975,-14058.050059,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,regression,text,XGBoost,root_mean_squared_error,14246.889787,579.804175,-14246.889787,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,CatBoost,root_mean_squared_error,1.290136,0.235006,-1.290136,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,Causilo,root_mean_squared_error,1.135122,0.226352,-1.135122,6,10000.0
@@ -1436,6 +1511,7 @@ REG_TEXT_VIDEO_GAMES_SALES,regression,text,TabPFN-3.5,root_mean_squared_error,1.
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,1.131923,0.218771,-1.131923,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,TabPFN-v2,root_mean_squared_error,1.348197,0.218875,-1.348197,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,TabPFN-v2p5,root_mean_squared_error,1.239539,0.224034,-1.239539,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,regression,text,TabSTAR,root_mean_squared_error,1.287366,0.226347,-1.287366,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,regression,text,XGBoost,root_mean_squared_error,1.453709,0.280193,-1.453709,6,10000.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,CatBoost,root_mean_squared_error,818.142359,132.313197,-818.142359,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,Causilo,root_mean_squared_error,697.539246,130.594508,-697.539246,6,8380.0
@@ -1455,6 +1531,7 @@ REG_TEXT_WIKILIQ_PRICES,regression,text,TabPFN-3.5,root_mean_squared_error,740.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,755.488344,127.500564,-755.488344,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,TabPFN-v2,root_mean_squared_error,922.602783,141.267992,-922.602783,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,TabPFN-v2p5,root_mean_squared_error,775.56674,138.557463,-775.56674,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,regression,text,TabSTAR,root_mean_squared_error,870.595205,136.317593,-870.595205,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,regression,text,XGBoost,root_mean_squared_error,850.695154,126.462113,-850.695154,6,8380.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,CatBoost,root_mean_squared_error,302.520632,82.716394,-302.520632,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,Causilo,root_mean_squared_error,250.419229,83.279204,-250.419229,6,1498.0
@@ -1474,6 +1551,7 @@ REG_TEXT_WINE_POLISH_MARKET,regression,text,TabPFN-3.5,root_mean_squared_error,2
 REG_TEXT_WINE_POLISH_MARKET,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,250.209956,69.130055,-250.209956,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,TabPFN-v2,root_mean_squared_error,316.611046,69.878765,-316.611046,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,TabPFN-v2p5,root_mean_squared_error,262.424485,76.875699,-262.424485,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,regression,text,TabSTAR,root_mean_squared_error,328.980186,76.493644,-328.980186,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,regression,text,XGBoost,root_mean_squared_error,318.268847,81.421215,-318.268847,6,1498.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,CatBoost,root_mean_squared_error,0.089794,0.002584,-0.089794,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,Causilo,root_mean_squared_error,0.087567,0.002691,-0.087567,6,5767.0
@@ -1493,6 +1571,7 @@ REG_TEXT_WINE_VIVINO_SPAIN,regression,text,TabPFN-3.5,root_mean_squared_error,0.
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,0.08748,0.002198,-0.08748,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,TabPFN-v2,root_mean_squared_error,0.092021,0.00261,-0.092021,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,TabPFN-v2p5,root_mean_squared_error,0.08905,0.002067,-0.08905,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,regression,text,TabSTAR,root_mean_squared_error,0.094728,0.001814,-0.094728,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,regression,text,XGBoost,root_mean_squared_error,0.09417,0.002745,-0.09417,6,5767.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,CatBoost,root_mean_squared_error,0.183298,0.003786,-0.183298,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,Causilo,root_mean_squared_error,0.150727,0.004913,-0.150727,6,10000.0
@@ -1512,4 +1591,5 @@ REG_TEXT_ZOMATO_RESTAURANTS,regression,text,TabPFN-3.5,root_mean_squared_error,0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,TabPFN-3.5-Fast,root_mean_squared_error,0.151983,0.004812,-0.151983,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,TabPFN-v2,root_mean_squared_error,0.236341,0.00472,-0.236341,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,TabPFN-v2p5,root_mean_squared_error,0.158005,0.004148,-0.158005,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,regression,text,TabSTAR,root_mean_squared_error,0.194805,0.011833,-0.194805,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,regression,text,XGBoost,root_mean_squared_error,0.18966,0.004297,-0.18966,6,10000.0
