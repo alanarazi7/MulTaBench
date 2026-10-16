@@ -264,7 +264,7 @@ function toggles(container, items, field, storeKey) {
 }
 
 function drawElo(board) {
-  const rows = board, W = 520, rowH = 30, top = 18, bottom = 34, left = 142, right = 20;
+  const rows = board, W = 520, rowH = 30, top = 18, bottom = 34, left = 162, right = 20;
   const H = top + rows.length * rowH + bottom;
   const lo = Math.min(...rows.map(r => r.lo)), hi = Math.max(...rows.map(r => r.hi));
   const step = hi - Math.min(lo, 1000) > 1600 ? 400 : 200;
@@ -289,7 +289,7 @@ function drawElo(board) {
 function drawBoard(board) {
   const t = document.getElementById('boardTable');
   const maxN = Math.max(...board.map(r => r.datasets));
-  t.innerHTML = `<thead><tr><th></th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num">Win rate</th><th class="num">Avg rank</th><th class="num">Norm. err</th><th class="num" title="Folds on which the model has the lowest test error">Best on (folds)</th></tr></thead>`;
+  t.innerHTML = `<thead><tr><th></th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num">Win rate</th><th class="num">Avg rank</th><th class="num">Norm. err</th><th class="num" title="Folds on which the model has the lowest test error">Best</th></tr></thead>`;
   const tb = el('tbody');
   board.forEach((r, i) => {
     const ci = `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
