@@ -1,0 +1,4 @@
+# EXAONE-Tabular's venv, locked in requirements-exaone.txt: it needs scikit-learn>=1.7.2, and torch 2.7.1's attention
+# kernel fails on its codes for many classes (114), which torch 2.14 runs.
+exaonetabular @ git+https://github.com/LGAI-Research/EXAONE-Tabular.git@8638e07d09fad154249bd75ba4786181491f7025
+torch >= 2.13

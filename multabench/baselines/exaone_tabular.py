@@ -15,11 +15,12 @@ def _float32(x: DataFrame) -> np.ndarray:
 
 
 class EXAONETabular(TabularModel):
-    """LG's EXAONE Tabular at TabArena's default: 8 ensemble members in float16. Installed without its dependencies,
-    whose scikit-learn floor (1.7.2) the code doesn't need."""
+    """LG's EXAONE Tabular at TabArena's default: 8 ensemble members in float16, in its own venv
+    (requirements-exaone.in)."""
 
     MODEL_NAME = "EXAONE-Tabular"
     SHORT_NAME = "exaone"
+    ENV = "exaone"
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = False
     USE_CATEGORICAL_ENCODING = True
