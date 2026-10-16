@@ -55,7 +55,6 @@ tr:last-child td { border-bottom: 0; }
 td.num, th.num { text-align: right; }
 .rank { color: var(--muted); font-family: var(--mono); width: 2.5em; }
 .model { font-weight: 600; }
-.anchor { font: 500 11px/1 var(--mono); color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 2px 5px; margin-left: 6px; }
 .dev { font: 500 11px/1 var(--mono); border-radius: 4px; padding: 3px 6px; background: var(--soft); color: var(--muted); }
 .ci { color: var(--muted); font-size: 12.5px; }
 .chart svg { display: block; width: 100%; height: auto; }
@@ -150,7 +149,7 @@ code { font-family: var(--mono); font-size: 0.92em; }
   <section>
     <h2>How to read this</h2>
     <div class="notes">
-      <div class="panel note"><h3>Elo</h3><p class="muted">As in TabArena, every fold is its own battle: on each of a dataset's 6 folds, each pair of models plays one battle, won by the lower test error. The battles are fit as a Bradley–Terry model, with RandomForest fixed at 1000. The interval is the 95% range over 1,000 bootstrap resamples of datasets, each with all its folds. Win rate, average rank, normalized error and best-on count are per fold as well.</p></div>
+      <div class="panel note"><h3>Elo</h3><p class="muted">As in TabArena, every fold is its own battle: on each of a dataset's 6 folds, each pair of models plays one battle, won by the lower test error. The battles are fit as a Bradley–Terry model, with RandomForest fixed at 1000, by TabArena's bencheval. The interval is the 95% range over 1,000 bootstrap resamples of datasets, each with all its folds, bootstrapped before anchoring, so each is the model's own. Win rate, average rank, normalized error and best-on count are per fold as well.</p></div>
       <div class="panel note"><h3>Missing results are not imputed</h3><p class="muted" id="missingNote"></p></div>
       <div class="panel note"><h3>Data</h3><p class="muted">Every run is in <a href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models"><code>multabench/leaderboard/models/&lt;model&gt;.csv</code></a>. The tables here are plain CSVs in this Space's <a href="https://huggingface.co/spaces/multabench/leaderboard/tree/main/data">data</a> folder: <code>leaderboards.csv</code> (one leaderboard per <code>task</code> and <code>modality</code> filter), <code>per_dataset.csv</code> and <code>cost.csv</code>.</p></div>
       <div class="panel note"><h3>Metrics</h3><p class="muted">Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized error rescales each dataset to 0 (best model) – 1 (worst).</p></div>
@@ -277,7 +276,7 @@ function drawBoard(board) {
   t.innerHTML = `<thead><tr><th></th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num">Win rate</th><th class="num">Avg rank</th><th class="num">Norm. err</th><th class="num" title="Folds on which the model has the lowest test error">Best on (folds)</th></tr></thead>`;
   const tb = el('tbody');
   board.forEach((r, i) => {
-    const ci = r.model === 'RandomForest' ? '<span class="anchor">anchor</span>' : `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
+    const ci = `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
     const n = r.datasets < maxN ? ` <span class="flag" title="Rated on ${r.datasets} of ${maxN} datasets">${r.datasets}/${maxN}</span>` : '';
     tb.appendChild(el('tr', {}, `<td class="rank">${i + 1}</td><td class="model">${r.model}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td><td class="num">${fmt(r.avg_rank, 2)}</td><td class="num">${fmt(r.norm_error, 3)}</td><td class="num">${r.champions}</td>`));
   });

@@ -30,37 +30,39 @@ Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino
 (ConTextTab and TabSTAR read raw text themselves; TabSTAR loads, for each dataset it was pretrained on, the
 checkpoint that held that dataset out). TabPFN-v2 and v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
 
-**How Elo is computed.** As in TabArena, every fold is its own battle: on each of a dataset's 6 folds, each pair of
-models plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a
-Bradley–Terry model, with RandomForest anchored at 1000. The 95% intervals come from 1,000 bootstrap resamples of the
-datasets, each drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many
-folds. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
+**How Elo is computed.** With TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
+pinned in the `leaderboard` extra. Every fold is its own battle: on each of a dataset's 6 folds, each pair of models
+plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a Bradley–Terry
+model, with RandomForest anchored at 1000. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
+drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many folds. They
+are bootstrapped before anchoring, so each model's interval is its own, RandomForest's included, rather than relative
+to RandomForest. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
 error and best-on count are per fold as well. Until October 2026 the leaderboard, like the paper, played one battle
 per dataset on the mean error over its folds. That makes each dataset winner-take-all, which stretches the scale: on
 the then 17 models, Kumo-Tabular was at 2670 rather than 2347, with the same ranking.
 
 | # | Model | Elo, 80 datasets | 95% CI | Text, 40 | Images, 40 | Datasets |
 |---|---|---|---|---|---|---|
-| 1 | Kumo-Tabular | 2278 | +183 / −145 | 2307 | 2331 | 80 |
-| 2 | Kumo-Tabular-Medium | 2125 | +151 / −129 | 2139 | 2188 | 80 |
-| 3 | TabFM | 2056 | +156 / −123 | 2042 | 2139 | 80 |
-| 4 | TabPFN-3.5 | 1990 | +156 / −131 | 1911 | 2130 | 80 |
-| 5 | Kumo-Tabular-Small | 1936 | +130 / −114 | 1913 | 2024 | 80 |
-| 6 | Causilo | 1877 | +125 / −118 | 1824 | 1991 | 80 |
-| 7 | TabPFN-3.5-Fast | 1860 | +142 / −118 | 1780 | 2000 | 80 |
-| 8 | TabICLv2 | 1647 | +104 / −91 | 1563 | 1790 | 80 |
-| 9 | TabPFN-3 | 1586 | +105 / −93 | 1487 | 1745 | 80 |
-| 10 | TabPFN-v2p5 | 1585 | +102 / −94 | 1564 | 1658 | 77 |
-| 11 | TabPFN-v2 | 1373 | +95 / −81 | 1291 | 1504 | 77 |
-| 12 | ConTextTab | 1339 | +92 / −83 | 1270 | 1454 | 80 |
-| 13 | TabM | 1328 | +79 / −70 | 1310 | 1378 | 80 |
-| 14 | CatBoost | 1268 | +55 / −50 | 1274 | 1283 | 80 |
-| 15 | TabDPT | 1231 | +92 / −79 | 1106 | 1399 | 80 |
-| 16 | TabSTAR | 1202 | +95 / −87 | 1241 | 1165 | 80 |
-| 17 | RealMLP | 1093 | +64 / −59 | 1100 | 1090 | 80 |
-| 18 | LightGBM | 1052 | +51 / −48 | 1081 | 1016 | 80 |
-| 19 | RandomForest | 1000 | anchor | 1000 | 1000 | 80 |
-| 20 | XGBoost | 997 | +56 / −58 | 1029 | 953 | 80 |
+| 1 | Kumo-Tabular | 2279 | +108 / −84 | 2310 | 2334 | 80 |
+| 2 | Kumo-Tabular-Medium | 2126 | +86 / −72 | 2141 | 2190 | 80 |
+| 3 | TabFM | 2057 | +86 / −63 | 2044 | 2141 | 80 |
+| 4 | TabPFN-3.5 | 1991 | +78 / −69 | 1913 | 2132 | 80 |
+| 5 | Kumo-Tabular-Small | 1937 | +56 / −46 | 1915 | 2026 | 80 |
+| 6 | Causilo | 1878 | +51 / −43 | 1826 | 1993 | 80 |
+| 7 | TabPFN-3.5-Fast | 1861 | +61 / −54 | 1782 | 2002 | 80 |
+| 8 | TabICLv2 | 1648 | +37 / −35 | 1564 | 1792 | 80 |
+| 9 | TabPFN-3 | 1586 | +37 / −36 | 1488 | 1747 | 80 |
+| 10 | TabPFN-v2p5 | 1586 | +34 / −38 | 1565 | 1660 | 77 |
+| 11 | TabPFN-v2 | 1373 | +45 / −50 | 1291 | 1505 | 77 |
+| 12 | ConTextTab | 1339 | +56 / −63 | 1270 | 1455 | 80 |
+| 13 | TabM | 1328 | +41 / −45 | 1311 | 1378 | 80 |
+| 14 | CatBoost | 1268 | +42 / −48 | 1274 | 1283 | 80 |
+| 15 | TabDPT | 1231 | +62 / −65 | 1106 | 1400 | 80 |
+| 16 | TabSTAR | 1201 | +68 / −71 | 1241 | 1165 | 80 |
+| 17 | RealMLP | 1093 | +57 / −69 | 1100 | 1090 | 80 |
+| 18 | LightGBM | 1052 | +64 / −73 | 1081 | 1016 | 80 |
+| 19 | RandomForest | 1000 | +80 / −87 | 1000 | 1000 | 80 |
+| 20 | XGBoost | 997 | +69 / −78 | 1029 | 953 | 80 |
 
 Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row per (dataset, fold), failed
 runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank, normalized

@@ -20,7 +20,7 @@ def test_the_anchor_is_fixed_and_a_better_model_rates_higher():
     rng = np.random.default_rng(0)
     table = _table([{ANCHOR: 0.3, "Good": 0.1 + rng.random() * 0.05, "Bad": 0.5} for _ in range(10)])
     board = leaderboard(table, bootstraps=50).set_index(ResultKey.MODEL)
-    assert board.loc[ANCHOR, "elo"] == INIT
+    assert board.loc[ANCHOR, "elo"] == pytest.approx(INIT)
     assert board.loc["Good", "elo"] > INIT > board.loc["Bad", "elo"]
     assert board.loc["Good", "elo_low"] <= board.loc["Good", "elo"] <= board.loc["Good", "elo_high"]
     assert board.loc["Good", "best_on"] == 10 and board.loc["Good", "win_rate"] == 1.0
