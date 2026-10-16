@@ -4,3 +4,5 @@ sap_rpt_oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss@v1.1.2
 structured-data-models @ git+https://github.com/NVIDIA/structured-data-models.git@98f61289c7a4e1bce3b33771223ac2e123b63f19
 # The commit TabArena benchmarked: 1.0.1 and fixes, including the PyTorch-only import.
 tabfm[pytorch] @ git+https://github.com/google-research/tabfm.git@fbb665569425fd2f490c6576b3af967876fe11ff
+# The commit TabArena pins; its results ran 6773a30d, whose classifier defaults the wrapper restores.
+Xiaomi-TabLDM @ git+https://github.com/xiaomi-research/xiaomi-tabldm.git@d3fc3b7a0644631c8e3c18fa50629440e334f3f4

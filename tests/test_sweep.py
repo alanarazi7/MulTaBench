@@ -3,7 +3,7 @@ from multabench.benchmark.splits import Size
 from multabench.benchmark import sweep
 from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, IMAGE_TEXT_TEXT_ENCODER,
                                         encoder_pairs, list_runs, pending_runs, prefetch, sbatch_commands,
-                                        select_datasets)
+                                        select_datasets, venv_python, write_jobs_file)
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
@@ -87,3 +87,20 @@ def test_official_runs_check_their_hardware():
     run = Run("light", TEXT.name, TextEncoder.E5_SMALL, None, Size.TEN_K, 0)
     assert "--official" in run.command(python="python", output_dir="runs", official=True)
     assert "--official" not in run.command(python="python", output_dir="runs")
+
+
+def test_a_model_with_its_own_venv_runs_with_its_python(tmp_path):
+    runs = [Run("light", TEXT.name, TextEncoder.E5_SMALL, None, Size.TEN_K, 0),
+            Run("causilo", TEXT.name, TextEncoder.E5_SMALL, None, Size.TEN_K, 0)]
+    jobs = tmp_path / "jobs.txt"
+    write_jobs_file(runs, path=str(jobs), python="shared/python", output_dir="runs",
+                    model_pythons={"causilo": venv_python("repo", "causilo")})
+    lines = jobs.read_text().splitlines()
+    assert lines[0].startswith("shared/python benchmark.py --model light ")
+    assert lines[1].startswith("repo/.venv-causilo/bin/python benchmark.py --model causilo ")
+
+
+def test_causilo_declares_its_venv():
+    from multabench.baselines.causilo import Causilo
+    from multabench.baselines.lgbm import LightGBM
+    assert Causilo.ENV == "causilo" and LightGBM.ENV is None

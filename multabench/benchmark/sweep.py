@@ -3,7 +3,7 @@ import argparse
 import os
 import shlex
 import subprocess
-from typing import Iterable, List, Optional, Set, Tuple
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 from multabench.benchmark.load import download_dataset
 from multabench.benchmark.runs import Run
@@ -76,10 +76,18 @@ def prefetch(runs: List[Run]):
             download_embeddings(cached_encoder(encoder.encoder_name, encoder.tune_encoder), MulTaBenchDatasetID[dataset])
 
 
-def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str, official: bool = False):
+def venv_python(repo_dir: str, env: str) -> str:
+    return os.path.join(repo_dir, f".venv-{env}", "bin", "python")
+
+
+def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str, official: bool = False,
+                    model_pythons: Optional[Dict[str, str]] = None):
+    """One command per line, with python, or a model's own venv's python from model_pythons."""
+    model_pythons = model_pythons or {}
     with open(path, "w") as f:
         for run in runs:
-            f.write(run.command(python=python, output_dir=output_dir, official=official) + "\n")
+            run_python = model_pythons.get(getattr(run, "model", None), python)
+            f.write(run.command(python=run_python, output_dir=output_dir, official=official) + "\n")
 
 
 def run_local(jobs_file: str, repo_dir: str) -> int:

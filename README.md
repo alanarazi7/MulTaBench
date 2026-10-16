@@ -100,8 +100,9 @@ python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --
 `pip install -e ".[bench,catboost]"` installs what one model needs; each wrapper imports its package only when it runs.
 ConTextTab, Kumo and TabFM are pinned to a git commit, which PyPI doesn't allow in extras, so `requirements-git.txt`
 lists them. `init.sh` sets up the shared `.venv` from `requirements.txt`, which locks the core, every extra and those
-three. Causilo needs a newer torch, so `source init.sh causilo` sets up `.venv-causilo` from `requirements-causilo.txt`;
-run its sweeps with that venv's python, which `sweep.py` writes into the jobs it launches.
+three. A model whose requirements conflict with that lock declares its own venv in its wrapper (`ENV`), locked in
+`requirements-<ENV>.txt` and set up with `source init.sh <ENV>`: Causilo, which needs a newer torch, runs in
+`.venv-causilo`. `sweep.py` writes each model's venv python into its jobs, so one sweep covers every model.
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
 result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change), with

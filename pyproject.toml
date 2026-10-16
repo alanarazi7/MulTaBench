@@ -55,11 +55,13 @@ pytabkit = ["pytabkit"]
 tabicl = ["tabicl >= 2.0.3"]
 tabdpt = ["tabdpt >= 1.1.9"]
 tabpfn = ["tabpfn >= 9.2.0"]
-tabstar = ["tabstar >= 1.1.15"]
+tabstar = ["tabstar >= 1.2.0"]
 # TabFM itself is git-pinned; this is the output coding of more than ten classes.
 tabfm = ["tabpfn-extensions[many_class] >= 0.6.1"]
 # Needs torch>=2.13, so it has its own lock, requirements-causilo.txt, and venv.
 causilo = ["causilo == 1.0.2"]
+# TabDPT-1.3, apart from the 1.1 TabDPT needs: its own lock, requirements-tabdpt13.txt, and venv.
+tabdpt13 = ["tabdpt == 1.3.1"]
 autogluon-mm = ["autogluon.multimodal"]
 # The Elo leaderboard: TabArena's bencheval, at the daily build of its main branch the leaderboard was computed with.
 leaderboard = ["bencheval == 0.1.1.dev20261015010754"]

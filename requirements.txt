@@ -111,6 +111,7 @@ einops==0.8.1
     # via
     #   tabicl
     #   tabpfn
+    #   xiaomi-tabldm
 evaluate==0.4.6
     # via autogluon-multimodal
 faiss-cpu==1.12.0
@@ -178,9 +179,11 @@ huggingface-hub==0.36.0
     #   tabfm
     #   tabicl
     #   tabpfn
+    #   tabstar
     #   timm
     #   tokenizers
     #   transformers
+    #   xiaomi-tabldm
 hyperopt==0.2.7
     # via autogluon-core
 idna==3.11
@@ -327,6 +330,7 @@ numpy==2.3.5
     #   torchvision
     #   transformers
     #   xgboost
+    #   xiaomi-tabldm
 nvidia-cublas-cu12==12.6.4.1
     # via
     #   nvidia-cudnn-cu12
@@ -450,6 +454,7 @@ pandas==2.3.3
     #   tabpfn-common-utils
     #   tabpfn-extensions
     #   tabstar
+    #   xiaomi-tabldm
 pbr==7.0.3
     # via stevedore
 pdf2image==1.17.0
@@ -512,6 +517,7 @@ psutil==7.0.0
     #   peft
     #   pytabkit
     #   tabicl
+    #   xiaomi-tabldm
 py-spy==0.4.1
     # via ray
 py4j==0.10.9.9
@@ -667,6 +673,7 @@ scikit-learn==1.6.1
     #   tabpfn-common-utils
     #   tabpfn-extensions
     #   tabstar
+    #   xiaomi-tabldm
 scipy==1.16.3
     # via
     #   autogluon-core
@@ -684,6 +691,7 @@ scipy==1.16.3
     #   tabpfn
     #   tabpfn-extensions
     #   xgboost
+    #   xiaomi-tabldm
 sentencepiece==0.2.1
     # via transformers
 seqeval==1.2.2
@@ -734,7 +742,7 @@ tabpfn-common-utils==0.2.23
     # via tabpfn-extensions
 tabpfn-extensions==0.6.3
     # via multabench (pyproject.toml)
-tabstar==1.1.15
+tabstar==1.2.0
     # via multabench (pyproject.toml)
 tabulate==0.10.0
     # via
@@ -781,6 +789,7 @@ torch==2.7.1
     #   timm
     #   torchmetrics
     #   torchvision
+    #   xiaomi-tabldm
 torcheval==0.0.7
     # via sap-rpt-oss
 torchmetrics==1.7.4
@@ -818,6 +827,7 @@ tqdm==4.67.1
     #   tabpfn
     #   tabstar
     #   transformers
+    #   xiaomi-tabldm
 transformers==4.57.3
     # via
     #   multabench (pyproject.toml)
@@ -876,6 +886,8 @@ wrapt==2.1.2
     # via smart-open
 xgboost==3.1.2
     # via multabench (pyproject.toml)
+xiaomi-tabldm @ git+https://github.com/xiaomi-research/xiaomi-tabldm.git@d3fc3b7a0644631c8e3c18fa50629440e334f3f4
+    # via -r requirements-git.txt
 xxhash==3.6.0
     # via
     #   datasets
