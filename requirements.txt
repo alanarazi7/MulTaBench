@@ -177,6 +177,7 @@ huggingface-hub==0.36.0
     #   tabfm
     #   tabicl
     #   tabpfn
+    #   tabstar
     #   timm
     #   tokenizers
     #   transformers
@@ -735,7 +736,7 @@ tabpfn-common-utils==0.2.23
     # via tabpfn-extensions
 tabpfn-extensions==0.6.3
     # via multabench (pyproject.toml)
-tabstar==1.1.15
+tabstar==1.2.0
     # via multabench (pyproject.toml)
 tabulate==0.10.0
     # via openmim
