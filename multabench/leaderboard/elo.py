@@ -42,7 +42,8 @@ def _datasets(table: pd.DataFrame) -> pd.Index:
 def elo_ratings(table: pd.DataFrame, bootstraps: int = 1000) -> pd.DataFrame:
     """bencheval's Elo, with the 95% interval bounds, indexed by model."""
     from bencheval.evaluator import BenchmarkEvaluator
-    runs = table.stack().rename(ResultKey.TEST_ERROR).reset_index()
+    named = table.rename_axis(index=[ResultKey.DATASET, ResultKey.FOLD], columns=ResultKey.MODEL)
+    runs = named.stack().rename(ResultKey.TEST_ERROR).reset_index()
     evaluator = BenchmarkEvaluator(method_col=ResultKey.MODEL, task_col=ResultKey.DATASET,
                                    error_col=ResultKey.TEST_ERROR, seed_column=ResultKey.FOLD)
     elo = evaluator.compute_elo(results_per_task=runs, calibration_framework=ANCHOR, calibration_elo=INIT,
