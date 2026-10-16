@@ -61,6 +61,8 @@ tabfm = ["tabpfn-extensions[many_class] >= 0.6.1"]
 # Needs torch>=2.13, so it has its own lock, requirements-causilo.txt, and venv.
 causilo = ["causilo == 1.0.2"]
 autogluon-mm = ["autogluon.multimodal"]
+# The Elo leaderboard: TabArena's bencheval, at the daily build of its main branch the leaderboard was computed with.
+leaderboard = ["bencheval == 0.1.1.dev20261015010754"]
 dev = ["matplotlib", "pytest", "streamlit"]
 
 [project.urls]
