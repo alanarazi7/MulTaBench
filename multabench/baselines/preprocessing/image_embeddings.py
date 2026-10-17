@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 import numpy as np
 from PIL import Image
 from typing import Dict, Tuple, Optional, List, Any, Set
@@ -11,13 +13,11 @@ from multabench.constants import SEED
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from transformers import AutoImageProcessor, AutoModel, DINOv3ViTImageProcessorFast, DINOv3ViTModel
 
-from multabench.dino.constants import DINOV3_SMALL
-from multabench.dino.dino_finetune import finetune_dino_with_lora
+from multabench.dino.constants import DINO_LORA, DINOV3_SMALL
+from multabench.dino.dino_finetune import finetune_dino
 from multabench.dino.image_loading import load_images
 from multabench.embeddings.hub import CachedEmbeddings, cached_embeddings, cached_encoder
-from multabench.preprocessing.discretize import discretize_numerical
 from multabench.utils.warnings import suppress_channel_dimension_warning
-from multabench.preprocessing.splits import split_to_val
 from multabench.utils.timing import embedding_step
 
 # Alternatives: facebook/dinov3-vits16plus-pretrain-lvd1689m, facebook/dinov3-convnext-tiny-pretrain-lvd1689m
@@ -72,24 +72,10 @@ def fit_image_encoders(
         raise ValueError(f"Image columns {image_features} need an image_folder")
 
     if tune_dino and y is not None:
-        if not is_cls:
-            y = discretize_numerical(y, n_bins=20)
-        x_tr, x_val, y_tr, y_val = split_to_val(x=x, y=y, is_cls=True)
-        first_col = image_features[0]
-        train_imgs = load_images(s=x_tr[first_col], image_folder=image_folder)
-        val_imgs = load_images(s=x_val[first_col], image_folder=image_folder)
-        kwargs = dino_train_kwargs or {}
-        tuned_model, tuned_processor = finetune_dino_with_lora(
-            train_images=train_imgs,
-            train_y=y_tr.values,
-            val_images=val_imgs,
-            val_y=y_val.values,
-            device=device,
-            processor=AutoImageProcessor.from_pretrained(dino_model_name, use_fast=True),
-            model_name=dino_model_name,
-            **kwargs,
-        )
-        tuned_model.to(device)
+        tuned_model, tuned_processor, _ = finetune_dino(x[image_features[0]], y, is_cls=is_cls,
+                                                        image_folder=image_folder, device=device,
+                                                        model_name=dino_model_name,
+                                                        args=replace(DINO_LORA, **(dino_train_kwargs or {})))
         dino_model, img_processor = tuned_model, tuned_processor
     caches = {} if tune_dino else _caches_per_column(dino_model_name, dataset)
     if not tune_dino and not set(caches).issuperset(image_features):

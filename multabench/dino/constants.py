@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+from multabench.finetune.train_args import LoraArgs
 from multabench.utils.encoders import Encoder
 
 DINOV3_SMALL = "facebook/dinov3-vits16-pretrain-lvd1689m"
@@ -34,6 +35,8 @@ DINO_NUM_LAYERS = {
     DINOV3_SMALL: DINO_SMALL_LAYERS,
     DINOV3_LARGE: DINO_LARGE_LAYERS,
 }
+
+DINO_LORA = LoraArgs(learning_rate=1e-3, epochs=100)
 
 LORA_IMAGE_TARGET_MODULES = [
     "q_proj", "k_proj", "v_proj", "o_proj",

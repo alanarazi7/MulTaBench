@@ -58,9 +58,6 @@ file as the PRs that complete them are merged.
 
 ## Shared fine-tuning code
 
-E5 fine-tunes with the shared loop in `finetune/lora.py`; DINO still has its own copy in `dino/dino_finetune.py`:
-
-- [ ] Move DINO onto `finetune/lora.py`, replacing `DinoTrainArgs` with a `DINO_LORA`.
 - [ ] Drop the `--dino_*` / `--e5_*` flags and their kwargs dicts in `benchmark.py`, which only override `E5_LORA`
       and `DINO_LORA`.
 
