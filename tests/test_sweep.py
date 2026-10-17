@@ -1,3 +1,5 @@
+import os
+
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
 from multabench.benchmark import sweep
@@ -104,3 +106,11 @@ def test_causilo_declares_its_venv():
     from multabench.baselines.causilo import Causilo
     from multabench.baselines.lgbm import LightGBM
     assert Causilo.ENV == "causilo" and LightGBM.ENV is None
+
+
+def test_every_model_venv_has_a_lock():
+    from benchmark import BASELINES
+    repo = os.path.join(os.path.dirname(__file__), "..")
+    envs = {m.ENV for m in BASELINES if m.ENV}
+    missing = [env for env in envs if not os.path.exists(os.path.join(repo, f"requirements-{env}.txt"))]
+    assert not missing
