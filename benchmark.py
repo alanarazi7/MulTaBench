@@ -6,7 +6,7 @@ import time
 import traceback
 
 from multabench.utils.devices import get_device
-from multabench.finetune.train_args import DinoTrainArgs, E5TrainArgs
+from multabench.finetune.train_args import DinoTrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost
 from multabench.baselines.causilo import Causilo
@@ -33,7 +33,7 @@ from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import SPLITS, Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
-from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
+from multabench.e5.constants import E5_LORA, TEXT_ENCODERS, TextEncoder
 from multabench.embeddings.hub import reads_cache
 from multabench.result_keys import ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware
@@ -68,7 +68,7 @@ if __name__ == "__main__":
                         help="raise unless on the leaderboard's hardware and a clean commit on master")
     parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1; default: cuda, or cpu for runs that don't need a GPU")
     _dino = DinoTrainArgs()
-    _e5 = E5TrainArgs()
+    _e5 = E5_LORA
     parser.add_argument('--image_encoder', type=ImageEncoder, default=None, choices=list(ImageEncoder),
                         help="for datasets with images; default: dino-small")
     # DINO LoRA finetuning params (used by the "-tar" image encoders)
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     # E5 LoRA finetuning params (used by the "-tar" text encoders)
     parser.add_argument('--e5_lr', type=float, default=_e5.learning_rate)
     parser.add_argument('--e5_rank', type=int, default=_e5.lora_rank)
-    parser.add_argument('--e5_text_layers', type=int, default=_e5.text_layers)
+    parser.add_argument('--e5_text_layers', type=int, default=_e5.layers)
     parser.add_argument('--e5_epochs', type=int, default=_e5.epochs)
     parser.add_argument('--e5_patience', type=int, default=_e5.patience)
     parser.add_argument('--e5_weight_decay', type=float, default=_e5.weight_decay)
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     ) if image_encoder and image_encoder.tune_encoder else None
     e5_train_kwargs = dict(
         lora_rank=args.e5_rank,
-        text_layers=args.e5_text_layers,
+        layers=args.e5_text_layers,
         learning_rate=args.e5_lr,
         epochs=args.e5_epochs,
         patience=args.e5_patience,
