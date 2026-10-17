@@ -1,5 +1,6 @@
 import builtins
 import contextlib
+import functools
 import io
 import warnings
 from typing import Tuple
@@ -31,6 +32,8 @@ def silence_noisy_prints(noisy_markers: Tuple[str, ...] = BASELINE_NOISY_MARKERS
     """
     orig_print = builtins.print
     
+    # Named as print, which numba requires of the print it finds when first imported inside this context.
+    @functools.wraps(orig_print)
     def _filtered_print(*args, **kwargs):
         s = " ".join(str(a) for a in args)
         if any(m in s for m in noisy_markers):
