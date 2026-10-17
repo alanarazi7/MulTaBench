@@ -1,4 +1,3 @@
-from dataclasses import replace
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 import numpy as np
@@ -9,7 +8,7 @@ from transformers import AutoImageProcessor, AutoModel, DINOv3ViTImageProcessorF
 
 from multabench.baselines.preprocessing.column_encoders import ColumnEncoder, column_caches, fit_column_encoders
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.dino.constants import DINO_LORA, DINOV3_SMALL
+from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.dino.dino_finetune import finetune_dino
 from multabench.dino.image_loading import load_images
 from multabench.embeddings.hub import CachedEmbeddings
@@ -47,26 +46,24 @@ class DinoColumnEncoder(ColumnEncoder):
 
 
 def fit_image_encoders(x: DataFrame, image_features: Set[str], device: torch.device, image_folder: Optional[str],
-                       y: Optional[Series] = None, is_cls: bool = True, tune_dino: bool = False,
-                       dino_train_kwargs: Optional[Dict[str, Any]] = None, dino_model_name: str = DINOV3_SMALL,
-                       dataset: Optional[MulTaBenchDatasetID] = None
-                       ) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
-    """One encoder per image column, with the training rows' embeddings. Tuning fine-tunes DINO on the first image
-    column of the training rows (y); otherwise columns with cached embeddings on the Hub are read from there."""
+                       encoder: ImageEncoder = ImageEncoder.DINO_SMALL, y: Optional[Series] = None, is_cls: bool = True,
+                       dataset: Optional[MulTaBenchDatasetID] = None) -> Tuple[Dict[str, ColumnEncoder],
+                                                                               Dict[str, np.ndarray]]:
+    """One encoder per image column, with the training rows' embeddings. A tuned encoder is DINO fine-tuned on the first
+    image column of the training rows (y); otherwise columns with cached embeddings on the Hub are read from there."""
     columns = [c for c in x.columns if c in image_features]
     if not columns:
         return {}, {}
     if image_folder is None:
         raise ValueError(f"Image columns {columns} need an image_folder")
-    tune = tune_dino and y is not None
-    caches = {} if tune else column_caches(dino_model_name, dataset)
+    spec = IMAGE_ENCODERS[encoder]
+    caches = {} if spec.tune_encoder else column_caches(spec.encoder_name, dataset)
     model, processor = None, None
-    if tune:
+    if spec.tune_encoder:
         model, processor, _ = finetune_dino(x[columns[0]], y, is_cls=is_cls, image_folder=image_folder, device=device,
-                                            model_name=dino_model_name,
-                                            args=replace(DINO_LORA, **(dino_train_kwargs or {})))
+                                            model_name=spec.encoder_name)
     elif not set(caches).issuperset(columns):
-        model, processor = get_image_encoder(model_name=dino_model_name)
+        model, processor = get_image_encoder(model_name=spec.encoder_name)
         model.to(device)
     return fit_column_encoders(x, [DinoColumnEncoder(col, model, processor, image_folder, cache=caches.get(col))
                                    for col in columns])
