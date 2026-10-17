@@ -6,7 +6,6 @@ import time
 import traceback
 
 from multabench.utils.devices import get_device
-from multabench.finetune.train_args import DinoTrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost
 from multabench.baselines.causilo import Causilo
@@ -32,7 +31,7 @@ from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import SPLITS, Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
-from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
+from multabench.dino.constants import DINO_LORA, IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import E5_LORA, TEXT_ENCODERS, TextEncoder
 from multabench.embeddings.hub import reads_cache
 from multabench.result_keys import ResultKey, RunStatus
@@ -67,14 +66,13 @@ if __name__ == "__main__":
     parser.add_argument('--official', action='store_true', default=False,
                         help="raise unless on the leaderboard's hardware and a clean commit on master")
     parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1; default: cuda, or cpu for runs that don't need a GPU")
-    _dino = DinoTrainArgs()
-    _e5 = E5_LORA
+    _dino, _e5 = DINO_LORA, E5_LORA
     parser.add_argument('--image_encoder', type=ImageEncoder, default=None, choices=list(ImageEncoder),
                         help="for datasets with images; default: dino-small")
     # DINO LoRA finetuning params (used by the "-tar" image encoders)
     parser.add_argument('--dino_lr', type=float, default=_dino.learning_rate)
     parser.add_argument('--dino_rank', type=int, default=_dino.lora_rank)
-    parser.add_argument('--dino_img_layers', type=int, default=_dino.img_layers)
+    parser.add_argument('--dino_img_layers', type=int, default=_dino.layers)
     parser.add_argument('--dino_epochs', type=int, default=_dino.epochs)
     parser.add_argument('--dino_patience', type=int, default=_dino.patience)
     parser.add_argument('--dino_weight_decay', type=float, default=_dino.weight_decay)
@@ -119,7 +117,7 @@ if __name__ == "__main__":
         sys.exit(0)
     dino_train_kwargs = dict(
         lora_rank=args.dino_rank,
-        img_layers=args.dino_img_layers,
+        layers=args.dino_img_layers,
         learning_rate=args.dino_lr,
         epochs=args.dino_epochs,
         patience=args.dino_patience,
