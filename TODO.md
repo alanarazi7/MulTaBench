@@ -47,6 +47,15 @@ file as the PRs that complete them are merged.
 - [ ] Remove the remaining paper analysis code in `multabench/leaderboard/`, keeping only the main
       leaderboard tab.
 
+## Core package
+
+- [ ] A public model protocol, any object with `fit` and `predict`, and `evaluate(model, dataset, fold, size)` in the
+      core: `load_split`, `fit`, `predict`, `score` and the timings, returning one row in the
+      `leaderboard/models/*.csv` schema. `benchmark.py` calls it, and the `TabularModel` baselines implement it.
+- [ ] `featurize(split, text_encoder, image_encoder)` in the `bench` extra: the frozen-encoder and per-column PCA
+      preprocessing as a standalone step, so a protocol model gets the baselines' features. It builds on the shared
+      embedding preprocessing below.
+
 ## Shared fine-tuning code
 
 `e5/e5_finetune.py` and `dino/dino_finetune.py` are near copies. Move what they share into
@@ -83,7 +92,6 @@ shared parent, keeping only the encoders themselves (E5, TF-IDF, DINO) per modal
 
 ## Later, not needed for the first release
 
-- Minimal installation for `load_split` and `load_embeddings`.
 - `e5-large` and `dino-large` stay available as options but are not run.
 - `--size full` results.
 - A time limit per (model, dataset, fold), excluding encoder fine-tuning, with a result row with
