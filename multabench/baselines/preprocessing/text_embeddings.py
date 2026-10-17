@@ -1,7 +1,6 @@
 import os
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # Suppresses warning, avoids deadlock
-from dataclasses import replace
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 import numpy as np
@@ -12,7 +11,7 @@ from multabench.baselines.preprocessing.column_encoders import (PCA_COMPONENTS, 
                                                                 fit_column_encoders)
 from multabench.constants import SEED
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.e5.constants import E5_LORA, E5_SMALL_V2, TF_IDF
+from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
 from multabench.embeddings.hub import CachedEmbeddings, e5_passages
 from multabench.utils.timing import embedding_step
@@ -62,24 +61,24 @@ class TfidfColumnEncoder(ColumnEncoder):
         return embeddings
 
 
-def fit_text_encoders(x: DataFrame, text_features: Set[str], device: torch.device, y: Optional[Series] = None,
-                      tune_e5: bool = False, e5_train_kwargs: Optional[Dict[str, Any]] = None, is_cls: bool = True,
-                      e5_model_name: str = E5_SMALL_V2, dataset: Optional[MulTaBenchDatasetID] = None
-                      ) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
-    """One encoder per text column, with the training rows' embeddings. Tuning fine-tunes one E5 for all the columns on
-    the training rows (y); otherwise columns with cached embeddings on the Hub are read from there."""
+def fit_text_encoders(x: DataFrame, text_features: Set[str], device: torch.device,
+                      encoder: TextEncoder = TextEncoder.E5_SMALL, y: Optional[Series] = None, is_cls: bool = True,
+                      dataset: Optional[MulTaBenchDatasetID] = None) -> Tuple[Dict[str, ColumnEncoder],
+                                                                              Dict[str, np.ndarray]]:
+    """One encoder per text column, with the training rows' embeddings. A tuned encoder is one E5 for all the columns,
+    fine-tuned on the training rows (y); otherwise columns with cached embeddings on the Hub are read from there."""
     columns = sorted(text_features)
     if not columns:
         return {}, {}
-    if e5_model_name == TF_IDF:
+    if encoder == TextEncoder.TFIDF:
         return fit_column_encoders(x, [TfidfColumnEncoder(col, x[col]) for col in columns])
-    tune = tune_e5 and y is not None
-    caches = {} if tune else column_caches(e5_model_name, dataset)
+    spec = TEXT_ENCODERS[encoder]
+    caches = {} if spec.tune_encoder else column_caches(spec.encoder_name, dataset)
     model, tokenizer = None, None
-    if tune:
+    if spec.tune_encoder:
         model, tokenizer, _ = finetune_e5(x[columns], y, columns, is_cls=is_cls, device=device,
-                                          model_name=e5_model_name, args=replace(E5_LORA, **(e5_train_kwargs or {})))
+                                          model_name=spec.encoder_name)
     elif not set(caches).issuperset(columns):
-        model, tokenizer = get_vanilla_e5(device, model_name=e5_model_name)
+        model, tokenizer = get_vanilla_e5(device, model_name=spec.encoder_name)
     return fit_column_encoders(x, [E5ColumnEncoder(col, model, tokenizer, device, cache=caches.get(col))
                                    for col in columns])

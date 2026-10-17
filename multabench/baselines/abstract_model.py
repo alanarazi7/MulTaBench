@@ -1,4 +1,4 @@
-from typing import Tuple, Dict, Optional, Set, List, Any
+from typing import Tuple, Dict, Optional, Set, List
 
 import numpy as np
 import torch
@@ -18,8 +18,8 @@ from multabench.baselines.preprocessing.categorical import (fit_categorical_enco
                                                             transform_categorical_features)
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
 from multabench.baselines.preprocessing.target import transform_preprocess_y, fit_preprocess_y
-from multabench.dino.constants import DINOV3_SMALL
-from multabench.e5.constants import E5_SMALL_V2
+from multabench.dino.constants import ImageEncoder
+from multabench.e5.constants import TextEncoder
 from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
 from multabench.datasets.objects import SupervisedTask
 from multabench.utils.warnings import silence_baselines_prints
@@ -43,12 +43,8 @@ class TabularModel:
     def __init__(self, problem_type: SupervisedTask, device: torch.device,
                  dataset: MulTaBenchDatasetID | None = None, verbose: bool = False, image_folder: str | None = None,
                  image_column: str | None = None,
-                 tune_dino: bool = False,
-                 dino_train_kwargs: Optional[Dict[str, Any]] = None,
-                 dino_model_name: str = DINOV3_SMALL,
-                 tune_e5: bool = False,
-                 e5_train_kwargs: Optional[Dict[str, Any]] = None,
-                 e5_model_name: str = E5_SMALL_V2,
+                 text_encoder: TextEncoder | None = None,
+                 image_encoder: ImageEncoder | None = None,
                  **kwargs):
         assert problem_type in {SupervisedTask.REGRESSION, SupervisedTask.BINARY, SupervisedTask.MULTICLASS}
         self.problem_type = problem_type
@@ -60,12 +56,8 @@ class TabularModel:
         self.d_output: int = 0
         self.image_folder = image_folder
         self.image_column = image_column
-        self.tune_dino = tune_dino
-        self.dino_train_kwargs = dino_train_kwargs or {}
-        self.dino_model_name = dino_model_name
-        self.tune_e5 = tune_e5
-        self.e5_train_kwargs = e5_train_kwargs or {}
-        self.e5_model_name = e5_model_name
+        self.text_encoder = text_encoder or TextEncoder.E5_SMALL
+        self.image_encoder = image_encoder or ImageEncoder.DINO_SMALL
         self.model_ = self.initialize_model()
         self.target_transformer: Optional[LabelEncoder] = None
         self.date_transformers: Dict[str, DatetimeEncoder] = {}
@@ -105,16 +97,8 @@ class TabularModel:
             self.categorical_encoders = fit_categorical_encoders(x=x_train, categorical_features=self.categorical_features)
         if self.USE_TEXT_EMBEDDINGS:
             self.text_transformers, text_embeddings = fit_text_encoders(
-                x=x_train,
-                text_features=self.text_features,
-                device=self.device,
-                y=y_train if self.tune_e5 else None,
-                tune_e5=self.tune_e5,
-                e5_train_kwargs=self.e5_train_kwargs if self.tune_e5 else None,
-                is_cls=self.is_cls,
-                e5_model_name=self.e5_model_name,
-                dataset=self.dataset,
-            )
+                x=x_train, text_features=self.text_features, device=self.device, encoder=self.text_encoder, y=y_train,
+                is_cls=self.is_cls, dataset=self.dataset)
             self._train_embeddings.update(text_embeddings)
             self.vprint(f"📝 Detected {len(self.text_transformers)} text features: {sorted(self.text_transformers)}")
         if self.USE_CATEGORY_DTYPE:
@@ -162,17 +146,8 @@ class TabularModel:
         else:
             self.d_output = 1
         self.image_transformers, self._train_embeddings = fit_image_encoders(
-            x=x,
-            image_features=feature_types.image_features,
-            device=self.device,
-            image_folder=self.image_folder,
-            y=y if self.tune_dino else None,
-            is_cls=self.is_cls,
-            tune_dino=self.tune_dino,
-            dino_train_kwargs=self.dino_train_kwargs if self.tune_dino else None,
-            dino_model_name=self.dino_model_name,
-            dataset=self.dataset,
-        )
+            x=x, image_features=feature_types.image_features, device=self.device, image_folder=self.image_folder,
+            encoder=self.image_encoder, y=y, is_cls=self.is_cls, dataset=self.dataset)
         self.vprint(f"📷 Detected {len(self.image_transformers)} image features: {sorted(self.image_transformers)}")
         non_image_columns = [col for col in x.columns if col not in self.image_transformers]
         x = x[non_image_columns]

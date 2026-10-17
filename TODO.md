@@ -59,11 +59,6 @@ file as the PRs that complete them are merged.
       preprocessing as a standalone step, so a protocol model gets the baselines' features. It builds on the shared
       embedding preprocessing below.
 
-## Shared fine-tuning code
-
-- [ ] Drop the `--dino_*` / `--e5_*` flags and their kwargs dicts in `benchmark.py`, which only override `E5_LORA`
-      and `DINO_LORA`.
-
 ## README
 
 - [ ] Rework the README the way the [TabSTAR README](https://github.com/alanarazi7/TabSTAR) is laid out: a row of
