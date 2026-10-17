@@ -38,7 +38,7 @@ def finetune_dino(files: Series, y: Series, is_cls: bool, image_folder: str, dev
 
     encoder = TunableEncoder(
         load_backbone=lambda: _load_fresh_dino(device, model_name=model_name),
-        layer_modules=lambda layer: [f"layer.{layer}.attention.{m}" for m in LORA_IMAGE_TARGET_MODULES],
+        layer_modules=lambda layer: [f"layer.{layer}.{m}" for m in LORA_IMAGE_TARGET_MODULES],
         featurize=featurize,
         pool=lambda last_hidden, inputs: cls_token(last_hidden))
     col = files.name
