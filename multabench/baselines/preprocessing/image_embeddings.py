@@ -11,7 +11,8 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.dino.dino_finetune import finetune_dino
 from multabench.dino.image_loading import load_images
-from multabench.embeddings.hub import CachedEmbeddings
+from multabench.benchmark.splits import Size
+from multabench.embeddings.hub import CACHED_ENCODERS, CachedEmbeddings
 from multabench.utils.timing import embedding_step
 from multabench.utils.warnings import suppress_channel_dimension_warning
 
@@ -47,24 +48,25 @@ class DinoColumnEncoder(ColumnEncoder):
 
 def fit_image_encoders(x: DataFrame, image_features: Set[str], device: torch.device, image_folder: Optional[str],
                        encoder: ImageEncoder = ImageEncoder.DINO_SMALL, y: Optional[Series] = None, is_cls: bool = True,
-                       dataset: Optional[MulTaBenchDatasetID] = None) -> Tuple[Dict[str, ColumnEncoder],
-                                                                               Dict[str, np.ndarray]]:
-    """One encoder per image column, with the training rows' embeddings. A tuned encoder is DINO fine-tuned on the first
-    image column of the training rows (y); otherwise columns with cached embeddings on the Hub are read from there."""
+                       dataset: Optional[MulTaBenchDatasetID] = None, size: Optional[Size] = None,
+                       fold: Optional[int] = None) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
+    """One encoder per image column, with the training rows' embeddings, read from the cache when the encoder has
+    one: the fold's, for a tuned encoder. Otherwise a tuned encoder is DINO fine-tuned on (x, y) of the first one."""
     columns = [c for c in x.columns if c in image_features]
     if not columns:
         return {}, {}
     if image_folder is None:
         raise ValueError(f"Image columns {columns} need an image_folder")
     spec = IMAGE_ENCODERS[encoder]
-    caches = {} if spec.tune_encoder else column_caches(spec.encoder_name, dataset)
+    caches = column_caches(encoder, dataset, columns, size=size, fold=fold) if encoder in CACHED_ENCODERS else {}
     model, processor = None, None
-    if spec.tune_encoder:
-        model, processor, _ = finetune_dino(x[columns[0]], y, is_cls=is_cls, image_folder=image_folder, device=device,
-                                            model_name=spec.encoder_name)
-    elif not set(caches).issuperset(columns):
-        model, processor = get_image_encoder(model_name=spec.encoder_name)
-        model.to(device)
+    if not set(caches).issuperset(columns):
+        if spec.tune_encoder:
+            model, processor, _ = finetune_dino(x[columns[0]], y, is_cls=is_cls, image_folder=image_folder,
+                                                device=device, model_name=spec.encoder_name)
+        else:
+            model, processor = get_image_encoder(model_name=spec.encoder_name)
+            model.to(device)
     return fit_column_encoders(x, [DinoColumnEncoder(col, model, processor, image_folder, cache=caches.get(col))
                                    for col in columns])
 

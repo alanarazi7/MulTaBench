@@ -31,7 +31,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
     x_test, y_test = split.x_test, split.y_test
     model = model_cls(problem_type=dataset.task_type, device=device, verbose=verbose, dataset=dataset_id,
                       image_folder=dataset.image_folder, image_column=dataset.image_column, text_encoder=text_encoder,
-                      image_encoder=image_encoder)
+                      image_encoder=image_encoder, fold=fold, size=size)
     pop_embedding_seconds()
     with PeakMemoryTracker(phase='train', device=device) as train_tracker:
         model.fit(x_train, y_train)

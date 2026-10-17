@@ -23,8 +23,8 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.hub import DATA_PARQUET, extract_images, hf_repo_id
 from multabench.datasets.revisions import revision
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
-from multabench.embeddings.hub import (CachedEmbeddings, CachedEncoder, download_embeddings,
-                                       encoder_inputs, input_values, parse_encoder, read_embeddings)
+from multabench.embeddings.hub import (CachedEmbeddings, CachedEncoder, download_embeddings, encoder_inputs,
+                                       input_values, is_tuned, parse_encoder, read_embeddings)
 from multabench.benchmark.utils.constants import METADATA_JSON
 from multabench.benchmark.utils.curation import TASK_REG, task_type_from_name
 
@@ -101,7 +101,8 @@ def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = 
     encoder = parse_encoder(encoder)
     y, task_type = load_target(dataset)
     train_idx, test_idx = get_split(y.to_numpy(), is_cls=task_type != SupervisedTask.REGRESSION, split=fold, size=size)
-    cache = read_embeddings(download_embeddings(encoder, dataset))
+    split = dict(size=size, fold=fold) if is_tuned(encoder) else {}
+    cache = read_embeddings(download_embeddings(encoder, dataset, **split))
     x = _load_columns(dataset, columns=cache.meta["features"])
     return SplitEmbeddings(train=_lookup(cache, x.iloc[train_idx], encoder), test=_lookup(cache, x.iloc[test_idx], encoder),
                            meta=cache.meta)

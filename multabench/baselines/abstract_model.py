@@ -18,6 +18,7 @@ from multabench.baselines.preprocessing.categorical import (fit_categorical_enco
                                                             transform_categorical_features)
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
 from multabench.baselines.preprocessing.target import transform_preprocess_y, fit_preprocess_y
+from multabench.benchmark.splits import Size
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
 from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
@@ -45,6 +46,8 @@ class TabularModel:
                  image_column: str | None = None,
                  text_encoder: TextEncoder | None = None,
                  image_encoder: ImageEncoder | None = None,
+                 fold: int | None = None,
+                 size: Size | None = None,
                  **kwargs):
         assert problem_type in {SupervisedTask.REGRESSION, SupervisedTask.BINARY, SupervisedTask.MULTICLASS}
         self.problem_type = problem_type
@@ -58,6 +61,9 @@ class TabularModel:
         self.image_column = image_column
         self.text_encoder = text_encoder or TextEncoder.E5_SMALL
         self.image_encoder = image_encoder or ImageEncoder.DINO_SMALL
+        # A tuned encoder's cached embeddings are per fold.
+        self.fold = fold
+        self.size = size
         self.model_ = self.initialize_model()
         self.target_transformer: Optional[LabelEncoder] = None
         self.date_transformers: Dict[str, DatetimeEncoder] = {}
@@ -98,7 +104,7 @@ class TabularModel:
         if self.USE_TEXT_EMBEDDINGS:
             self.text_transformers, text_embeddings = fit_text_encoders(
                 x=x_train, text_features=self.text_features, device=self.device, encoder=self.text_encoder, y=y_train,
-                is_cls=self.is_cls, dataset=self.dataset)
+                is_cls=self.is_cls, dataset=self.dataset, size=self.size, fold=self.fold)
             self._train_embeddings.update(text_embeddings)
             self.vprint(f"📝 Detected {len(self.text_transformers)} text features: {sorted(self.text_transformers)}")
         if self.USE_CATEGORY_DTYPE:
@@ -147,7 +153,7 @@ class TabularModel:
             self.d_output = 1
         self.image_transformers, self._train_embeddings = fit_image_encoders(
             x=x, image_features=feature_types.image_features, device=self.device, image_folder=self.image_folder,
-            encoder=self.image_encoder, y=y, is_cls=self.is_cls, dataset=self.dataset)
+            encoder=self.image_encoder, y=y, is_cls=self.is_cls, dataset=self.dataset, size=self.size, fold=self.fold)
         self.vprint(f"📷 Detected {len(self.image_transformers)} image features: {sorted(self.image_transformers)}")
         non_image_columns = [col for col in x.columns if col not in self.image_transformers]
         x = x[non_image_columns]
