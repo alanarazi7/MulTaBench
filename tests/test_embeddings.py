@@ -7,7 +7,8 @@ from multabench.baselines.preprocessing.column_encoders import transform_columns
 from multabench.baselines.preprocessing.image_embeddings import fit_image_encoders
 from multabench.baselines.preprocessing.nulls import MISSING_VALUE
 from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
-from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
+from multabench.benchmark.splits import Size
+from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import DINOV3_SMALL, IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import E5_SMALL_V2, TEXT_ENCODERS, TF_IDF, TextEncoder, format_e5_passage
 from multabench.embeddings import hub
@@ -26,9 +27,15 @@ def test_one_repo_per_encoder():
     assert embeddings_dir(TEXT) == TEXT.value
 
 
+def test_tuned_encoders_are_cached_per_fold():
+    assert embeddings_repo_id(TextEncoder.E5_SMALL_TAR) == "multabench/embeddings-e5-small-tar"
+    assert embeddings_dir(TEXT, size=Size.TEN_K, fold=3) == f"{TEXT.value}/10k/fold_3"
+
+
 def test_parse_encoder():
     assert parse_encoder("dino-small") is ImageEncoder.DINO_SMALL
-    for uncached in ("tfidf", "e5-small-tar", "dino-small-tar"):
+    assert parse_encoder("e5-small-tar") is TextEncoder.E5_SMALL_TAR
+    for uncached in ("tfidf", "e5-large", "dino-large"):
         with pytest.raises(ValueError):
             parse_encoder(uncached)
 
@@ -38,6 +45,8 @@ def test_encoders_follow_the_benchmark_runs(dataset_id):
     modality = dataset_modality(dataset_id)
     assert embeds_dataset(TextEncoder.E5_SMALL, dataset_id) == modality.has_text
     assert embeds_dataset(ImageEncoder.DINO_SMALL, dataset_id) == modality.has_images
+    assert embeds_dataset(TextEncoder.E5_SMALL_TAR, dataset_id) == (modality == Modality.TEXT)
+    assert embeds_dataset(ImageEncoder.DINO_SMALL_TAR, dataset_id) == modality.has_images
 
 
 def test_round_trip_and_lookup(tmp_path):
@@ -66,8 +75,8 @@ def test_inputs_are_what_the_encoder_gets():
         "img/1.jpg", "img/2.jpg", "img/1.jpg"]
 
 
-def test_jobs_cover_each_dataset_once(tmp_path):
-    jobs = list_jobs(encoders=list(CACHED_ENCODERS), datasets=[TEXT, IMAGE_TEXT])
+def test_frozen_jobs_cover_each_dataset_once(tmp_path):
+    jobs = list_jobs(encoders=[TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL], datasets=[TEXT, IMAGE_TEXT])
     assert jobs == [EmbeddingJob(TextEncoder.E5_SMALL, TEXT), EmbeddingJob(TextEncoder.E5_SMALL, IMAGE_TEXT),
                     EmbeddingJob(ImageEncoder.DINO_SMALL, IMAGE_TEXT)]
     assert jobs[0].command(python="python", output_dir="out") == (
@@ -78,10 +87,21 @@ def test_jobs_cover_each_dataset_once(tmp_path):
     assert pending_jobs(jobs, output_dir=str(tmp_path)) == jobs[1:]
 
 
+def test_tuned_jobs_cover_each_fold(tmp_path):
+    jobs = list_jobs(encoders=[ImageEncoder.DINO_SMALL_TAR], datasets=[TEXT, IMAGE_TEXT], folds=[0, 4])
+    assert jobs == [EmbeddingJob(ImageEncoder.DINO_SMALL_TAR, IMAGE_TEXT, Size.TEN_K, 0),
+                    EmbeddingJob(ImageEncoder.DINO_SMALL_TAR, IMAGE_TEXT, Size.TEN_K, 4)]
+    assert jobs[1].path == f"embeddings-dino-small-tar/{IMAGE_TEXT.value}/10k/fold_4"
+    assert jobs[1].command(python="python", output_dir="out") == (
+        "python -m multabench.embeddings.embed --encoder dino-small-tar --dataset_name MUL_IMAGE_PETFINDER --size 10k "
+        "--fold 4 --output_dir out")
+    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6
+
+
 def test_cached_encoder():
     assert cached_encoder(E5_SMALL_V2, tuned=False) is TextEncoder.E5_SMALL
     assert cached_encoder(DINOV3_SMALL, tuned=False) is ImageEncoder.DINO_SMALL
-    assert cached_encoder(E5_SMALL_V2, tuned=True) is None
+    assert cached_encoder(E5_SMALL_V2, tuned=True) is TextEncoder.E5_SMALL_TAR
     assert cached_encoder(TF_IDF, tuned=False) is None
 
 
@@ -99,6 +119,8 @@ def test_missing_cached_embeddings_raise(monkeypatch, tmp_path):
     (tmp_path / embeddings_dir(TEXT) / META_JSON).touch()
     with pytest.raises(FileNotFoundError, match="embeddings.npz"):
         download_embeddings(TextEncoder.E5_SMALL, TEXT)
+    with pytest.raises(ValueError, match="per fold"):
+        download_embeddings(TextEncoder.E5_SMALL_TAR, TEXT)
 
 
 def test_text_features_look_their_texts_up_in_the_cache(monkeypatch):
