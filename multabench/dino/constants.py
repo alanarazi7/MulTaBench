@@ -1,5 +1,6 @@
 from enum import StrEnum
 
+from multabench.finetune.train_args import LoraArgs
 from multabench.utils.encoders import Encoder
 
 DINOV3_SMALL = "facebook/dinov3-vits16-pretrain-lvd1689m"
@@ -34,6 +35,8 @@ DINO_NUM_LAYERS = {
     DINOV3_SMALL: DINO_SMALL_LAYERS,
     DINOV3_LARGE: DINO_LARGE_LAYERS,
 }
+
+DINO_LORA = LoraArgs(learning_rate=1e-3, epochs=100)
 
 # The modules LoRA adapts in each tuned ViT layer, layer.{i}: attention and MLP, as in E5. The paper's runs named the
 # MLP's under attention, which matched nothing, so they adapted the attention projections alone.
