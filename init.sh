@@ -5,6 +5,9 @@
 ENV_DIR=".venv${1:+-$1}"
 REQUIREMENTS="requirements${1:+-$1}.txt"
 VENV_PY="$ENV_DIR/bin/python"
+# The Python the lock was compiled for, 3.11 unless its header says otherwise (LimiX-2 needs 3.12).
+PYTHON_VERSION=$(grep -o -m1 -- '--python-version [0-9.]*' "$REQUIREMENTS" 2>/dev/null | cut -d' ' -f2)
+PYTHON_VERSION=${PYTHON_VERSION:-3.11}
 
 echo "🐍 Checking for python3.11..."
 if ! command -v python3.11 &>/dev/null; then
@@ -101,8 +104,8 @@ python3 -m pip install --upgrade pip setuptools wheel uv
 
 # Create uv venv with Python 3.11 if it doesn't already exist
 if [ ! -d "$ENV_DIR" ]; then
-    echo "🌀 Creating uv venv ($ENV_DIR) with Python 3.11"
-    python3 -m uv venv -p python3.11 "$ENV_DIR" || { echo "❌ Failed to create uv venv"; return 1; }
+    echo "🌀 Creating uv venv ($ENV_DIR) with Python $PYTHON_VERSION"
+    python3 -m uv venv -p "$PYTHON_VERSION" "$ENV_DIR" || { echo "❌ Failed to create uv venv"; return 1; }
 else
     echo "🌀 uv venv ($ENV_DIR) already exists. Skipping creation."
 fi

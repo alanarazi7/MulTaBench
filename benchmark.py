@@ -14,6 +14,7 @@ from multabench.baselines.contexttab import ConTextTab
 from multabench.baselines.exaone_tabular import EXAONETabular
 from multabench.baselines.kumo_tabular import KumoTabular, KumoTabularMedium, KumoTabularSmall
 from multabench.baselines.lgbm import LightGBM
+from multabench.baselines.limix2 import LimiX2
 from multabench.baselines.mitra2 import MitraV2
 from multabench.baselines.random_forest import RandomForest
 from multabench.baselines.realmlp import RealMLP
@@ -49,7 +50,7 @@ BASELINES = [TabSTAR, TabSTARv1p1,
              KumoTabular, KumoTabularMedium, KumoTabularSmall,
              Causilo, TabFM,
              TabDPT13, XiaomiTabLDM, EXAONETabular,
-             MitraV2,]
+             MitraV2, LimiX2,]
 
 SHORT2MODELS = {model.SHORT_NAME: model for model in BASELINES}
 

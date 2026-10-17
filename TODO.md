@@ -44,11 +44,11 @@ file as the PRs that complete them are merged.
 New models' requirements conflict with the shared `requirements.txt` (torch 2.7.1): Mitra-v2 needs autogluon.tabular
 1.6, LimiX-2 declares python>=3.12 and torch==2.9.1, TabDPT-1.3 tabdpt 1.3 (which can't load the current TabDPT
 weights). A model declares its venv in its wrapper (`ENV`), with its own lock, as Causilo does for torch>=2.13, and
-`sweep.py` runs it with that venv's python. Packages with wrong declared requirements (LimiX-2's torch pin,
-EXAONE-Tabular's scikit-learn floor) are installed with `--no-deps`, documented in their wrapper. Mitra-v2 runs
-TabArena's own wrapper, bagged by AutoGluon as in TabArena.
+`sweep.py` runs it with that venv's python. A package with wrong declared requirements (EXAONE-Tabular's
+scikit-learn floor) is installed with `--no-deps`, documented in its wrapper. Mitra-v2 runs
+TabArena's own wrapper, bagged by AutoGluon as in TabArena. LimiX-2's venv uses Python 3.12, which `init.sh` reads
+from its lock's header.
 
-- [ ] Add LimiX-2 at TabArena's default.
 
 ## Leaderboard
 

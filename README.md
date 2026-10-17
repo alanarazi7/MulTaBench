@@ -114,8 +114,8 @@ ConTextTab, Kumo and TabFM are pinned to a git commit, which PyPI doesn't allow 
 lists them. `init.sh` sets up the shared `.venv` from `requirements.txt`, which locks the core, every extra and those
 three. A model whose requirements conflict with that lock declares its own venv in its wrapper (`ENV`), locked in
 `requirements-<ENV>.txt` and set up with `source init.sh <ENV>`: Causilo, which needs a newer torch, runs in
-`.venv-causilo`, and Mitra-v2, which needs AutoGluon 1.6, in `.venv-mitra2`. `sweep.py` writes each model's venv
-python into its jobs, so one sweep covers every model.
+`.venv-causilo`, Mitra-v2, which needs AutoGluon 1.6, in `.venv-mitra2`, and LimiX-2 in `.venv-limix2`, on the
+Python 3.12 its lock names. `sweep.py` writes each model's venv python into its jobs, so one sweep covers every model.
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
 result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change), with
