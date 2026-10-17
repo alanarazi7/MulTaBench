@@ -6,7 +6,6 @@ import time
 import traceback
 
 from multabench.utils.devices import get_device
-from multabench.finetune.lora import E5_LORA
 from multabench.finetune.train_args import DinoTrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost
@@ -34,7 +33,7 @@ from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import SPLITS, Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
-from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
+from multabench.e5.constants import E5_LORA, TEXT_ENCODERS, TextEncoder
 from multabench.embeddings.hub import reads_cache
 from multabench.result_keys import ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware

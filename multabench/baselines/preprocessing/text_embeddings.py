@@ -146,7 +146,7 @@ def fit_text_encoders_tuned(
 ) -> Tuple[Dict[str, E5ColumnEncoder], Dict[str, np.ndarray]]:
     """Fit a single E5 model for all text columns with passage: col_name: col_val format. Each column gets an E5ColumnEncoder sharing the same tuned model."""
     from multabench.e5.e5_finetune import finetune_e5
-    from multabench.finetune.lora import E5_LORA
+    from multabench.e5.constants import E5_LORA
 
     tuned_model, tuned_tokenizer, _ = finetune_e5(x[text_features_list], y, text_features_list, is_cls=is_cls,
                                                   device=device, model_name=e5_model_name,

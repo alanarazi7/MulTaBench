@@ -5,7 +5,7 @@ Trainer early-stops on a validation split and keeps the best epoch. Only the tun
 """
 import re
 import tempfile
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Sequence, Tuple
 
 import numpy as np
@@ -18,32 +18,13 @@ from torch.utils.data import Dataset
 from transformers import EarlyStoppingCallback, Trainer, TrainingArguments
 
 from multabench.constants import SEED
+from multabench.finetune.train_args import DATALOADER_WORKERS, REGRESSION_BINS, LoraArgs
 from multabench.finetune.utils import compute_metrics_multiclass, encoder_finetune_loss
 from multabench.preprocessing.discretize import discretize_numerical
 from multabench.preprocessing.splits import split_to_val
 from multabench.utils.timing import embedding_step
 
-REGRESSION_BINS = 20
-DATALOADER_WORKERS = 4
-
 Pool = Callable[[torch.Tensor, Dict[str, torch.Tensor]], torch.Tensor]
-
-
-@dataclass(frozen=True)
-class LoraArgs:
-    learning_rate: float
-    epochs: int
-    lora_rank: int = 16
-    layers: int = 3
-    patience: int = 3
-    weight_decay: float = 0.001
-    batch_size: int = 256
-
-    def to_dict(self) -> dict:
-        return asdict(self)
-
-
-E5_LORA = LoraArgs(learning_rate=1e-4, epochs=50)
 
 
 @dataclass(frozen=True)

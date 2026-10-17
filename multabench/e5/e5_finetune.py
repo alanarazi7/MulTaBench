@@ -10,8 +10,10 @@ import torch.nn as nn
 from pandas import DataFrame, Series
 from transformers import AutoModel, AutoTokenizer, BertModel
 
-from multabench.e5.constants import E5_PASSAGE_PREFIX, E5_SMALL_V2, LORA_TEXT_TARGET_MODULES, format_e5_passage
-from multabench.finetune.lora import E5_LORA, LoraArgs, TunableEncoder, finetune_with_lora, finetuning_split
+from multabench.e5.constants import (E5_LORA, E5_PASSAGE_PREFIX, E5_SMALL_V2, LORA_TEXT_TARGET_MODULES,
+                                     format_e5_passage)
+from multabench.finetune.lora import TunableEncoder, finetune_with_lora, finetuning_split
+from multabench.finetune.train_args import LoraArgs
 from multabench.utils.timing import embedding_step
 
 
