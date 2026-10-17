@@ -2,10 +2,11 @@ import numpy as np
 import pytest
 from pandas import DataFrame
 
-from multabench.baselines.preprocessing import image_embeddings, text_embeddings
-from multabench.baselines.preprocessing.image_embeddings import fit_image_encoders, transform_image_features
+from multabench.baselines.preprocessing import column_encoders, image_embeddings, text_embeddings
+from multabench.baselines.preprocessing.column_encoders import transform_columns
+from multabench.baselines.preprocessing.image_embeddings import fit_image_encoders
 from multabench.baselines.preprocessing.nulls import MISSING_VALUE
-from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders, transform_text_features
+from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import DINOV3_SMALL, IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import E5_SMALL_V2, TEXT_ENCODERS, TF_IDF, TextEncoder, format_e5_passage
@@ -107,17 +108,17 @@ def test_text_features_look_their_texts_up_in_the_cache(monkeypatch):
     vectors = rng.normal(size=(len(distinct), 32)).astype(np.float32)
     cache = CachedEmbeddings(inputs=encoder_inputs(TextEncoder.E5_SMALL, "title", distinct), embeddings=vectors,
                              meta={"features": ["title"]})
-    monkeypatch.setattr(text_embeddings, "cached_embeddings", lambda encoder, dataset: cache)
+    monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset: cache)
     monkeypatch.setattr(text_embeddings, "get_vanilla_e5", lambda *args, **kwargs: pytest.fail("loaded E5 for a cached column"))
     x = DataFrame({"title": texts})
     expected = vectors[[distinct.index(t) for t in texts]]
     train_idx, test_idx = rng.permutation(60)[:45], np.arange(60)[::4]
     encoders, train_embeddings = fit_text_encoders(x.iloc[train_idx], text_features={"title"}, device="cpu", dataset=TEXT)
     np.testing.assert_array_equal(train_embeddings["title"], expected[train_idx])
-    x_test = transform_text_features(x.iloc[test_idx], text_encoders=encoders, device="cpu")
-    np.testing.assert_allclose(x_test.to_numpy(), encoders["title"].encoder.transform(expected[test_idx]), rtol=1e-6)
+    x_test = transform_columns(x.iloc[test_idx], encoders=encoders)
+    np.testing.assert_allclose(x_test.to_numpy(), encoders["title"].transform(expected[test_idx]), rtol=1e-6)
     with pytest.raises(KeyError, match="no cached embedding"):
-        transform_text_features(DataFrame({"title": ["a text the cache never saw"]}), text_encoders=encoders, device="cpu")
+        transform_columns(DataFrame({"title": ["a text the cache never saw"]}), encoders=encoders)
 
 
 def test_image_features_look_their_files_up_in_the_cache(monkeypatch):
@@ -126,13 +127,13 @@ def test_image_features_look_their_files_up_in_the_cache(monkeypatch):
     distinct = sorted(set(files))
     vectors = rng.normal(size=(len(distinct), 64)).astype(np.float32)
     cache = CachedEmbeddings(inputs=distinct, embeddings=vectors, meta={"features": ["photo"]})
-    monkeypatch.setattr(image_embeddings, "cached_embeddings", lambda encoder, dataset: cache)
+    monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset: cache)
     monkeypatch.setattr(image_embeddings, "get_image_encoder", lambda *args, **kwargs: pytest.fail("loaded DINO for a cached column"))
     x = DataFrame({"photo": files})
     expected = vectors[[distinct.index(f) for f in files]]
     train_idx, test_idx = rng.permutation(60)[:45], np.arange(60)[::4]
-    encoders, _, _, train_embeddings = fit_image_encoders(x.iloc[train_idx], image_features={"photo"}, device="cpu",
-                                                          image_folder="unused", is_cls=True, d_output=2, dataset=IMAGE_TEXT)
+    encoders, train_embeddings = fit_image_encoders(x.iloc[train_idx], image_features={"photo"}, device="cpu",
+                                                    image_folder="unused", dataset=IMAGE_TEXT)
     np.testing.assert_array_equal(train_embeddings["photo"], expected[train_idx])
-    x_test = transform_image_features(x.iloc[test_idx], image_transformers=encoders, device="cpu", image_folder="unused")
+    x_test = transform_columns(x.iloc[test_idx], encoders=encoders)
     np.testing.assert_allclose(x_test.to_numpy(), encoders["photo"].transform(expected[test_idx]), rtol=1e-5)

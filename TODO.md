@@ -9,6 +9,8 @@ file as the PRs that complete them are merged.
       seeing only its fold's training rows, uploaded with its LoRA adapter.
 - [ ] Make the model runners read the cached `-tar` embeddings too; only the frozen `e5-small` and `dino-small`
       embeddings are read so far.
+- [ ] Decide on scaling before PCA: image embeddings get a `StandardScaler`, text embeddings don't
+      (`ColumnEncoder.SCALE`).
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
       today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
       rows.
@@ -60,19 +62,6 @@ file as the PRs that complete them are merged.
 
 - [ ] Drop the `--dino_*` / `--e5_*` flags and their kwargs dicts in `benchmark.py`, which only override `E5_LORA`
       and `DINO_LORA`.
-
-## Shared embedding preprocessing
-
-`baselines/preprocessing/text_embeddings.py` and `image_embeddings.py` repeat the same per-column
-steps: read cached embeddings or encode, then reduce each column to `PCA_COMPONENTS`. Extract a
-shared parent, keeping only the encoders themselves (E5, TF-IDF, DINO) per modality:
-
-- [ ] One column-encoder base for `E5ColumnEncoder`, `SkrubColumnEncoder` and `_ScaledPCA`: an
-      optional cache, `embed` (cache lookup, else encode) and `transform` (the fitted reduction).
-- [ ] `_caches_per_column`, defined twice with only "text" / "image" differing in its message.
-- [ ] `PCA_COMPONENTS`, defined in both files, and the fit-PCA-per-column loops in
-      `fit_text_encoders_vanilla` and `fit_image_encoders`.
-- [ ] Decide on scaling: images get `StandardScaler` before PCA, text doesn't.
 
 ## README
 
