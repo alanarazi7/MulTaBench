@@ -8,6 +8,7 @@ import pandas as pd
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.info import Tier, dataset_info
 from multabench.leaderboard.elo import RESULTS_DIR, error_table, leaderboard, load_runs
+from multabench.leaderboard.embedding_cost import EMBEDDING_COST_CSV
 from multabench.result_keys import ResultKey, RunStatus
 
 SPACE_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "space", "data")
@@ -61,11 +62,21 @@ def per_dataset(runs: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def cost(runs: pd.DataFrame) -> pd.DataFrame:
+def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd.DataFrame:
+    """Median train and predict time per 1K rows, which leave out reading the cached embeddings, and the mean time the
+    run's frozen encoders would take to embed 1K rows live, an estimate from the caches' own encoding time."""
     ok = runs[runs[ResultKey.STATUS] == RunStatus.OK]
+    encode = pd.read_csv(embedding_cost_csv).set_index(["dataset", "encoder"])["encode_s_per_1k"]
+
+    def encode_s(col: str) -> pd.Series:
+        keys = list(zip(ok[ResultKey.DATASET], ok[col]))
+        return pd.Series([encode.get(k, 0.0) for k in keys], index=ok.index)
+
+    ok = ok.assign(text_encode=encode_s(ResultKey.TEXT_ENCODER), image_encode=encode_s(ResultKey.IMAGE_ENCODER))
     df = ok.groupby(ResultKey.MODEL).agg(
         train_s_per_1k=(ResultKey.TRAIN_TIME_PER_1K, "median"),
         inference_s_per_1k=(ResultKey.INFERENCE_TIME_PER_1K, "median"),
+        text_encode_s_per_1k=("text_encode", "mean"), image_encode_s_per_1k=("image_encode", "mean"),
         gpu=(ResultKey.GPU_TYPE, "first"), cpu=(ResultKey.CPU_NAME, "first")).reset_index()
     return df.sort_values("train_s_per_1k", ignore_index=True)
 
