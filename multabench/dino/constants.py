@@ -6,7 +6,6 @@ DINOV3_SMALL = "facebook/dinov3-vits16-pretrain-lvd1689m"
 DINOV3_LARGE = "facebook/dinov3-vitl16-pretrain-lvd1689m"
 
 
-
 class ImageEncoder(StrEnum):
     DINO_SMALL = "dino-small"
     DINO_SMALL_TAR = "dino-small-tar"
@@ -19,23 +18,9 @@ IMAGE_ENCODERS = {
     ImageEncoder.DINO_LARGE: Encoder(encoder_name=DINOV3_LARGE, tune_encoder=False),
 }
 
-D_DINO_SMALL = 384
-D_DINO_LARGE = 1024
-
-DINO_SMALL_LAYERS = 12
-DINO_LARGE_LAYERS = 24
-
-DINO_DIM = {
-    DINOV3_SMALL: D_DINO_SMALL,
-    DINOV3_LARGE: D_DINO_LARGE,
-}
-
-DINO_NUM_LAYERS = {
-    DINOV3_SMALL: DINO_SMALL_LAYERS,
-    DINOV3_LARGE: DINO_LARGE_LAYERS,
-}
-
+# The modules LoRA adapts in each tuned ViT layer, layer.{i}: attention and MLP, as in E5. The paper's runs named the
+# MLP's under attention, which matched nothing, so they adapted the attention projections alone.
 LORA_IMAGE_TARGET_MODULES = [
-    "q_proj", "k_proj", "v_proj", "o_proj",
+    "attention.q_proj", "attention.k_proj", "attention.v_proj", "attention.o_proj",
     "mlp.up_proj", "mlp.down_proj",
 ]

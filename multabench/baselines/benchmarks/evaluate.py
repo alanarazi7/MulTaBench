@@ -9,8 +9,8 @@ from multabench.baselines.abstract_model import TabularModel
 from multabench.benchmark.load import load_multabench_dataset, split_dataset
 from multabench.benchmark.splits import Size
 from multabench.utils.hardware import get_hardware_dict
-from multabench.dino.constants import DINOV3_SMALL
-from multabench.e5.constants import E5_SMALL_V2
+from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
+from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.utils.logging import get_current_commit_hash
 from multabench.result_keys import ResultKey
 from multabench.utils.profiling import PeakMemoryTracker
@@ -22,22 +22,16 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 device: torch.device,
                                 size: Size = Size.TEN_K,
                                 verbose: bool = False,
-                                tune_dino: bool = False,
-                                dino_train_kwargs: dict | None = None,
-                                dino_model_name: str = DINOV3_SMALL,
-                                tune_e5: bool = False,
-                                e5_train_kwargs: dict | None = None,
-                                e5_model_name: str = E5_SMALL_V2) -> Dict:
+                                text_encoder: TextEncoder | None = None,
+                                image_encoder: ImageEncoder | None = None) -> Dict:
     start_time = time.time()
     dataset_id = dataset.dataset_id
     split = split_dataset(dataset, fold=fold, size=size)
     x_train, y_train = split.x_train, split.y_train
     x_test, y_test = split.x_test, split.y_test
-    kwargs = dict(problem_type=dataset.task_type, device=device, verbose=verbose, dataset=dataset_id,
-                  image_folder=dataset.image_folder, image_column=dataset.image_column, tune_dino=tune_dino, dino_train_kwargs=dino_train_kwargs,
-                  dino_model_name=dino_model_name,
-                  tune_e5=tune_e5, e5_train_kwargs=e5_train_kwargs, e5_model_name=e5_model_name)
-    model = model_cls(**kwargs)
+    model = model_cls(problem_type=dataset.task_type, device=device, verbose=verbose, dataset=dataset_id,
+                      image_folder=dataset.image_folder, image_column=dataset.image_column, text_encoder=text_encoder,
+                      image_encoder=image_encoder, fold=fold, size=size)
     pop_embedding_seconds()
     with PeakMemoryTracker(phase='train', device=device) as train_tracker:
         model.fit(x_train, y_train)
@@ -60,9 +54,9 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         ResultKey.N_TRAIN: len(y_train),
         ResultKey.N_TEST: len(y_test),
         ResultKey.M_FEATURES: x_train.shape[1],
-        ResultKey.TUNE_DINO: tune_dino,
-        ResultKey.TUNE_E5: tune_e5,
-        ResultKey.E5_MODEL_NAME: e5_model_name,
+        ResultKey.TUNE_DINO: bool(image_encoder and IMAGE_ENCODERS[image_encoder].tune_encoder),
+        ResultKey.TUNE_E5: bool(text_encoder and TEXT_ENCODERS[text_encoder].tune_encoder),
+        ResultKey.E5_MODEL_NAME: TEXT_ENCODERS[text_encoder].encoder_name if text_encoder else None,
         ResultKey.BEST_VAL_LOSS: getattr(model, "best_val_loss", None),
         **train_tracker.summary(),
         **test_tracker.summary(),
@@ -71,8 +65,6 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
         ResultKey.TRAIN_EMBEDDING_TIME_PER_1K: train_embedding_s / len(y_train) * 1000,
         ResultKey.INFERENCE_EMBEDDING_TIME_PER_1K: inference_embedding_s / len(y_test) * 1000,
         **get_hardware_dict(device),
-        **(dino_train_kwargs or {}),
-        **(e5_train_kwargs or {}),
     }
     metric, error = metrics[ResultKey.METRIC], metrics[ResultKey.TEST_ERROR]
     print(f"{dataset_id.name} fold {fold}: {metric} error {error:.4f} ({runtime:.0f}s)")
@@ -85,12 +77,8 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         device: torch.device,
                         size: Size = Size.TEN_K,
                         verbose: bool = False,
-                        tune_dino: bool = False,
-                        dino_train_kwargs: dict | None = None,
-                        dino_model_name: str | None = None,
-                        tune_e5: bool = False,
-                        e5_train_kwargs: dict | None = None,
-                        e5_model_name: str = E5_SMALL_V2) -> Dict:
+                        text_encoder: TextEncoder | None = None,
+                        image_encoder: ImageEncoder | None = None) -> Dict:
     print(f"Running model {model_cls.MODEL_NAME} over dataset {dataset_id} with fold {fold}")
     dataset = load_multabench_dataset(dataset_id)
     return evaluate_on_loaded_dataset(
@@ -100,10 +88,6 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
         device=device,
         size=size,
         verbose=verbose,
-        tune_dino=tune_dino,
-        dino_train_kwargs=dino_train_kwargs,
-        dino_model_name=dino_model_name,
-        tune_e5=tune_e5,
-        e5_train_kwargs=e5_train_kwargs,
-        e5_model_name=e5_model_name,
+        text_encoder=text_encoder,
+        image_encoder=image_encoder,
     )

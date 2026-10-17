@@ -6,7 +6,6 @@ import time
 import traceback
 
 from multabench.utils.devices import get_device
-from multabench.finetune.train_args import DinoTrainArgs, E5TrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost
 from multabench.baselines.causilo import Causilo
@@ -67,28 +66,10 @@ if __name__ == "__main__":
     parser.add_argument('--official', action='store_true', default=False,
                         help="raise unless on the leaderboard's hardware and a clean commit on master")
     parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1; default: cuda, or cpu for runs that don't need a GPU")
-    _dino = DinoTrainArgs()
-    _e5 = E5TrainArgs()
     parser.add_argument('--image_encoder', type=ImageEncoder, default=None, choices=list(ImageEncoder),
                         help="for datasets with images; default: dino-small")
-    # DINO LoRA finetuning params (used by the "-tar" image encoders)
-    parser.add_argument('--dino_lr', type=float, default=_dino.learning_rate)
-    parser.add_argument('--dino_rank', type=int, default=_dino.lora_rank)
-    parser.add_argument('--dino_img_layers', type=int, default=_dino.img_layers)
-    parser.add_argument('--dino_epochs', type=int, default=_dino.epochs)
-    parser.add_argument('--dino_patience', type=int, default=_dino.patience)
-    parser.add_argument('--dino_weight_decay', type=float, default=_dino.weight_decay)
-    parser.add_argument('--dino_batch_size', type=int, default=_dino.batch_size)
     parser.add_argument('--text_encoder', type=TextEncoder, default=None, choices=list(TextEncoder),
                         help="for datasets with text columns; default: e5-small")
-    # E5 LoRA finetuning params (used by the "-tar" text encoders)
-    parser.add_argument('--e5_lr', type=float, default=_e5.learning_rate)
-    parser.add_argument('--e5_rank', type=int, default=_e5.lora_rank)
-    parser.add_argument('--e5_text_layers', type=int, default=_e5.text_layers)
-    parser.add_argument('--e5_epochs', type=int, default=_e5.epochs)
-    parser.add_argument('--e5_patience', type=int, default=_e5.patience)
-    parser.add_argument('--e5_weight_decay', type=float, default=_e5.weight_decay)
-    parser.add_argument('--e5_batch_size', type=int, default=_e5.batch_size)
     args = parser.parse_args()
 
     model = SHORT2MODELS[args.model]
@@ -117,24 +98,6 @@ if __name__ == "__main__":
     if os.path.exists(out_path) and not args.overwrite:
         print(f"Skipping: {out_path} exists (--overwrite to rerun)")
         sys.exit(0)
-    dino_train_kwargs = dict(
-        lora_rank=args.dino_rank,
-        img_layers=args.dino_img_layers,
-        learning_rate=args.dino_lr,
-        epochs=args.dino_epochs,
-        patience=args.dino_patience,
-        weight_decay=args.dino_weight_decay,
-        batch_size=args.dino_batch_size,
-    ) if image_encoder and image_encoder.tune_encoder else None
-    e5_train_kwargs = dict(
-        lora_rank=args.e5_rank,
-        text_layers=args.e5_text_layers,
-        learning_rate=args.e5_lr,
-        epochs=args.e5_epochs,
-        patience=args.e5_patience,
-        weight_decay=args.e5_weight_decay,
-        batch_size=args.e5_batch_size,
-    ) if text_encoder and text_encoder.tune_encoder else None
     try:
         ret = evaluate_on_dataset(
             model_cls=model,
@@ -143,12 +106,8 @@ if __name__ == "__main__":
             size=args.size,
             device=device,
             verbose=args.verbose,
-            tune_dino=dino_train_kwargs is not None,
-            dino_train_kwargs=dino_train_kwargs,
-            dino_model_name=image_encoder.encoder_name if image_encoder else None,
-            tune_e5=e5_train_kwargs is not None,
-            e5_train_kwargs=e5_train_kwargs,
-            e5_model_name=text_encoder.encoder_name if text_encoder else None,
+            text_encoder=args.text_encoder,
+            image_encoder=args.image_encoder,
         )
         ret[ResultKey.STATUS] = RunStatus.OK
     except Exception as e:

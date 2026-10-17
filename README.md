@@ -183,30 +183,42 @@ split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split
 
 ## Cached embeddings
 
-The frozen text and image embeddings are cached on Hugging Face, one public dataset repo per
-encoder: `multabench/embeddings-e5-small` and `multabench/embeddings-dino-small`. A frozen encoder
-doesn't depend on the split, so each distinct input of a dataset is embedded once, under
-`<dataset>/`, in `embeddings.npz`, which maps every input, exactly as the encoder got it (e5's
-`"passage: <column>: <value>"` after a run's missing-text fill, or the image file name), to its raw
-encoder output (PCA is fitted per run, on the training rows), and `meta.json`, with the dataset's
-rows and columns, the encoding time per feature, the hardware it ran on, the hardware it should run
-on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how they differ. A run looks its own
-inputs up, so an embedding is never paired with another row's text, and an input missing from the
-cache, e.g. after the dataset changed, raises. The cache is optional: `benchmark.py` reads it when
-the dataset has embeddings for the encoder, and otherwise embeds live, so new encoders and datasets
-need no cache to run. Only the frozen `e5-small` text embeddings are read so far. `load_embeddings`
-returns them aligned with `load_split`'s rows:
+The text and image embeddings are cached on Hugging Face, one public dataset repo per encoder:
+`multabench/embeddings-e5-small`, `multabench/embeddings-dino-small`, and their fine-tuned versions,
+`multabench/embeddings-e5-small-tar` and `multabench/embeddings-dino-small-tar`.
+
+- A frozen encoder doesn't depend on the split, so each distinct input of a dataset is embedded once, under
+  `<dataset>/`.
+- A fine-tuned (`-tar`) encoder is tuned with LoRA on the labels of one fold's training rows, so it is cached per
+  fold, under `<dataset>/10k/fold_<k>/`, for that fold's train and test rows only, with its LoRA adapter. Its test
+  rows never take part in the tuning. Text columns share one E5, tuned on `"<column>: <value>"` of every column; the
+  image column gets its own DINO. Regression targets are binned into 20 quantiles, and 10% of the training rows are
+  held out for early stopping.
+- The same tuned encoder embeds the training rows it was tuned on, as in the paper, so their embeddings fit
+  their labels better than the test rows' do, and a model trained on them can lean on them more than the test rows
+  warrant. Cross-fitting, embedding each training row with an encoder tuned without it, would remove this bias at
+  about K times the tuning cost; the leaderboard keeps the paper's setting.
+
+Each directory has `embeddings.npz`, which maps every input, exactly as the encoder got it (e5's
+`"passage: <column>: <value>"` after a run's missing-text fill, or the image file name), to its raw encoder output (PCA
+is fitted per run, on the training rows), and `meta.json`, with the rows and columns, the timing, the tuning settings
+and validation loss of a fine-tuned encoder, the hardware it ran on, the hardware it should run on
+(`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how they differ. A run looks its own inputs up, so an
+embedding is never paired with another row's text, and an input missing from the cache, e.g. after the dataset
+changed, raises. `benchmark.py` reads these four encoders from the cache, which must have the dataset; the other
+encoders embed live. `load_embeddings` returns the cached embeddings aligned with `load_split`'s rows:
 
 ```python
 from multabench import Size, load_embeddings
 
 embeddings = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size=Size.TEN_K, encoder="e5-small")
 embeddings.train["description"], embeddings.test["description"], embeddings.meta
+tuned = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size=Size.TEN_K, encoder="e5-small-tar")
 ```
 
-`python -m multabench.embeddings.embed` embeds one dataset, and `python -m
-multabench.embeddings.embed_sweep` runs it over encoders × datasets, with the same `--launcher` and
-`--sbatch` options as `sweep.py`, and uploads the result with `--upload`:
+`python -m multabench.embeddings.embed` embeds one dataset, or one fold of it for a fine-tuned encoder (`--fold`), and
+`python -m multabench.embeddings.embed_sweep` runs it over encoders × datasets (× folds), with the same `--launcher`
+and `--sbatch` options as `sweep.py`, and uploads the result with `--upload`:
 
 ```bash
 python -m multabench.embeddings.embed_sweep --launcher slurm --sbatch="--partition=a100 --gres=gpu:1 --cpus-per-task=6 --mem=32G" --submit

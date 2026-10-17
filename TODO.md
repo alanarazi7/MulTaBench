@@ -5,13 +5,14 @@ file as the PRs that complete them are merged.
 
 ## Embedding cache
 
-- [ ] Cache the `e5-small-tar` and `dino-small-tar` embeddings: one fine-tune per (size, fold), each
-      seeing only its fold's training rows, uploaded with its LoRA adapter.
-- [ ] Make the model runners read the cached `-tar` embeddings too; only the frozen `e5-small` and `dino-small`
-      embeddings are read so far.
+- [ ] Compute and upload the `e5-small-tar` and `dino-small-tar` embeddings from `master`:
+      `python -m multabench.embeddings.embed_sweep --encoders e5-small-tar,dino-small-tar`, one job per dataset and
+      fold, then `--upload`. Then run the leaderboard models with them.
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
-      today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
-      rows.
+      today; one option is to charge the cached `encode_seconds` (and a tuned encoder's `finetune_seconds`) from
+      `meta.json`, scaled to the run's rows.
+- [ ] Decide on scaling before PCA: image embeddings get a `StandardScaler`, text embeddings don't
+      (`ColumnEncoder.SCALE`).
 
 ## Runs
 
@@ -53,35 +54,8 @@ file as the PRs that complete them are merged.
       core: `load_split`, `fit`, `predict`, `score` and the timings, returning one row in the
       `leaderboard/models/*.csv` schema. `benchmark.py` calls it, and the `TabularModel` baselines implement it.
 - [ ] `featurize(split, text_encoder, image_encoder)` in the `bench` extra: the frozen-encoder and per-column PCA
-      preprocessing as a standalone step, so a protocol model gets the baselines' features. It builds on the shared
-      embedding preprocessing below.
-
-## Shared fine-tuning code
-
-`e5/e5_finetune.py` and `dino/dino_finetune.py` are near copies. Move what they share into
-`finetune/`, keeping only the encoder-specific parts (loading, the dataset class, pooling) per
-modality:
-
-- [ ] `_get_lora_target_modules` and `_print_trainable_params_per_layer`, which differ only in the
-      module names.
-- [ ] `E5ForTuning` / `DINOForTuning`: the same backbone + linear head, apart from pooling.
-- [ ] `finetune_*_with_lora`: the same seeding, `LoraConfig`, `TrainingArguments`, early stopping
-      and `Trainer` loop.
-- [ ] `DinoTrainArgs` / `E5TrainArgs`, and the matching `--dino_*` / `--e5_*` flags and kwargs
-      dicts in `benchmark.py`.
-
-## Shared embedding preprocessing
-
-`baselines/preprocessing/text_embeddings.py` and `image_embeddings.py` repeat the same per-column
-steps: read cached embeddings or encode, then reduce each column to `PCA_COMPONENTS`. Extract a
-shared parent, keeping only the encoders themselves (E5, TF-IDF, DINO) per modality:
-
-- [ ] One column-encoder base for `E5ColumnEncoder`, `SkrubColumnEncoder` and `_ScaledPCA`: an
-      optional cache, `embed` (cache lookup, else encode) and `transform` (the fitted reduction).
-- [ ] `_caches_per_column`, defined twice with only "text" / "image" differing in its message.
-- [ ] `PCA_COMPONENTS`, defined in both files, and the fit-PCA-per-column loops in
-      `fit_text_encoders_vanilla` and `fit_image_encoders`.
-- [ ] Decide on scaling: images get `StandardScaler` before PCA, text doesn't.
+      preprocessing as a standalone step, so a protocol model gets the baselines' features, built on
+      `ColumnEncoder`.
 
 ## README
 
