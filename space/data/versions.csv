@@ -1,5 +1,5 @@
 version,date,change,pr
-v1.8,2026-10-17,"Added Mitra-v2; 25 models",PRNUM
+v1.8,2026-10-17,"Added Mitra-v2; 25 models",198
 v1.7,2026-10-17,"Added TabSTAR-v1.1; 24 models",189
 v1.6,2026-10-16,"Added TabDPT-1.3, Xiaomi-TabLDM and EXAONE-Tabular; 23 models",186
 v1.5,2026-10-16,"Added TabSTAR; the Elo is computed with TabArena's bencheval",178
