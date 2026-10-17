@@ -26,22 +26,6 @@ TEXT_ENCODERS = {
     TextEncoder.E5_LARGE: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
 }
 
-D_E5_SMALL = 384
-D_E5_LARGE = 1024
-
-E5_SMALL_LAYERS = 12
-E5_LARGE_LAYERS = 24
-
-E5_DIM = {
-    E5_SMALL_V2: D_E5_SMALL,
-    E5_LARGE_V2: D_E5_LARGE,
-}
-
-E5_NUM_LAYERS = {
-    E5_SMALL_V2: E5_SMALL_LAYERS,
-    E5_LARGE_V2: E5_LARGE_LAYERS,
-}
-
 E5_LORA = LoraArgs(learning_rate=1e-4, epochs=50)
 
 # BERT layer structure: encoder.layer.{i}.attention.self.{query,key,value}, attention.output.dense, intermediate.dense, output.dense
