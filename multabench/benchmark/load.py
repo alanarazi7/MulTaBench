@@ -22,6 +22,7 @@ from huggingface_hub import snapshot_download
 from multabench.benchmark.splits import Size, get_split
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.hub import DATA_PARQUET, extract_images, hf_repo_id
+from multabench.datasets.revisions import revision
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
 from multabench.embeddings.hub import (CachedEmbeddings, CachedEncoder, download_embeddings, encoder_inputs,
                                        input_values, is_tuned, parse_encoder, read_embeddings)
@@ -47,7 +48,7 @@ def _missing_as_nan(df: pd.DataFrame) -> pd.DataFrame:
 def download_dataset(dataset_id: MulTaBenchDatasetID) -> str:
     repo_id = hf_repo_id(dataset_id)
     print(f"Downloading {repo_id} from Hugging Face...")
-    dir_path = snapshot_download(repo_id=repo_id, repo_type="dataset")
+    dir_path = snapshot_download(repo_id=repo_id, repo_type="dataset", revision=revision(repo_id))
     extract_images(dir_path)
     return dir_path
 
@@ -127,5 +128,6 @@ def _load_columns(dataset_id: MulTaBenchDatasetID, columns: List[str]) -> pd.Dat
 
 
 def _download_table(dataset_id: MulTaBenchDatasetID) -> str:
-    return snapshot_download(repo_id=hf_repo_id(dataset_id), repo_type="dataset",
+    repo_id = hf_repo_id(dataset_id)
+    return snapshot_download(repo_id=repo_id, repo_type="dataset", revision=revision(repo_id),
                              allow_patterns=[DATA_PARQUET, METADATA_JSON])

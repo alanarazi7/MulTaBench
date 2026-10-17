@@ -106,8 +106,6 @@ class TabSTAR(TabularModel):
     USE_TEXT_EMBEDDINGS = False
     USE_TARGET_ENCODER = False
 
-    IS_PAPER_VERSION = True
-
     def initialize_model(self):
         from tabstar.tabstar_model import TabSTARClassifier, TabSTARRegressor
         # pandas 3's default string dtype breaks TabSTAR's dtype detection; don't run it until TabSTAR v1.1.

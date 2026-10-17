@@ -27,33 +27,52 @@ The leaderboard lives at [huggingface.co/spaces/multabench/leaderboard](https://
 with per-dataset results and cost; `space/` holds its app and data.
 
 Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino-small` image embeddings
-(ConTextTab reads raw text itself). Elo is fit on one battle per dataset and model pair, with RandomForest
-at 1000 and 95% intervals from bootstrapping the datasets; a model with no result on a dataset has no
-battles there. TabPFN-v2 and v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
+(ConTextTab, TabSTAR and TabSTAR-v1.1 read raw text themselves; TabSTAR loads, for each dataset it was pretrained
+on, the checkpoint that held that dataset out, and TabSTAR-v1.1's pretraining left MulTaBench out). TabPFN-v2 and
+v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
+
+**How Elo is computed.** With TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
+pinned in the `leaderboard` extra. Every fold is its own battle: on each of a dataset's 6 folds, each pair of models
+plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a Bradley–Terry
+model, with RandomForest anchored at 1000. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
+drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many folds. They
+are bootstrapped before anchoring, so each model's interval is its own, RandomForest's included, rather than relative
+to RandomForest. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
+error and best-on count are per fold as well. Until October 2026 the leaderboard, like the paper, played one battle
+per dataset on the mean error over its folds. That makes each dataset winner-take-all, which stretches the scale: on
+the then 17 models, Kumo-Tabular was at 2670 rather than 2347, with the same ranking.
 
 | # | Model | Elo, 80 datasets | 95% CI | Text, 40 | Images, 40 | Datasets |
 |---|---|---|---|---|---|---|
-| 1 | Kumo-Tabular | 2670 | +320 / −232 | 2821 | 2680 | 80 |
-| 2 | Kumo-Tabular-Medium | 2385 | +271 / −201 | 2482 | 2424 | 80 |
-| 3 | TabPFN-3.5 | 2194 | +227 / −184 | 2086 | 2362 | 80 |
-| 4 | Kumo-Tabular-Small | 2098 | +204 / −163 | 2082 | 2189 | 80 |
-| 5 | TabPFN-3.5-Fast | 1995 | +195 / −148 | 1902 | 2152 | 80 |
-| 6 | TabICLv2 | 1735 | +144 / −119 | 1635 | 1907 | 80 |
-| 7 | TabPFN-3 | 1660 | +146 / −122 | 1552 | 1841 | 80 |
-| 8 | TabPFN-v2p5 | 1654 | +140 / −117 | 1645 | 1724 | 77 |
-| 9 | TabPFN-v2 | 1402 | +119 / −100 | 1322 | 1542 | 77 |
-| 10 | TabM | 1364 | +96 / −89 | 1348 | 1424 | 80 |
-| 11 | ConTextTab | 1349 | +115 / −105 | 1279 | 1475 | 80 |
-| 12 | CatBoost | 1296 | +65 / −54 | 1306 | 1315 | 80 |
-| 13 | TabDPT | 1248 | +114 / −95 | 1116 | 1441 | 80 |
-| 14 | RealMLP | 1079 | +82 / −75 | 1103 | 1052 | 80 |
-| 15 | LightGBM | 1055 | +65 / −63 | 1093 | 1006 | 80 |
-| 16 | RandomForest | 1000 | anchor | 1000 | 1000 | 80 |
-| 17 | XGBoost | 985 | +67 / −65 | 1024 | 930 | 80 |
+| 1 | Kumo-Tabular | 2259 | +107 / −86 | 2295 | 2323 | 80 |
+| 2 | Kumo-Tabular-Medium | 2115 | +85 / −68 | 2137 | 2187 | 80 |
+| 3 | TabFM | 2034 | +79 / −56 | 2025 | 2129 | 80 |
+| 4 | TabPFN-3.5 | 1976 | +71 / −64 | 1901 | 2131 | 80 |
+| 5 | Kumo-Tabular-Small | 1930 | +51 / −43 | 1906 | 2034 | 80 |
+| 6 | Causilo | 1873 | +47 / −40 | 1822 | 2001 | 80 |
+| 7 | TabPFN-3.5-Fast | 1856 | +54 / −50 | 1779 | 2010 | 80 |
+| 8 | EXAONE-Tabular | 1789 | +38 / −36 | 1814 | 1843 | 80 |
+| 9 | TabICLv2 | 1636 | +36 / −34 | 1557 | 1786 | 80 |
+| 10 | Xiaomi-TabLDM | 1630 | +37 / −33 | 1545 | 1788 | 80 |
+| 11 | TabPFN-3 | 1569 | +37 / −35 | 1474 | 1736 | 80 |
+| 12 | TabPFN-v2p5 | 1558 | +33 / −36 | 1542 | 1636 | 77 |
+| 13 | TabDPT-1.3 | 1459 | +57 / −65 | 1373 | 1612 | 80 |
+| 14 | TabPFN-v2 | 1361 | +43 / −46 | 1286 | 1490 | 77 |
+| 15 | ConTextTab | 1333 | +52 / −57 | 1269 | 1447 | 80 |
+| 16 | TabM | 1318 | +37 / −40 | 1299 | 1374 | 80 |
+| 17 | TabSTAR-v1.1 | 1274 | +61 / −65 | 1363 | 1179 | 80 |
+| 18 | CatBoost | 1262 | +36 / −41 | 1265 | 1282 | 80 |
+| 19 | TabDPT | 1218 | +56 / −61 | 1099 | 1377 | 80 |
+| 20 | TabSTAR | 1200 | +66 / −69 | 1241 | 1160 | 80 |
+| 21 | RealMLP | 1093 | +52 / −61 | 1097 | 1093 | 80 |
+| 22 | LightGBM | 1048 | +53 / −69 | 1077 | 1013 | 80 |
+| 23 | RandomForest | 1000 | +72 / −85 | 1000 | 1000 | 80 |
+| 24 | XGBoost | 992 | +62 / −75 | 1028 | 945 | 80 |
 
 Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row per (dataset, fold), failed
-runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank and
-normalized error; `--modalities text` or `--modalities image,image-text` restricts it to those datasets.
+runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank, normalized
+error and the number of folds each model is best on; `--modalities text` or `--modalities image,image-text` restricts
+it to those datasets.
 
 Leaderboard runs pass `--official`, which also requires a clean checkout of a commit on `master`, so the `git`
 column of every row names code anyone can check out. The image runs of the first 11 models are the one exception: they
@@ -68,10 +87,17 @@ pip install multabench
 ```
 
 ```python
-from multabench import Size, load_embeddings, load_split
+from multabench import Size, list_datasets, load_embeddings, load_published_results, load_split, score
+datasets = list_datasets(modality="text", task="regression", tier="core")  # DatasetInfo: id, hf_repo, modality, ...
 split = load_split("MUL_IMAGE_PETFINDER", fold=0, size=Size.TEN_K)  # split.x_train, split.y_train, split.x_test, ...
 embeddings = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size=Size.TEN_K, encoder="e5-small")
+result = score(split.task_type, y_true=y_test, y_pred=proba)  # metric, test_score, test_error, as the leaderboard
+published = load_published_results()  # every leaderboard run, in the columns of multabench/leaderboard/models/
 ```
+
+Each package version reads every dataset and embeddings repo at the commit pinned in
+`multabench/datasets/revisions.json`, and ships the leaderboard's runs as of its release. After uploading to one of
+those repos, `python -m multabench.datasets.revisions` pins them all to their current `main`.
 
 To run the benchmark:
 
@@ -86,8 +112,10 @@ python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --
 `pip install -e ".[bench,catboost]"` installs what one model needs; each wrapper imports its package only when it runs.
 ConTextTab, Kumo and TabFM are pinned to a git commit, which PyPI doesn't allow in extras, so `requirements-git.txt`
 lists them. `init.sh` sets up the shared `.venv` from `requirements.txt`, which locks the core, every extra and those
-three. Causilo needs a newer torch, so `source init.sh causilo` sets up `.venv-causilo` from `requirements-causilo.txt`;
-run its sweeps with that venv's python, which `sweep.py` writes into the jobs it launches.
+three. A model whose requirements conflict with that lock declares its own venv in its wrapper (`ENV`), locked in
+`requirements-<ENV>.txt` and set up with `source init.sh <ENV>`: Causilo, which needs a newer torch, runs in
+`.venv-causilo`, Mitra-v2, which needs AutoGluon 1.6, in `.venv-mitra2`, and LimiX-2 in `.venv-limix2`, on the
+Python 3.12 its lock names. `sweep.py` writes each model's venv python into its jobs, so one sweep covers every model.
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
 result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change), with
@@ -166,6 +194,10 @@ The text and image embeddings are cached on Hugging Face, one public dataset rep
   rows never take part in the tuning. Text columns share one E5, tuned on `"<column>: <value>"` of every column; the
   image column gets its own DINO. Regression targets are binned into 20 quantiles, and 10% of the training rows are
   held out for early stopping.
+- The same tuned encoder embeds the training rows it was tuned on, as in the paper, so their embeddings fit
+  their labels better than the test rows' do, and a model trained on them can lean on them more than the test rows
+  warrant. Cross-fitting, embedding each training row with an encoder tuned without it, would remove this bias at
+  about K times the tuning cost; the leaderboard keeps the paper's setting.
 
 Each directory has `embeddings.npz`, which maps every input, exactly as the encoder got it (e5's
 `"passage: <column>: <value>"` after a run's missing-text fill, or the image file name), to its raw encoder output (PCA
@@ -227,7 +259,7 @@ MulTaBench is not an official TabArena leaderboard.
 | | TabArena | MulTaBench | Status |
 |---|---|---|---|
 | Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | ✅ |
-| Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Elo as in the paper, RandomForest anchored at 1000, bootstrapped confidence intervals; missing results are left out, neither imputed nor dropping the model, so a model is ranked on the datasets it ran on, which its Datasets column shows | |
+| Leaderboard | Elo via `bencheval`, one battle per task fold, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Same Elo, one battle per dataset fold; missing results are left out, neither imputed nor dropping the model, so a model is ranked on the datasets it ran on, which its Datasets column shows | |
 | Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited: every dataset is split IID. Some datasets may have group or time structure, in which case IID splits can overestimate performance | |
 | Runtime | Train and inference time per 1K rows | Same, with the time spent embedding text and images reported separately | ✅ |

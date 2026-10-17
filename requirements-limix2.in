@@ -1,0 +1,5 @@
+# LimiX-2's venv, locked in requirements-limix2.txt: LimiX needs Python 3.12 (typing.override) and pins torch 2.9.1.
+# The commit TabArena benchmarked.
+LimiX @ git+https://github.com/limix-ldm-ai/LimiX.git@774aa3e1a994cbe38f33758e3d663e9951855554
+# The output coding of more than ten classes.
+tabpfn-extensions[many_class] >= 0.6.1

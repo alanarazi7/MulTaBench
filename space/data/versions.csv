@@ -1,0 +1,9 @@
+version,date,change,pr
+v1.7,2026-10-17,"Added TabSTAR-v1.1; 24 models",189
+v1.6,2026-10-16,"Added TabDPT-1.3, Xiaomi-TabLDM and EXAONE-Tabular; 23 models",186
+v1.5,2026-10-16,"Added TabSTAR; the Elo is computed with TabArena's bencheval",178
+v1.4,2026-10-16,Added TabFM and Causilo,176
+v1.3,2026-10-15,"Elo as in TabArena: one battle per dataset fold",175
+v1.2,2026-10-15,"Added Kumo-Tabular and Kumo-Tabular-Medium; 17 models, and this Space",172
+v1.1,2026-10-14,"Added TabPFN-3, TabPFN-3.5, TabPFN-3.5-Fast and Kumo-Tabular-Small",161
+v1.0,2026-10-14,"The paper's 11 baselines with frozen encoders, every dataset and fold",150

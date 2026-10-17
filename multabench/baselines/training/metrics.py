@@ -1,37 +1,24 @@
-"""Evaluation metrics, as in TabArena: ROC AUC (binary), log loss (multiclass) and RMSE (regression).
-
-Scored with AutoGluon's scorers, the same implementation TabArena uses.
-"""
+"""A run's metric, scored by multabench.benchmark.metrics; d_output is 1 (regression), 2 (binary) or more (multiclass)."""
 from typing import Dict, Union
 
 import numpy as np
-from autogluon.core.metrics import Scorer, log_loss, roc_auc, root_mean_squared_error
 from pandas import Series
 
+from multabench.benchmark.metrics import score
+from multabench.datasets.objects import SupervisedTask
 from multabench.result_keys import ResultKey
 
 
-def get_scorer(d_output: int) -> Scorer:
+def d_output_task(d_output: int) -> SupervisedTask:
     if d_output == 1:
-        return root_mean_squared_error
+        return SupervisedTask.REGRESSION
     if d_output == 2:
-        return roc_auc
+        return SupervisedTask.BINARY
     if d_output > 2:
-        return log_loss
+        return SupervisedTask.MULTICLASS
     raise ValueError(f"Unsupported d_output: {d_output}. Expected 1 (regression), 2 (binary), or >2 (multiclass).")
 
 
 def calculate_metric(y_true: Union[np.ndarray, Series], y_pred: np.ndarray, d_output: int) -> Dict:
-    """y_true holds the label-encoded classes (0..d_output-1) for classification; y_pred holds the
-    positive-class probability for binary, one probability column per class for multiclass.
-
-    test_score is higher-is-better (the metric itself for AUC, its negation for RMSE and log loss);
-    test_error is lower-is-better with 0 perfect, TabArena's metric_error."""
-    scorer = get_scorer(d_output)
-    y_true = np.asarray(y_true)
-    y_pred = np.asarray(y_pred)
-    if d_output == 2 and y_pred.ndim == 2:
-        y_pred = y_pred[:, 1]
-    score = float(scorer(y_true, y_pred))
-    error = float(scorer.convert_score_to_error(score))
-    return {ResultKey.METRIC: scorer.name, ResultKey.TEST_SCORE: score, ResultKey.TEST_ERROR: error}
+    s = score(d_output_task(d_output), y_true=y_true, y_pred=y_pred)
+    return {ResultKey.METRIC: s.metric, ResultKey.TEST_SCORE: s.test_score, ResultKey.TEST_ERROR: s.test_error}

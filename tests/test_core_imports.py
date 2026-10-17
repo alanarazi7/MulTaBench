@@ -6,7 +6,8 @@ BENCH_ONLY = ["torch", "torchvision", "transformers", "peft", "PIL", "skrub", "a
 
 
 def test_the_core_imports_no_bench_package():
-    code = ("import sys, multabench; from multabench import load_embeddings, load_split, Size; "
+    code = ("import sys, multabench; from multabench import (DatasetInfo, Modality, Score, Size, SupervisedTask, "
+            "Tier, list_datasets, load_embeddings, load_published_results, load_split, score); "
             f"print([m for m in {BENCH_ONLY} if m in sys.modules])")
     out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True).stdout
     assert out.strip() == "[]"

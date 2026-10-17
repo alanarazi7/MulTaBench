@@ -20,14 +20,12 @@ file as the PRs that complete them are merged.
       `multabench.embeddings.embed`, so they run with `python -m` without a checkout.
 - [ ] Split `benchmark.py` into a few functions in `multabench/benchmark/` (argument parsing,
       encoder resolution, running and writing the result), leaving the script a thin entry point.
-- [ ] Run every leaderboard entry on the official hardware.
 - [ ] `sweep.py` takes one `--sbatch`, so a sweep mixing CPU and GPU runs has to be split in two by
       hand. Group its runs by `run_hardware` and take a second set of sbatch arguments for CPU runs.
 - [ ] TF-IDF runs, deferred: the first release uses one text preprocessing per model, e5-small. Run
       the models that embed text with `--text_encoders tfidf` as their own leaderboard entries;
       until then, sweeps pass `--text_encoders e5-small`, since the default also lists TF-IDF.
-- [ ] End-to-end models, which take the raw table without our preprocessing: TabSTAR, ConTextTab and
-      AutoGluon multimodal.
+- [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing.
 - [ ] Rerun TabDPT when it next needs rerunning: its committed runs predate its seeding (#165), so a rerun doesn't
       reproduce them exactly.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
@@ -35,22 +33,8 @@ file as the PRs that complete them are merged.
 - [ ] Rerun the Kumo models when they next need rerunning: only their 24 out-of-memory runs postdate the cache fix
       (#170), which also speeds up fit, so their timings mix two code versions.
 - [ ] Rerun what `multabench/leaderboard/legacy_results/` covers with the leaderboard protocol: the
-      frozen small encoders are done; the large and fine-tuned (`-tar`) encoders and TabSTAR and
+      frozen small encoders and TabSTAR are done; the large and fine-tuned (`-tar`) encoders and
       AutoGluon multimodal are left. Then delete the legacy results with the paper analysis code.
-
-## Per-model dependencies
-
-New models' requirements conflict with the shared `requirements.txt` (torch 2.7.1): Mitra-v2 needs autogluon.tabular
-1.6, LimiX-2 declares python>=3.12 and torch==2.9.1, TabDPT-1.3 tabdpt 1.3 (which can't load the current TabDPT
-weights). Causilo, which needs torch>=2.13, has its own lock and venv (`source init.sh causilo`):
-
-- [ ] `sweep.py` runs each model with its venv's python, rather than a sweep per venv started from that venv.
-      Packages with wrong declared requirements (LimiX-2's torch pin, EXAONE-Tabular's scikit-learn floor) are
-      installed with `--no-deps`, documented in their wrapper.
-- [ ] Then add the other TabArena models at their default configs: TabDPT-1.3, LimiX-2, Mitra-v2, EXAONE-Tabular
-      and Xiaomi-TabLDM.
-      Mitra-v2's default fine-tunes within 8-fold bagging, and TabArena dropped Xiaomi-TabLDM over a prediction
-      bug when a batch has more rows than the training set; both run as they are.
 
 ## Leaderboard
 
@@ -64,6 +48,15 @@ weights). Causilo, which needs torch>=2.13, has its own lock and venv (`source i
 - [ ] Remove the remaining paper analysis code in `multabench/leaderboard/`, keeping only the main
       leaderboard tab.
 
+## Core package
+
+- [ ] A public model protocol, any object with `fit` and `predict`, and `evaluate(model, dataset, fold, size)` in the
+      core: `load_split`, `fit`, `predict`, `score` and the timings, returning one row in the
+      `leaderboard/models/*.csv` schema. `benchmark.py` calls it, and the `TabularModel` baselines implement it.
+- [ ] `featurize(split, text_encoder, image_encoder)` in the `bench` extra: the frozen-encoder and per-column PCA
+      preprocessing as a standalone step, so a protocol model gets the baselines' features, built on
+      `ColumnEncoder`.
+
 ## README
 
 - [ ] Rework the README the way the [TabSTAR README](https://github.com/alanarazi7/TabSTAR) is laid out: a row of
@@ -73,7 +66,6 @@ weights). Causilo, which needs torch>=2.13, has its own lock and venv (`source i
 
 ## Later, not needed for the first release
 
-- Minimal installation for `load_split` and `load_embeddings`.
 - `e5-large` and `dino-large` stay available as options but are not run.
 - `--size full` results.
 - A time limit per (model, dataset, fold), excluding encoder fine-tuning, with a result row with

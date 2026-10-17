@@ -6,16 +6,26 @@ import os
 import pandas as pd
 
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
+from multabench.datasets.info import Tier, dataset_info
 from multabench.leaderboard.elo import RESULTS_DIR, error_table, leaderboard, load_runs
 from multabench.result_keys import ResultKey, RunStatus
 
 SPACE_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "space", "data")
+TIERS = [t.value for t in Tier]
 TASKS = ["classification", "regression"]
 MODALITIES = [m.value for m in Modality]
 
 
+def dataset_tier(dataset: str) -> str:
+    return dataset_info(dataset).tier.value
+
+
 def dataset_task(dataset: str) -> str:
     return "regression" if dataset.startswith("REG_") else "classification"
+
+
+def _subset_key(picked: list[str], values: list[str]) -> str:
+    return "all" if len(picked) == len(values) else "+".join(picked)
 
 
 def subsets(values: list[str]) -> list[list[str]]:
@@ -23,15 +33,17 @@ def subsets(values: list[str]) -> list[list[str]]:
 
 
 def leaderboards(runs: pd.DataFrame, bootstraps: int = 1000) -> pd.DataFrame:
-    """One Elo leaderboard per combination of tasks and modalities, keyed by `task` and `modality`."""
+    """One Elo leaderboard per combination of tiers, tasks and modalities, keyed by `tier`, `task` and `modality`."""
     datasets = runs[ResultKey.DATASET]
+    tier, task = datasets.map(dataset_tier), datasets.map(dataset_task)
     modality = datasets.map(lambda d: dataset_modality(MulTaBenchDatasetID[d]).value)
     boards = []
-    for tasks, modalities in itertools.product(subsets(TASKS), subsets(MODALITIES)):
-        keep = datasets.map(dataset_task).isin(tasks) & modality.isin(modalities)
+    for tiers, tasks, modalities in itertools.product(subsets(TIERS), subsets(TASKS), subsets(MODALITIES)):
+        keep = tier.isin(tiers) & task.isin(tasks) & modality.isin(modalities)
         board = leaderboard(error_table(runs[keep]), bootstraps=bootstraps)
-        board.insert(0, "modality", "all" if len(modalities) == len(MODALITIES) else "+".join(modalities))
-        board.insert(0, "task", "all" if len(tasks) == len(TASKS) else "+".join(tasks))
+        board.insert(0, "modality", _subset_key(modalities, MODALITIES))
+        board.insert(0, "task", _subset_key(tasks, TASKS))
+        board.insert(0, "tier", _subset_key(tiers, TIERS))
         boards.append(board)
     return pd.concat(boards, ignore_index=True)
 
@@ -45,6 +57,7 @@ def per_dataset(runs: pd.DataFrame) -> pd.DataFrame:
     modality = df[ResultKey.DATASET].map(lambda d: dataset_modality(MulTaBenchDatasetID[d]).value)
     df.insert(1, "modality", modality)
     df.insert(1, "task", df[ResultKey.DATASET].map(dataset_task))
+    df.insert(1, "tier", df[ResultKey.DATASET].map(dataset_tier))
     return df
 
 

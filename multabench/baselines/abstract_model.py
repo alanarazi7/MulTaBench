@@ -14,7 +14,8 @@ from multabench.baselines.preprocessing.column_encoders import ColumnEncoder, tr
 from multabench.baselines.preprocessing.image_embeddings import fit_image_encoders
 from multabench.baselines.training.metrics import calculate_metric
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.baselines.preprocessing.categorical import fit_categorical_encoders, transform_categorical_features
+from multabench.baselines.preprocessing.categorical import (fit_categorical_encoders, fit_category_dtypes,
+                                                            transform_categorical_features)
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
 from multabench.baselines.preprocessing.target import transform_preprocess_y, fit_preprocess_y
 from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
@@ -34,7 +35,11 @@ class TabularModel:
     USE_CATEGORICAL_ENCODING: bool
     USE_TEXT_EMBEDDINGS: bool
     USE_TARGET_ENCODER: bool
+    # Categorical columns as pandas' category dtype, with the training values as categories, for models that read it.
+    USE_CATEGORY_DTYPE = False
     NEEDS_GPU = True
+    # A model whose requirements conflict with the shared .venv runs in its own, .venv-<ENV>, from requirements-<ENV>.txt.
+    ENV: Optional[str] = None
 
     def __init__(self, problem_type: SupervisedTask, device: torch.device,
                  dataset: MulTaBenchDatasetID | None = None, verbose: bool = False, image_folder: str | None = None,
@@ -102,6 +107,8 @@ class TabularModel:
                 is_cls=self.is_cls, dataset=self.dataset, size=self.size, fold=self.fold)
             self._train_embeddings.update(text_embeddings)
             self.vprint(f"📝 Detected {len(self.text_transformers)} text features: {sorted(self.text_transformers)}")
+        if self.USE_CATEGORY_DTYPE:
+            self.category_dtypes = fit_category_dtypes(x=x_train, categorical_features=self.categorical_features)
         self.fit_internal_preprocessor(x=x_train, y=y_train)
 
     def transform_preprocessor(self, x: DataFrame, y: Optional[Series],
@@ -120,6 +127,8 @@ class TabularModel:
             x = transform_categorical_features(x=x, categorical_encoders=self.categorical_encoders)
         if self.USE_TEXT_EMBEDDINGS:
             x = transform_columns(x=x, encoders=self.text_transformers, train_embeddings=train_embeddings)
+        if self.USE_CATEGORY_DTYPE:
+            x = x.astype(self.category_dtypes)
         return self.transform_internal_preprocessor(x=x, y=y)
 
     def fit_internal_preprocessor(self, x: DataFrame, y: Series) -> Tuple[DataFrame, Series]:

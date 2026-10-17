@@ -7,7 +7,7 @@ import time
 from benchmark import BASELINES
 from multabench.benchmark.splits import SPLITS, Size
 from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, csv_arg, list_runs, pending_runs, prefetch,
-                                        run_local, sbatch_commands, select_datasets, write_jobs_file,
+                                        run_local, sbatch_commands, select_datasets, venv_python, write_jobs_file,
                                         write_slurm_script)
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID
 from multabench.dino.constants import ImageEncoder
@@ -52,7 +52,13 @@ if __name__ == "__main__":
     print(f"{len(runs)} runs, {len(runs) - len(pending)} already have a result, {len(pending)} to run")
     if not pending:
         sys.exit(0)
-    write_jobs_file(pending, path=jobs_file, python=sys.executable, output_dir=output_dir, official=args.official)
+    # Models with their own venv run with its python; the others with this one's.
+    model_pythons = {m.SHORT_NAME: venv_python(REPO_DIR, m.ENV) for m in BASELINES if m.ENV and m.SHORT_NAME in args.models}
+    missing = {model: python for model, python in model_pythons.items() if not os.path.exists(python)}
+    if missing:
+        parser.error(f"No venv for {sorted(missing)}: set it up with `source init.sh <ENV>` ({missing})")
+    write_jobs_file(pending, path=jobs_file, python=sys.executable, output_dir=output_dir, official=args.official,
+                    model_pythons=model_pythons)
     print(f"Wrote {jobs_file}", flush=True)
 
     if args.launcher:
