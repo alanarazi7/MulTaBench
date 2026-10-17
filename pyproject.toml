@@ -1,34 +1,53 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "multabench"
-version = "0.1.0"
+version = "0.0.2"
 description = "Benchmarking multimodal tabular learning: tables whose columns include text or images"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Alan Arazi" },
+    { name = "Eilam Shapira" },
+    { name = "Shoham Grunblat" },
+    { name = "Mor Ventura" },
+    { name = "Elad Hoffer" },
+    { name = "Gioia Blayer" },
+    { name = "David Holzmüller" },
+    { name = "Lennart Purucker" },
+    { name = "Gaël Varoquaux" },
+    { name = "Frank Hutter" },
+    { name = "Roi Reichart" },
+]
 requires-python = ">=3.11"
+# The core: loading the datasets, their splits and the cached embeddings.
 dependencies = [
-    "autogluon.core",
     "huggingface_hub",
     "numpy",
-    "nvidia-ml-py",
     "pandas >= 2.2.2",
+    "pyarrow",
+    "scikit-learn",
+]
+
+# `bench` runs benchmark.py; one extra per model package on top of it, except the models pinned to a git commit, which
+# PyPI doesn't allow in extras and requirements-git.txt lists. requirements.txt locks the shared .venv, which has all.
+[project.optional-dependencies]
+bench = [
+    "autogluon.core",
+    "nvidia-ml-py",
     "peft",
     "pillow",
     "psutil",
-    "pyarrow",
     "python-dotenv",
-    "scikit-learn",
     "setuptools < 82",
     "skrub",
     "torch >= 2.6.0",
     "torchvision",
     "transformers >= 4.49.0",
 ]
-
-# One extra per model package; requirements.txt locks the shared .venv, which has all of them.
-[project.optional-dependencies]
 catboost = ["catboost"]
 lightgbm = ["lightgbm"]
 xgboost = ["xgboost"]
@@ -36,14 +55,27 @@ pytabkit = ["pytabkit"]
 tabicl = ["tabicl >= 2.0.3"]
 tabdpt = ["tabdpt >= 1.1.9"]
 tabpfn = ["tabpfn >= 9.2.0"]
-contexttab = ["sap_rpt_oss @ git+https://github.com/SAP-samples/sap-rpt-1-oss@v1.1.2"]
-tabstar = ["tabstar >= 1.1.15"]
-# Not on PyPI yet; the commit TabArena benchmarked.
-kumo = [
-    "structured-data-models @ git+https://github.com/NVIDIA/structured-data-models.git@98f61289c7a4e1bce3b33771223ac2e123b63f19",
-]
+tabstar = ["tabstar >= 1.2.2"]
+# TabFM itself is git-pinned; this is the output coding of more than ten classes.
+tabfm = ["tabpfn-extensions[many_class] >= 0.6.1"]
+# Needs torch>=2.13, so it has its own lock, requirements-causilo.txt, and venv.
+causilo = ["causilo == 1.0.2"]
+# TabDPT-1.3, apart from the 1.1 TabDPT needs: its own lock, requirements-tabdpt13.txt, and venv.
+tabdpt13 = ["tabdpt == 1.3.1"]
 autogluon-mm = ["autogluon.multimodal"]
+# The Elo leaderboard: TabArena's bencheval, at the daily build of its main branch the leaderboard was computed with.
+leaderboard = ["bencheval == 0.1.1.dev20261015010754"]
 dev = ["matplotlib", "pytest", "streamlit"]
+
+[project.urls]
+Repository = "https://github.com/alanarazi7/MulTaBench"
+Leaderboard = "https://huggingface.co/spaces/multabench/leaderboard"
+Paper = "https://arxiv.org/abs/2605.10616"
 
 [tool.setuptools.packages.find]
 include = ["multabench*"]
+
+# The published runs, for load_published_results, and the pinned Hugging Face revisions.
+[tool.setuptools.package-data]
+"multabench.leaderboard" = ["models/*.csv"]
+"multabench.datasets" = ["revisions.json"]

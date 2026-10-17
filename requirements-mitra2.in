@@ -1,0 +1,5 @@
+# Mitra-v2's venv, locked in requirements-mitra2.txt: TabArena's wrapper needs autogluon.tabular 1.6, which needs
+# torch>=2.10.
+# The commit that added the wrapper TabArena benchmarked (#520).
+tabarena @ git+https://github.com/autogluon/tabarena.git@30f4b10bc54cba2baab39997c8b940ca48e6b3cd#subdirectory=packages/tabarena
+autogluon.tabular[mitra] >= 1.6, < 1.7

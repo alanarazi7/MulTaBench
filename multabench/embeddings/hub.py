@@ -19,6 +19,7 @@ from pandas import DataFrame
 from multabench.baselines.preprocessing.feature_types import transform_feature_types
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.hub import HF_ORG
+from multabench.datasets.revisions import revision
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder, format_e5_passage
 from multabench.utils.encoders import Encoder
@@ -130,12 +131,13 @@ def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID)
     """The local directory of the dataset's cached embeddings."""
     path_in_repo = embeddings_dir(dataset_id)
     files = [EMBEDDINGS_NPZ, META_JSON]
-    dir_path = snapshot_download(repo_id=embeddings_repo_id(encoder), repo_type="dataset",
+    repo_id = embeddings_repo_id(encoder)
+    dir_path = snapshot_download(repo_id=repo_id, repo_type="dataset", revision=revision(repo_id),
                                  allow_patterns=[f"{path_in_repo}/{f}" for f in files])
     path = join(dir_path, path_in_repo)
     missing = [f for f in files if not os.path.exists(join(path, f))]
     if missing:
-        raise FileNotFoundError(f"{embeddings_repo_id(encoder)} has no {path_in_repo}/{missing[0]}")
+        raise FileNotFoundError(f"{repo_id} has no {path_in_repo}/{missing[0]}")
     return path
 
 

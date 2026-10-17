@@ -1,7 +1,7 @@
 <h1 align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg">
-    <img src="assets/logo.svg" alt="MulTaBench: Benchmarking Multimodal Tabular Learning" width="640">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/alanarazi7/MulTaBench/master/assets/logo-dark.svg">
+    <img src="https://raw.githubusercontent.com/alanarazi7/MulTaBench/master/assets/logo.svg" alt="MulTaBench: Benchmarking Multimodal Tabular Learning" width="640">
   </picture>
 </h1>
 
@@ -23,30 +23,83 @@ than used frozen.
 
 ## Leaderboard
 
+The leaderboard lives at [huggingface.co/spaces/multabench/leaderboard](https://huggingface.co/spaces/multabench/leaderboard),
+with per-dataset results and cost; `space/` holds its app and data.
+
 Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino-small` image embeddings
-(ConTextTab reads raw text itself). Elo is fit on one battle per dataset and model pair, with RandomForest
-at 1000 and 95% intervals from bootstrapping the datasets; a model with no result on a dataset has no
-battles there. TabPFN-v2 and v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
+(ConTextTab, TabSTAR and TabSTAR-v1.1 read raw text themselves; TabSTAR loads, for each dataset it was pretrained
+on, the checkpoint that held that dataset out, and TabSTAR-v1.1's pretraining left MulTaBench out). TabPFN-v2 and
+v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
+
+**How Elo is computed.** With TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
+pinned in the `leaderboard` extra. Every fold is its own battle: on each of a dataset's 6 folds, each pair of models
+plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a Bradley–Terry
+model, with RandomForest anchored at 1000. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
+drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many folds. They
+are bootstrapped before anchoring, so each model's interval is its own, RandomForest's included, rather than relative
+to RandomForest. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
+error and best-on count are per fold as well. Until October 2026 the leaderboard, like the paper, played one battle
+per dataset on the mean error over its folds. That makes each dataset winner-take-all, which stretches the scale: on
+the then 17 models, Kumo-Tabular was at 2670 rather than 2347, with the same ranking.
 
 | # | Model | Elo, 80 datasets | 95% CI | Text, 40 | Images, 40 | Datasets |
 |---|---|---|---|---|---|---|
-| 1 | TabICLv2 | 1788 | +141 / −112 | 1674 | 1996 | 80 |
-| 2 | TabPFN-v2p5 | 1685 | +140 / −117 | 1670 | 1772 | 77 |
-| 3 | TabPFN-v2 | 1414 | +113 / −97 | 1321 | 1576 | 77 |
-| 4 | TabM | 1372 | +102 / −90 | 1350 | 1447 | 80 |
-| 5 | ConTextTab | 1351 | +110 / −99 | 1264 | 1504 | 80 |
-| 6 | CatBoost | 1303 | +67 / −56 | 1316 | 1326 | 80 |
-| 7 | TabDPT | 1254 | +107 / −90 | 1113 | 1463 | 80 |
-| 8 | RealMLP | 1084 | +81 / −72 | 1102 | 1066 | 80 |
-| 9 | LightGBM | 1057 | +60 / −58 | 1087 | 1019 | 80 |
-| 10 | RandomForest | 1000 | anchor | 1000 | 1000 | 80 |
-| 11 | XGBoost | 984 | +63 / −62 | 1017 | 938 | 80 |
+| 1 | Kumo-Tabular | 2259 | +107 / −86 | 2295 | 2323 | 80 |
+| 2 | Kumo-Tabular-Medium | 2115 | +85 / −68 | 2137 | 2187 | 80 |
+| 3 | TabFM | 2034 | +79 / −56 | 2025 | 2129 | 80 |
+| 4 | TabPFN-3.5 | 1976 | +71 / −64 | 1901 | 2131 | 80 |
+| 5 | Kumo-Tabular-Small | 1930 | +51 / −43 | 1906 | 2034 | 80 |
+| 6 | Causilo | 1873 | +47 / −40 | 1822 | 2001 | 80 |
+| 7 | TabPFN-3.5-Fast | 1856 | +54 / −50 | 1779 | 2010 | 80 |
+| 8 | EXAONE-Tabular | 1789 | +38 / −36 | 1814 | 1843 | 80 |
+| 9 | TabICLv2 | 1636 | +36 / −34 | 1557 | 1786 | 80 |
+| 10 | Xiaomi-TabLDM | 1630 | +37 / −33 | 1545 | 1788 | 80 |
+| 11 | TabPFN-3 | 1569 | +37 / −35 | 1474 | 1736 | 80 |
+| 12 | TabPFN-v2p5 | 1558 | +33 / −36 | 1542 | 1636 | 77 |
+| 13 | TabDPT-1.3 | 1459 | +57 / −65 | 1373 | 1612 | 80 |
+| 14 | TabPFN-v2 | 1361 | +43 / −46 | 1286 | 1490 | 77 |
+| 15 | ConTextTab | 1333 | +52 / −57 | 1269 | 1447 | 80 |
+| 16 | TabM | 1318 | +37 / −40 | 1299 | 1374 | 80 |
+| 17 | TabSTAR-v1.1 | 1274 | +61 / −65 | 1363 | 1179 | 80 |
+| 18 | CatBoost | 1262 | +36 / −41 | 1265 | 1282 | 80 |
+| 19 | TabDPT | 1218 | +56 / −61 | 1099 | 1377 | 80 |
+| 20 | TabSTAR | 1200 | +66 / −69 | 1241 | 1160 | 80 |
+| 21 | RealMLP | 1093 | +52 / −61 | 1097 | 1093 | 80 |
+| 22 | LightGBM | 1048 | +53 / −69 | 1077 | 1013 | 80 |
+| 23 | RandomForest | 1000 | +72 / −85 | 1000 | 1000 | 80 |
+| 24 | XGBoost | 992 | +62 / −75 | 1028 | 945 | 80 |
 
 Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row per (dataset, fold), failed
-runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank and
-normalized error; `--modalities text` or `--modalities image,image-text` restricts it to those datasets.
+runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank, normalized
+error and the number of folds each model is best on; `--modalities text` or `--modalities image,image-text` restricts
+it to those datasets.
+
+Leaderboard runs pass `--official`, which also requires a clean checkout of a commit on `master`, so the `git`
+column of every row names code anyone can check out. The image runs of the first 11 models are the one exception: they
+ran at `7f28e55`, on the branch of #148, which was squash-merged unchanged.
 
 ## Getting started
+
+To use the datasets from another project, install the core, which needs neither torch nor any model package:
+
+```bash
+pip install multabench
+```
+
+```python
+from multabench import Size, list_datasets, load_embeddings, load_published_results, load_split, score
+datasets = list_datasets(modality="text", task="regression", tier="core")  # DatasetInfo: id, hf_repo, modality, ...
+split = load_split("MUL_IMAGE_PETFINDER", fold=0, size=Size.TEN_K)  # split.x_train, split.y_train, split.x_test, ...
+embeddings = load_embeddings("MUL_TEXT_WINE_REVIEW", fold=0, size=Size.TEN_K, encoder="e5-small")
+result = score(split.task_type, y_true=y_test, y_pred=proba)  # metric, test_score, test_error, as the leaderboard
+published = load_published_results()  # every leaderboard run, in the columns of multabench/leaderboard/models/
+```
+
+Each package version reads every dataset and embeddings repo at the commit pinned in
+`multabench/datasets/revisions.json`, and ships the leaderboard's runs as of its release. After uploading to one of
+those repos, `python -m multabench.datasets.revisions` pins them all to their current `main`.
+
+To run the benchmark:
 
 ```bash
 source init.sh && source .venv/bin/activate
@@ -55,9 +108,14 @@ cp .env.example .env     # Hugging Face token
 python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0 --text_encoder e5-small --image_encoder dino-small
 ```
 
-`pyproject.toml` lists the core dependencies and one extra per model package, so `pip install -e ".[catboost]"`
-installs what one model needs; each wrapper imports its package only when it runs. `init.sh` sets up the shared
-`.venv` from `requirements.txt`, which locks the core and every extra.
+`pyproject.toml` lists the core dependencies, a `bench` extra for `benchmark.py` and one extra per model package, so
+`pip install -e ".[bench,catboost]"` installs what one model needs; each wrapper imports its package only when it runs.
+ConTextTab, Kumo and TabFM are pinned to a git commit, which PyPI doesn't allow in extras, so `requirements-git.txt`
+lists them. `init.sh` sets up the shared `.venv` from `requirements.txt`, which locks the core, every extra and those
+three. A model whose requirements conflict with that lock declares its own venv in its wrapper (`ENV`), locked in
+`requirements-<ENV>.txt` and set up with `source init.sh <ENV>`: Causilo, which needs a newer torch, runs in
+`.venv-causilo`, Mitra-v2, which needs AutoGluon 1.6, in `.venv-mitra2`, and LimiX-2 in `.venv-limix2`, on the
+Python 3.12 its lock names. `sweep.py` writes each model's venv python into its jobs, so one sweep covers every model.
 
 `benchmark.py` is the single entry point: it evaluates one model on one dataset fold and writes the
 result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.json` (`--output_dir` to change), with
@@ -92,15 +150,15 @@ printed. With a launcher, the sweep first downloads the runs' datasets and cache
 download the same files at once into a shared Hugging Face cache (e.g. on NFS) can fail. All the runs of a sweep get
 the same `--sbatch`, so sweep the runs that need a GPU apart from those that don't (see below), as in the last two commands. Relaunching a sweep runs only what is still missing.
 
-Every run must use the same hardware, so their times compare: one NVIDIA H100 (80 GB), an Intel
-Xeon Platinum 8481C with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in
-`multabench/utils/hardware.py`). Runs that need no GPU, a CPU model (CatBoost, LightGBM, XGBoost,
-RandomForest) whose text is embedded with TF-IDF or read from the cache, use an Intel Xeon Platinum 8581C with 8 CPU cores
-and 32 GB of RAM instead (`CPU_RUN_HARDWARE`). `benchmark.py` checks the GPU, the processor, the CPUs it
-may use and its memory limit, and raises before running if any differs; on Slurm, request
-`--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an H100 node, or `--cpus-per-task=8 --mem=32G`
-on an 8-core Xeon 8581C node for CPU runs. The sweeps' Slurm jobs run under `srun`, so a run sees only
-the CPUs its job asked for, even when Slurm hands it a whole machine.
+Every leaderboard run must use the same hardware, so their times compare: one NVIDIA H100 (80 GB), an Intel Xeon
+Platinum 8481C with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in `multabench/utils/hardware.py`). Runs that need
+no GPU, a CPU model (CatBoost, LightGBM, XGBoost, RandomForest) whose text is embedded with TF-IDF or read from the
+cache, use an Intel Xeon Platinum 8581C with 8 CPU cores and 32 GB of RAM instead (`CPU_RUN_HARDWARE`). With
+`--official` (`sweep.py --official` passes it to every run), `benchmark.py` checks the GPU, the processor, the CPUs it
+may use and its memory limit, and raises before running if any differs; leaderboard runs always pass it. On Slurm,
+request `--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an H100 node, or `--cpus-per-task=8 --mem=32G` on an 8-core Xeon
+8581C node for CPU runs. The sweeps' Slurm jobs run under `srun`, so a run sees only the CPUs its job asked for, even
+when Slurm hands it a whole machine.
 The cached embeddings are computed on one NVIDIA A100, 6 CPU cores and 32 GB of RAM for now
 (`EMBEDDING_HARDWARE`); the hardware they ran on is recorded with them.
 
@@ -189,11 +247,11 @@ MulTaBench is not an official TabArena leaderboard.
 | | TabArena | MulTaBench | Status |
 |---|---|---|---|
 | Metrics | ROC AUC (binary), log loss (multiclass), RMSE (regression), via AutoGluon's scorers | Same | ✅ |
-| Leaderboard | Elo via `bencheval`, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Elo as in the paper, RandomForest anchored at 1000, bootstrapped confidence intervals; missing results are left out, not imputed | |
+| Leaderboard | Elo via `bencheval`, one battle per task fold, RandomForest (default) anchored at 1000, missing results imputed with RandomForest and flagged, bootstrapped confidence intervals | Same Elo, one battle per dataset fold; missing results are left out, neither imputed nor dropping the model, so a model is ranked on the datasets it ran on, which its Datasets column shows | |
 | Splits | Fixed and part of the task definition | Same: a seeded function of the data | ✅ |
 | Group and time structure | Audited per dataset; group-aware or forward-in-time splits where needed | Not audited: every dataset is split IID. Some datasets may have group or time structure, in which case IID splits can overestimate performance | |
 | Runtime | Train and inference time per 1K rows | Same, with the time spent embedding text and images reported separately | ✅ |
-| Hardware | Recorded per run; 8 CPU cores and 32 GB of RAM, with one NVIDIA L40S (48 GB) for GPU models | Recorded per run; every run uses 8 CPU cores and 32 GB of RAM, GPU models with one NVIDIA H100 (80 GB), checked by `benchmark.py` | |
+| Hardware | Recorded per run; 8 CPU cores and 32 GB of RAM, with one NVIDIA L40S (48 GB) for GPU models | Recorded per run; every run uses 8 CPU cores and 32 GB of RAM, GPU models with one NVIDIA H100 (80 GB), checked by `benchmark.py --official` | |
 | Outer splits | 3 folds, repeated 1–10 times depending on dataset size | 3 folds, repeated twice for every size | |
 | Dataset size | Full size | `--size 10k` (the default, and the one the leaderboard reports) caps train and test at 10K and 5K rows; `--size full` keeps every row | |
 | Inner validation | 8-fold bagging for every model | No bagging: one fit per split, and models that need validation hold out 10% of the training rows (at most 1,000). This favors models that ensemble internally (TabPFN, TabICL, TabDPT, TabM, RandomForest) over single GBDTs and RealMLP | |

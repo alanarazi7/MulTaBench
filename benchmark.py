@@ -9,16 +9,24 @@ from multabench.utils.devices import get_device
 from multabench.finetune.train_args import DinoTrainArgs, E5TrainArgs
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost
+from multabench.baselines.causilo import Causilo
 from multabench.baselines.contexttab import ConTextTab
+from multabench.baselines.exaone_tabular import EXAONETabular
 from multabench.baselines.kumo_tabular import KumoTabular, KumoTabularMedium, KumoTabularSmall
 from multabench.baselines.lgbm import LightGBM
+from multabench.baselines.limix2 import LimiX2
+from multabench.baselines.mitra2 import MitraV2
 from multabench.baselines.random_forest import RandomForest
 from multabench.baselines.realmlp import RealMLP
 from multabench.baselines.tabdpt import TabDPT
+from multabench.baselines.tabdpt13 import TabDPT13
+from multabench.baselines.tabfm import TabFM
 from multabench.baselines.tabicl_v2 import TabICLv2
+from multabench.baselines.tabldm import XiaomiTabLDM
 from multabench.baselines.tabm import TabM
 from multabench.baselines.tabpfn import TabPFN3, TabPFN3p5, TabPFN3p5Fast, TabPFNv2, TabPFNv2p5
 from multabench.baselines.tabstar_v1 import TabSTAR
+from multabench.baselines.tabstar_v1p1 import TabSTARv1p1
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
 from multabench.benchmark.runs import Run
@@ -29,9 +37,9 @@ from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.embeddings.hub import reads_cache
 from multabench.result_keys import ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware
-from multabench.utils.logging import get_current_commit_hash
+from multabench.utils.logging import assert_official_commit, get_current_commit_hash
 
-BASELINES = [TabSTAR,
+BASELINES = [TabSTAR, TabSTARv1p1,
              CatBoost, XGBoost, LightGBM, RandomForest,
              RealMLP, TabM,
              TabICLv2, TabDPT,
@@ -39,7 +47,10 @@ BASELINES = [TabSTAR,
              ConTextTab,
              TabPFNv2, TabPFNv2p5,
              TabPFN3, TabPFN3p5, TabPFN3p5Fast,
-             KumoTabular, KumoTabularMedium, KumoTabularSmall,]
+             KumoTabular, KumoTabularMedium, KumoTabularSmall,
+             Causilo, TabFM,
+             TabDPT13, XiaomiTabLDM, EXAONETabular,
+             MitraV2, LimiX2,]
 
 SHORT2MODELS = {model.SHORT_NAME: model for model in BASELINES}
 
@@ -53,6 +64,8 @@ if __name__ == "__main__":
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--output_dir', type=str, default='runs')
     parser.add_argument('--overwrite', action='store_true', default=False, help="rerun even if the result JSON exists")
+    parser.add_argument('--official', action='store_true', default=False,
+                        help="raise unless on the leaderboard's hardware and a clean commit on master")
     parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1; default: cuda, or cpu for runs that don't need a GPU")
     _dino = DinoTrainArgs()
     _e5 = E5TrainArgs()
@@ -96,7 +109,9 @@ if __name__ == "__main__":
     live_encoders = [e for e in (text_encoder, image_encoder) if e and not reads_cache(e)]
     hardware = run_hardware(model.NEEDS_GPU, encoders=live_encoders)
     device = get_device(device=args.device or ("cpu" if hardware == CPU_RUN_HARDWARE else None))
-    assert_hardware(device, hardware)
+    if args.official:
+        assert_official_commit()
+        assert_hardware(device, hardware)
     run = Run(args.model, dataset.name, args.text_encoder, args.image_encoder, args.size, args.fold)
     out_path = os.path.join(args.output_dir, f"{run.name}.json")
     if os.path.exists(out_path) and not args.overwrite:

@@ -1,9 +1,11 @@
+import os
+
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
 from multabench.benchmark import sweep
 from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, IMAGE_TEXT_TEXT_ENCODER,
                                         encoder_pairs, list_runs, pending_runs, prefetch, sbatch_commands,
-                                        select_datasets)
+                                        select_datasets, venv_python, write_jobs_file)
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
@@ -81,3 +83,34 @@ def test_prefetch_downloads_each_dataset_and_its_cached_embeddings_once(monkeypa
     assert len(datasets) == 2 and set(datasets) == {TEXT, IMAGE_TEXT}
     assert len(embeddings) == 3 and set(embeddings) == {(TextEncoder.E5_SMALL, TEXT), (TextEncoder.E5_SMALL, IMAGE_TEXT),
                                                         (ImageEncoder.DINO_SMALL, IMAGE_TEXT)}
+
+
+def test_official_runs_check_their_hardware():
+    run = Run("light", TEXT.name, TextEncoder.E5_SMALL, None, Size.TEN_K, 0)
+    assert "--official" in run.command(python="python", output_dir="runs", official=True)
+    assert "--official" not in run.command(python="python", output_dir="runs")
+
+
+def test_a_model_with_its_own_venv_runs_with_its_python(tmp_path):
+    runs = [Run("light", TEXT.name, TextEncoder.E5_SMALL, None, Size.TEN_K, 0),
+            Run("causilo", TEXT.name, TextEncoder.E5_SMALL, None, Size.TEN_K, 0)]
+    jobs = tmp_path / "jobs.txt"
+    write_jobs_file(runs, path=str(jobs), python="shared/python", output_dir="runs",
+                    model_pythons={"causilo": venv_python("repo", "causilo")})
+    lines = jobs.read_text().splitlines()
+    assert lines[0].startswith("shared/python benchmark.py --model light ")
+    assert lines[1].startswith("repo/.venv-causilo/bin/python benchmark.py --model causilo ")
+
+
+def test_causilo_declares_its_venv():
+    from multabench.baselines.causilo import Causilo
+    from multabench.baselines.lgbm import LightGBM
+    assert Causilo.ENV == "causilo" and LightGBM.ENV is None
+
+
+def test_every_model_venv_has_a_lock():
+    from benchmark import BASELINES
+    repo = os.path.join(os.path.dirname(__file__), "..")
+    envs = {m.ENV for m in BASELINES if m.ENV}
+    missing = [env for env in envs if not os.path.exists(os.path.join(repo, f"requirements-{env}.txt"))]
+    assert not missing

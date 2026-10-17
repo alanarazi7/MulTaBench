@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import numpy as np
 import torch
 from pandas import DataFrame, Series
@@ -24,6 +26,7 @@ class KumoEstimator:
 
     def fit(self, x: DataFrame, y: Series):
         import sdm
+        from sdm.cache import Cache
         self.model = sdm.models.KumoTabular(task=self.task, size=self.size, device=self.device)
         self.stypes = sdm.infer_stypes(x, _low_cardinality="infer")
         x_context = sdm.TableTensor.from_pandas(df=x, stypes=self.stypes, device=self.device)
@@ -34,7 +37,10 @@ class KumoEstimator:
         # NVIDIA's adapter fits one ensemble member at a time above these sizes, to bound GPU memory.
         batch_size = 1 if rows > 2_000 or rows * cols >= 50_000 else self.num_estimators
         generator = torch.Generator(self.device).manual_seed(SEED)
-        with torch.inference_mode(), self._inference():
+        # sdm copies each estimator's fitted cache to pinned CPU memory, up to 56 GB on Hearthstone, past the 32 GB of
+        # RAM; Cache._apply_tensor does only that copy in fit, so skipping it keeps the caches on the GPU, where predict
+        # reads them anyway.
+        with torch.inference_mode(), self._inference(), patch.object(Cache, "_apply_tensor", lambda c, fn: c):
             self.model.fit(x=x_context, y=y_context, num_estimators=self.num_estimators,
                            estimator_batch_size=batch_size, generator=generator)
         return self

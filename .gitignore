@@ -1,7 +1,7 @@
 .DS_Store
 .env
 .idea
-.venv
+.venv*
 **/catboost_info/
 **/.tabstar_*/
 **/temp_*/
@@ -17,3 +17,4 @@ __pycache__/
 # venv legacy
 .TabSTAR-env/
 *.egg-info
+build/
