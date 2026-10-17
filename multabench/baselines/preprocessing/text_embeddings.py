@@ -4,9 +4,9 @@ from sklearn.decomposition import PCA
 
 from multabench.constants import SEED
 
-from multabench.preprocessing.discretize import discretize_numerical
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"  # Suppresses warning, avoids deadlock
+from dataclasses import replace
 from typing import Dict, Set, Optional, Any, Tuple
 
 import numpy as np
@@ -145,51 +145,12 @@ def fit_text_encoders_tuned(
     e5_model_name: str = E5_SMALL_V2,
 ) -> Tuple[Dict[str, E5ColumnEncoder], Dict[str, np.ndarray]]:
     """Fit a single E5 model for all text columns with passage: col_name: col_val format. Each column gets an E5ColumnEncoder sharing the same tuned model."""
-    from transformers import AutoTokenizer
+    from multabench.e5.e5_finetune import finetune_e5
+    from multabench.finetune.lora import E5_LORA
 
-    from multabench.e5.e5_finetune import finetune_e5_with_lora
-    from multabench.preprocessing.splits import split_to_val
-
-    if not is_cls:
-        y = discretize_numerical(y, n_bins=20)
-    x_tr, x_val, y_tr, y_val = split_to_val(x=x, y=y, is_cls=True)
-    kwargs = e5_train_kwargs or {}
-
-    # Build combined train/val: for each row, for each text col, create (col_name: col_val, label)
-    train_texts: list[str] = []
-    train_y: list = []
-    for idx in x_tr.index:
-        row_y = y_tr.loc[idx]
-        for col in text_features_list:
-            val = str(x_tr.loc[idx, col]).strip() if pd.notna(x_tr.loc[idx, col]) else ""
-            train_texts.append(f"{col}: {val}")
-            train_y.append(row_y)
-
-    val_texts: list[str] = []
-    val_y: list = []
-    for idx in x_val.index:
-        row_y = y_val.loc[idx]
-        for col in text_features_list:
-            val = str(x_val.loc[idx, col]).strip() if pd.notna(x_val.loc[idx, col]) else ""
-            val_texts.append(f"{col}: {val}")
-            val_y.append(row_y)
-
-    train_y_arr = np.array(train_y)
-    val_y_arr = np.array(val_y)
-
-    tokenizer = AutoTokenizer.from_pretrained(e5_model_name)
-    print(f"Finetuning single E5 ({e5_model_name}) for {len(text_features_list)} columns with {len(train_texts)} train examples (passage: col_name: col_val)")
-    tuned_model, tuned_tokenizer = finetune_e5_with_lora(
-        train_texts=train_texts,
-        train_y=train_y_arr,
-        val_texts=val_texts,
-        val_y=val_y_arr,
-        device=device,
-        tokenizer=tokenizer,
-        model_name=e5_model_name,
-        **kwargs,
-    )
-    tuned_model.to(device)
+    tuned_model, tuned_tokenizer, _ = finetune_e5(x[text_features_list], y, text_features_list, is_cls=is_cls,
+                                                  device=device, model_name=e5_model_name,
+                                                  args=replace(E5_LORA, **e5_train_kwargs))
 
     text_encoders: Dict[str, E5ColumnEncoder] = {}
     train_embeddings: Dict[str, np.ndarray] = {}
