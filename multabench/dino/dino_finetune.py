@@ -36,7 +36,7 @@ def _get_lora_target_modules(layer_indices: list[int]) -> list[str]:
     target_modules = []
     for layer_idx in layer_indices:
         for module_name in LORA_IMAGE_TARGET_MODULES:
-            target_modules.append(f"layer.{layer_idx}.attention.{module_name}")
+            target_modules.append(f"layer.{layer_idx}.{module_name}")
     return target_modules
 
 

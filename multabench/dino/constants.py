@@ -35,7 +35,9 @@ DINO_NUM_LAYERS = {
     DINOV3_LARGE: DINO_LARGE_LAYERS,
 }
 
+# The modules LoRA adapts in each tuned ViT layer, layer.{i}: attention and MLP, as in E5. The paper's runs named the
+# MLP's under attention, which matched nothing, so they adapted the attention projections alone.
 LORA_IMAGE_TARGET_MODULES = [
-    "q_proj", "k_proj", "v_proj", "o_proj",
+    "attention.q_proj", "attention.k_proj", "attention.v_proj", "attention.o_proj",
     "mlp.up_proj", "mlp.down_proj",
 ]
