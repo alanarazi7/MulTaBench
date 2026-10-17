@@ -9,8 +9,9 @@ file as the PRs that complete them are merged.
       seeing only its fold's training rows, uploaded with its LoRA adapter.
 - [ ] Make the model runners read the cached `-tar` embeddings too; only the frozen `e5-small` and `dino-small`
       embeddings are read so far.
-- [ ] Decide on scaling before PCA: image embeddings get a `StandardScaler`, text embeddings don't
-      (`ColumnEncoder.SCALE`).
+- [ ] Standardize text embeddings before PCA, as image embeddings are: only `DinoColumnEncoder` sets
+      `ColumnEncoder.SCALE`, so E5 and `e5-small-tar` embeddings go into PCA unscaled. Then rerun every leaderboard
+      run on a dataset with text columns.
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
       today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
       rows.

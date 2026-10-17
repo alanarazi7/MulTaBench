@@ -18,7 +18,7 @@ PCA_COMPONENTS = 30
 
 class ColumnEncoder:
     SUFFIX: str
-    # Image embeddings are standardized before PCA, text embeddings aren't.
+    # Image embeddings are standardized before PCA; text embeddings aren't yet, a bug kept until the rerun in TODO.md.
     SCALE: bool = False
 
     def __init__(self, col: str, cache: Optional[CachedEmbeddings] = None):
