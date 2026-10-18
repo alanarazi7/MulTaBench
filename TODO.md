@@ -36,7 +36,6 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
 - [ ] Run the fine-tuned (`-tar`) encoders and AutoGluon multimodal under the leaderboard protocol, which the paper
       also covered.
-- [ ] Decide whether the leaderboard includes the large encoders, `e5-large` and `dino-large`, and their `-tar`.
 
 ## Leaderboard
 
@@ -60,6 +59,7 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 
 ## Later, not needed for the first release
 
+- Possibly the large encoders, `e5-large` and `dino-large`, frozen and `-tar`, as their own leaderboard entries.
 - `--size full` results.
 - A time limit per (model, dataset, fold), excluding encoder fine-tuning, with a result row with
   `"status": "timeout"`.
