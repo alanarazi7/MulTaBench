@@ -31,6 +31,7 @@
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); padding-inline: 16px; padding-block: 28px 64px; }
 .wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 40px; }
+.wrap > *, section > *, .notes > * { min-width: 0; }
 h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
 h1 { font-size: clamp(28px, 4.4vw, 40px); font-weight: 800; }
 h2 { font-size: 21px; font-weight: 700; }
@@ -100,7 +101,7 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
 .links a { color: var(--accent); }
-code { font-family: var(--mono); font-size: 0.92em; }
+code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 .note a { color: var(--accent); }
 
 .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
@@ -111,8 +112,7 @@ code { font-family: var(--mono); font-size: 0.92em; }
 .version { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font: 12px/1 var(--mono); color: var(--muted); }
 .version .tag { background: var(--accent); color: var(--surface); border-radius: 999px; padding: 4px 9px; font-weight: 500; }
 .version a { color: var(--accent); }
-.ticker { display: flex; flex-wrap: wrap; gap: 8px 28px; padding: 12px 0; border-block: 1px solid var(--line); font: 12.5px/1.4 var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.ticker b { color: var(--ink); font-weight: 600; text-transform: none; letter-spacing: 0; }
+.protocol { font-size: 13px; }
 .star { color: var(--warn); }
 tr.front td { background: color-mix(in oklab, var(--accent) 7%, var(--surface)); }
 .pareto text.name { font-family: var(--body); font-size: 12px; fill: var(--ink); font-weight: 500; }
@@ -145,11 +145,11 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     </div>
     <div class="version" id="version"></div>
     <div class="eyebrow">MulTaBench · frozen encoders · 10K rows</div>
-    <h1>Which tabular models handle text and images best?</h1>
-    <p class="muted" id="intro">Tabular models on 80 multimodal datasets. Text columns are embedded with frozen e5-small and images with frozen DINOv3-small, each reduced to 30 PCA components per column; ConTextTab, TabSTAR and TabSTAR-v1.1 read raw text themselves. Default hyperparameters, no bagging, 3 folds × 2 repeats, up to 10K training rows.</p>
+    <h1>How should tabular models see text and images?</h1>
+    <p class="muted" id="intro">MulTaBench is a benchmark for multimodal tabular learning: tables whose columns hold free text or images alongside numbers and categories. Its 40 core datasets, 20 text-tabular and 20 image-tabular, were kept only if they show both <b>joint signal</b>, each modality carrying signal about the target that the others don't, and <b>target awareness</b>, the best representation of the text or images depending on the task. 40 more datasets with joint signal are released alongside them, 80 in total. Models are ranked here, but the benchmark's purpose is to compare ways of encoding text and images for tabular learners: this board uses frozen encoders, fine-tuned ones are next, and we expect new encoding methods to be submitted.</p>
+    <p class="muted protocol">* Frozen e5-small for text and DINOv3-small for images, 30 PCA components per column; ConTextTab, TabSTAR and TabSTAR-v1.1 read raw text themselves. Default hyperparameters, no bagging, 3 folds × 2 repeats, up to 10K training rows.</p>
     <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="data/leaderboards.csv">CSV</a></p>
     <div class="facts" id="facts"></div>
-    <div class="ticker" id="ticker"></div>
   </header>
 
   <div class="filters">
@@ -311,7 +311,6 @@ const store = {
 const fmt = (x, d = 0) => x == null ? '—' : Number(x).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
 const el = (tag, attrs = {}, html = '') => Object.assign(document.createElement(tag), attrs, html ? { innerHTML: html } : {});
 
-document.getElementById('intro').textContent = document.getElementById('intro').textContent.replace('Tabular models', `${MODELS.length} tabular models`);
 
 const THEMES = [['auto', 'Auto'], ['light', 'Light'], ['dark', 'Dark']];
 function setTheme(t) {
@@ -572,13 +571,6 @@ function renderBoard() {
   drawBoard(sorted, front, board);
   current.sorted = sorted;
   drawPareto(board, front);
-  const fastest = [...front].sort((a, b) => timeOf[a] - timeOf[b])[0];
-  document.getElementById('ticker').innerHTML = [
-    `Top Elo <b>${board[0].model} · ${fmt(board[0].elo)}</b>`,
-    `Fastest on the Pareto front <b>${fastest} · ${fmt(timeOf[fastest], 2)} s per 1K rows</b>`,
-    `<span class="star">★</span> Pareto front <b>${front.size} models</b>`,
-    `Latest <b>${LATEST.change}</b>`
-  ].map(x => `<span>${x}</span>`).join('');
   document.getElementById('dlNote').textContent = `Download the current board, with its version and date, to include it in a paper. Current view: ${names.length} datasets, sorted by ${SORTS.find(s => s[0] === boardSort)[1].replace('★ ', '')}.`;
 }
 
