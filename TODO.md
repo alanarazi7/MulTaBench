@@ -3,14 +3,19 @@
 Work in progress towards the first release of the living leaderboard. Items are removed from this
 file as the PRs that complete them are merged.
 
+## Full rerun
+
+Every leaderboard run is rerun from `master` once the fixes below are merged, so all results share one code version.
+
+- [ ] The other fixes that should land before the rerun.
+- [ ] Rerun every model with `sweep.py --official`. This also reruns TabDPT with its seeding (#165), and the Kumo
+      models, whose timings mix two code versions around the cache fix (#170).
+
 ## Embedding cache
 
 - [ ] Compute and upload the `e5-small-tar` and `dino-small-tar` embeddings from `master`:
       `python -m multabench.embeddings.embed_sweep --encoders e5-small-tar,dino-small-tar`, one job per dataset and
       fold, then `--upload`, and re-pin with `python -m multabench.datasets.revisions`.
-- [ ] Standardize text embeddings before PCA, as image embeddings are: only `DinoColumnEncoder` sets
-      `ColumnEncoder.SCALE`, so E5 and `e5-small-tar` embeddings go into PCA unscaled. Then rerun every leaderboard
-      run on a dataset with text columns.
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
       today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
       rows.
@@ -27,12 +32,8 @@ file as the PRs that complete them are merged.
       the models that embed text with `--text_encoders tfidf` as their own leaderboard entries;
       until then, sweeps pass `--text_encoders e5-small`, since the default also lists TF-IDF.
 - [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing.
-- [ ] Rerun TabDPT when it next needs rerunning: its committed runs predate its seeding (#165), so a rerun doesn't
-      reproduce them exactly.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
-- [ ] Rerun the Kumo models when they next need rerunning: only their 24 out-of-memory runs postdate the cache fix
-      (#170), which also speeds up fit, so their timings mix two code versions.
 - [ ] Rerun what `multabench/leaderboard/legacy_results/` covers with the leaderboard protocol: the
       frozen small encoders and TabSTAR are done; the large and fine-tuned (`-tar`) encoders and
       AutoGluon multimodal are left. Then delete the legacy results with the paper analysis code.

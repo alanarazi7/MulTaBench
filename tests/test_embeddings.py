@@ -6,7 +6,7 @@ from multabench.baselines.preprocessing import column_encoders, image_embeddings
 from multabench.baselines.preprocessing.column_encoders import transform_columns
 from multabench.baselines.preprocessing.image_embeddings import fit_image_encoders
 from multabench.baselines.preprocessing.nulls import MISSING_VALUE
-from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
+from multabench.baselines.preprocessing.text_embeddings import E5ColumnEncoder, fit_text_encoders
 from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import DINOV3_SMALL, IMAGE_ENCODERS, ImageEncoder
@@ -205,3 +205,11 @@ def test_embedding_jobs_write_a_jobs_file(tmp_path):
     jobs = list_jobs(encoders=[TextEncoder.E5_SMALL_TAR], datasets=[TEXT], folds=[0])
     write_jobs_file(jobs, path=str(tmp_path / "jobs.txt"), python="python", output_dir="out")
     assert (tmp_path / "jobs.txt").read_text() == jobs[0].command(python="python", output_dir="out") + "\n"
+
+
+def test_text_embeddings_are_standardized_before_pca():
+    embeddings = np.random.default_rng(0).normal(size=(200, 40))
+    embeddings[:, 0] *= 1000
+    encoder = E5ColumnEncoder("title", model=None, tokenizer=None, device="cpu").fit(embeddings)
+    first = encoder.transform(embeddings)[:, 0]
+    assert abs(np.corrcoef(first, embeddings[:, 0])[0, 1]) < 0.5

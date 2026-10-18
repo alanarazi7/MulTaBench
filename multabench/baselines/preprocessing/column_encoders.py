@@ -19,8 +19,6 @@ PCA_COMPONENTS = 30
 
 class ColumnEncoder:
     SUFFIX: str
-    # Image embeddings are standardized before PCA; text embeddings aren't yet, a bug kept until the rerun in TODO.md.
-    SCALE: bool = False
 
     def __init__(self, col: str, cache: Optional[CachedEmbeddings] = None):
         self.col = col
@@ -39,8 +37,8 @@ class ColumnEncoder:
         raise NotImplementedError
 
     def fit(self, embeddings: np.ndarray) -> "ColumnEncoder":
-        scaler = [StandardScaler()] if self.SCALE else []
-        self.reduction = make_pipeline(*scaler, PCA(n_components=PCA_COMPONENTS, random_state=SEED)).fit(embeddings)
+        """Standardizes the training rows' embeddings, then fits PCA_COMPONENTS-dimensional PCA on them."""
+        self.reduction = make_pipeline(StandardScaler(), PCA(n_components=PCA_COMPONENTS, random_state=SEED)).fit(embeddings)
         return self
 
     def transform(self, embeddings: np.ndarray) -> np.ndarray:
