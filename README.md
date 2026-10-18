@@ -28,8 +28,10 @@ with per-dataset results and cost; `space/` holds its app and data.
 
 Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino-small` image embeddings
 (ConTextTab, TabSTAR and TabSTAR-v1.1 read raw text themselves; TabSTAR loads, for each dataset it was pretrained
-on, the checkpoint that held that dataset out, and TabSTAR-v1.1's pretraining left MulTaBench out). TabPFN-v2 and
-v2.5 take at most 10 classes, which leaves out 3 of the 80 datasets.
+on, the checkpoint that held that dataset out, and TabSTAR-v1.1's pretraining left MulTaBench out). TabPFN-v2,
+v2.5 and Mitra-v2 take at most 10 classes, which leaves out 3 of the 80 datasets; TabFM and LimiX-2 cover them with
+tabpfn-extensions' output coding. Mitra-v2 also runs out of GPU memory on MUL_TEXT_MELBOURNE_AIRBNB, whose 680
+features it doesn't reduce since the table has categorical columns.
 
 **How Elo is computed.** With TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
 pinned in the `leaderboard` extra. Every fold is its own battle: on each of a dataset's 6 folds, each pair of models
@@ -44,30 +46,32 @@ the then 17 models, Kumo-Tabular was at 2670 rather than 2347, with the same ran
 
 | # | Model | Elo, 80 datasets | 95% CI | Text, 40 | Images, 40 | Datasets |
 |---|---|---|---|---|---|---|
-| 1 | Kumo-Tabular | 2259 | +107 / −86 | 2295 | 2323 | 80 |
-| 2 | Kumo-Tabular-Medium | 2115 | +85 / −68 | 2137 | 2187 | 80 |
-| 3 | TabFM | 2034 | +79 / −56 | 2025 | 2129 | 80 |
-| 4 | TabPFN-3.5 | 1976 | +71 / −64 | 1901 | 2131 | 80 |
-| 5 | Kumo-Tabular-Small | 1930 | +51 / −43 | 1906 | 2034 | 80 |
-| 6 | Causilo | 1873 | +47 / −40 | 1822 | 2001 | 80 |
-| 7 | TabPFN-3.5-Fast | 1856 | +54 / −50 | 1779 | 2010 | 80 |
-| 8 | EXAONE-Tabular | 1789 | +38 / −36 | 1814 | 1843 | 80 |
-| 9 | TabICLv2 | 1636 | +36 / −34 | 1557 | 1786 | 80 |
-| 10 | Xiaomi-TabLDM | 1630 | +37 / −33 | 1545 | 1788 | 80 |
-| 11 | TabPFN-3 | 1569 | +37 / −35 | 1474 | 1736 | 80 |
-| 12 | TabPFN-v2p5 | 1558 | +33 / −36 | 1542 | 1636 | 77 |
-| 13 | TabDPT-1.3 | 1459 | +57 / −65 | 1373 | 1612 | 80 |
-| 14 | TabPFN-v2 | 1361 | +43 / −46 | 1286 | 1490 | 77 |
-| 15 | ConTextTab | 1333 | +52 / −57 | 1269 | 1447 | 80 |
-| 16 | TabM | 1318 | +37 / −40 | 1299 | 1374 | 80 |
-| 17 | TabSTAR-v1.1 | 1274 | +61 / −65 | 1363 | 1179 | 80 |
-| 18 | CatBoost | 1262 | +36 / −41 | 1265 | 1282 | 80 |
-| 19 | TabDPT | 1218 | +56 / −61 | 1099 | 1377 | 80 |
-| 20 | TabSTAR | 1200 | +66 / −69 | 1241 | 1160 | 80 |
-| 21 | RealMLP | 1093 | +52 / −61 | 1097 | 1093 | 80 |
-| 22 | LightGBM | 1048 | +53 / −69 | 1077 | 1013 | 80 |
-| 23 | RandomForest | 1000 | +72 / −85 | 1000 | 1000 | 80 |
-| 24 | XGBoost | 992 | +62 / −75 | 1028 | 945 | 80 |
+| 1 | Kumo-Tabular | 2227 | +88 / −72 | 2243 | 2302 | 80 |
+| 2 | LimiX-2 | 2159 | +90 / −78 | 2167 | 2239 | 80 |
+| 3 | Kumo-Tabular-Medium | 2094 | +72 / −60 | 2101 | 2173 | 80 |
+| 4 | TabFM | 2017 | +71 / −53 | 2003 | 2113 | 80 |
+| 5 | TabPFN-3.5 | 1957 | +64 / −57 | 1882 | 2108 | 80 |
+| 6 | Mitra-v2 | 1935 | +72 / −59 | 1869 | 2076 | 76 |
+| 7 | Kumo-Tabular-Small | 1910 | +44 / −38 | 1883 | 2014 | 80 |
+| 8 | Causilo | 1854 | +43 / −37 | 1800 | 1983 | 80 |
+| 9 | TabPFN-3.5-Fast | 1843 | +49 / −46 | 1765 | 1995 | 80 |
+| 10 | EXAONE-Tabular | 1776 | +35 / −34 | 1794 | 1832 | 80 |
+| 11 | TabICLv2 | 1628 | +33 / −33 | 1552 | 1775 | 80 |
+| 12 | Xiaomi-TabLDM | 1623 | +34 / −33 | 1541 | 1776 | 80 |
+| 13 | TabPFN-3 | 1564 | +35 / −35 | 1471 | 1728 | 80 |
+| 14 | TabPFN-v2p5 | 1552 | +31 / −34 | 1536 | 1629 | 77 |
+| 15 | TabDPT-1.3 | 1457 | +56 / −65 | 1373 | 1607 | 80 |
+| 16 | TabPFN-v2 | 1360 | +43 / −48 | 1285 | 1488 | 77 |
+| 17 | ConTextTab | 1333 | +54 / −62 | 1269 | 1446 | 80 |
+| 18 | TabM | 1316 | +39 / −43 | 1298 | 1371 | 80 |
+| 19 | TabSTAR-v1.1 | 1275 | +64 / −67 | 1365 | 1179 | 80 |
+| 20 | CatBoost | 1261 | +38 / −42 | 1264 | 1280 | 80 |
+| 21 | TabDPT | 1219 | +58 / −65 | 1100 | 1376 | 80 |
+| 22 | TabSTAR | 1202 | +69 / −73 | 1245 | 1161 | 80 |
+| 23 | RealMLP | 1093 | +56 / −64 | 1098 | 1093 | 80 |
+| 24 | LightGBM | 1048 | +56 / −72 | 1077 | 1013 | 80 |
+| 25 | RandomForest | 1000 | +75 / −86 | 1000 | 1000 | 80 |
+| 26 | XGBoost | 992 | +63 / −75 | 1028 | 944 | 80 |
 
 Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row per (dataset, fold), failed
 runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank, normalized
