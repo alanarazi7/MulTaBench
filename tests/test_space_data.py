@@ -40,3 +40,11 @@ def test_raw_text_models_pay_no_text_encoding(runs):
     assert (encode.loc[["ConTextTab", "TabSTAR", "TabSTAR-v1.1"], "text_encode_s_per_1k"] == 0).all()
     assert (encode.drop(["ConTextTab", "TabSTAR", "TabSTAR-v1.1"])["text_encode_s_per_1k"] > 0).all()
     assert (encode["image_encode_s_per_1k"] > 0).all()
+
+
+def test_every_model_has_a_developer_logo_and_link(runs):
+    models = pd.read_csv(os.path.join(SPACE_DATA_DIR, "models.csv"))
+    assert sorted(models[ResultKey.MODEL]) == sorted(runs[ResultKey.MODEL].unique())
+    logos = os.path.join(os.path.dirname(SPACE_DATA_DIR), "assets", "logos")
+    assert all(os.path.isfile(os.path.join(logos, logo)) for logo in models["logo"])
+    assert models["link"].str.startswith("https://").all()

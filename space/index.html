@@ -65,7 +65,10 @@ td { padding: 9px 12px; border-bottom: 1px solid var(--soft); white-space: nowra
 tr:last-child td { border-bottom: 0; }
 td.num, th.num { text-align: right; }
 .rank { color: var(--muted); font-family: var(--mono); width: 2.5em; }
-.model { font-weight: 600; }
+.model { font-weight: 600; white-space: nowrap; }
+.model a { color: inherit; text-decoration: none; }
+.model a:hover { text-decoration: underline; }
+.mlogo { width: 18px; height: 18px; margin-right: 8px; vertical-align: -4px; border-radius: 4px; object-fit: contain; background: #fff; }
 .dev { font: 500 11px/1 var(--mono); border-radius: 4px; padding: 3px 6px; background: var(--soft); color: var(--muted); }
 .ci { color: var(--muted); font-size: 12.5px; }
 .chart svg { display: block; width: 100%; height: auto; }
@@ -286,13 +289,14 @@ async function load() {
   const per_dataset = (await get('per_dataset')).map(r => ({ ...r, task_type: r.dataset.slice(0, 3) }));
   const cost = await get('cost');
   const versions = await get('versions');
+  const info = Object.fromEntries((await get('models')).map(r => [r.model, r]));
   const models = boards['all|all|all'].map(r => r.model).sort();
   const datasets = [...new Set(per_dataset.map(r => r.dataset))];
   const have = new Set(per_dataset.map(r => r.model + '|' + r.dataset));
   const errors = [];
   models.forEach(m => datasets.forEach(d => { if (!have.has(m + '|' + d)) errors.push({ model: m, dataset: d }); }));
   const runs = per_dataset.reduce((n, r) => n + r.folds, 0);
-  return { boards, per_dataset, cost, versions, errors, meta: { models, datasets: datasets.length, runs } };
+  return { boards, per_dataset, cost, versions, info, errors, meta: { models, datasets: datasets.length, runs } };
 }
 load().then(start).catch(err => {
   document.querySelector('.wrap').insertAdjacentHTML('afterbegin', `<p class="flag">Could not load the leaderboard data: ${err.message}</p>`);
@@ -300,6 +304,7 @@ load().then(start).catch(err => {
 function start(D) {
 
 const MODELS = D.meta.models;
+const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image'], ['image-text', 'Image + text']];
@@ -550,7 +555,7 @@ function drawBoard(board, front, byElo) {
     const ci = `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
     const n = r.datasets < maxN ? ` <span class="flag" title="Rated on ${r.datasets} of ${maxN} datasets">${r.datasets}/${maxN}</span>` : '';
     const star = front.has(r.model) ? ' <span class="star" title="On the Pareto front of Elo and run time">★</span>' : '';
-    tb.appendChild(el('tr', { className: front.has(r.model) ? 'front' : '' }, `<td class="rank">${byElo.indexOf(r) + 1}</td><td class="model">${r.model}${star}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td><td class="num">${fmt(r.avg_rank, 2)}</td><td class="num">${fmt(r.norm_error, 3)}</td><td class="num">${r.champions}</td>`));
+    tb.appendChild(el('tr', { className: front.has(r.model) ? 'front' : '' }, `<td class="rank">${byElo.indexOf(r) + 1}</td><td class="model">${modelName(r.model)}${star}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td><td class="num">${fmt(r.avg_rank, 2)}</td><td class="num">${fmt(r.norm_error, 3)}</td><td class="num">${r.champions}</td>`));
   });
   t.appendChild(tb);
 }
@@ -632,7 +637,7 @@ function renderCost() {
   const tb = el('tbody');
   rows.forEach(r => {
     const total = timeOf[r.model];
-    tb.appendChild(el('tr', {}, `<td class="model">${r.model}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td><td class="num">${fmt(r.text_encode_s_per_1k, 2)}</td><td class="num">${fmt(r.image_encode_s_per_1k, 2)}</td>`));
+    tb.appendChild(el('tr', {}, `<td class="model">${modelName(r.model)}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td><td class="num">${fmt(r.text_encode_s_per_1k, 2)}</td><td class="num">${fmt(r.image_encode_s_per_1k, 2)}</td>`));
   });
   t.appendChild(tb);
 }
