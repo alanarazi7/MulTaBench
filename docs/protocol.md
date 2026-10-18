@@ -22,6 +22,13 @@ v2.5 and Mitra-v2 take at most 10 classes, which leaves out 3 of the 80 datasets
 tabpfn-extensions' output coding. Mitra-v2 also runs out of GPU memory on MUL_TEXT_MELBOURNE_AIRBNB, whose 680
 features it doesn't reduce since the table has categorical columns.
 
+## Reproducibility
+
+Every model is seeded, and a rerun of the same run on the leaderboard's hardware gives the same test error, except for
+four models whose packages aren't deterministic on GPU even with torch's deterministic algorithms. In a check of two
+identical runs on six datasets, Mitra-v2 differed by up to 1.5%, TabSTAR and TabSTAR-v1.1 by up to 0.25%, and Causilo
+by up to 0.04%; TabDPT, TabICLv2 and Xiaomi-TabLDM differ by float rounding only (below 1e-7).
+
 ## MulTaBench and TabArena
 
 MulTaBench follows the [TabArena](https://tabarena.ai) protocol where doing so is cheap or affects

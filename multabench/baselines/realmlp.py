@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass
 
 from pandas import DataFrame, Series
@@ -26,7 +27,11 @@ class RealMLP(TabularModel):
     USE_TARGET_ENCODER = True
 
     def initialize_model(self):
+        import torch
         from pytabkit import RealMLP_TD_Classifier, RealMLP_TD_Regressor
+        # pytabkit's categorical layers use CUDA scatter kernels, which made reruns differ by up to 3.6%.
+        os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+        torch.use_deterministic_algorithms(True, warn_only=True)
         # The epoch is picked on the leaderboard's metric (ROC AUC, log loss, RMSE), as TabArena's RealMLP does.
         task2metric = {SupervisedTask.BINARY: '1-auc_ovr_alt',
                        SupervisedTask.MULTICLASS: 'cross_entropy',
