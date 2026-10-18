@@ -266,6 +266,8 @@ Anime Planet's `"Unknown"` to missing). Scores on the two versions are not direc
 The 40 datasets released alongside the benchmark were admitted on a weaker criterion and carry no
 tier name of their own, so their scores must not be pooled with the 40 MulTaBench datasets.
 
+To suggest a dataset for a future release, add it to [`CANDIDATE_DATASETS.md`](CANDIDATE_DATASETS.md) in a pull request.
+
 ## Protocol and TabArena
 
 MulTaBench follows the [TabArena](https://tabarena.ai) protocol where doing so is cheap or affects
