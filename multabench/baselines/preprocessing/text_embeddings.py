@@ -23,7 +23,7 @@ def _texts(values: Series) -> List[str]:
 
 
 class E5ColumnEncoder(ColumnEncoder):
-    """E5 on "passage: <column>: <value>", vanilla or tuned, shared by all the text columns."""
+    """E5 on "passage: <column>: <value>", vanilla or tuned, shared by all text columns; standardized, then PCA."""
     SUFFIX = "txt"
 
     def __init__(self, col: str, model: Any, tokenizer: Any, device: torch.device,

@@ -24,7 +24,7 @@ IMAGE_ENCODER = {"encoder": None, "processor": None}
 
 
 class DinoColumnEncoder(ColumnEncoder):
-    """DINO's CLS token, vanilla or tuned."""
+    """DINO's CLS token, vanilla or tuned; standardized, then PCA."""
     SUFFIX = "img"
 
     def __init__(self, col: str, model: Any, processor: Any, image_folder: str,

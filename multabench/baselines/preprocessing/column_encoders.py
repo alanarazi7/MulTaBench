@@ -37,6 +37,7 @@ class ColumnEncoder:
         raise NotImplementedError
 
     def fit(self, embeddings: np.ndarray) -> "ColumnEncoder":
+        """Standardizes the training rows' embeddings, then fits PCA_COMPONENTS-dimensional PCA on them."""
         self.reduction = make_pipeline(StandardScaler(), PCA(n_components=PCA_COMPONENTS, random_state=SEED)).fit(embeddings)
         return self
 
