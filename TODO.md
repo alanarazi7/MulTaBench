@@ -13,9 +13,6 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 
 ## Embedding cache
 
-- [ ] Compute and upload the `e5-small-tar` and `dino-small-tar` embeddings from `master`:
-      `python -m multabench.embeddings.embed_sweep --encoders e5-small-tar,dino-small-tar`, one job per dataset and
-      fold, then `--upload`, and re-pin with `python -m multabench.datasets.revisions`.
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
       today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
       rows.
