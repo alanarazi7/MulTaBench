@@ -27,8 +27,9 @@ class RealMLP(TabularModel):
 
     def initialize_model(self):
         from pytabkit import RealMLP_TD_Classifier, RealMLP_TD_Regressor
-        task2metric = {SupervisedTask.BINARY: 'cross_entropy',
-                       SupervisedTask.MULTICLASS: '1-auc_ovr',
+        # The epoch is picked on the leaderboard's metric (ROC AUC, log loss, RMSE), as TabArena's RealMLP does.
+        task2metric = {SupervisedTask.BINARY: '1-auc_ovr_alt',
+                       SupervisedTask.MULTICLASS: 'cross_entropy',
                        SupervisedTask.REGRESSION: 'rmse'}
         val_metric = task2metric[self.problem_type]
         params = RealMlpDefaultHyperparams(device=str(self.device), val_metric_name=val_metric)
