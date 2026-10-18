@@ -171,8 +171,11 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
   </section>
 
   <section>
-    <h2>Elo vs cost</h2>
-    <p class="muted">Each model's Elo, under the filters above, against its median train + predict time per 1,000 rows (log scale). <span class="star">★</span> marks the Pareto front: no other model is both faster and stronger.</p>
+    <div class="head">
+      <h2>Elo vs cost</h2>
+      <div class="group tabs" id="encTabs" role="group" aria-label="Count encoding time"></div>
+    </div>
+    <p class="muted">Each model's Elo, under the filters above, against its median train + predict time per 1,000 rows (log scale), optionally with an estimate of the frozen encoders' time on those rows. <span class="star">★</span> marks the Pareto front: no other model is both faster and stronger.</p>
     <div class="panel chart pareto" id="paretoChart"></div>
   </section>
 
@@ -198,7 +201,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <section>
     <h2>Cost</h2>
-    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Embedding time is excluded: every run reads the cached embeddings.</p>
+    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Runs read the cached embeddings, so this leaves out encoding; the text and image columns estimate it, and the toggles above add it to the total.</p>
     <div class="panel scroll"><table id="cost"></table></div>
   </section>
 
@@ -210,6 +213,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       <div class="panel note"><h3>Datasets</h3><p class="muted">The benchmark's 80 datasets are 40 core and 40 extended ones, as their Hugging Face repos are named (<code>core-…</code>, <code>extended-…</code>); the Datasets filter keeps either half.</p></div>
       <div class="panel note"><h3>Data</h3><p class="muted">Every run is in <a href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models"><code>multabench/leaderboard/models/&lt;model&gt;.csv</code></a>. The tables here are plain CSVs in this Space's <a href="https://huggingface.co/spaces/multabench/leaderboard/tree/main/data">data</a> folder: <code>leaderboards.csv</code> (one leaderboard per <code>tier</code>, <code>task</code> and <code>modality</code> filter), <code>per_dataset.csv</code> and <code>cost.csv</code>.</p></div>
       <div class="panel note"><h3>Metrics</h3><p class="muted">Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized error rescales each dataset to 0 (best model) – 1 (worst).</p></div>
+      <div class="panel note"><h3>Encoding time is an estimate</h3><p class="muted">Runs read cached e5-small and DINOv3-small embeddings, so their own time leaves encoding out. The estimate is each dataset's encoding time per row from those caches, which were computed on A100s rather than the leaderboard's H100 (image time includes reading the files), averaged over a model's runs, with 0 where a run doesn't use the encoder. It is counted on the 1,000 training rows and the 1,000 predicted ones. ConTextTab, TabSTAR and TabSTAR-v1.1 encode raw text themselves, inside their own time.</p></div>
       <div class="panel note"><h3>Hardware</h3><p class="muted">Each run gets 8 CPUs and 32 GB. Tree models run on CPU (Xeon 8581C); the others on one H100 80 GB (Xeon 8481C).</p></div>
     </div>
   </section>
@@ -337,7 +341,25 @@ document.getElementById('copyBib').onclick = e => {
   navigator.clipboard?.writeText(document.getElementById('bib').textContent).then(() => { e.target.textContent = 'Copied'; });
 };
 
-const timeOf = Object.fromEntries(D.cost.map(r => [r.model, r.train_s_per_1k + r.inference_s_per_1k]));
+// Encoding counts twice: on the 1K training rows and on the 1K predicted rows.
+const ENC = [['text', 'Text encoding'], ['image', 'Image encoding']];
+const enc = Object.fromEntries(ENC.map(([k]) => [k, store.get('enc_' + k) === '1']));
+const encodeOf = r => 2 * ((enc.text ? r.text_encode_s_per_1k : 0) + (enc.image ? r.image_encode_s_per_1k : 0));
+let timeOf = {};
+const computeTime = () => { timeOf = Object.fromEntries(D.cost.map(r => [r.model, r.train_s_per_1k + r.inference_s_per_1k + encodeOf(r)])); };
+computeTime();
+function drawEncTabs() {
+  const box = document.getElementById('encTabs');
+  box.innerHTML = '<span class="label" style="font:500 11.5px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-right:4px">Count</span>';
+  ENC.forEach(([k, label]) => {
+    const b = el('button', { type: 'button', title: 'Estimate, from encoding on A100s', onclick: () => {
+      enc[k] = !enc[k]; store.set('enc_' + k, enc[k] ? '1' : '0'); computeTime(); drawEncTabs(); renderBoard(); renderCost();
+    } }, label);
+    b.setAttribute('aria-pressed', enc[k]);
+    box.appendChild(b);
+  });
+}
+drawEncTabs();
 function paretoFront(board) {
   const front = new Set();
   let best = -Infinity;
@@ -382,7 +404,8 @@ function drawPareto(board, front) {
     s += `<line x1="${left}" x2="${W - right}" y1="${y(e)}" y2="${y(e)}" stroke="var(--soft)"/>`;
     s += `<text x="${left - 10}" y="${y(e) + 4}" text-anchor="end">${e}</text>`;
   }
-  s += `<text x="${(left + W - right) / 2}" y="${H - 10}" text-anchor="middle">Train + predict s per 1K rows, median, log scale</text>`;
+  const encLabel = ENC.filter(([k]) => enc[k]).map(([k]) => k).join(' + ');
+  s += `<text x="${(left + W - right) / 2}" y="${H - 10}" text-anchor="middle">Train + predict s per 1K rows, median${encLabel ? `, + ${encLabel} encoding (estimate)` : ''}, log scale</text>`;
   s += `<text transform="translate(16 ${(top + H - bottom) / 2}) rotate(-90)" text-anchor="middle">Elo</text>`;
   const fr = rows.filter(r => front.has(r.model)).sort((a, b) => timeOf[a.model] - timeOf[b.model]);
   let path = '';
@@ -602,18 +625,20 @@ function render() {
 }
 render();
 
-(function renderCost() {
+function renderCost() {
   const rows = [...D.cost].sort((a, b) => order.indexOf(a.model) - order.indexOf(b.model));
-  const maxT = Math.max(...rows.map(r => r.train_s_per_1k + r.inference_s_per_1k));
+  const maxT = Math.max(...rows.map(r => timeOf[r.model]));
+  const what = ['Train + predict', ...ENC.filter(([k]) => enc[k]).map(([k]) => k)].join(' + ');
   const t = document.getElementById('cost');
-  t.innerHTML = `<thead><tr><th>Model</th><th>Device</th><th>Train + predict s / 1K rows</th><th class="num">Train</th><th class="num">Predict</th></tr></thead>`;
+  t.innerHTML = `<thead><tr><th>Model</th><th>Device</th><th>${what} s / 1K rows</th><th class="num">Train</th><th class="num">Predict</th><th class="num" title="Estimate, per 1K rows">Text enc.</th><th class="num" title="Estimate, per 1K rows">Image enc.</th></tr></thead>`;
   const tb = el('tbody');
   rows.forEach(r => {
-    const total = r.train_s_per_1k + r.inference_s_per_1k;
-    tb.appendChild(el('tr', {}, `<td class="model">${r.model}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td>`));
+    const total = timeOf[r.model];
+    tb.appendChild(el('tr', {}, `<td class="model">${r.model}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td><td class="num">${fmt(r.text_encode_s_per_1k, 2)}</td><td class="num">${fmt(r.image_encode_s_per_1k, 2)}</td>`));
   });
   t.appendChild(tb);
-})();
+}
+renderCost();
 }
 </script>
 </body>
