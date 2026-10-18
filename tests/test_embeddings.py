@@ -105,12 +105,13 @@ def test_cached_encoder():
     assert cached_encoder(TF_IDF, tuned=False) is None
 
 
-def test_runs_read_the_frozen_encoders_from_the_cache():
-    assert reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL])
-    assert reads_cache(IMAGE_ENCODERS[ImageEncoder.DINO_SMALL])
-    assert not reads_cache(TEXT_ENCODERS[TextEncoder.E5_SMALL_TAR])
+def test_runs_read_the_small_encoders_from_the_cache():
+    for encoder in (TextEncoder.E5_SMALL, TextEncoder.E5_SMALL_TAR):
+        assert reads_cache(TEXT_ENCODERS[encoder])
+    for encoder in (ImageEncoder.DINO_SMALL, ImageEncoder.DINO_SMALL_TAR):
+        assert reads_cache(IMAGE_ENCODERS[encoder])
     assert not reads_cache(TEXT_ENCODERS[TextEncoder.TFIDF])
-    assert not reads_cache(IMAGE_ENCODERS[ImageEncoder.DINO_SMALL_TAR])
+    assert not reads_cache(TEXT_ENCODERS[TextEncoder.E5_LARGE])
 
 
 def test_missing_cached_embeddings_raise(monkeypatch, tmp_path):
@@ -130,7 +131,7 @@ def test_text_features_look_their_texts_up_in_the_cache(monkeypatch):
     vectors = rng.normal(size=(len(distinct), 32)).astype(np.float32)
     cache = CachedEmbeddings(inputs=encoder_inputs(TextEncoder.E5_SMALL, "title", distinct), embeddings=vectors,
                              meta={"features": ["title"]})
-    monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset: cache)
+    monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset, size, fold: cache)
     monkeypatch.setattr(text_embeddings, "get_vanilla_e5", lambda *args, **kwargs: pytest.fail("loaded E5 for a cached column"))
     x = DataFrame({"title": texts})
     expected = vectors[[distinct.index(t) for t in texts]]
@@ -149,7 +150,7 @@ def test_image_features_look_their_files_up_in_the_cache(monkeypatch):
     distinct = sorted(set(files))
     vectors = rng.normal(size=(len(distinct), 64)).astype(np.float32)
     cache = CachedEmbeddings(inputs=distinct, embeddings=vectors, meta={"features": ["photo"]})
-    monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset: cache)
+    monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset, size, fold: cache)
     monkeypatch.setattr(image_embeddings, "get_image_encoder", lambda *args, **kwargs: pytest.fail("loaded DINO for a cached column"))
     x = DataFrame({"photo": files})
     expected = vectors[[distinct.index(f) for f in files]]
@@ -159,6 +160,44 @@ def test_image_features_look_their_files_up_in_the_cache(monkeypatch):
     np.testing.assert_array_equal(train_embeddings["photo"], expected[train_idx])
     x_test = transform_columns(x.iloc[test_idx], encoders=encoders)
     np.testing.assert_allclose(x_test.to_numpy(), encoders["photo"].transform(expected[test_idx]), rtol=1e-5)
+
+
+def _tuned_cache(texts, columns):
+    distinct = sorted(set(texts))
+    vectors = np.random.default_rng(0).normal(size=(len(columns) * len(distinct), 32)).astype(np.float32)
+    inputs = [i for col in columns for i in encoder_inputs(TextEncoder.E5_SMALL_TAR, col, distinct)]
+    return CachedEmbeddings(inputs=inputs, embeddings=vectors, meta={"features": columns})
+
+
+def test_a_tuned_run_reads_its_folds_embeddings(monkeypatch):
+    texts = [f"t{i % 40}" for i in range(60)]
+    asked = []
+
+    def fold_cache(encoder, dataset, size, fold):
+        asked.append((encoder, dataset, size, fold))
+        return _tuned_cache(texts, ["title"])
+
+    monkeypatch.setattr(column_encoders, "cached_embeddings", fold_cache)
+    monkeypatch.setattr(text_embeddings, "finetune_e5", lambda *args, **kwargs: pytest.fail("tuned a cached fold"))
+    encoders, _ = fit_text_encoders(DataFrame({"title": texts}), text_features={"title"}, device="cpu",
+                                    encoder=TextEncoder.E5_SMALL_TAR, dataset=TEXT, size=Size.TEN_K, fold=2)
+    assert asked == [(TextEncoder.E5_SMALL_TAR, TEXT, Size.TEN_K, 2)]
+    assert transform_columns(DataFrame({"title": ["t3"]}), encoders=encoders).shape == (1, 30)
+
+
+def test_a_tuned_run_needs_its_fold():
+    with pytest.raises(ValueError, match="per fold"):
+        fit_text_encoders(DataFrame({"title": ["a"] * 40}), text_features={"title"}, device="cpu",
+                          encoder=TextEncoder.E5_SMALL_TAR, dataset=TEXT)
+
+
+def test_a_fold_tuned_on_other_columns_raises(monkeypatch):
+    texts = [f"t{i % 40}" for i in range(60)]
+    monkeypatch.setattr(column_encoders, "cached_embeddings",
+                        lambda encoder, dataset, size, fold: _tuned_cache(texts, ["title", "body"]))
+    with pytest.raises(ValueError, match="tuned on"):
+        fit_text_encoders(DataFrame({"title": texts}), text_features={"title"}, device="cpu",
+                          encoder=TextEncoder.E5_SMALL_TAR, dataset=TEXT, size=Size.TEN_K, fold=0)
 
 
 def test_embedding_jobs_write_a_jobs_file(tmp_path):

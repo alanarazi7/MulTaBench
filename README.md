@@ -254,8 +254,18 @@ on (`EMBEDDING_HARDWARE` in `multabench/utils/hardware.py`) and how they differ.
 inputs up, so an embedding is never paired with another row's text, and an input missing from the
 cache, e.g. after the dataset changed, raises. The cache is optional: `benchmark.py` reads it when
 the dataset has embeddings for the encoder, and otherwise embeds live, so new encoders and datasets
-need no cache to run. Only the frozen `e5-small` text embeddings are read so far. `load_embeddings`
-returns them aligned with `load_split`'s rows:
+need no cache to run.
+
+The fine-tuned encoders, `e5-small-tar` and `dino-small-tar`, are cached in `multabench/embeddings-e5-small-tar` and
+`multabench/embeddings-dino-small-tar`. The encoder is fine-tuned with LoRA on a fold's training rows, so each fold
+has its own embeddings, under `<dataset>/<size>/fold_<k>/`, with the LoRA adapter beside them and its training
+arguments and validation loss in `meta.json`. `e5-small-tar` is tuned on the text datasets and `dino-small-tar` on
+the image datasets, on all the dataset's columns of that kind together, so a run with other columns raises. Runs
+read these embeddings rather than fine-tuning live, so a tuned encoder needs the cache. The encoder embeds the
+training rows it was tuned on, so their embeddings fit the target better than the test rows' do, and the model
+fitted on them sees a cleaner signal than it gets at test time. This is kept as is, so all runs share it.
+
+`load_embeddings` returns the embeddings aligned with `load_split`'s rows:
 
 ```python
 from multabench import Size, load_embeddings

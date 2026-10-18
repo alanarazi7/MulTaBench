@@ -165,6 +165,5 @@ def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID, s
 
 
 def reads_cache(encoder: Encoder) -> bool:
-    """Whether runs read this encoder's embeddings from the cache, which must then have them, not embed live. A tuned
-    encoder is still fine-tuned live, until runs read its per-fold cache."""
-    return not encoder.tune_encoder and cached_encoder(encoder.encoder_name, tuned=False) is not None
+    """Whether runs read this encoder's embeddings from the cache, which must then have them, not embed live."""
+    return cached_encoder(encoder.encoder_name, encoder.tune_encoder) is not None

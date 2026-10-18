@@ -9,9 +9,10 @@ from sklearn.decomposition import PCA
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
+from multabench.benchmark.splits import Size
 from multabench.constants import SEED
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.embeddings.hub import CachedEmbeddings, cached_embeddings, cached_encoder
+from multabench.embeddings.hub import CachedEmbeddings, CachedEncoder, cached_embeddings, is_tuned
 
 PCA_COMPONENTS = 30
 
@@ -74,11 +75,18 @@ def transform_columns(x: DataFrame, encoders: Dict[str, ColumnEncoder],
     return x
 
 
-def column_caches(model_name: str, dataset: Optional[MulTaBenchDatasetID]) -> Dict[str, CachedEmbeddings]:
-    """The cached embeddings of each column that has them, for a frozen encoder."""
-    encoder = cached_encoder(model_name, tuned=False)
-    if encoder is None or dataset is None:
+def column_caches(encoder: CachedEncoder, dataset: Optional[MulTaBenchDatasetID], columns: List[str],
+                  size: Optional[Size] = None, fold: Optional[int] = None) -> Dict[str, CachedEmbeddings]:
+    """The cached embeddings of each column that has them. A tuned encoder's are its fold's, tuned on all the columns
+    together, so they must be exactly the run's columns."""
+    if dataset is None:
         return {}
-    cache = cached_embeddings(encoder, dataset)
-    print(f"Reading the embeddings of {cache.meta['features']} from the cached {encoder} embeddings")
-    return {col: cache for col in cache.meta["features"]}
+    tuned = is_tuned(encoder)
+    if tuned and fold is None:
+        raise ValueError(f"The cached {encoder} embeddings are per fold; give the run's fold and size")
+    cache = cached_embeddings(encoder, dataset, size=size if tuned else None, fold=fold if tuned else None)
+    cached = cache.meta["features"]
+    if tuned and sorted(cached) != sorted(columns):
+        raise ValueError(f"The cached {encoder} embeddings were tuned on {cached}, but the run's columns are {columns}")
+    print(f"Reading the embeddings of {cached} from the cached {encoder} embeddings")
+    return {col: cache for col in cached}

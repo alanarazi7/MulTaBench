@@ -9,11 +9,12 @@ from pandas import DataFrame, Series
 
 from multabench.baselines.preprocessing.column_encoders import (PCA_COMPONENTS, ColumnEncoder, column_caches,
                                                                 fit_column_encoders)
+from multabench.benchmark.splits import Size
 from multabench.constants import SEED
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
 from multabench.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
-from multabench.embeddings.hub import CachedEmbeddings, e5_passages
+from multabench.embeddings.hub import CACHED_ENCODERS, CachedEmbeddings, e5_passages
 from multabench.utils.timing import embedding_step
 
 
@@ -63,22 +64,23 @@ class TfidfColumnEncoder(ColumnEncoder):
 
 def fit_text_encoders(x: DataFrame, text_features: Set[str], device: torch.device,
                       encoder: TextEncoder = TextEncoder.E5_SMALL, y: Optional[Series] = None, is_cls: bool = True,
-                      dataset: Optional[MulTaBenchDatasetID] = None) -> Tuple[Dict[str, ColumnEncoder],
-                                                                              Dict[str, np.ndarray]]:
-    """One encoder per text column, with the training rows' embeddings. A tuned encoder is one E5 for all the columns,
-    fine-tuned on the training rows (y); otherwise columns with cached embeddings on the Hub are read from there."""
+                      dataset: Optional[MulTaBenchDatasetID] = None, size: Optional[Size] = None,
+                      fold: Optional[int] = None) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
+    """One encoder per text column, with the training rows' embeddings, read from the cache when the encoder has
+    one: the fold's, for a tuned encoder. Otherwise a tuned encoder is one E5 for all the columns, tuned on (x, y)."""
     columns = sorted(text_features)
     if not columns:
         return {}, {}
     if encoder == TextEncoder.TFIDF:
         return fit_column_encoders(x, [TfidfColumnEncoder(col, x[col]) for col in columns])
     spec = TEXT_ENCODERS[encoder]
-    caches = {} if spec.tune_encoder else column_caches(spec.encoder_name, dataset)
+    caches = column_caches(encoder, dataset, columns, size=size, fold=fold) if encoder in CACHED_ENCODERS else {}
     model, tokenizer = None, None
-    if spec.tune_encoder:
-        model, tokenizer, _ = finetune_e5(x[columns], y, columns, is_cls=is_cls, device=device,
-                                          model_name=spec.encoder_name)
-    elif not set(caches).issuperset(columns):
-        model, tokenizer = get_vanilla_e5(device, model_name=spec.encoder_name)
+    if not set(caches).issuperset(columns):
+        if spec.tune_encoder:
+            model, tokenizer, _ = finetune_e5(x[columns], y, columns, is_cls=is_cls, device=device,
+                                              model_name=spec.encoder_name)
+        else:
+            model, tokenizer = get_vanilla_e5(device, model_name=spec.encoder_name)
     return fit_column_encoders(x, [E5ColumnEncoder(col, model, tokenizer, device, cache=caches.get(col))
                                    for col in columns])
