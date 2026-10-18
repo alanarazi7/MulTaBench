@@ -45,9 +45,6 @@ file as the PRs that complete them are merged.
 - [ ] Update the Space from `master` with a GitHub Action: rerun `multabench.leaderboard.export` and upload
       `space/` when `multabench/leaderboard/models/` changes. It is uploaded by hand for now.
 - [ ] Move the leaderboard out of the README once the Space is announced.
-- [ ] README section on submitting a model: open a PR with the model's wrapper (and its
-      dependencies); maintainers rerun it on the official hardware, and self-reported results are
-      not accepted.
 - [ ] Remove the remaining paper analysis code in `multabench/leaderboard/`, keeping only the main
       leaderboard tab.
 

@@ -185,6 +185,29 @@ split = load_split("MUL_IMAGE_PETFINDER", fold=0, size=Size.TEN_K)
 split.x_train, split.y_train, split.x_test, split.y_test, split.task_type, split.image_folder, split.image_column
 ```
 
+## Adding a model
+
+To put a model on the leaderboard, open a pull request that adds it. Once it is merged, we run it on the leaderboard's
+hardware from `master` with `sweep.py --official`, commit its runs to `multabench/leaderboard/models/` and update the
+Space. Results run elsewhere are not accepted, so that every row comes from the same hardware and from code anyone can
+check out. The pull request adds:
+
+1. A wrapper, `multabench/baselines/<model>.py`: a `TabularModel` subclass with `MODEL_NAME` (the leaderboard's
+   name), `SHORT_NAME` (for `--model`), `NEEDS_GPU`, and the `USE_*` flags that pick the shared preprocessing it gets,
+   such as the frozen text embeddings, categorical encoding or a validation split. It implements `initialize_model`,
+   `fit_model` and, unless the model has scikit-learn's `predict` and `predict_proba`, `predict_from_processed`.
+   `multabench/baselines/tabdpt13.py` is a short example.
+2. The model in `BASELINES` in `benchmark.py`.
+3. Its dependencies as an extra in `pyproject.toml`, with the model's package imported only inside the wrapper's
+   methods (`tests/test_registry.py` checks that `benchmark.py` imports without it), and the extra added to
+   `requirements.txt` with the `uv pip compile` command in its header. If they conflict with that lock, set `ENV` in
+   the wrapper and lock them in `requirements-<ENV>.txt` instead, as LimiX-2 does.
+
+Use the model's default hyperparameters, since the leaderboard doesn't tune, and pin anything downloaded, such as
+weights, to a version or commit. Check that `benchmark.py` runs it on a text and an image dataset, and say in the pull
+request on which datasets the model can't run, e.g. too many classes, so they go into `EXPECTED_FAILURES` in
+`tests/test_leaderboard_results.py`.
+
 ## Cached embeddings
 
 The frozen text and image embeddings are cached on Hugging Face, one public dataset repo per
