@@ -1,3 +1,5 @@
+import tempfile
+
 import pandas as pd
 from pandas import DataFrame, Series
 
@@ -117,7 +119,9 @@ class TabSTAR(TabularModel):
         model = tabstar_cls(pretrain_dataset_or_path=dataset_mapping,
                             device=self.device, verbose=True, random_state=SEED,
                             is_paper_version=False,
-                            lora_batch=lora_batch)
+                            lora_batch=lora_batch,
+                            # Its default folder is named by the second, so concurrent runs in one checkout shared it.
+                            output_dir=tempfile.mkdtemp(prefix="tabstar_"))
         return model
 
 
