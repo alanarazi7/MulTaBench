@@ -280,6 +280,11 @@ function parseCSV(text) {
     return [h, v === '' || v === undefined ? null : isNaN(Number(v)) ? v : Number(v)];
   })));
 }
+// The Space runs in an iframe that most sites refuse to load in, so external links open in a new tab.
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="http"]');
+  if (a) Object.assign(a, { target: '_blank', rel: 'noopener' });
+});
 async function load() {
   const get = async name => parseCSV(await (await fetch(`data/${name}.csv`)).text());
   const boards = {};
