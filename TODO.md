@@ -59,10 +59,10 @@ file as the PRs that complete them are merged.
 
 ## README
 
-- [ ] Rework the README the way the [TabSTAR README](https://github.com/alanarazi7/TabSTAR) is laid out: a row of
-      badges (arXiv, NeurIPS 2026, the Hugging Face datasets, the leaderboard Space, the licence once there is
-      one), a short welcome and a Resources list, a figure of the benchmark, and a quick start before the details,
-      with the reference sections (protocol, cached embeddings, datasets) further down.
+- [ ] A figure of the benchmark near the top, the way the [TabSTAR README](https://github.com/alanarazi7/TabSTAR) has
+      one; the badges, quick links and citation are in (#207).
+- [ ] Update the counts in the README's summary strip and its leaderboard table by hand when models are added, or
+      have `multabench.leaderboard.export` write them.
 
 ## Later, not needed for the first release
 

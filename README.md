@@ -5,12 +5,25 @@
   </picture>
 </h1>
 
-> **Work in progress:** MulTaBench is moving towards a living leaderboard, and `master` will change
-> gradually on the way there. To reproduce the paper, use the tag
-> [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) or the
-> [`official-paper-version`](https://github.com/alanarazi7/MulTaBench/tree/official-paper-version) branch.
-> The paper's results are kept in `multabench/leaderboard/legacy_results/` while every model is rerun under the
-> leaderboard protocol.
+<p align="center">
+  <a href="https://huggingface.co/spaces/multabench/leaderboard"><img src="https://img.shields.io/badge/%F0%9F%8F%86%20Leaderboard-live-06214F" alt="Leaderboard"></a>
+  <a href="https://arxiv.org/abs/2605.10616"><img src="https://img.shields.io/badge/arXiv-2605.10616-b31b1b?logo=arxiv&logoColor=white" alt="arXiv"></a>
+  <a href="https://arxiv.org/abs/2605.10616"><img src="https://img.shields.io/badge/NeurIPS%202026-Spotlight-3D6FC4" alt="NeurIPS 2026 Spotlight"></a>
+  <a href="https://huggingface.co/multabench"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Datasets-80-8EB3EA" alt="Datasets"></a>
+  <a href="https://pypi.org/project/multabench/"><img src="https://img.shields.io/pypi/v/multabench?color=06214F" alt="PyPI"></a>
+  <img src="https://img.shields.io/badge/python-3.11%2B-3D6FC4" alt="Python 3.11+">
+  <a href="https://github.com/alanarazi7/MulTaBench/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-8EB3EA" alt="MIT license"></a>
+</p>
+
+<p align="center">
+  <a href="https://huggingface.co/spaces/multabench/leaderboard"><b>🏆 Leaderboard</b></a> ·
+  <a href="https://arxiv.org/abs/2605.10616"><b>📄 Paper</b></a> ·
+  <a href="https://huggingface.co/multabench"><b>🤗 Datasets</b></a> ·
+  <a href="https://huggingface.co/collections/multabench/multabench-6ad47e4de18e12fe3931a551"><b>📚 Collection</b></a> ·
+  <a href="https://github.com/alanarazi7/MulTaBench#getting-started"><b>🚀 Getting started</b></a> ·
+  <a href="https://github.com/alanarazi7/MulTaBench#adding-a-model"><b>➕ Add a model</b></a> ·
+  <a href="https://github.com/alanarazi7/MulTaBench#citation"><b>📝 Cite</b></a>
+</p>
 
 A benchmark for multimodal tabular learning: tables whose columns include images or free text, not
 just numbers and categories. It is 20 image-tabular and 20 text-tabular curated datasets, with 40
@@ -18,11 +31,15 @@ further datasets released alongside them, 80 in total. The benchmark evaluates t
 under a target-aware setting, where the image and text encoders are fine-tuned on the task rather
 than used frozen.
 
-**Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616) (NeurIPS 2026 Spotlight)  
-**Datasets**: [huggingface.co/multabench](https://huggingface.co/multabench)  
-**Collection**: the leaderboard, paper, datasets and embeddings in one [Hugging Face collection](https://huggingface.co/collections/multabench/multabench-6ad47e4de18e12fe3931a551)
+| 🗂️ 80 datasets | 🧠 26 models | 🔁 6 folds each | ⚖️ One protocol |
+|:---:|:---:|:---:|:---:|
+| 40 with text, 40 with images | foundation models, GBDTs, neural nets | 3 folds × 2 repeats, 10K/5K rows | default hyperparameters, same hardware |
 
 ## Leaderboard
+
+<p align="center">
+  <a href="https://huggingface.co/spaces/multabench/leaderboard"><img src="https://img.shields.io/badge/%F0%9F%8F%86%20Open%20the%20live%20leaderboard-huggingface.co%2Fspaces%2Fmultabench%2Fleaderboard-06214F?style=for-the-badge" alt="Open the live leaderboard"></a>
+</p>
 
 The leaderboard lives at [huggingface.co/spaces/multabench/leaderboard](https://huggingface.co/spaces/multabench/leaderboard),
 with per-dataset results and cost; `space/` holds its app and data.
@@ -34,7 +51,10 @@ v2.5 and Mitra-v2 take at most 10 classes, which leaves out 3 of the 80 datasets
 tabpfn-extensions' output coding. Mitra-v2 also runs out of GPU memory on MUL_TEXT_MELBOURNE_AIRBNB, whose 680
 features it doesn't reduce since the table has categorical columns.
 
-**How Elo is computed.** With TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
+<details>
+<summary><b>How Elo is computed</b></summary>
+
+With TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
 pinned in the `leaderboard` extra. Every fold is its own battle: on each of a dataset's 6 folds, each pair of models
 plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a Bradley–Terry
 model, with RandomForest anchored at 1000. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
@@ -45,11 +65,13 @@ error and best-on count are per fold as well. Until October 2026 the leaderboard
 per dataset on the mean error over its folds. That makes each dataset winner-take-all, which stretches the scale: on
 the then 17 models, Kumo-Tabular was at 2670 rather than 2347, with the same ranking.
 
+</details>
+
 | # | Model | Elo, 80 datasets | 95% CI | Text, 40 | Images, 40 | Datasets |
 |---|---|---|---|---|---|---|
-| 1 | Kumo-Tabular | 2227 | +88 / −72 | 2243 | 2302 | 80 |
-| 2 | LimiX-2 | 2159 | +90 / −78 | 2167 | 2239 | 80 |
-| 3 | Kumo-Tabular-Medium | 2094 | +72 / −60 | 2101 | 2173 | 80 |
+| 🥇 | **Kumo-Tabular** | 2227 | +88 / −72 | 2243 | 2302 | 80 |
+| 🥈 | **LimiX-2** | 2159 | +90 / −78 | 2167 | 2239 | 80 |
+| 🥉 | **Kumo-Tabular-Medium** | 2094 | +72 / −60 | 2101 | 2173 | 80 |
 | 4 | TabFM | 2017 | +71 / −53 | 2003 | 2113 | 80 |
 | 5 | TabPFN-3.5 | 1957 | +64 / −57 | 1882 | 2108 | 80 |
 | 6 | Mitra-v2 | 1935 | +72 / −59 | 1869 | 2076 | 76 |
@@ -74,6 +96,7 @@ the then 17 models, Kumo-Tabular was at 2670 rather than 2347, with the same ran
 | 25 | RandomForest | 1000 | +75 / −86 | 1000 | 1000 | 80 |
 | 26 | XGBoost | 992 | +63 / −75 | 1028 | 944 | 80 |
 
+
 Each model's runs are in `multabench/leaderboard/models/<model>.csv`, one row per (dataset, fold), failed
 runs included. `python -m multabench.leaderboard.elo` prints the table, with win rate, average rank, normalized
 error and the number of folds each model is best on; `--modalities text` or `--modalities image,image-text` restricts
@@ -84,6 +107,8 @@ column of every row names code anyone can check out. The image runs of the first
 ran at `7f28e55`, on the branch of #148, which was squash-merged unchanged.
 
 ## Getting started
+
+### Install
 
 To use the datasets from another project, install the core, which needs neither torch nor any model package:
 
@@ -104,7 +129,8 @@ Each package version reads every dataset and embeddings repo at the commit pinne
 `multabench/datasets/revisions.json`, and ships the leaderboard's runs as of its release. After uploading to one of
 those repos, `python -m multabench.datasets.revisions` pins them all to their current `main`.
 
-To run the benchmark:
+### Run the benchmark
+
 
 ```bash
 source init.sh && source .venv/bin/activate
@@ -132,6 +158,8 @@ reruns it. `--help` lists the available models. `--text_encoder` picks how text 
 `--image_encoder` does the same for image columns: frozen `dino-small` (the default) or `dino-large`, or
 `dino-small-tar`. Each applies only to datasets with that kind of column.
 
+### Sweeps
+
 `sweep.py` runs `benchmark.py` over models × datasets × encoders × folds. It writes the runs that
 don't have a result yet to a jobs file (`sweep_jobs_<timestamp>.txt`, or `--jobs_file`), one command per line,
 which any scheduler can run. `--modalities text`, `image` or `image-text` keeps only those datasets. Text datasets
@@ -155,6 +183,8 @@ printed. With a launcher, the sweep first downloads the runs' datasets and cache
 download the same files at once into a shared Hugging Face cache (e.g. on NFS) can fail. All the runs of a sweep get
 the same `--sbatch`, so sweep the runs that need a GPU apart from those that don't (see below), as in the last two commands. Relaunching a sweep runs only what is still missing.
 
+### Hardware
+
 Every leaderboard run must use the same hardware, so their times compare: one NVIDIA H100 (80 GB), an Intel Xeon
 Platinum 8481C with 8 CPU cores and 32 GB of RAM (`GPU_RUN_HARDWARE` in `multabench/utils/hardware.py`). Runs that need
 no GPU, a CPU model (CatBoost, LightGBM, XGBoost, RandomForest) whose text is embedded with TF-IDF or read from the
@@ -166,6 +196,8 @@ request `--gres=gpu:1 --cpus-per-task=8 --mem=32G` on an H100 node, or `--cpus-p
 when Slurm hands it a whole machine.
 The cached embeddings are computed on one NVIDIA A100, 6 CPU cores and 32 GB of RAM for now
 (`EMBEDDING_HARDWARE`); the hardware they ran on is recorded with them.
+
+### Collecting results
 
 `collect_results.py` gathers the run JSONs into one CSV per model in `multabench/leaderboard/models/`, one row per
 run, failed runs included: model, dataset, encoders, size and fold, the status, the metric with `test_score` (higher
@@ -287,3 +319,27 @@ MulTaBench is not an official TabArena leaderboard.
 | Inner validation | 8-fold bagging for every model | No bagging: one fit per split, and models that need validation hold out 10% of the training rows (at most 1,000). This favors models that ensemble internally (TabPFN, TabICL, TabDPT, TabM, RandomForest) over single GBDTs and RealMLP | |
 | Hyperparameters | Default, tuned, and tuned + ensembled | Default only | |
 | Model implementations | TabArena's model registry | MulTaBench's own wrappers, which add image and text embeddings | |
+
+## Reproducing the paper
+
+The paper's code and results are at the tag [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version)
+and the [`official-paper-version`](https://github.com/alanarazi7/MulTaBench/tree/official-paper-version) branch;
+`master` has since moved to the leaderboard protocol. The paper's results are also kept in
+`multabench/leaderboard/legacy_results/` until every model is rerun under that protocol.
+
+## Citation
+
+```bibtex
+@article{arazi2026multabench,
+  title   = {MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image},
+  author  = {Arazi, Alan and Shapira, Eilam and Grunblat, Shoham and Ventura, Mor and Hoffer, Elad and Blayer, Gioia and
+             Holzm{\"u}ller, David and Purucker, Lennart and Varoquaux, Ga{\"e}l and Hutter, Frank and Reichart, Roi},
+  journal = {arXiv preprint arXiv:2605.10616},
+  year    = {2026}
+}
+```
+
+## License
+
+The code is under the [MIT license](https://github.com/alanarazi7/MulTaBench/blob/master/LICENSE); each dataset keeps
+the terms of its source, linked in `MULTABENCH_SOURCES` in `multabench/datasets/all_datasets.py`.
