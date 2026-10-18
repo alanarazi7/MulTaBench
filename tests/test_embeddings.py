@@ -159,3 +159,10 @@ def test_image_features_look_their_files_up_in_the_cache(monkeypatch):
     np.testing.assert_array_equal(train_embeddings["photo"], expected[train_idx])
     x_test = transform_columns(x.iloc[test_idx], encoders=encoders)
     np.testing.assert_allclose(x_test.to_numpy(), encoders["photo"].transform(expected[test_idx]), rtol=1e-5)
+
+
+def test_embedding_jobs_write_a_jobs_file(tmp_path):
+    from multabench.benchmark.sweep import write_jobs_file
+    jobs = list_jobs(encoders=[TextEncoder.E5_SMALL_TAR], datasets=[TEXT], folds=[0])
+    write_jobs_file(jobs, path=str(tmp_path / "jobs.txt"), python="python", output_dir="out")
+    assert (tmp_path / "jobs.txt").read_text() == jobs[0].command(python="python", output_dir="out") + "\n"
