@@ -198,3 +198,10 @@ def test_a_fold_tuned_on_other_columns_raises(monkeypatch):
     with pytest.raises(ValueError, match="tuned on"):
         fit_text_encoders(DataFrame({"title": texts}), text_features={"title"}, device="cpu",
                           encoder=TextEncoder.E5_SMALL_TAR, dataset=TEXT, size=Size.TEN_K, fold=0)
+
+
+def test_embedding_jobs_write_a_jobs_file(tmp_path):
+    from multabench.benchmark.sweep import write_jobs_file
+    jobs = list_jobs(encoders=[TextEncoder.E5_SMALL_TAR], datasets=[TEXT], folds=[0])
+    write_jobs_file(jobs, path=str(tmp_path / "jobs.txt"), python="python", output_dir="out")
+    assert (tmp_path / "jobs.txt").read_text() == jobs[0].command(python="python", output_dir="out") + "\n"

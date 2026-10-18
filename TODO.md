@@ -8,8 +8,6 @@ file as the PRs that complete them are merged.
 - [ ] Compute and upload the `e5-small-tar` and `dino-small-tar` embeddings from `master`:
       `python -m multabench.embeddings.embed_sweep --encoders e5-small-tar,dino-small-tar`, one job per dataset and
       fold, then `--upload`, and re-pin with `python -m multabench.datasets.revisions`.
-- [ ] Make the model runners read the cached `-tar` embeddings too; only the frozen `e5-small` and `dino-small`
-      embeddings are read so far.
 - [ ] Standardize text embeddings before PCA, as image embeddings are: only `DinoColumnEncoder` sets
       `ColumnEncoder.SCALE`, so E5 and `e5-small-tar` embeddings go into PCA unscaled. Then rerun every leaderboard
       run on a dataset with text columns.
@@ -45,9 +43,6 @@ file as the PRs that complete them are merged.
 - [ ] Update the Space from `master` with a GitHub Action: rerun `multabench.leaderboard.export` and upload
       `space/` when `multabench/leaderboard/models/` changes. It is uploaded by hand for now.
 - [ ] Move the leaderboard out of the README once the Space is announced.
-- [ ] README section on submitting a model: open a PR with the model's wrapper (and its
-      dependencies); maintainers rerun it on the official hardware, and self-reported results are
-      not accepted.
 - [ ] Remove the remaining paper analysis code in `multabench/leaderboard/`, keeping only the main
       leaderboard tab.
 
@@ -62,10 +57,10 @@ file as the PRs that complete them are merged.
 
 ## README
 
-- [ ] Rework the README the way the [TabSTAR README](https://github.com/alanarazi7/TabSTAR) is laid out: a row of
-      badges (arXiv, NeurIPS 2026, the Hugging Face datasets, the leaderboard Space, the licence once there is
-      one), a short welcome and a Resources list, a figure of the benchmark, and a quick start before the details,
-      with the reference sections (protocol, cached embeddings, datasets) further down.
+- [ ] A figure of the benchmark near the top, the way the [TabSTAR README](https://github.com/alanarazi7/TabSTAR) has
+      one; the badges, quick links and citation are in (#207).
+- [ ] Update the counts in the README's summary strip and its leaderboard table by hand when models are added, or
+      have `multabench.leaderboard.export` write them.
 
 ## Later, not needed for the first release
 
