@@ -46,5 +46,4 @@ MulTaBench is not an official TabArena leaderboard.
 
 The paper's code and results are at the tag [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version)
 and the [`official-paper-version`](https://github.com/alanarazi7/MulTaBench/tree/official-paper-version) branch;
-`master` has since moved to the leaderboard protocol. The paper's results are also kept in
-`multabench/leaderboard/legacy_results/` until every model is rerun under that protocol.
+`master` has since moved to the leaderboard protocol.

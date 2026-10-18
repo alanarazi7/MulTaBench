@@ -34,17 +34,15 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 - [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
-- [ ] Rerun what `multabench/leaderboard/legacy_results/` covers with the leaderboard protocol: the
-      frozen small encoders and TabSTAR are done; the large and fine-tuned (`-tar`) encoders and
-      AutoGluon multimodal are left. Then delete the legacy results with the paper analysis code.
+- [ ] Run the fine-tuned (`-tar`) encoders and AutoGluon multimodal under the leaderboard protocol, which the paper
+      also covered.
+- [ ] Decide whether the leaderboard includes the large encoders, `e5-large` and `dino-large`, and their `-tar`.
 
 ## Leaderboard
 
 - [ ] Improvability as a secondary column.
 - [ ] Update the Space from `master` with a GitHub Action: rerun `multabench.leaderboard.export` and upload
       `space/` when `multabench/leaderboard/models/` changes. It is uploaded by hand for now.
-- [ ] Remove the remaining paper analysis code in `multabench/leaderboard/`, keeping only the main
-      leaderboard tab.
 
 ## Core package
 
@@ -62,7 +60,6 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 
 ## Later, not needed for the first release
 
-- `e5-large` and `dino-large` stay available as options but are not run.
 - `--size full` results.
 - A time limit per (model, dataset, fold), excluding encoder fine-tuning, with a result row with
   `"status": "timeout"`.
