@@ -82,12 +82,14 @@ def venv_python(repo_dir: str, env: str) -> str:
 
 def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str, official: bool = False,
                     model_pythons: Optional[Dict[str, str]] = None):
-    """One command per line, with python, or a model's own venv's python from model_pythons."""
+    """One command per line, with python, or a model's own venv's python from model_pythons. Embedding jobs, which
+    write the same jobs file, take no --official."""
     model_pythons = model_pythons or {}
+    flags = {"official": True} if official else {}
     with open(path, "w") as f:
         for run in runs:
             run_python = model_pythons.get(getattr(run, "model", None), python)
-            f.write(run.command(python=run_python, output_dir=output_dir, official=official) + "\n")
+            f.write(run.command(python=run_python, output_dir=output_dir, **flags) + "\n")
 
 
 def run_local(jobs_file: str, repo_dir: str) -> int:
