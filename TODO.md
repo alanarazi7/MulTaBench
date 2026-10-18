@@ -43,7 +43,6 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 - [ ] Improvability as a secondary column.
 - [ ] Update the Space from `master` with a GitHub Action: rerun `multabench.leaderboard.export` and upload
       `space/` when `multabench/leaderboard/models/` changes. It is uploaded by hand for now.
-- [ ] Move the leaderboard out of the README once the Space is announced.
 - [ ] Remove the remaining paper analysis code in `multabench/leaderboard/`, keeping only the main
       leaderboard tab.
 
@@ -60,8 +59,6 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 
 - [ ] A figure of the benchmark near the top, the way the [TabSTAR README](https://github.com/alanarazi7/TabSTAR) has
       one; the badges, quick links and citation are in (#207).
-- [ ] Update the counts in the README's summary strip and its leaderboard table by hand when models are added, or
-      have `multabench.leaderboard.export` write them.
 
 ## Later, not needed for the first release
 
