@@ -5,8 +5,9 @@ file as the PRs that complete them are merged.
 
 ## Embedding cache
 
-- [ ] Cache the `e5-small-tar` and `dino-small-tar` embeddings: one fine-tune per (size, fold), each
-      seeing only its fold's training rows, uploaded with its LoRA adapter.
+- [ ] Compute and upload the `e5-small-tar` and `dino-small-tar` embeddings from `master`:
+      `python -m multabench.embeddings.embed_sweep --encoders e5-small-tar,dino-small-tar`, one job per dataset and
+      fold, then `--upload`, and re-pin with `python -m multabench.datasets.revisions`.
 - [ ] Make the model runners read the cached `-tar` embeddings too; only the frozen `e5-small` and `dino-small`
       embeddings are read so far.
 - [ ] Standardize text embeddings before PCA, as image embeddings are: only `DinoColumnEncoder` sets

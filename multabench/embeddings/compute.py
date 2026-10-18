@@ -1,19 +1,24 @@
-"""Compute the cached frozen embeddings exactly as a benchmark run embeds its features live, and write them to disk."""
+"""Compute the cached embeddings exactly as a benchmark run embeds its features live, and write them to disk."""
 import time
 from dataclasses import asdict
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
+import pandas as pd
 import torch
-from pandas import Series
+from pandas import DataFrame, Series
 
-from multabench.baselines.preprocessing.feature_types import detect_feature_types
+from multabench.baselines.preprocessing.feature_types import detect_feature_types, transform_feature_types
 from multabench.baselines.preprocessing.image_embeddings import get_image_encoder, image_urls_to_embeddings
+from multabench.benchmark.load import split_dataset
+from multabench.benchmark.splits import Size
 from multabench.datasets.objects import MultimodalDataset
-from multabench.dino.constants import ImageEncoder
-from multabench.e5.constants import TextEncoder
-from multabench.e5.e5_finetune import encode_texts_with_e5, get_vanilla_e5
-from multabench.embeddings.hub import CachedEncoder, encoder_inputs, encoder_spec, input_values, write_embeddings
+from multabench.dino.constants import DINO_LORA, ImageEncoder
+from multabench.dino.dino_finetune import finetune_dino
+from multabench.e5.constants import E5_LORA, TextEncoder
+from multabench.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
+from multabench.embeddings.hub import (CachedEncoder, encoder_inputs, encoder_spec, input_values, is_tuned,
+                                       write_embeddings)
 from multabench.utils.hardware import EMBEDDING_HARDWARE, get_hardware_dict, hardware_mismatches
 from multabench.utils.logging import get_current_commit_hash
 from multabench.utils.timing import pop_embedding_seconds
@@ -22,32 +27,48 @@ from multabench.utils.timing import pop_embedding_seconds
 IMAGE_CHUNK_ROWS = 4096
 
 
-def compute_embeddings(dataset: MultimodalDataset, encoder: CachedEncoder, path: str, device: torch.device):
-    features = _features(dataset, encoder)
-    n_rows = len(dataset.y)
+def compute_embeddings(dataset: MultimodalDataset, encoder: CachedEncoder, path: str, device: torch.device,
+                       size: Optional[Size] = None, fold: Optional[int] = None):
+    """A frozen encoder embeds every row of the dataset. A tuned one is fine-tuned on the fold's training rows, as a run
+    would, then embeds the fold's train and test rows; its LoRA adapter is saved next to the embeddings."""
+    meta: Dict[str, Any] = {"dataset": dataset.dataset_id.name, "encoder": str(encoder),
+                            "model": encoder_spec(encoder).encoder_name}
+    if is_tuned(encoder):
+        split = split_dataset(dataset, fold=fold, size=size)
+        x = pd.concat([split.x_train, split.x_test])
+        # Detected on the training rows, as a run detects them.
+        features = _features(split.x_train, dataset, encoder)
+        meta.update(size=str(Size(size)), fold=fold, n_train=len(split.x_train), n_test=len(split.x_test))
+    else:
+        x = dataset.x
+        features = _features(x, dataset, encoder)
     hardware = {**get_hardware_dict(device), "expected_hardware": asdict(EMBEDDING_HARDWARE),
                 "official_hardware_mismatches": hardware_mismatches(device, EMBEDDING_HARDWARE)}
-    print(f"Embedding {len(features)} of {dataset.x.shape[1]} columns, {n_rows} rows, with {encoder} on {hardware}")
+    print(f"Embedding {len(features)} of {x.shape[1]} columns, {len(x)} rows, with {encoder} on {hardware}")
     pop_embedding_seconds()
-    model, processor = _load_frozen(encoder, device) if features else (None, None)
+    model, processor = None, None
+    if features and is_tuned(encoder):
+        model, processor, stats = _finetune(encoder, split.x_train, split.y_train, features, dataset, device)
+        model.save_pretrained(path)
+        meta.update(lora=(E5_LORA if isinstance(encoder, TextEncoder) else DINO_LORA).to_dict(), **stats)
+    elif features:
+        model, processor = _load_frozen(encoder, device)
     load_seconds = pop_embedding_seconds()
-    inputs, embeddings, seconds = _encode(dataset, encoder, features, model, processor, device)
+    inputs, embeddings, seconds = _encode(x, dataset.image_folder, encoder, features, model, processor, device)
     total_seconds = load_seconds + sum(seconds.values())
-    meta: Dict[str, Any] = {"dataset": dataset.dataset_id.name, "encoder": str(encoder),
-                            "model": encoder_spec(encoder).encoder_name, "n_rows": n_rows,
-                            "n_inputs": len(inputs),
-                            "n_columns": dataset.x.shape[1], "features": features, "load_seconds": load_seconds,
-                            "encode_seconds": seconds, "total_seconds": total_seconds, "git": get_current_commit_hash(),
-                            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), **hardware}
+    meta.update(n_rows=len(x), n_inputs=len(inputs), n_columns=x.shape[1], features=features,
+                **{"finetune_seconds" if is_tuned(encoder) else "load_seconds": load_seconds},
+                encode_seconds=seconds, total_seconds=total_seconds, git=get_current_commit_hash(),
+                timestamp=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), **hardware)
     write_embeddings(path, inputs=inputs, embeddings=embeddings, meta=meta)
-    print(f"Embedded {dataset.dataset_id.name} with {encoder} in {total_seconds:.0f}s "
-          f"({load_seconds:.0f}s loading the model)")
+    print(f"Embedded {dataset.dataset_id.name} with {encoder} in {total_seconds:.0f}s ({load_seconds:.0f}s "
+          f"{'fine-tuning' if is_tuned(encoder) else 'loading'} the model)")
 
 
-def _features(dataset: MultimodalDataset, encoder: CachedEncoder) -> List[str]:
+def _features(x: DataFrame, dataset: MultimodalDataset, encoder: CachedEncoder) -> List[str]:
     if isinstance(encoder, TextEncoder):
-        return sorted(detect_feature_types(dataset.x, image_column=dataset.image_column).text_features)
-    return [dataset.image_column] if dataset.image_column in dataset.x.columns else []
+        return sorted(detect_feature_types(x, image_column=dataset.image_column).text_features)
+    return [dataset.image_column] if dataset.image_column in x.columns else []
 
 
 def _load_frozen(encoder: CachedEncoder, device: torch.device) -> Tuple[Any, Any]:
@@ -58,24 +79,35 @@ def _load_frozen(encoder: CachedEncoder, device: torch.device) -> Tuple[Any, Any
     return model.to(device), processor
 
 
-def _encode(dataset: MultimodalDataset, encoder: CachedEncoder, features: List[str], model: Any, processor: Any,
+def _finetune(encoder: CachedEncoder, x_train: DataFrame, y_train: Series, features: List[str],
+              dataset: MultimodalDataset, device: torch.device) -> Tuple[Any, Any, dict]:
+    """The encoder fine-tuned as a run fine-tunes it: on the training rows, texts after the missing-text fill."""
+    model_name = encoder_spec(encoder).encoder_name
+    if isinstance(encoder, TextEncoder):
+        texts = transform_feature_types(x_train[features], numerical_features=set(), image_features=set())
+        return finetune_e5(texts, y_train, features, is_cls=dataset.is_cls, device=device, model_name=model_name)
+    return finetune_dino(x_train[features[0]], y_train, is_cls=dataset.is_cls, image_folder=dataset.image_folder,
+                         device=device, model_name=model_name)
+
+
+def _encode(x: DataFrame, image_folder: str, encoder: CachedEncoder, features: List[str], model: Any, processor: Any,
             device: torch.device) -> Tuple[List[str], np.ndarray, Dict[str, float]]:
     """Each feature's distinct values embedded once, keyed by the input the encoder got."""
     inputs, embeddings, seconds = [], [], {}
     for col in features:
-        values = list(dict.fromkeys(input_values(dataset.x, encoder, col)))
+        values = list(dict.fromkeys(input_values(x, encoder, col)))
         if isinstance(encoder, TextEncoder):
             embedded = encode_texts_with_e5(texts=values, col_name=str(col), model=model, tokenizer=processor,
                                             device=device)
         elif isinstance(encoder, ImageEncoder):
-            embedded = _embed_images_in_chunks(Series(values), image_folder=dataset.image_folder, model=model,
+            embedded = _embed_images_in_chunks(Series(values), image_folder=image_folder, model=model,
                                                processor=processor)
         else:
             raise TypeError(f"Unknown encoder {encoder!r}")
         seconds[col] = pop_embedding_seconds()
         inputs += encoder_inputs(encoder, col, values)
         embeddings.append(embedded)
-        print(f"Embedded {col}: {len(values)} distinct values of {len(dataset.x)} rows in {seconds[col]:.0f}s")
+        print(f"Embedded {col}: {len(values)} distinct values of {len(x)} rows in {seconds[col]:.0f}s")
     return inputs, np.concatenate(embeddings), seconds
 
 
