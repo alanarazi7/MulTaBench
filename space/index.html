@@ -453,15 +453,21 @@ document.querySelectorAll('[data-dl]').forEach(b => b.onclick = () => {
     img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(resolvedSVG());
   }
 });
+function errByModelOf(errors) {
+  const out = {};
+  errors.forEach(e => { (out[e.model] ||= new Set()).add(e.dataset); });
+  return out;
+}
 document.getElementById('facts').innerHTML = [
   ['datasets', D.meta.datasets], ['models', MODELS.length], ['successful runs', fmt(D.meta.runs)],
-  ['missing', D.errors.length + ' model-dataset pairs (TabPFN, >10 classes)']
+  ['missing', `${D.errors.length} model-dataset pairs (${Object.keys(errByModelOf(D.errors)).join(', ')})`]
 ].map(([k, v]) => `<span>${k} <b>${v}</b></span>`).join('');
 
-const errByModel = {};
-D.errors.forEach(e => { (errByModel[e.model] ||= new Set()).add(e.dataset); });
+const errByModel = errByModelOf(D.errors);
+const dsLabel = d => d.replace(/^(BIN|MUL|REG)_(TEXT|IMAGE)_/, '').replace(/_/g, ' ').toLowerCase();
 document.getElementById('missingNote').textContent =
-  `A model with no successful run on a dataset simply has no battles there. TabPFN-v2 and v2.5 support at most 10 classes, so they are rated on ${D.meta.datasets - (errByModel['TabPFN-v2'] || new Set()).size} datasets: ${[...(errByModel['TabPFN-v2'] || [])].sort().join(', ')}.`;
+  'A model with no successful run on a dataset has no battles there, so it is rated on the others. TabPFN-v2, TabPFN-v2p5 and Mitra-v2 support at most 10 classes, and Mitra-v2 runs out of GPU memory on melbourne airbnb (680 features). Missing: ' +
+  Object.entries(errByModel).map(([m, ds]) => `${m}, ${ds.size} (${[...ds].sort().map(dsLabel).join(', ')})`).join('; ') + '.';
 
 const dsInfo = {};
 D.per_dataset.forEach(r => { dsInfo[r.dataset] = { tier: r.tier, task: taskOf(r.dataset), modality: r.modality }; });
@@ -582,7 +588,7 @@ function renderHeat() {
     let row = `<td class="ds" title="${n} · ${ds.metric}"><span class="mod ${ds.modality}"></span>${label}<span class="task">${ds.task}</span></td>`;
     order.forEach(m => {
       const r = ds.m[m];
-      if (!r) { row += `<td class="cell na" title="${errSet.has(m + '|' + n) ? 'Failed: more than 10 classes' : 'No result'}">✕</td>`; return; }
+      if (!r) { row += `<td class="cell na" title="${errSet.has(m + '|' + n) ? 'No successful run: see Missing results below' : 'No result'}">✕</td>`; return; }
       const norm = s.mx > s.mn ? (r.test_error - s.mn) / (s.mx - s.mn) : 0;
       const pct = Math.round((1 - norm) * 78);
       const ink = pct > 48 ? 'color:var(--surface)' : '';
