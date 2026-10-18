@@ -1,8 +1,8 @@
 model,developer,logo,link
 CatBoost,Yandex,yandex.png,https://arxiv.org/abs/1706.09516
 LightGBM,Microsoft,microsoft.png,https://proceedings.neurips.cc/paper_files/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html
-XGBoost,DMLC,dmlc.png,https://arxiv.org/abs/1603.02754
-RandomForest,scikit-learn,scikit-learn.png,https://doi.org/10.1023/A:1010933404324
+XGBoost,University of Washington,uw.svg,https://arxiv.org/abs/1603.02754
+RandomForest,UC Berkeley,berkeley.png,https://doi.org/10.1023/A:1010933404324
 RealMLP,University of Stuttgart & Inria,inria.png,https://arxiv.org/abs/2407.04491
 TabM,Yandex Research,yandex.png,https://arxiv.org/abs/2410.24210
 TabPFN-v2,Prior Labs,priorlabs.jpg,https://www.nature.com/articles/s41586-024-08328-6
