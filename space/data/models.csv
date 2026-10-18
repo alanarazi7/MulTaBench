@@ -1,0 +1,27 @@
+model,developer,logo,link
+CatBoost,Yandex,catboost.png,https://arxiv.org/abs/1706.09516
+LightGBM,Microsoft,microsoft.png,https://proceedings.neurips.cc/paper_files/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html
+XGBoost,DMLC,dmlc.png,https://arxiv.org/abs/1603.02754
+RandomForest,scikit-learn,scikit-learn.png,https://doi.org/10.1023/A:1010933404324
+RealMLP,University of Stuttgart & Inria,inria.png,https://arxiv.org/abs/2407.04491
+TabM,Yandex Research,yandex.png,https://arxiv.org/abs/2410.24210
+TabPFN-v2,Prior Labs,priorlabs.jpg,https://www.nature.com/articles/s41586-024-08328-6
+TabPFN-v2p5,Prior Labs,priorlabs.jpg,https://arxiv.org/abs/2511.08667
+TabPFN-3,Prior Labs,priorlabs.jpg,https://arxiv.org/abs/2605.13986
+TabPFN-3.5,Prior Labs,priorlabs.jpg,https://arxiv.org/abs/2609.17895
+TabPFN-3.5-Fast,Prior Labs,priorlabs.jpg,https://arxiv.org/abs/2609.17895
+TabDPT,Layer 6 AI,layer6.png,https://arxiv.org/abs/2410.18164
+TabDPT-1.3,Layer 6 AI,layer6.png,https://github.com/layer6ai-labs/TabDPT-inference/releases/tag/v1.3.0
+TabICLv2,Inria (SODA),soda-inria.png,https://arxiv.org/abs/2602.11139
+ConTextTab,SAP,sap.png,https://arxiv.org/abs/2506.10707
+TabSTAR,Technion,technion.svg,https://arxiv.org/abs/2505.18125
+TabSTAR-v1.1,Technion,technion.svg,https://github.com/alanarazi7/TabSTAR#tabstar-v11
+Mitra-v2,Amazon,amazon.png,https://arxiv.org/abs/2609.04540
+LimiX-2,Stable AI & Tsinghua University,limix.png,https://arxiv.org/abs/2609.17488
+Kumo-Tabular,NVIDIA,nvidia.png,https://huggingface.co/blog/nvidia/kumo-tabular
+Kumo-Tabular-Medium,NVIDIA,nvidia.png,https://huggingface.co/blog/nvidia/kumo-tabular
+Kumo-Tabular-Small,NVIDIA,nvidia.png,https://huggingface.co/blog/nvidia/kumo-tabular
+EXAONE-Tabular,LG AI Research,lg.svg,https://arxiv.org/abs/2608.25774
+Causilo,Nums AI,nums-ai.png,https://arxiv.org/abs/2609.22866
+TabFM,Google Research,google.png,https://arxiv.org/abs/2609.37959
+Xiaomi-TabLDM,Xiaomi,xiaomi.png,https://arxiv.org/abs/2609.03880

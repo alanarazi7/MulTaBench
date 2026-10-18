@@ -239,7 +239,8 @@ check out. The pull request adds:
 Use the model's default hyperparameters, since the leaderboard doesn't tune, and pin anything downloaded, such as
 weights, to a version or commit. Check that `benchmark.py` runs it on a text and an image dataset, and say in the pull
 request on which datasets the model can't run, e.g. too many classes, so they go into `EXPECTED_FAILURES` in
-`tests/test_leaderboard_results.py`.
+`tests/test_leaderboard_results.py`. Add a row to `space/data/models.csv` with the developer, a small square logo in
+`space/assets/logos/` and a link to the paper or technical report.
 
 ## Cached embeddings
 
