@@ -16,7 +16,14 @@ MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "multabench", "leader
 PATHS = sorted(glob.glob(os.path.join(MODELS_DIR, "*.csv")))
 MODELS = {model.MODEL_NAME: model for model in BASELINES}
 TASK_METRICS = {"BIN": "roc_auc", "MUL": "log_loss", "REG": "root_mean_squared_error"}
-TOO_MANY_CLASSES = "exceeds the maximum number of classes"
+TOO_MANY_CLASSES = ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_SPOTIFY_GENRES", "MUL_TEXT_WINE_REVIEW"]
+# The only failures: the models that take at most 10 classes, and Mitra-v2 out of GPU memory on 680 features.
+EXPECTED_FAILURES = {
+    "TabPFN-v2": dict.fromkeys(TOO_MANY_CLASSES, "exceeds the maximum number of classes"),
+    "TabPFN-v2p5": dict.fromkeys(TOO_MANY_CLASSES, "exceeds the maximum number of classes"),
+    "Mitra-v2": {**dict.fromkeys(TOO_MANY_CLASSES, "supports at most 10 classes"),
+                 "MUL_TEXT_MELBOURNE_AIRBNB": "No models were trained successfully"},
+}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.basename(p) for p in PATHS])
@@ -58,15 +65,15 @@ def test_successful_runs_score_with_the_task_metric(runs):
     assert np.allclose(ok[ResultKey.TEST_SCORE], optimum - ok[ResultKey.TEST_ERROR])
 
 
-def test_the_only_failures_are_tabpfn_on_more_than_ten_classes(runs):
+def test_the_only_failures_are_the_expected_ones(runs):
     name, df = runs
     failed = df[df[ResultKey.STATUS] != RunStatus.OK]
     assert (failed[ResultKey.STATUS] == RunStatus.ERROR).all()
-    if name.startswith("TabPFN"):
-        assert failed[ResultKey.ERROR].astype(str).str.contains(TOO_MANY_CLASSES).all()
-        assert set(failed[ResultKey.DATASET].str[:3]) <= {"MUL"}
-    else:
-        assert failed.empty
+    expected = EXPECTED_FAILURES.get(name, {})
+    assert sorted(failed[ResultKey.DATASET].unique()) == sorted(expected)
+    for dataset, error in expected.items():
+        errors = failed[failed[ResultKey.DATASET] == dataset][ResultKey.ERROR].astype(str)
+        assert len(errors) == SPLITS and errors.str.contains(error).all()
 
 
 def test_runs_used_their_hardware(runs):
