@@ -21,7 +21,8 @@
   <a href="https://huggingface.co/multabench"><b>🤗 Datasets</b></a> ·
   <a href="https://huggingface.co/collections/multabench/multabench-6ad47e4de18e12fe3931a551"><b>📚 Collection</b></a> ·
   <a href="https://github.com/alanarazi7/MulTaBench#getting-started"><b>🚀 Getting started</b></a> ·
-  <a href="https://github.com/alanarazi7/MulTaBench#adding-a-model"><b>➕ Add a model</b></a>
+  <a href="https://github.com/alanarazi7/MulTaBench#adding-a-model"><b>➕ Add a model</b></a> ·
+  <a href="https://github.com/alanarazi7/MulTaBench#citation"><b>📝 Cite</b></a>
 </p>
 
 A benchmark for multimodal tabular learning: tables whose columns include images or free text, not
@@ -33,13 +34,6 @@ than used frozen.
 | 🗂️ 80 datasets | 🧠 26 models | 🔁 6 folds each | ⚖️ One protocol |
 |:---:|:---:|:---:|:---:|
 | 40 with text, 40 with images | foundation models, GBDTs, neural nets | 3 folds × 2 repeats, 10K/5K rows | default hyperparameters, same hardware |
-
-> **Work in progress:** MulTaBench is moving towards a living leaderboard, and `master` will change
-> gradually on the way there. To reproduce the paper, use the tag
-> [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version) or the
-> [`official-paper-version`](https://github.com/alanarazi7/MulTaBench/tree/official-paper-version) branch.
-> The paper's results are kept in `multabench/leaderboard/legacy_results/` while every model is rerun under the
-> leaderboard protocol.
 
 ## Leaderboard
 
@@ -326,18 +320,22 @@ MulTaBench is not an official TabArena leaderboard.
 | Hyperparameters | Default, tuned, and tuned + ensembled | Default only | |
 | Model implementations | TabArena's model registry | MulTaBench's own wrappers, which add image and text embeddings | |
 
+## Reproducing the paper
+
+The paper's code and results are at the tag [`paper_version`](https://github.com/alanarazi7/MulTaBench/tree/paper_version)
+and the [`official-paper-version`](https://github.com/alanarazi7/MulTaBench/tree/official-paper-version) branch;
+`master` has since moved to the leaderboard protocol. The paper's results are also kept in
+`multabench/leaderboard/legacy_results/` until every model is rerun under that protocol.
+
 ## Citation
 
 ```bibtex
-@inproceedings{arazi2026multabench,
-  title     = {MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image},
-  author    = {Arazi, Alan and Shapira, Eilam and Grunblat, Shoham and Ventura, Mor and Hoffer, Elad and
-               Blayer, Gioia and Holzm{\"u}ller, David and Purucker, Lennart and Varoquaux, Ga{\"e}l and
-               Hutter, Frank and Reichart, Roi},
-  booktitle = {Advances in Neural Information Processing Systems},
-  year      = {2026},
-  eprint    = {2605.10616},
-  archivePrefix = {arXiv}
+@article{arazi2026multabench,
+  title   = {MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image},
+  author  = {Arazi, Alan and Shapira, Eilam and Grunblat, Shoham and Ventura, Mor and Hoffer, Elad and Blayer, Gioia and
+             Holzm{\"u}ller, David and Purucker, Lennart and Varoquaux, Ga{\"e}l and Hutter, Frank and Reichart, Roi},
+  journal = {arXiv preprint arXiv:2605.10616},
+  year    = {2026}
 }
 ```
 
