@@ -19,7 +19,8 @@ under a target-aware setting, where the image and text encoders are fine-tuned o
 than used frozen.
 
 **Paper**: [MulTaBench: Benchmarking Multimodal Tabular Learning with Text and Image](https://arxiv.org/abs/2605.10616) (NeurIPS 2026 Spotlight)  
-**Datasets**: [huggingface.co/multabench](https://huggingface.co/multabench)
+**Datasets**: [huggingface.co/multabench](https://huggingface.co/multabench)  
+**Collection**: the leaderboard, paper, datasets and embeddings in one [Hugging Face collection](https://huggingface.co/collections/multabench/multabench-6ad47e4de18e12fe3931a551)
 
 ## Leaderboard
 
