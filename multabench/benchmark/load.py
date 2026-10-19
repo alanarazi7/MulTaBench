@@ -44,9 +44,10 @@ def _missing_as_nan(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def download_dataset(dataset_id: MulTaBenchDatasetID, data_dir: Optional[str] = None, images: bool = True) -> str:
-    """The dataset's folder, downloaded at its pinned revision or under data_dir; images=False leaves the images out."""
-    if not images:
+def download_dataset(dataset_id: MulTaBenchDatasetID, data_dir: Optional[str] = None,
+                     with_image_files: bool = True) -> str:
+    """The dataset's folder, downloaded at its pinned revision or under data_dir; without image files if asked."""
+    if not with_image_files:
         return _download_table(dataset_id, data_dir=data_dir)
     repo_id = hf_repo_id(dataset_id)
     if data_dir is not None:
@@ -62,8 +63,9 @@ def _has_images(dataset_id: MulTaBenchDatasetID) -> bool:
     return dataset_modality(dataset_id) != Modality.TEXT
 
 
-def load_multabench_dataset(dataset_id, data_dir: Optional[str] = None, images: bool = True) -> MultimodalDataset:
-    dir_path = download_dataset(dataset_id, data_dir=data_dir, images=images)
+def load_multabench_dataset(dataset_id, data_dir: Optional[str] = None,
+                            with_image_files: bool = True) -> MultimodalDataset:
+    dir_path = download_dataset(dataset_id, data_dir=data_dir, with_image_files=with_image_files)
     df = _missing_as_nan(pd.read_parquet(join(dir_path, DATA_PARQUET)))
 
     with open(join(dir_path, METADATA_JSON)) as f:
@@ -71,7 +73,7 @@ def load_multabench_dataset(dataset_id, data_dir: Optional[str] = None, images: 
 
     target_col = meta["target"]
     # Image paths already include the "images/" prefix; without the images, image_col still holds their file names.
-    image_folder = dir_path if images or not _has_images(dataset_id) else None
+    image_folder = dir_path if with_image_files or not _has_images(dataset_id) else None
 
     y = df[target_col]
     x = df.drop(columns=[target_col])
@@ -81,11 +83,12 @@ def load_multabench_dataset(dataset_id, data_dir: Optional[str] = None, images: 
 
 
 def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = Size.TEN_K,
-               data_dir: Optional[str] = None, images: bool = True) -> DatasetSplit:
-    """The fold's train and test rows, from the Hub or data_dir (see README); images=False skips the image files."""
+               data_dir: Optional[str] = None, with_image_files: bool = True) -> DatasetSplit:
+    """The fold's train and test rows, from the Hub or data_dir (see README), with or without the image files."""
     if isinstance(dataset, str):
         dataset = MulTaBenchDatasetID[dataset]
-    return split_dataset(load_multabench_dataset(dataset, data_dir=data_dir, images=images), fold=fold, size=size)
+    dataset = load_multabench_dataset(dataset, data_dir=data_dir, with_image_files=with_image_files)
+    return split_dataset(dataset, fold=fold, size=size)
 
 
 def split_dataset(dataset: MultimodalDataset, fold: int, size: Size = Size.TEN_K) -> DatasetSplit:

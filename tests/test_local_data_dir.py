@@ -128,7 +128,7 @@ def test_without_images_the_hub_serves_only_the_table(monkeypatch, tmp_path):
         return join(str(tmp_path), repo_id.split("/")[-1])
     monkeypatch.setattr(load, "snapshot_download", serve)
     monkeypatch.setattr(load, "extract_images", lambda dir_path: pytest.fail("extracted the images"))
-    split = load_split(IMAGE, fold=0, images=False)
+    split = load_split(IMAGE, fold=0, with_image_files=False)
     assert split.image_folder is None and split.image_column == "img"
     assert all(patterns == ["data.parquet", "metadata.json"] for patterns in asked)
 
@@ -139,7 +139,7 @@ def test_an_image_dataset_loads_without_its_images(monkeypatch, tmp_path):
     x = _write_dataset(without, dataset_id=IMAGE)
     _write_dataset(with_images, dataset_id=IMAGE, images=True)
     _write_embeddings(without, x, ImageEncoder.DINO_SMALL, dataset_id=IMAGE)
-    split = load_split(IMAGE, fold=0, data_dir=without, images=False)
+    split = load_split(IMAGE, fold=0, data_dir=without, with_image_files=False)
     expected = load_split(IMAGE, fold=0, data_dir=with_images)
     assert split.image_folder is None and expected.image_folder == join(with_images, IMAGE.value)
     pd.testing.assert_frame_equal(split.x_train, expected.x_train)
