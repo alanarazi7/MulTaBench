@@ -68,6 +68,9 @@ a read-only mount, pass `data_dir`, holding one folder per Hub repo named withou
 split = load_split("MUL_IMAGE_PETFINDER", fold=0, data_dir="/data/multabench")
 ```
 
+`images=False` loads an image dataset's table without its image files, enough for the cached image embeddings, which
+are looked up by file name; the split's `image_folder` is then `None`.
+
 To run the benchmark itself, set up the environment and evaluate one model on one fold:
 
 ```bash
