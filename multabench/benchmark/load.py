@@ -1,6 +1,6 @@
 """
 Load a MulTaBench dataset from the Hugging Face Hub: a typed data.parquet, metadata.json and, for image datasets,
-images-*.zip shards.
+images-*.zip shards. With data_dir, read the same files from a local copy instead, without downloading or writing.
 
 Usage:
     from multabench import Size, load_embeddings, load_split
@@ -12,15 +12,15 @@ Usage:
 import json
 from dataclasses import dataclass
 from os.path import join
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
 from huggingface_hub import snapshot_download
 
 from multabench.benchmark.splits import Size, get_split
-from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.datasets.hub import DATA_PARQUET, extract_images, hf_repo_id
+from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
+from multabench.datasets.hub import DATA_PARQUET, IMAGES_DIR, extract_images, hf_repo_id, local_repo_dir
 from multabench.datasets.revisions import revision
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
 from multabench.embeddings.hub import (CachedEmbeddings, CachedEncoder, download_embeddings, encoder_inputs,
@@ -44,16 +44,20 @@ def _missing_as_nan(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def download_dataset(dataset_id: MulTaBenchDatasetID) -> str:
+def download_dataset(dataset_id: MulTaBenchDatasetID, data_dir: Optional[str] = None) -> str:
+    """The dataset's folder: downloaded at its pinned revision, or under data_dir, whose images must be extracted."""
     repo_id = hf_repo_id(dataset_id)
+    if data_dir is not None:
+        has_images = dataset_modality(dataset_id) != Modality.TEXT
+        return local_repo_dir(data_dir, repo_id, [DATA_PARQUET, METADATA_JSON] + ([IMAGES_DIR] if has_images else []))
     print(f"Downloading {repo_id} from Hugging Face...")
     dir_path = snapshot_download(repo_id=repo_id, repo_type="dataset", revision=revision(repo_id))
     extract_images(dir_path)
     return dir_path
 
 
-def load_multabench_dataset(dataset_id) -> MultimodalDataset:
-    dir_path = download_dataset(dataset_id)
+def load_multabench_dataset(dataset_id, data_dir: Optional[str] = None) -> MultimodalDataset:
+    dir_path = download_dataset(dataset_id, data_dir=data_dir)
     df = _missing_as_nan(pd.read_parquet(join(dir_path, DATA_PARQUET)))
 
     with open(join(dir_path, METADATA_JSON)) as f:
@@ -69,10 +73,12 @@ def load_multabench_dataset(dataset_id) -> MultimodalDataset:
                              image_folder=image_folder, image_column=meta["image_col"])
 
 
-def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = Size.TEN_K) -> DatasetSplit:
+def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = Size.TEN_K,
+               data_dir: Optional[str] = None) -> DatasetSplit:
+    """The fold's train and test rows, from the Hub, or from data_dir if given (see README)."""
     if isinstance(dataset, str):
         dataset = MulTaBenchDatasetID[dataset]
-    return split_dataset(load_multabench_dataset(dataset), fold=fold, size=size)
+    return split_dataset(load_multabench_dataset(dataset, data_dir=data_dir), fold=fold, size=size)
 
 
 def split_dataset(dataset: MultimodalDataset, fold: int, size: Size = Size.TEN_K) -> DatasetSplit:
@@ -95,15 +101,16 @@ class SplitEmbeddings:
 
 
 def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = Size.TEN_K,
-                    encoder: str | CachedEncoder = "e5-small") -> SplitEmbeddings:
+                    encoder: str | CachedEncoder = "e5-small", data_dir: Optional[str] = None) -> SplitEmbeddings:
+    """The split's cached embeddings, from the Hub, or from data_dir if given (see README)."""
     if isinstance(dataset, str):
         dataset = MulTaBenchDatasetID[dataset]
     encoder = parse_encoder(encoder)
-    y, task_type = load_target(dataset)
+    y, task_type = load_target(dataset, data_dir=data_dir)
     train_idx, test_idx = get_split(y.to_numpy(), is_cls=task_type != SupervisedTask.REGRESSION, split=fold, size=size)
     split = dict(size=size, fold=fold) if is_tuned(encoder) else {}
-    cache = read_embeddings(download_embeddings(encoder, dataset, **split))
-    x = _load_columns(dataset, columns=cache.meta["features"])
+    cache = read_embeddings(download_embeddings(encoder, dataset, **split, data_dir=data_dir))
+    x = _load_columns(dataset, columns=cache.meta["features"], data_dir=data_dir)
     return SplitEmbeddings(train=_lookup(cache, x.iloc[train_idx], encoder), test=_lookup(cache, x.iloc[test_idx], encoder),
                            meta=cache.meta)
 
@@ -113,20 +120,23 @@ def _lookup(cache: CachedEmbeddings, x: pd.DataFrame, encoder: CachedEncoder) ->
             for col in cache.meta["features"]}
 
 
-def load_target(dataset_id: MulTaBenchDatasetID) -> tuple[pd.Series, SupervisedTask]:
+def load_target(dataset_id: MulTaBenchDatasetID, data_dir: Optional[str] = None) -> tuple[pd.Series, SupervisedTask]:
     """The target column alone, without downloading the images."""
-    dir_path = _download_table(dataset_id)
+    dir_path = _download_table(dataset_id, data_dir=data_dir)
     with open(join(dir_path, METADATA_JSON)) as f:
         meta = json.load(f)
-    y = _load_columns(dataset_id, columns=[meta["target"]])[meta["target"]]
+    y = _load_columns(dataset_id, columns=[meta["target"]], data_dir=data_dir)[meta["target"]]
     return y, _parse_task_type(meta, dataset_id, y)
 
 
-def _load_columns(dataset_id: MulTaBenchDatasetID, columns: List[str]) -> pd.DataFrame:
-    return _missing_as_nan(pd.read_parquet(join(_download_table(dataset_id), DATA_PARQUET), columns=columns))
+def _load_columns(dataset_id: MulTaBenchDatasetID, columns: List[str], data_dir: Optional[str] = None) -> pd.DataFrame:
+    path = join(_download_table(dataset_id, data_dir=data_dir), DATA_PARQUET)
+    return _missing_as_nan(pd.read_parquet(path, columns=columns))
 
 
-def _download_table(dataset_id: MulTaBenchDatasetID) -> str:
+def _download_table(dataset_id: MulTaBenchDatasetID, data_dir: Optional[str] = None) -> str:
     repo_id = hf_repo_id(dataset_id)
+    if data_dir is not None:
+        return local_repo_dir(data_dir, repo_id, [DATA_PARQUET, METADATA_JSON])
     return snapshot_download(repo_id=repo_id, repo_type="dataset", revision=revision(repo_id),
                              allow_patterns=[DATA_PARQUET, METADATA_JSON])
