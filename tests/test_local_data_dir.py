@@ -11,6 +11,7 @@ from multabench.benchmark import load
 from multabench.benchmark.load import load_embeddings, load_split, load_target
 from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
+from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
 from multabench.embeddings import hub
 from multabench.embeddings.hub import embeddings_dir, encoder_inputs, input_values, repo_name, write_embeddings
@@ -19,22 +20,28 @@ TEXT = MulTaBenchDatasetID.BIN_TEXT_FAKE_JOB_POSTING
 IMAGE = MulTaBenchDatasetID.BIN_IMAGE_OASIS_ALZHEIMERS
 
 
-def _write_dataset(data_dir, dataset_id=TEXT):
-    titles = [f"t{i % 7}" if i % 9 else None for i in range(60)]
-    x = pd.DataFrame({"title": titles, "label": [i % 2 for i in range(60)]})
+def _write_dataset(data_dir, dataset_id=TEXT, images=False):
+    """A text dataset with a title column, or an image dataset with an img column of file names."""
+    is_image = dataset_id == IMAGE
+    col = "img" if is_image else "title"
+    values = [f"images/{i % 7}.jpg" if is_image else (f"t{i % 7}" if i % 9 else None) for i in range(60)]
+    x = pd.DataFrame({col: values, "label": [i % 2 for i in range(60)]})
     path = join(data_dir, dataset_id.value)
     os.makedirs(path)
     x.to_parquet(join(path, "data.parquet"))
     with open(join(path, "metadata.json"), "w") as f:
-        json.dump({"target": "label", "image_col": None}, f)
+        json.dump({"target": "label", "image_col": col if is_image else None}, f)
+    if images:
+        os.makedirs(join(path, "images"))
     return x
 
 
-def _write_embeddings(data_dir, x, encoder, size=None, fold=None):
-    inputs = sorted(set(encoder_inputs(encoder, "title", input_values(x, encoder, "title"))))
+def _write_embeddings(data_dir, x, encoder, size=None, fold=None, dataset_id=TEXT):
+    col = "img" if dataset_id == IMAGE else "title"
+    inputs = sorted(set(encoder_inputs(encoder, col, input_values(x, encoder, col))))
     vectors = np.random.default_rng(0).normal(size=(len(inputs), 4)).astype(np.float32)
-    path = join(data_dir, repo_name(encoder), embeddings_dir(TEXT, size=size, fold=fold))
-    write_embeddings(path, inputs=inputs, embeddings=vectors, meta={"features": ["title"]})
+    path = join(data_dir, repo_name(encoder), embeddings_dir(dataset_id, size=size, fold=fold))
+    write_embeddings(path, inputs=inputs, embeddings=vectors, meta={"features": [col]})
 
 
 @pytest.fixture
@@ -110,3 +117,34 @@ def test_a_read_only_copy_loads(monkeypatch, data_dir):
     finally:
         for root, dirs, files in os.walk(data_dir):
             os.chmod(root, stat.S_IRWXU)
+
+
+def test_without_images_the_hub_serves_only_the_table(monkeypatch, tmp_path):
+    _write_dataset(str(tmp_path), dataset_id=IMAGE)
+    asked = []
+
+    def serve(repo_id, **kwargs):
+        asked.append(kwargs.get("allow_patterns"))
+        return join(str(tmp_path), repo_id.split("/")[-1])
+    monkeypatch.setattr(load, "snapshot_download", serve)
+    monkeypatch.setattr(load, "extract_images", lambda dir_path: pytest.fail("extracted the images"))
+    split = load_split(IMAGE, fold=0, with_image_files=False)
+    assert split.image_folder is None and split.image_column == "img"
+    assert all(patterns == ["data.parquet", "metadata.json"] for patterns in asked)
+
+
+def test_an_image_dataset_loads_without_its_images(monkeypatch, tmp_path):
+    _no_hub(monkeypatch)
+    without, with_images = str(tmp_path / "without"), str(tmp_path / "with")
+    x = _write_dataset(without, dataset_id=IMAGE)
+    _write_dataset(with_images, dataset_id=IMAGE, images=True)
+    _write_embeddings(without, x, ImageEncoder.DINO_SMALL, dataset_id=IMAGE)
+    split = load_split(IMAGE, fold=0, data_dir=without, with_image_files=False)
+    expected = load_split(IMAGE, fold=0, data_dir=with_images)
+    assert split.image_folder is None and expected.image_folder == join(with_images, IMAGE.value)
+    pd.testing.assert_frame_equal(split.x_train, expected.x_train)
+    pd.testing.assert_series_equal(split.y_test, expected.y_test)
+    with pytest.raises(FileNotFoundError, match=join(IMAGE.value, "images")):
+        load_split(IMAGE, fold=0, data_dir=without)
+    embeddings = load_embeddings(IMAGE, fold=0, encoder="dino-small", data_dir=without)
+    assert embeddings.train["img"].shape == (len(split.x_train), 4)
