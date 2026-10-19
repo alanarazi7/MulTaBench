@@ -60,6 +60,14 @@ result.test_error
 
 `load_published_results()` returns every leaderboard run.
 
+The loaders download from the Hugging Face Hub at pinned revisions. To read a local copy instead, e.g. offline or from
+a read-only mount, pass `data_dir`, holding one folder per Hub repo named without the org, with images extracted:
+`<data_dir>/<dataset repo>/data.parquet` and `<data_dir>/embeddings-e5-small/<dataset repo>/embeddings.npz`.
+
+```python
+split = load_split("MUL_IMAGE_PETFINDER", fold=0, data_dir="/data/multabench")
+```
+
 To run the benchmark itself, set up the environment and evaluate one model on one fold:
 
 ```bash

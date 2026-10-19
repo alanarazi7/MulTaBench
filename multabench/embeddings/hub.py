@@ -21,7 +21,7 @@ from pandas import DataFrame
 from multabench.baselines.preprocessing.feature_types import transform_feature_types
 from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
-from multabench.datasets.hub import HF_ORG
+from multabench.datasets.hub import HF_ORG, local_repo_dir
 from multabench.datasets.revisions import revision
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder, format_e5_passage
@@ -141,13 +141,15 @@ def read_embeddings(path: str) -> CachedEmbeddings:
 
 
 def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID, size: Optional[Size] = None,
-                        fold: Optional[int] = None) -> str:
-    """The local directory of the dataset's cached embeddings: the fold's, for a tuned encoder."""
+                        fold: Optional[int] = None, data_dir: Optional[str] = None) -> str:
+    """The directory of the dataset's cached embeddings, the fold's for a tuned encoder; under data_dir if given."""
     if is_tuned(encoder) != (fold is not None):
         raise ValueError(f"{encoder} embeddings are cached {'per fold' if is_tuned(encoder) else 'once per dataset'}")
     path_in_repo = embeddings_dir(dataset_id, size=size, fold=fold)
     files = [EMBEDDINGS_NPZ, META_JSON]
     repo_id = embeddings_repo_id(encoder)
+    if data_dir is not None:
+        return join(local_repo_dir(data_dir, repo_id, [f"{path_in_repo}/{f}" for f in files]), path_in_repo)
     dir_path = snapshot_download(repo_id=repo_id, repo_type="dataset", revision=revision(repo_id),
                                  allow_patterns=[f"{path_in_repo}/{f}" for f in files])
     path = join(dir_path, path_in_repo)
@@ -160,8 +162,8 @@ def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID,
 # Room for a run's text and image embeddings, up to a few hundred MB each.
 @lru_cache(maxsize=2)
 def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID, size: Optional[Size] = None,
-                      fold: Optional[int] = None) -> CachedEmbeddings:
-    return read_embeddings(download_embeddings(encoder, dataset_id, size=size, fold=fold))
+                      fold: Optional[int] = None, data_dir: Optional[str] = None) -> CachedEmbeddings:
+    return read_embeddings(download_embeddings(encoder, dataset_id, size=size, fold=fold, data_dir=data_dir))
 
 
 def reads_cache(encoder: Encoder) -> bool:
