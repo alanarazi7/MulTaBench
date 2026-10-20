@@ -18,6 +18,8 @@ from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, data
 from multabench.result_keys import ResultKey, RunStatus
 
 RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models")
+# Runs with fine-tuned (-tar) encoders, published but not ranked yet.
+TAR_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tar")
 ANCHOR = "RandomForest"
 INIT = 1000
 
