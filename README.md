@@ -63,6 +63,7 @@ result.test_error
 The loaders download from the Hugging Face Hub at pinned revisions. To read a local copy instead, e.g. offline or from
 a read-only mount, pass `data_dir`, holding one folder per Hub repo named without the org, with images extracted:
 `<data_dir>/<dataset repo>/data.parquet` and `<data_dir>/embeddings-e5-small/<dataset repo>/embeddings.npz`.
+`data_dir_files(dataset, encoders)` lists the paths one dataset needs there.
 
 ```python
 split = load_split("MUL_IMAGE_PETFINDER", fold=0, data_dir="/data/multabench")

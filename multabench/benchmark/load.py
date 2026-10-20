@@ -12,19 +12,20 @@ Usage:
 import json
 from dataclasses import dataclass
 from os.path import join
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 
 import numpy as np
 import pandas as pd
 from huggingface_hub import snapshot_download
 
-from multabench.benchmark.splits import Size, get_split
+from multabench.benchmark.splits import SPLITS, Size, get_split
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.hub import DATA_PARQUET, IMAGES_DIR, extract_images, hf_repo_id, local_repo_dir
 from multabench.datasets.revisions import revision
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
-from multabench.embeddings.hub import (CachedEmbeddings, CachedEncoder, download_embeddings, encoder_inputs,
-                                       input_values, is_tuned, parse_encoder, read_embeddings)
+from multabench.embeddings.hub import (CACHED_ENCODERS, EMBEDDINGS_NPZ, META_JSON, CachedEmbeddings, CachedEncoder,
+                                       download_embeddings, embeddings_dir, embeds_dataset, encoder_inputs,
+                                       input_values, is_tuned, parse_encoder, read_embeddings, repo_name)
 from multabench.benchmark.utils.constants import METADATA_JSON
 from multabench.benchmark.utils.curation import TASK_REG, task_type_from_name
 
@@ -57,6 +58,24 @@ def download_dataset(dataset_id: MulTaBenchDatasetID, data_dir: Optional[str] = 
     dir_path = snapshot_download(repo_id=repo_id, repo_type="dataset", revision=revision(repo_id))
     extract_images(dir_path)
     return dir_path
+
+
+def data_dir_files(dataset: str | MulTaBenchDatasetID, encoders: Sequence[str | CachedEncoder] = CACHED_ENCODERS,
+                   size: Size = Size.TEN_K, with_image_files: bool = True) -> List[str]:
+    """The paths, relative to a data_dir, that the dataset's splits and its cached embeddings by each encoder read."""
+    if isinstance(dataset, str):
+        dataset = MulTaBenchDatasetID[dataset]
+    table = hf_repo_id(dataset).split("/")[-1]
+    paths = [join(table, DATA_PARQUET), join(table, METADATA_JSON)]
+    if with_image_files and _has_images(dataset):
+        paths.append(join(table, IMAGES_DIR))
+    for encoder in map(parse_encoder, encoders):
+        if not embeds_dataset(encoder, dataset):
+            continue
+        folds = [dict(size=size, fold=k) for k in range(SPLITS)] if is_tuned(encoder) else [{}]
+        paths += [join(repo_name(encoder), embeddings_dir(dataset, **fold), f)
+                  for fold in folds for f in (EMBEDDINGS_NPZ, META_JSON)]
+    return paths
 
 
 def _has_images(dataset_id: MulTaBenchDatasetID) -> bool:
