@@ -8,8 +8,8 @@ import pandas as pd
 import pytest
 
 from multabench.benchmark import load
-from multabench.benchmark.load import load_embeddings, load_split, load_target
-from multabench.benchmark.splits import Size
+from multabench.benchmark.load import data_dir_files, load_embeddings, load_split, load_target
+from multabench.benchmark.splits import SPLITS, Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
@@ -148,3 +148,26 @@ def test_an_image_dataset_loads_without_its_images(monkeypatch, tmp_path):
         load_split(IMAGE, fold=0, data_dir=without)
     embeddings = load_embeddings(IMAGE, fold=0, encoder="dino-small", data_dir=without)
     assert embeddings.train["img"].shape == (len(split.x_train), 4)
+
+
+def _files(data_dir):
+    return sorted(os.path.relpath(join(root, f), data_dir) for root, dirs, files in os.walk(data_dir) for f in files)
+
+
+def test_data_dir_files_lists_what_the_loaders_read(monkeypatch, tmp_path):
+    _no_hub(monkeypatch)
+    data_dir = str(tmp_path)
+    x = _write_dataset(data_dir)
+    _write_embeddings(data_dir, x, TextEncoder.E5_SMALL)
+    for fold in range(SPLITS):
+        _write_embeddings(data_dir, x, TextEncoder.E5_SMALL_TAR, size=Size.TEN_K, fold=fold)
+        load_embeddings(TEXT, fold=fold, encoder="e5-small-tar", data_dir=data_dir)
+    assert sorted(data_dir_files(TEXT.name, encoders=["e5-small", "e5-small-tar"])) == _files(data_dir)
+
+
+def test_data_dir_files_skips_encoders_the_dataset_does_not_use():
+    files = data_dir_files(IMAGE, encoders=["e5-small-tar", "dino-small"])
+    assert files == [join(IMAGE.value, "data.parquet"), join(IMAGE.value, "metadata.json"), join(IMAGE.value, "images"),
+                     join("embeddings-dino-small", IMAGE.value, "embeddings.npz"),
+                     join("embeddings-dino-small", IMAGE.value, "meta.json")]
+    assert join(IMAGE.value, "images") not in data_dir_files(IMAGE, encoders=[], with_image_files=False)
