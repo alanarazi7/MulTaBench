@@ -22,6 +22,10 @@ v2.5 and Mitra-v2 take at most 10 classes, which leaves out 3 of the 80 datasets
 tabpfn-extensions' output coding. Mitra-v2 also runs out of GPU memory on MUL_TEXT_MELBOURNE_AIRBNB, whose 680
 features it doesn't reduce since the table has categorical columns.
 
+Every model that reads embeddings also ran with fine-tuned encoders: `e5-small-tar` on text datasets and
+`dino-small-tar` on image datasets, LoRA-tuned on each fold's training rows (see [embeddings](embeddings.md)). Those
+runs are in `multabench/leaderboard/models_tar/`, with the same failures, and aren't ranked yet.
+
 ## Reproducibility
 
 Every model is seeded, and a rerun of the same run on the leaderboard's hardware gives the same test error, except for
