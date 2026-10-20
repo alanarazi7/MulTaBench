@@ -3,7 +3,7 @@ import os
 import sys
 
 from multabench.benchmark.load import load_multabench_dataset
-from multabench.benchmark.splits import SPLITS, Size
+from multabench.benchmark.splits import DEFAULT_SIZE, SPLITS, Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.embeddings.compute import compute_embeddings
 from multabench.embeddings.hub import CACHED_ENCODERS, META_JSON, embeds_dataset, is_tuned, parse_encoder
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     parser.add_argument('--encoder', type=parse_encoder, required=True, choices=CACHED_ENCODERS)
     parser.add_argument('--dataset_name', type=str, required=True, choices=[d.name for d in MulTaBenchDatasetID])
     parser.add_argument('--fold', type=int, default=None, choices=range(SPLITS), help="for a tuned encoder")
-    parser.add_argument('--size', type=Size, default=Size.TEN_K, choices=list(Size), help="for a tuned encoder")
+    parser.add_argument('--size', type=Size, default=DEFAULT_SIZE, choices=list(Size), help="for a tuned encoder")
     parser.add_argument('--output_dir', type=str, default='embeddings')
     parser.add_argument('--device', type=str, default=None, help="e.g. cuda:1 or cpu; default: cuda, then mps, then cpu")
     parser.add_argument('--overwrite', action='store_true', default=False)

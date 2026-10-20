@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from os.path import join
 from typing import Iterable, List, Optional
 
-from multabench.benchmark.splits import SPLITS, Size
+from multabench.benchmark.splits import DEFAULT_SIZE, SPLITS, Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.embeddings.hub import META_JSON, CachedEncoder, embeddings_dir, embeds_dataset, is_tuned, repo_name
 
@@ -27,7 +27,7 @@ class EmbeddingJob:
                            self.dataset.name, *split, "--output_dir", output_dir])
 
 
-def list_jobs(encoders: Iterable[CachedEncoder], datasets: Iterable[MulTaBenchDatasetID], size: Size = Size.TEN_K,
+def list_jobs(encoders: Iterable[CachedEncoder], datasets: Iterable[MulTaBenchDatasetID], size: Size = DEFAULT_SIZE,
               folds: Iterable[int] = range(SPLITS)) -> List[EmbeddingJob]:
     folds = list(folds)
     return [job for encoder in encoders for dataset in datasets if embeds_dataset(encoder, dataset)

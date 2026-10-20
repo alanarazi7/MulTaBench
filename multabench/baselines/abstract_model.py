@@ -19,8 +19,8 @@ from multabench.baselines.preprocessing.categorical import (fit_categorical_enco
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
 from multabench.baselines.preprocessing.target import transform_preprocess_y, fit_preprocess_y
 from multabench.benchmark.splits import Size
-from multabench.dino.constants import ImageEncoder
-from multabench.e5.constants import TextEncoder
+from multabench.dino.constants import DEFAULT_IMAGE_ENCODER, ImageEncoder
+from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TextEncoder
 from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
 from multabench.datasets.objects import SupervisedTask
 from multabench.utils.warnings import silence_baselines_prints
@@ -59,8 +59,8 @@ class TabularModel:
         self.d_output: int = 0
         self.image_folder = image_folder
         self.image_column = image_column
-        self.text_encoder = text_encoder or TextEncoder.E5_SMALL
-        self.image_encoder = image_encoder or ImageEncoder.DINO_SMALL
+        self.text_encoder = text_encoder or DEFAULT_TEXT_ENCODER
+        self.image_encoder = image_encoder or DEFAULT_IMAGE_ENCODER
         # A tuned encoder's cached embeddings are per fold.
         self.fold = fold
         self.size = size

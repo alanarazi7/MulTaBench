@@ -23,7 +23,10 @@ class Size(StrEnum):
     FULL = "full"
 
 
-def get_split(y: np.ndarray, is_cls: bool, split: int, size: Size = Size.TEN_K) -> Tuple[np.ndarray, np.ndarray]:
+DEFAULT_SIZE = Size.TEN_K
+
+
+def get_split(y: np.ndarray, is_cls: bool, split: int, size: Size = DEFAULT_SIZE) -> Tuple[np.ndarray, np.ndarray]:
     size = Size(size)
     y = np.asarray(y)
     if is_cls and _smallest_class_count(y) >= FOLDS:

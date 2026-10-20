@@ -8,7 +8,7 @@ from transformers import AutoImageProcessor, AutoModel, DINOv3ViTImageProcessorF
 
 from multabench.baselines.preprocessing.column_encoders import ColumnEncoder, column_caches, fit_column_encoders
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
+from multabench.dino.constants import DEFAULT_IMAGE_ENCODER, IMAGE_ENCODERS, ImageEncoder
 from multabench.dino.dino_finetune import finetune_dino
 from multabench.dino.image_loading import load_images
 from multabench.benchmark.splits import Size
@@ -46,7 +46,7 @@ class DinoColumnEncoder(ColumnEncoder):
 
 
 def fit_image_encoders(x: DataFrame, image_features: Set[str], device: torch.device, image_folder: Optional[str],
-                       encoder: ImageEncoder = ImageEncoder.DINO_SMALL, y: Optional[Series] = None, is_cls: bool = True,
+                       encoder: ImageEncoder = DEFAULT_IMAGE_ENCODER, y: Optional[Series] = None, is_cls: bool = True,
                        dataset: Optional[MulTaBenchDatasetID] = None, size: Optional[Size] = None,
                        fold: Optional[int] = None) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
     """One encoder per image column, with the training rows' embeddings, read from the cache when the encoder has
