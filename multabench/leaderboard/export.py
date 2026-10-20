@@ -124,20 +124,25 @@ def per_dataset(runs: pd.DataFrame) -> pd.DataFrame:
 
 
 def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd.DataFrame:
-    """Median train and predict time per 1K rows, which leave out reading the cached embeddings, and the mean time the
-    run's encoders would take to embed 1K rows live, estimated from the frozen caches: TAR's fine-tuning is left out."""
+    """Median train and predict time per 1K rows, which leave out reading the cached embeddings; the mean time a TAR
+    run's encoders took to fine-tune per 1K training rows; and the mean time its encoders would take to embed 1K rows
+    live, estimated from the caches' own encoding time."""
     ok = _by_entry(runs[runs[ResultKey.STATUS] == RunStatus.OK])
-    encode = pd.read_csv(embedding_cost_csv).set_index(["dataset", "encoder"])["encode_s_per_1k"]
+    caches = pd.read_csv(embedding_cost_csv).astype({"fold": "Int64"}).fillna({"fold": -1})
+    caches = caches.set_index(["dataset", "encoder", "fold"])
 
-    def encode_s(col: str) -> pd.Series:
-        frozen = ok[col].map(lambda e: e.removesuffix("-tar") if isinstance(e, str) else e)
-        keys = list(zip(ok[ResultKey.DATASET], frozen))
-        return pd.Series([encode.get(k, 0.0) for k in keys], index=ok.index)
+    def per_run(col: str, field: str) -> pd.Series:
+        fold = ok[ResultKey.FOLD].where(ok[col].astype(str).str.endswith("-tar"), -1)
+        keys = zip(ok[ResultKey.DATASET], ok[col], fold)
+        return pd.Series([caches[field].get(k, 0.0) for k in keys], index=ok.index)
 
-    ok = ok.assign(text_encode=encode_s(ResultKey.TEXT_ENCODER), image_encode=encode_s(ResultKey.IMAGE_ENCODER))
+    ok = ok.assign(text_encode=per_run(ResultKey.TEXT_ENCODER, "encode_s_per_1k"),
+                   image_encode=per_run(ResultKey.IMAGE_ENCODER, "encode_s_per_1k"),
+                   finetune=per_run(ResultKey.TEXT_ENCODER, "finetune_s_per_1k")
+                   + per_run(ResultKey.IMAGE_ENCODER, "finetune_s_per_1k"))
     df = ok.groupby(ResultKey.MODEL).agg(
         train_s_per_1k=(ResultKey.TRAIN_TIME_PER_1K, "median"),
-        inference_s_per_1k=(ResultKey.INFERENCE_TIME_PER_1K, "median"),
+        inference_s_per_1k=(ResultKey.INFERENCE_TIME_PER_1K, "median"), finetune_s_per_1k=("finetune", "mean"),
         text_encode_s_per_1k=("text_encode", "mean"), image_encode_s_per_1k=("image_encode", "mean"),
         gpu=(ResultKey.GPU_TYPE, "first"), cpu=(ResultKey.CPU_NAME, "first")).reset_index()
     return _with_model_and_encoding(df.sort_values("train_s_per_1k", ignore_index=True), runs, at=0)

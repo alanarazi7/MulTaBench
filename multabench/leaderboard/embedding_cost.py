@@ -1,31 +1,36 @@
-"""Seconds per 1,000 rows each cached frozen encoder took on each dataset, from its meta.json on the Hub.
+"""Seconds per 1,000 rows each cached encoder took on each dataset, from its meta.json on the Hub.
 
-An estimate of what a run would pay to embed its rows live: the caches were computed on A100s, not the leaderboard's
-H100, and the image time includes reading the files.
+A frozen encoder has one cache per dataset; a tuned (-tar) one has one per fold, with the time fine-tuning took on the
+fold's training rows. The encoding time estimates what a run would pay to embed its rows live: the frozen caches were
+computed on A100s and the tuned ones on H100s, and the image time includes reading the files.
 """
 import json
 import os
 
 import pandas as pd
 
+from multabench.benchmark.splits import DEFAULT_SIZE, SPLITS
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.embeddings.hub import CACHED_ENCODERS, META_JSON, download_embeddings, embeds_dataset, encoder_spec
+from multabench.embeddings.hub import CACHED_ENCODERS, META_JSON, download_embeddings, embeds_dataset, is_tuned
 
 EMBEDDING_COST_CSV = os.path.join(os.path.dirname(__file__), "embedding_cost.csv")
 
 
 def embedding_cost() -> pd.DataFrame:
     rows = []
-    for encoder in [e for e in CACHED_ENCODERS if not encoder_spec(e).tune_encoder]:
+    for encoder in CACHED_ENCODERS:
         for dataset in MulTaBenchDatasetID:
             if not embeds_dataset(encoder, dataset):
                 continue
-            with open(os.path.join(download_embeddings(encoder, dataset), META_JSON)) as f:
-                meta = json.load(f)
-            rows.append({"dataset": dataset.name, "encoder": str(encoder),
-                         "encode_s_per_1k": sum(meta["encode_seconds"].values()) / meta["n_rows"] * 1000,
-                         "gpu": meta["gpu_type"]})
-    return pd.DataFrame(rows)
+            for fold in range(SPLITS) if is_tuned(encoder) else [None]:
+                split = dict(size=DEFAULT_SIZE, fold=fold) if fold is not None else {}
+                with open(os.path.join(download_embeddings(encoder, dataset, **split), META_JSON)) as f:
+                    meta = json.load(f)
+                finetune = float(meta.get("finetune_seconds", 0.0)) / int(meta.get("n_train", 1)) * 1000
+                rows.append({"dataset": dataset.name, "encoder": str(encoder), "fold": fold,
+                             "encode_s_per_1k": sum(meta["encode_seconds"].values()) / int(meta["n_rows"]) * 1000,
+                             "finetune_s_per_1k": finetune if fold is not None else 0.0, "gpu": meta["gpu_type"]})
+    return pd.DataFrame(rows).astype({"fold": "Int64"})
 
 
 if __name__ == "__main__":

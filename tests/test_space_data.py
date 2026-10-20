@@ -47,7 +47,8 @@ def test_the_space_per_dataset_results_follow_the_results(runs):
 def test_the_space_cost_follows_the_results(runs):
     shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "cost.csv")).set_index(ENTRY)
     computed = cost(runs).set_index(ENTRY).loc[shown.index]
-    for column in ["train_s_per_1k", "inference_s_per_1k", "text_encode_s_per_1k", "image_encode_s_per_1k"]:
+    for column in ["train_s_per_1k", "inference_s_per_1k", "finetune_s_per_1k", "text_encode_s_per_1k",
+                   "image_encode_s_per_1k"]:
         assert np.allclose(shown[column], computed[column], atol=1e-3)
 
 
@@ -64,3 +65,8 @@ def test_every_model_has_a_developer_logo_and_link(runs):
     logos = os.path.join(os.path.dirname(SPACE_DATA_DIR), "assets", "logos")
     assert all(os.path.isfile(os.path.join(logos, logo)) for logo in models["logo"])
     assert models["link"].str.startswith("https://").all()
+
+
+def test_only_tar_entries_pay_fine_tuning(runs):
+    finetune = cost(runs).set_index("encoding")["finetune_s_per_1k"]
+    assert (finetune.loc["tar"] > 0).all() and (finetune.drop("tar") == 0).all()

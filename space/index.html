@@ -98,8 +98,8 @@ td.num, th.num { text-align: right; }
 select { font: 13px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; }
 .bar { display: inline-block; height: 8px; border-radius: 2px; background: var(--accent); vertical-align: middle; margin-right: 8px; opacity: .75; }
 .flag { color: var(--warn); }
-.enc { font: 500 10.5px/1 var(--mono); border-radius: 4px; padding: 3px 6px; margin-left: 8px; vertical-align: 1px; background: var(--soft); color: var(--muted); }
-.enc.tar { background: color-mix(in oklab, var(--accent) 16%, var(--surface)); color: var(--accent); }
+td.encoding { font: 500 12.5px/1 var(--mono); color: var(--muted); }
+td.encoding.tar { color: var(--accent); }
 
 .filters { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; background: var(--bg); border-bottom: 1px solid var(--line); }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -190,7 +190,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       <h2>Elo vs cost</h2>
       <div class="group tabs" id="encTabs" role="group" aria-label="Count encoding time"></div>
     </div>
-    <p class="muted">Each entry's Elo, under the filters above, against its median train + predict time per 1,000 rows (log scale), optionally with an estimate of the encoders' time on those rows (TAR's fine-tuning left out). <span class="star">★</span> marks the Pareto front: no other model is both faster and stronger.</p>
+    <p class="muted">Each entry's Elo, under the filters above, against its median train + predict time per 1,000 rows (log scale), TAR's fine-tuning included, optionally with an estimate of the encoders' time on those rows. <span class="star">★</span> marks the Pareto front: no other model is both faster and stronger.</p>
     <div class="panel chart pareto" id="paretoChart"></div>
   </section>
 
@@ -216,7 +216,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <section>
     <h2>Cost</h2>
-    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Runs read the cached embeddings, so this leaves out encoding; the text and image columns estimate it, from the frozen encoders' time, and the toggles above add it to the total. TAR's fine-tuning time isn't counted yet.</p>
+    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Runs read the cached embeddings, so this leaves out encoding; the text and image columns estimate it from the cached encoders' own time, and the toggles above add it to the total. Fine-tune is the mean time TAR's LoRA fine-tuning took per 1,000 training rows, on an H100, and always counts.</p>
     <div class="panel scroll"><table id="cost"></table></div>
   </section>
 
@@ -327,8 +327,8 @@ function start(D) {
 
 const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
 const ENC_LABEL = { frozen: 'Frozen', tar: 'TAR', 'end-to-end': 'End-to-end' };
-const encBadge = e => `<span class="enc ${e === 'tar' ? 'tar' : ''}" title="${e === 'end-to-end' ? 'Reads raw text itself' : e === 'tar' ? 'Encoders fine-tuned on each fold' : 'Frozen encoders'}">${ENC_LABEL[e]}</span>`;
-const entryName = r => modelName(r.model) + encBadge(r.encoding);
+const ENC_TITLE = { frozen: 'Frozen encoders', tar: 'Encoders fine-tuned on each fold', 'end-to-end': 'Reads raw text itself' };
+const encodingCell = e => `<td class="encoding ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image'], ['image-text', 'Image + text']];
@@ -375,7 +375,8 @@ const ENC = [['text', 'Text encoding'], ['image', 'Image encoding']];
 const enc = Object.fromEntries(ENC.map(([k]) => [k, store.get('enc_' + k) === '1']));
 const encodeOf = r => 2 * ((enc.text ? r.text_encode_s_per_1k : 0) + (enc.image ? r.image_encode_s_per_1k : 0));
 let timeOf = {};
-const computeTime = () => { timeOf = Object.fromEntries(D.cost.map(r => [r.entry, r.train_s_per_1k + r.inference_s_per_1k + encodeOf(r)])); };
+// TAR's fine-tuning is part of training, so it always counts; encoding the rows is optional, as for frozen encoders.
+const computeTime = () => { timeOf = Object.fromEntries(D.cost.map(r => [r.entry, r.train_s_per_1k + r.finetune_s_per_1k + r.inference_s_per_1k + encodeOf(r)])); };
 computeTime();
 function drawEncTabs() {
   const box = document.getElementById('encTabs');
@@ -434,7 +435,7 @@ function drawPareto(board, front) {
     s += `<text x="${left - 10}" y="${y(e) + 4}" text-anchor="end">${e}</text>`;
   }
   const encLabel = ENC.filter(([k]) => enc[k]).map(([k]) => k).join(' + ');
-  s += `<text x="${(left + W - right) / 2}" y="${H - 10}" text-anchor="middle">Train + predict s per 1K rows, median${encLabel ? `, + ${encLabel} encoding (estimate)` : ''}, log scale</text>`;
+  s += `<text x="${(left + W - right) / 2}" y="${H - 10}" text-anchor="middle">Train (with TAR fine-tuning) + predict s per 1K rows${encLabel ? `, + ${encLabel} encoding (estimate)` : ''}, log scale</text>`;
   s += `<text transform="translate(16 ${(top + H - bottom) / 2}) rotate(-90)" text-anchor="middle">Elo</text>`;
   const fr = rows.filter(r => front.has(r.entry)).sort((a, b) => timeOf[a.entry] - timeOf[b.entry]);
   let path = '';
@@ -593,13 +594,13 @@ function drawElo(board, target = 'eloChart') {
 function drawBoard(board, front, byElo) {
   const t = document.getElementById('boardTable');
   const maxN = Math.max(...board.map(r => r.datasets));
-  t.innerHTML = `<thead><tr><th></th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num">Win rate</th><th class="num">Avg rank</th><th class="num">Norm. err</th><th class="num" title="Folds on which the model has the lowest test error">Best</th></tr></thead>`;
+  t.innerHTML = `<thead><tr><th></th><th>Encoding</th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num">Win rate</th><th class="num">Avg rank</th><th class="num">Norm. err</th><th class="num" title="Folds on which the model has the lowest test error">Best</th></tr></thead>`;
   const tb = el('tbody');
   board.forEach((r, i) => {
     const ci = `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
     const n = r.datasets < maxN ? ` <span class="flag" title="Rated on ${r.datasets} of ${maxN} datasets">${r.datasets}/${maxN}</span>` : '';
     const star = front.has(r.entry) ? ' <span class="star" title="On the Pareto front of Elo and run time">★</span>' : '';
-    tb.appendChild(el('tr', { className: front.has(r.entry) ? 'front' : '' }, `<td class="rank">${byElo.indexOf(r) + 1}</td><td class="model">${entryName(r)}${star}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td><td class="num">${fmt(r.avg_rank, 2)}</td><td class="num">${fmt(r.norm_error, 3)}</td><td class="num">${r.champions}</td>`));
+    tb.appendChild(el('tr', { className: front.has(r.entry) ? 'front' : '' }, `<td class="rank">${byElo.indexOf(r) + 1}</td>${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}${star}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td><td class="num">${fmt(r.avg_rank, 2)}</td><td class="num">${fmt(r.norm_error, 3)}</td><td class="num">${r.champions}</td>`));
   });
   t.appendChild(tb);
 }
@@ -681,13 +682,13 @@ function renderCost() {
   const order = orderOf();
   const rows = D.cost.filter(r => order.includes(r.entry)).sort((a, b) => order.indexOf(a.entry) - order.indexOf(b.entry));
   const maxT = Math.max(...rows.map(r => timeOf[r.entry]));
-  const what = ['Train + predict', ...ENC.filter(([k]) => enc[k]).map(([k]) => k)].join(' + ');
+  const what = ['Train + fine-tune + predict', ...ENC.filter(([k]) => enc[k]).map(([k]) => k)].join(' + ');
   const t = document.getElementById('cost');
-  t.innerHTML = `<thead><tr><th>Model</th><th>Device</th><th>${what} s / 1K rows</th><th class="num">Train</th><th class="num">Predict</th><th class="num" title="Estimate, per 1K rows">Text enc.</th><th class="num" title="Estimate, per 1K rows">Image enc.</th></tr></thead>`;
+  t.innerHTML = `<thead><tr><th>Encoding</th><th>Model</th><th>Device</th><th>${what} s / 1K rows</th><th class="num">Train</th><th class="num" title="TAR's LoRA fine-tuning, per 1K training rows">Fine-tune</th><th class="num">Predict</th><th class="num" title="Estimate, per 1K rows">Text enc.</th><th class="num" title="Estimate, per 1K rows">Image enc.</th></tr></thead>`;
   const tb = el('tbody');
   rows.forEach(r => {
     const total = timeOf[r.entry];
-    tb.appendChild(el('tr', {}, `<td class="model">${entryName(r)}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td><td class="num">${fmt(r.text_encode_s_per_1k, 2)}</td><td class="num">${fmt(r.image_encode_s_per_1k, 2)}</td>`));
+    tb.appendChild(el('tr', {}, `${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${r.finetune_s_per_1k ? fmt(r.finetune_s_per_1k, 2) : '—'}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td><td class="num">${fmt(r.text_encode_s_per_1k, 2)}</td><td class="num">${fmt(r.image_encode_s_per_1k, 2)}</td>`));
   });
   t.appendChild(tb);
 }
