@@ -7,7 +7,7 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.datasets.objects import MultimodalDataset
 from multabench.baselines.abstract_model import TabularModel
 from multabench.benchmark.load import load_multabench_dataset, split_dataset
-from multabench.benchmark.splits import Size
+from multabench.benchmark.splits import DEFAULT_SIZE, Size
 from multabench.utils.hardware import get_hardware_dict
 from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
 from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
@@ -20,7 +20,7 @@ def evaluate_on_loaded_dataset(model_cls: Type[TabularModel],
                                 dataset: MultimodalDataset,
                                 fold: int,
                                 device: torch.device,
-                                size: Size = Size.TEN_K,
+                                size: Size = DEFAULT_SIZE,
                                 verbose: bool = False,
                                 text_encoder: TextEncoder | None = None,
                                 image_encoder: ImageEncoder | None = None) -> Dict:
@@ -75,7 +75,7 @@ def evaluate_on_dataset(model_cls: Type[TabularModel],
                         dataset_id: MulTaBenchDatasetID,
                         fold: int,
                         device: torch.device,
-                        size: Size = Size.TEN_K,
+                        size: Size = DEFAULT_SIZE,
                         verbose: bool = False,
                         text_encoder: TextEncoder | None = None,
                         image_encoder: ImageEncoder | None = None) -> Dict:

@@ -10,14 +10,14 @@ from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.dino.constants import ImageEncoder
-from multabench.e5.constants import TextEncoder
+from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TextEncoder
 from multabench.embeddings.hub import CACHED_ENCODERS, download_embeddings, is_tuned
 
 SLURM_ARRAY_LIMIT = 1000
 DEFAULT_TEXT_ENCODERS = [TextEncoder.TFIDF, TextEncoder.E5_SMALL, TextEncoder.E5_SMALL_TAR]
 DEFAULT_IMAGE_ENCODERS = [ImageEncoder.DINO_SMALL, ImageEncoder.DINO_SMALL_TAR]
 # Image datasets with text columns vary only the image encoder; their text is embedded with frozen E5.
-IMAGE_TEXT_TEXT_ENCODER = TextEncoder.E5_SMALL
+IMAGE_TEXT_TEXT_ENCODER = DEFAULT_TEXT_ENCODER
 
 
 def select_datasets(names: Optional[List[str]], modalities: Optional[List[Modality]]) -> List[MulTaBenchDatasetID]:

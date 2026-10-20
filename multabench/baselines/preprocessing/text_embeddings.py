@@ -12,7 +12,7 @@ from multabench.baselines.preprocessing.column_encoders import (PCA_COMPONENTS, 
 from multabench.benchmark.splits import Size
 from multabench.constants import SEED
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
+from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TEXT_ENCODERS, TextEncoder
 from multabench.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
 from multabench.embeddings.hub import CACHED_ENCODERS, CachedEmbeddings, e5_passages
 from multabench.utils.timing import embedding_step
@@ -63,7 +63,7 @@ class TfidfColumnEncoder(ColumnEncoder):
 
 
 def fit_text_encoders(x: DataFrame, text_features: Set[str], device: torch.device,
-                      encoder: TextEncoder = TextEncoder.E5_SMALL, y: Optional[Series] = None, is_cls: bool = True,
+                      encoder: TextEncoder = DEFAULT_TEXT_ENCODER, y: Optional[Series] = None, is_cls: bool = True,
                       dataset: Optional[MulTaBenchDatasetID] = None, size: Optional[Size] = None,
                       fold: Optional[int] = None) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
     """One encoder per text column, with the training rows' embeddings, read from the cache when the encoder has

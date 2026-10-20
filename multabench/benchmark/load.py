@@ -18,11 +18,12 @@ import numpy as np
 import pandas as pd
 from huggingface_hub import snapshot_download
 
-from multabench.benchmark.splits import SPLITS, Size, get_split
+from multabench.benchmark.splits import DEFAULT_SIZE, SPLITS, Size, get_split
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.hub import DATA_PARQUET, IMAGES_DIR, extract_images, hf_repo_id, local_repo_dir
 from multabench.datasets.revisions import revision
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
+from multabench.e5.constants import DEFAULT_TEXT_ENCODER
 from multabench.embeddings.hub import (CACHED_ENCODERS, EMBEDDINGS_NPZ, META_JSON, CachedEmbeddings, CachedEncoder,
                                        download_embeddings, embeddings_dir, embeds_dataset, encoder_inputs,
                                        input_values, is_tuned, parse_encoder, read_embeddings, repo_name)
@@ -61,7 +62,7 @@ def download_dataset(dataset_id: MulTaBenchDatasetID, data_dir: Optional[str] = 
 
 
 def data_dir_files(dataset: str | MulTaBenchDatasetID, encoders: Sequence[str | CachedEncoder] = CACHED_ENCODERS,
-                   size: Size = Size.TEN_K, with_image_files: bool = True) -> List[str]:
+                   size: Size = DEFAULT_SIZE, with_image_files: bool = True) -> List[str]:
     """The paths, relative to a data_dir, that the dataset's splits and its cached embeddings by each encoder read."""
     if isinstance(dataset, str):
         dataset = MulTaBenchDatasetID[dataset]
@@ -101,7 +102,7 @@ def load_multabench_dataset(dataset_id, data_dir: Optional[str] = None,
                              image_folder=image_folder, image_column=meta["image_col"])
 
 
-def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = Size.TEN_K,
+def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = DEFAULT_SIZE,
                data_dir: Optional[str] = None, with_image_files: bool = True) -> DatasetSplit:
     """The fold's train and test rows, from the Hub or data_dir (see README), with or without the image files."""
     if isinstance(dataset, str):
@@ -110,7 +111,7 @@ def load_split(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = Size.
     return split_dataset(dataset, fold=fold, size=size)
 
 
-def split_dataset(dataset: MultimodalDataset, fold: int, size: Size = Size.TEN_K) -> DatasetSplit:
+def split_dataset(dataset: MultimodalDataset, fold: int, size: Size = DEFAULT_SIZE) -> DatasetSplit:
     train_idx, test_idx = get_split(dataset.y.to_numpy(), is_cls=dataset.is_cls, split=fold, size=size)
     return DatasetSplit(x_train=dataset.x.iloc[train_idx],
                         y_train=dataset.y.iloc[train_idx],
@@ -129,8 +130,9 @@ class SplitEmbeddings:
     meta: dict
 
 
-def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = Size.TEN_K,
-                    encoder: str | CachedEncoder = "e5-small", data_dir: Optional[str] = None) -> SplitEmbeddings:
+def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = DEFAULT_SIZE,
+                    encoder: str | CachedEncoder = DEFAULT_TEXT_ENCODER,
+                    data_dir: Optional[str] = None) -> SplitEmbeddings:
     """The split's cached embeddings, from the Hub, or from data_dir if given (see README)."""
     if isinstance(dataset, str):
         dataset = MulTaBenchDatasetID[dataset]

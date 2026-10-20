@@ -14,6 +14,9 @@ class ImageEncoder(StrEnum):
     DINO_LARGE = "dino-large"
 
 
+DEFAULT_IMAGE_ENCODER = ImageEncoder.DINO_SMALL
+
+
 IMAGE_ENCODERS = {
     ImageEncoder.DINO_SMALL: Encoder(encoder_name=DINOV3_SMALL, tune_encoder=False),
     ImageEncoder.DINO_SMALL_TAR: Encoder(encoder_name=DINOV3_SMALL, tune_encoder=True),

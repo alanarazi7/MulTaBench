@@ -29,10 +29,10 @@ from multabench.baselines.tabstar_v1p1 import TabSTARv1p1
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
 from multabench.benchmark.runs import Run
-from multabench.benchmark.splits import SPLITS, Size
+from multabench.benchmark.splits import DEFAULT_SIZE, SPLITS, Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
-from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
-from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
+from multabench.dino.constants import DEFAULT_IMAGE_ENCODER, IMAGE_ENCODERS, ImageEncoder
+from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TEXT_ENCODERS, TextEncoder
 from multabench.embeddings.hub import reads_cache
 from multabench.result_keys import ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     parser.add_argument('--model', type=str, choices=list(SHORT2MODELS.keys()), required=True)
     parser.add_argument('--dataset_name', type=str, required=True, choices=[d.name for d in MulTaBenchDatasetID])
     parser.add_argument('--fold', type=int, required=True, choices=range(SPLITS))
-    parser.add_argument('--size', type=Size, default=Size.TEN_K, choices=list(Size))
+    parser.add_argument('--size', type=Size, default=DEFAULT_SIZE, choices=list(Size))
     parser.add_argument('--verbose', action='store_true', default=False)
     parser.add_argument('--output_dir', type=str, default='runs')
     parser.add_argument('--overwrite', action='store_true', default=False, help="rerun even if the result JSON exists")
@@ -76,13 +76,13 @@ if __name__ == "__main__":
     dataset = MulTaBenchDatasetID[args.dataset_name]
     modality = dataset_modality(dataset)
     if modality.has_text and model.USE_TEXT_EMBEDDINGS:
-        args.text_encoder = args.text_encoder or TextEncoder.E5_SMALL
+        args.text_encoder = args.text_encoder or DEFAULT_TEXT_ENCODER
     elif args.text_encoder and modality.has_text:
         parser.error(f"{model.MODEL_NAME} reads raw text, so --text_encoder doesn't apply")
     elif args.text_encoder:
         parser.error(f"{dataset.name} has no text columns, so --text_encoder doesn't apply")
     if modality.has_images:
-        args.image_encoder = args.image_encoder or ImageEncoder.DINO_SMALL
+        args.image_encoder = args.image_encoder or DEFAULT_IMAGE_ENCODER
     elif args.image_encoder:
         parser.error(f"{dataset.name} has no images, so --image_encoder doesn't apply")
     image_encoder = IMAGE_ENCODERS[args.image_encoder] if args.image_encoder else None

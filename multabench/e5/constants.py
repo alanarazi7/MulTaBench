@@ -19,6 +19,9 @@ class TextEncoder(StrEnum):
     E5_LARGE = "e5-large"
 
 
+DEFAULT_TEXT_ENCODER = TextEncoder.E5_SMALL
+
+
 TEXT_ENCODERS = {
     TextEncoder.TFIDF: Encoder(encoder_name=TF_IDF, tune_encoder=False),
     TextEncoder.E5_SMALL: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=False),
