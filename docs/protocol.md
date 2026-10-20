@@ -24,7 +24,8 @@ features it doesn't reduce since the table has categorical columns.
 
 Every model that reads embeddings also ran with fine-tuned encoders: `e5-small-tar` on text datasets and
 `dino-small-tar` on image datasets, LoRA-tuned on each fold's training rows (see [embeddings](embeddings.md)). Those
-runs are in `multabench/leaderboard/models_tar/`, with the same failures, and aren't ranked yet.
+runs are in `multabench/leaderboard/models_tar/`, with the same failures. The leaderboard ranks each such model
+as two entries, e.g. `LimiX-2 (Frozen)` and `LimiX-2 (TAR)`, and rates the encodings against each other.
 
 ## Reproducibility
 

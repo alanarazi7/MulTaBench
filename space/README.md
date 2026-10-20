@@ -12,7 +12,8 @@ short_description: Elo leaderboard for tabular models on text and image data
 # MulTaBench leaderboard
 
 The leaderboard of [MulTaBench](https://github.com/alanarazi7/MulTaBench): a static page that reads the CSVs in
-`data/`, written by `python -m multabench.leaderboard.export` from `multabench/leaderboard/models/`.
+`data/`, written by `python -m multabench.leaderboard.export` from `multabench/leaderboard/models/` and
+`models_tar/`: each model that reads embeddings is an entry with Frozen and one with TAR encoders.
 
 To update the Space after the results change:
 

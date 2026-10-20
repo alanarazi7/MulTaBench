@@ -1,4 +1,5 @@
 version,date,change,pr
+v2.0,2026-10-21,"Frozen and TAR entries, a Frozen vs TAR board, Core by default; 49 entries",224
 v1.9,2026-10-18,"Added LimiX-2; 26 models",200
 v1.8,2026-10-17,"Added Mitra-v2; 25 models",198
 v1.7,2026-10-17,"Added TabSTAR-v1.1; 24 models",189
