@@ -96,10 +96,11 @@ b.enc { color: var(--c); }
 .tabpanel { display: grid; gap: 40px; }
 .tabpanel[hidden] { display: none; }
 .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; }
-.filters[hidden], .filters .group[hidden] { display: none; }
+.filters[hidden], .filters .encrow[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .encrow { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
 .encnote { flex: 1 1 360px; max-width: 92ch; font-size: 13px; line-height: 1.45; color: var(--muted); }
+#encodingText, #encodingText2 { font-size: 16px; line-height: 1.6; max-width: 84ch; }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
@@ -183,6 +184,8 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
+    <p id="encodingText"><b class="enc frozen">Frozen</b> embeds text with e5-small and images with DINOv3-small, and projects each column to 30 dimensions with PCA. <b class="enc tar">TAR</b>, target-aware representations, first fine-tunes the encoder on the training labels, then projects the same way.</p>
+    <p id="encodingText2">Their Elo pits the two against each other on every model and dataset, leaving out E2E models.</p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
   </div>
@@ -321,7 +324,7 @@ function showTab() {
   TABS.forEach(t => { document.getElementById('tab-' + t).hidden = t !== k; });
   document.querySelectorAll('#pageTabs a').forEach(a => a.setAttribute('aria-selected', a.dataset.tab === k));
   document.querySelector('.filters').hidden = k === 'paper';
-  document.getElementById('encodingTabs').hidden = k === 'encodings';
+  document.querySelector('.encrow').hidden = k === 'encodings';
 }
 window.addEventListener('hashchange', () => { showTab(); document.querySelector('.sticky').scrollIntoView(); });
 showTab();
