@@ -50,8 +50,6 @@ header { display: grid; gap: 14px; }
   :root:not([data-theme="light"]) .logo .light { display: none; }
   :root:not([data-theme="light"]) .logo .dark { display: block; }
 }
-.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; font: 13px/1.4 var(--mono); color: var(--muted); }
-.facts b { color: var(--ink); font-weight: 500; }
 section { display: grid; gap: 16px; }
 .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -105,7 +103,9 @@ b.enc { color: var(--c); }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
-.links a { color: var(--accent); }
+.links a { color: var(--accent); white-space: nowrap; text-decoration: none; font-weight: 500; }
+.links a:hover { text-decoration: underline; }
+.links .ico { display: inline-block; width: 1.05em; height: 1.05em; margin-right: 5px; vertical-align: -0.15em; line-height: 1; }
 code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
 .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
@@ -141,8 +141,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     </div>
     <div class="version" id="version"></div>
     <p class="muted" id="intro">MulTaBench is a benchmark for multimodal tabular learning with text and images. Its purpose is to drive smarter encoding methods, towards our vision of truly Multimodal Tabular Foundation Models. Its 80 datasets balance image and text modalities, classification and regression, and how hard the text or images are to encode, with the <b>Core</b> slice focusing on the 40 datasets where frozen embeddings are not enough.</p>
-    <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="https://github.com/alanarazi7/MulTaBench/blob/master/docs/protocol.md">Protocol</a> · <a href="data/leaderboards.csv">CSV</a></p>
-    <div class="facts" id="facts"></div>
+    <p class="links"><a href="https://github.com/alanarazi7/MulTaBench"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Code</a> · <a href="https://huggingface.co/multabench"><span class="ico">🤗</span>Datasets</a> · <a href="https://arxiv.org/abs/2605.10616"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="#B31B1B" d="M3.8423 0a1.0037 1.0037 0 0 0-.922.6078c-.1536.3687-.0438.6275.2938 1.1113l6.9185 8.3597-1.0223 1.1058a1.0393 1.0393 0 0 0 .003 1.4229l1.2292 1.3135-5.4391 6.4444c-.2803.299-.4538.823-.2971 1.1986a1.0253 1.0253 0 0 0 .9585.635.9133.9133 0 0 0 .6891-.3405l5.783-6.126 7.4902 8.0051a.8527.8527 0 0 0 .6835.2597.9575.9575 0 0 0 .8777-.6138c.1577-.377-.017-.7502-.306-1.1407l-7.0518-8.3418 1.0632-1.13a.9626.9626 0 0 0 .0089-1.3165L4.6336.4639s-.3733-.4535-.768-.463zm0 .272h.0166c.2179.0052.4874.2715.5644.3639l.005.006.0052.0055 10.169 10.9905a.6915.6915 0 0 1-.0072.945l-1.0666 1.133-1.4982-1.7724-8.5994-10.39c-.3286-.472-.352-.6183-.2592-.841a.7307.7307 0 0 1 .6704-.4401Zm14.341 1.5701a.877.877 0 0 0-.6554.2418l-5.6962 6.1584 1.6944 1.8319 5.3089-6.5138c.3251-.4335.479-.6603.3247-1.0292a1.1205 1.1205 0 0 0-.9763-.689zm-7.6557 12.2823 1.3186 1.4135-5.7864 6.1295a.6494.6494 0 0 1-.4959.26.7516.7516 0 0 1-.706-.4669c-.1119-.2682.0359-.6864.2442-.9083l.0051-.0055.0047-.0055z"/></svg>Paper</a> · <a href="https://github.com/alanarazi7/MulTaBench/blob/master/docs/protocol.md">Protocol</a></p>
   </header>
 
   <div class="sticky">
@@ -209,7 +208,6 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <h2>Using the leaderboard in your paper</h2>
     <p class="muted" id="dlNote"></p>
     <div class="panel dl">
-      <div><span class="label">Elo vs cost plot</span><button class="btn" data-dl="svg">SVG</button><button class="btn" data-dl="png">PNG</button></div>
       <div><span class="label">Ranking table</span><button class="btn" data-dl="csv">CSV</button><button class="btn" data-dl="json">JSON</button><a class="btn" href="data/leaderboards.csv" download>CSV · every filter</a></div>
       <div><span class="label">Per dataset and fold</span><a class="btn" href="data/per_dataset.csv" download>Per dataset CSV</a><a class="btn" href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models">Every run, per model (GitHub)</a></div>
     </div>
@@ -273,13 +271,7 @@ async function load() {
   const info = Object.fromEntries((await get('models')).map(r => [r.model, r]));
   const entries = boards['all|all|all|all'].map(r => r.entry).sort();
   const encodingOf = Object.fromEntries(boards['all|all|all|all'].map(r => [r.entry, r.encoding]));
-  const datasets = [...new Set(per_dataset.map(r => r.dataset))];
-  const have = new Set(per_dataset.map(r => r.entry + '|' + r.dataset));
-  const errors = [];
-  entries.forEach(m => datasets.forEach(d => { if (!have.has(m + '|' + d)) errors.push({ entry: m, dataset: d }); }));
-  const runs = per_dataset.reduce((n, r) => n + r.folds, 0);
-  return { boards, encodingBoards, per_dataset, cost, updated, info, errors, encodingOf,
-    meta: { entries, models: Object.keys(info).length, datasets: datasets.length, runs } };
+  return { boards, encodingBoards, per_dataset, cost, updated, info, encodingOf, meta: { entries } };
 }
 load().then(start).catch(err => {
   document.querySelector('.wrap').insertAdjacentHTML('afterbegin', `<p class="flag">Could not load the leaderboard data: ${err.message}</p>`);
@@ -293,7 +285,7 @@ const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
 const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
-const MODS = [['text', 'Text'], ['image', 'Image'], ['image-text', 'Image + text']];
+const MODS = [['text', 'Text'], ['image', 'Image']];
 const ENCS = [['frozen', 'Frozen'], ['tar', 'TAR']];
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
 const store = {
@@ -414,18 +406,6 @@ function drawPareto(board, front) {
 }
 
 let current = { board: [], front: new Set(), label: '' };
-function resolvedSVG() {
-  const css = getComputedStyle(document.documentElement);
-  const svg = document.querySelector('#paretoChart svg').cloneNode(true);
-  svg.setAttribute('font-family', css.getPropertyValue('--mono'));
-  svg.setAttribute('font-size', '11');
-  const [, , vw, vh] = svg.getAttribute('viewBox').split(' ');
-  svg.setAttribute('width', vw);
-  svg.setAttribute('height', vh);
-  svg.insertAdjacentHTML('afterbegin', `<rect width="100%" height="100%" fill="var(--surface)"/>`);
-  svg.querySelectorAll('text').forEach(t => { if (!t.getAttribute('fill')) t.setAttribute('fill', t.classList.contains('name') ? 'var(--ink)' : 'var(--muted)'); });
-  return new XMLSerializer().serializeToString(svg).replace(/var\((--[a-z-]+)\)/g, (_, v) => css.getPropertyValue(v).trim());
-}
 function save(blob, name) {
   const a = el('a', { href: URL.createObjectURL(blob), download: name });
   a.click();
@@ -438,20 +418,7 @@ document.querySelectorAll('[data-dl]').forEach(b => b.onclick = () => {
     normalized_error: r.norm_error, best_on: r.champions, s_per_1k: timeOf[r.entry], pareto: current.front.has(r.entry) }));
   if (kind === 'csv') save(new Blob([[Object.keys(rows[0]).join(','), ...rows.map(r => Object.values(r).join(','))].join('\n')], { type: 'text/csv' }), base + '.csv');
   if (kind === 'json') save(new Blob([JSON.stringify({ version: LATEST.version, date: LATEST.date, filter: current.label, rows }, null, 2)], { type: 'application/json' }), base + '.json');
-  if (kind === 'svg') save(new Blob([resolvedSVG()], { type: 'image/svg+xml' }), base + '-pareto.svg');
-  if (kind === 'png') {
-    const img = new Image();
-    img.onload = () => {
-      const c = el('canvas', { width: img.width * 2, height: img.height * 2 });
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      c.toBlob(blob => save(blob, base + '-pareto.png'));
-    };
-    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(resolvedSVG());
-  }
 });
-document.getElementById('facts').innerHTML = [
-  ['datasets', D.meta.datasets], ['models', D.meta.models], ['entries', D.meta.entries.length], ['runs', fmt(D.meta.runs)]
-].map(([k, v]) => `<span>${k} <b>${v}</b></span>`).join('');
 
 
 const dsInfo = {};
@@ -551,14 +518,13 @@ function drawBoard(board, front) {
   t.appendChild(tb);
 }
 
-const MOD_NAMES = { text: 'text', image: 'image', 'image-text': 'image + text' };
 function renderBoard() {
   const filterKey = keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS);
   const board = D.boards[filterKey + '|' + encKey()];
   const names = Object.keys(dsInfo).filter(inFilter);
   const count = (field, key) => names.filter(d => dsInfo[d][field] === key).length;
   const parts = [...TIERS.map(([k]) => [count('tier', k), k]), ...TASKS.map(([k]) => [count('task', k), k]),
-    ...MODS.map(([k]) => [count('modality', k), MOD_NAMES[k]])].filter(([n]) => n);
+    ...MODS.map(([k]) => [count('modality', k), k])].filter(([n]) => n);
   document.getElementById('boardNote').textContent = `${names.length} datasets: ${parts.map(([n, k]) => `${n} ${k}`).join(', ')}.` + (names.length < 10 ? ' Few datasets, so wide intervals.' : '');
   const front = paretoFront(board);
   current = { board, front, label: [...[sel.tier, sel.task, sel.modality].map((v, i) => keyOf(v, [TIERS, TASKS, MODS][i])), encKey()].join('_') };

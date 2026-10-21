@@ -18,7 +18,7 @@ def runs():
 def test_the_space_leaderboards_follow_the_results(runs):
     shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "leaderboards.csv"))
     boards = leaderboards(runs, bootstraps=2)
-    assert len(boards.groupby(["tier", "task", "modality", "encodings"])) == 3 * 3 * 7 * 3
+    assert len(boards.groupby(["tier", "task", "modality", "encodings"])) == 3 * 3 * 3 * 3
     for column in ["tier", "task", "modality", "encodings", ENTRY, ResultKey.MODEL, "encoding", "datasets"]:
         assert (shown[column] == boards[column]).all()
     assert np.allclose(shown["elo"], boards["elo"], atol=1e-3)
@@ -27,7 +27,7 @@ def test_the_space_leaderboards_follow_the_results(runs):
 def test_the_space_encoding_boards_follow_the_results(runs):
     shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "encodings.csv"))
     boards = encoding_leaderboards(runs, bootstraps=2)
-    assert len(boards.groupby(["tier", "task", "modality"])) == 3 * 3 * 7
+    assert len(boards.groupby(["tier", "task", "modality"])) == 3 * 3 * 3
     for column in ["tier", "task", "modality", "encoding", "datasets", "models"]:
         assert (shown[column] == boards[column]).all()
     assert np.allclose(shown["elo"], boards["elo"], atol=1e-3)

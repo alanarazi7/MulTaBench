@@ -14,7 +14,8 @@ from multabench.result_keys import ResultKey, RunStatus
 SPACE_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "space", "data")
 TIERS = [t.value for t in Tier]
 TASKS = ["classification", "regression"]
-MODALITIES = [m.value for m in Modality]
+# The board knows two modalities: a dataset with images counts as image, whether or not it also has text.
+MODALITIES = [Modality.TEXT.value, Modality.IMAGE.value]
 ENCODING, ENTRY = "encoding", "entry"
 # How a model reads text and images: frozen or fine-tuned (TAR) encoders, or end-to-end, reading raw text itself.
 ENCODINGS = {"frozen": "Frozen", "tar": "TAR"}
@@ -48,11 +49,16 @@ def entries(frozen: pd.DataFrame, tar: pd.DataFrame) -> pd.DataFrame:
     return runs
 
 
+def board_modality(dataset: str) -> str:
+    """The dataset's modality on the board: image if it has images, else text."""
+    return (Modality.IMAGE if dataset_modality(MulTaBenchDatasetID[dataset]).has_images else Modality.TEXT).value
+
+
 def _filters(runs: pd.DataFrame):
     """Each combination of tiers, tasks and modalities: its keys and the runs on its datasets."""
     datasets = runs[ResultKey.DATASET]
     tier, task = datasets.map(dataset_tier), datasets.map(dataset_task)
-    modality = datasets.map(lambda d: dataset_modality(MulTaBenchDatasetID[d]).value)
+    modality = datasets.map(board_modality)
     for tiers, tasks, modalities in itertools.product(subsets(TIERS), subsets(TASKS), subsets(MODALITIES)):
         keep = tier.isin(tiers) & task.isin(tasks) & modality.isin(modalities)
         keys = {"tier": _subset_key(tiers, TIERS), "task": _subset_key(tasks, TASKS),
@@ -116,8 +122,7 @@ def per_dataset(runs: pd.DataFrame) -> pd.DataFrame:
         ResultKey.METRIC: (ResultKey.METRIC, "first"), ResultKey.TEST_ERROR: (ResultKey.TEST_ERROR, "mean"),
         "test_error_std": (ResultKey.TEST_ERROR, "std"), ResultKey.TEST_SCORE: (ResultKey.TEST_SCORE, "mean"),
         "folds": (ResultKey.FOLD, "nunique"), ResultKey.N_TRAIN: (ResultKey.N_TRAIN, "max")}).reset_index()
-    modality = df[ResultKey.DATASET].map(lambda d: dataset_modality(MulTaBenchDatasetID[d]).value)
-    df.insert(1, "modality", modality)
+    df.insert(1, "modality", df[ResultKey.DATASET].map(board_modality))
     df.insert(1, "task", df[ResultKey.DATASET].map(dataset_task))
     df.insert(1, "tier", df[ResultKey.DATASET].map(dataset_tier))
     return _with_model_and_encoding(df, runs, at=4)
