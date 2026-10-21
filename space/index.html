@@ -104,8 +104,8 @@ b.enc { color: var(--c); }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
-.links a { color: var(--accent); white-space: nowrap; text-decoration: none; font-weight: 500; }
-.links a:hover { text-decoration: underline; }
+.links a, #encodingText a, .encnote a { color: var(--accent); white-space: nowrap; text-decoration: none; font-weight: 500; }
+.links a:hover, #encodingText a:hover, .encnote a:hover { text-decoration: underline; }
 .links .ico { display: inline-block; width: 1.05em; height: 1.05em; margin-right: 5px; vertical-align: -0.15em; line-height: 1; }
 code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
@@ -162,7 +162,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
     <div class="encrow">
       <div class="group tabs" id="encodingTabs" role="group" aria-label="Encoders"><span class="label">Encoders</span></div>
-      <p class="encnote"><b class="enc frozen">Frozen</b> embeds text with e5-small and images with DINOv3-small, and projects each column to 30 dimensions with PCA. <b class="enc tar">TAR</b>, target-aware representations, first fine-tunes the encoder on the training labels, then projects the same way.</p>
+      <p class="encnote">We embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. <b class="enc frozen">Frozen</b> uses the encoders as they are; <b class="enc tar">TAR</b>, target-aware representations, first fine-tunes them on the training labels.</p>
     </div>
   </div>
   </div>
@@ -185,7 +185,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
-    <p id="encodingText"><b class="enc frozen">Frozen</b> embeds text with e5-small and images with DINOv3-small, and projects each column to 30 dimensions with PCA. <b class="enc tar">TAR</b>, target-aware representations, first fine-tunes the encoder on the training labels, then projects the same way.</p>
+    <p id="encodingText">We embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. <b class="enc frozen">Frozen</b> uses the encoders as they are; <b class="enc tar">TAR</b>, target-aware representations, first fine-tunes them on the training labels.</p>
     <p id="encodingText2">Their Elo pits the two against each other on every model and dataset, leaving out E2E models.</p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
