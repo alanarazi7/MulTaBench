@@ -342,7 +342,7 @@ let timeOf = {};
 // TAR's fine-tuning is part of training, so it always counts; encoding the rows is optional, as for frozen encoders.
 const computeTime = () => { timeOf = Object.fromEntries(D.cost.map(r => [r.entry, r.train_s_per_1k + r.finetune_s_per_1k + r.inference_s_per_1k + encodeOf(r)])); };
 computeTime();
-let showNames = store.get('pareto_names') !== '0';
+let showNames = store.get('pareto_names') !== '0', withEmojis = store.get('pareto_emojis') !== '0';
 function drawEncTabs() {
   const box = document.getElementById('encTabs');
   const b = el('button', { type: 'button', title: "Estimate, from the cached encoders' own time", onclick: () => {
@@ -353,7 +353,11 @@ function drawEncTabs() {
     showNames = !showNames; store.set('pareto_names', showNames ? '1' : '0'); drawEncTabs(); render();
   } }, 'Show names');
   n.setAttribute('aria-pressed', showNames);
-  box.replaceChildren(b, n);
+  const m = el('button', { type: 'button', title: '❄️ for Frozen and 🎯 for TAR, in place of the words', onclick: () => {
+    withEmojis = !withEmojis; store.set('pareto_emojis', withEmojis ? '1' : '0'); drawEncTabs(); render();
+  } }, 'With emojis');
+  m.setAttribute('aria-pressed', withEmojis);
+  box.replaceChildren(b, n, m);
 }
 drawEncTabs();
 function paretoFront(board) {
@@ -394,8 +398,9 @@ function drawPareto(board, front) {
   s += `<path d="${path}" fill="none" stroke="var(--warn)" stroke-width="1.6"/>`;
   // Front labels first, then the others wherever they fit; a label that fits nowhere is left to the tooltip.
   const boxes = [], hit = (b) => boxes.some(o => b.x0 < o.x1 && o.x0 < b.x1 && b.y0 < o.y1 && o.y0 < b.y1);
-  // With both encodings on the board, the name carries the encoding's mark; with one, the model's name is enough.
-  const name = r => encSel.length > 1 && ENC_MARK[r.encoding] ? `${r.model} ${ENC_MARK[r.encoding]}` : r.model;
+  // With both encodings on the board, a name carries its encoding, as a mark or a word; with one, the model is enough.
+  const name = r => encSel.length < 2 || !ENC_MARK[r.encoding] ? r.model
+    : withEmojis ? `${r.model} ${ENC_MARK[r.encoding]}` : r.entry;
   const place = (r, onFront) => {
     const px = x(timeOf[r.entry]), py = y(r.elo), w = name(r).length * (onFront ? 7 : 6.4), h = 12;
     const spots = onFront ? [[px - 10 - w, py - 9 - h]] : [[px + 8, py - 4], [px - 8 - w, py - 4], [px - w / 2, py - 18], [px - w / 2, py + 8]];
@@ -413,13 +418,12 @@ function drawPareto(board, front) {
   fr.forEach(r => {
     s += `<rect x="${x(timeOf[r.entry]) - 5.5}" y="${y(r.elo) - 5.5}" width="11" height="11" fill="${encColor(r.encoding)}" stroke="var(--warn)" stroke-width="2">${tip(r)}</rect>`;
   });
-  if (showNames) {
-    fr.forEach(r => { s += place(r, true); });
-    [...rows].filter(r => !front.has(r.entry)).sort((a, b) => b.elo - a.elo).forEach(r => { s += place(r, false); });
-  }
+  // The front keeps its names; Show names adds the others.
+  fr.forEach(r => { s += place(r, true); });
+  if (showNames) [...rows].filter(r => !front.has(r.entry)).sort((a, b) => b.elo - a.elo).forEach(r => { s += place(r, false); });
   let lx = left + 12;
   [...new Set(rows.map(r => r.encoding))].forEach(e => {
-    const label = `${ENC_MARK[e] && showNames && encSel.length > 1 ? ENC_MARK[e] + ' ' : ''}${ENC_LABEL[e]}`;
+    const label = `${ENC_MARK[e] && withEmojis && encSel.length > 1 ? ENC_MARK[e] + ' ' : ''}${ENC_LABEL[e]}`;
     s += `<rect x="${lx}" y="${top + 6}" width="9" height="9" fill="${encColor(e)}"/><text x="${lx + 15}" y="${top + 15}">${label}</text>`;
     lx += 30 + label.length * 7;
   });
