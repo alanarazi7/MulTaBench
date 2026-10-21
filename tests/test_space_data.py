@@ -37,8 +37,8 @@ def test_the_space_cost_follows_the_results(runs):
 
 def test_raw_text_models_pay_no_text_encoding(runs):
     encode = cost(runs).set_index(ResultKey.MODEL)
-    assert (encode.loc[["ConTextTab", "TabSTAR", "TabSTAR-v1.1"], "text_encode_s_per_1k"] == 0).all()
-    assert (encode.drop(["ConTextTab", "TabSTAR", "TabSTAR-v1.1"])["text_encode_s_per_1k"] > 0).all()
+    assert (encode.loc[["ConTextTab", "TabSTAR-v1.1"], "text_encode_s_per_1k"] == 0).all()
+    assert (encode.drop(["ConTextTab", "TabSTAR-v1.1"])["text_encode_s_per_1k"] > 0).all()
     assert (encode["image_encode_s_per_1k"] > 0).all()
 
 
