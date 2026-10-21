@@ -96,7 +96,7 @@ b.enc { color: var(--c); }
 .tabpanel { display: grid; gap: 40px; }
 .tabpanel[hidden] { display: none; }
 .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; }
-.filters[hidden] { display: none; }
+.filters[hidden], .filters .group[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .encrow { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
 .encnote { flex: 1 1 360px; max-width: 92ch; font-size: 13px; line-height: 1.45; color: var(--muted); }
@@ -183,8 +183,6 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
-    <h2>Frozen vs TAR</h2>
-    <p class="muted" id="encodingNote"></p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
   </div>
@@ -323,6 +321,7 @@ function showTab() {
   TABS.forEach(t => { document.getElementById('tab-' + t).hidden = t !== k; });
   document.querySelectorAll('#pageTabs a').forEach(a => a.setAttribute('aria-selected', a.dataset.tab === k));
   document.querySelector('.filters').hidden = k === 'paper';
+  document.getElementById('encodingTabs').hidden = k === 'encodings';
 }
 window.addEventListener('hashchange', () => { showTab(); document.querySelector('.sticky').scrollIntoView(); });
 showTab();
@@ -565,7 +564,6 @@ function renderCost() {
 
 function renderEncodings(filterKey) {
   const board = D.encodingBoards[filterKey];
-  document.getElementById('encodingNote').textContent = `The encodings ranked against each other, under the dataset filters above: each battle is one model's TAR run against its Frozen run on one dataset fold, won by the lower test error. E2E models are left out. ${board[0].models} models on ${board[0].datasets} datasets, with Frozen fixed at 1000; the interval resamples model-dataset pairs. More encodings will join.`;
   const t = document.getElementById('encodingTable');
   t.innerHTML = `<thead><tr><th></th><th>Encoders</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num" title="Share of the battles these encoders win">Win rate</th></tr></thead>`;
   const tb = el('tbody');
