@@ -84,7 +84,9 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
 .flag { color: var(--warn); }
 .chip { display: inline-block; font: 600 11.5px/1 var(--mono); letter-spacing: 0.03em; padding: 4px 8px; border-radius: 999px;
   color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface)); }
-.chip.frozen { --c: var(--frozen); } .chip.tar { --c: var(--tar); } .chip.end-to-end { --c: var(--e2e); }
+.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .end-to-end { --c: var(--e2e); }
+b.enc { color: var(--c); }
+.tabs button.enc[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--surface); }
 
 .sticky { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
 .pagetabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: none; }
@@ -135,7 +137,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       </div>
     </div>
     <div class="version" id="version"></div>
-    <p class="muted" id="intro">Tabular models on 80 datasets whose columns hold free text or images. Each model that reads embeddings is ranked with <b>Frozen</b> encoders and with <b>TAR</b> encoders, fine-tuned on each fold's training rows; <b>E2E</b> models read raw text themselves.</p>
+    <p class="muted" id="intro">MulTaBench is a benchmark for multimodal tabular learning with text and images. It balances tasks across modalities and evaluates pairs of a tabular model and an encoding method, alongside end-to-end (<b class="enc end-to-end">E2E</b>) models that read raw text themselves. The leaderboard's purpose is to drive smarter encoding methods. Two are on it today: <b class="enc frozen">Frozen</b>, which embeds text with e5-small and images with DINOv3-small and projects each column to 30 dimensions with PCA, and <b class="enc tar">TAR</b>, target-aware representations, which naively fine-tunes the encoder on the training labels as a preprocessing step before the same projection.</p>
     <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="https://github.com/alanarazi7/MulTaBench/blob/master/docs/protocol.md">Protocol</a> · <a href="data/leaderboards.csv">CSV</a></p>
     <div class="facts" id="facts"></div>
   </header>
@@ -284,6 +286,7 @@ function start(D) {
 const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
 const ENC_LABEL = { frozen: 'Frozen', tar: 'TAR', 'end-to-end': 'E2E' };
 const ENC_TITLE = { frozen: 'Frozen encoders', tar: 'Encoders fine-tuned on each fold', 'end-to-end': 'Reads raw text itself' };
+const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
 const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
@@ -419,10 +422,10 @@ function drawPareto(board, front) {
   rows.forEach(r => boxes.push({ x0: x(timeOf[r.entry]) - 6, x1: x(timeOf[r.entry]) + 6, y0: y(r.elo) - 6, y1: y(r.elo) + 6 }));
   const tip = r => `<title>${r.entry}: Elo ${fmt(r.elo)}, ${fmt(timeOf[r.entry], 2)} s per 1K rows</title>`;
   rows.filter(r => !front.has(r.entry)).forEach(r => {
-    s += `<rect x="${x(timeOf[r.entry]) - 4}" y="${y(r.elo) - 4}" width="8" height="8" fill="var(--muted)" opacity=".55">${tip(r)}</rect>`;
+    s += `<rect x="${x(timeOf[r.entry]) - 4}" y="${y(r.elo) - 4}" width="8" height="8" fill="${encColor(r.encoding)}" opacity=".7">${tip(r)}</rect>`;
   });
   fr.forEach(r => {
-    s += `<rect x="${x(timeOf[r.entry]) - 5.5}" y="${y(r.elo) - 5.5}" width="11" height="11" fill="var(--warn)">${tip(r)}</rect>`;
+    s += `<rect x="${x(timeOf[r.entry]) - 5.5}" y="${y(r.elo) - 5.5}" width="11" height="11" fill="${encColor(r.encoding)}" stroke="var(--warn)" stroke-width="2">${tip(r)}</rect>`;
   });
   fr.forEach(r => { s += place(r, true); });
   [...rows].filter(r => !front.has(r.entry)).sort((a, b) => b.elo - a.elo).forEach(r => { s += place(r, false); });
@@ -485,7 +488,7 @@ function encodingToggles() {
   ENCS.forEach(([key, label]) => {
     const n = D.meta.entries.filter(m => D.encodingOf[m] === key).length;
     const on = encSel.includes(key);
-    const b = el('button', { type: 'button', title: on && encSel.length === 1 ? 'Keep at least one selected' : '' }, `${label}<span class="n">${n}</span>`);
+    const b = el('button', { type: 'button', className: `enc ${key}`, title: on && encSel.length === 1 ? 'Keep at least one selected' : '' }, `${label}<span class="n">${n}</span>`);
     b.setAttribute('aria-pressed', on);
     b.onclick = () => {
       if (on && encSel.length === 1) return;
@@ -535,7 +538,7 @@ function drawElo(board) {
   s += `<line x1="${left}" x2="${W - right}" y1="${y(1000)}" y2="${y(1000)}" stroke="var(--muted)" stroke-dasharray="3 3"/>`;
   let lx = left;
   ORDER.filter(e => board.some(r => r.encoding === e)).forEach(e => {
-    s += `<circle cx="${lx + 6}" cy="16" r="5" fill="var(--${e === 'end-to-end' ? 'e2e' : e})"/><text x="${lx + 16}" y="20">${ENC_LABEL[e]}</text>`;
+    s += `<circle cx="${lx + 6}" cy="16" r="5" fill="${encColor(e)}"/><text x="${lx + 16}" y="20">${ENC_LABEL[e]}</text>`;
     lx += 26 + ENC_LABEL[e].length * 7 + 18;
   });
   groups.forEach((g, i) => {
@@ -543,7 +546,7 @@ function drawElo(board) {
     const xs = g.rows.map((r, j) => cx + (j - (g.rows.length - 1) / 2) * 2 * dx);
     if (g.rows.length > 1) s += `<line x1="${xs[0]}" x2="${xs[1]}" y1="${y(g.rows[0].elo)}" y2="${y(g.rows[1].elo)}" stroke="var(--muted)" stroke-opacity=".5"/>`;
     g.rows.forEach((r, j) => {
-      const c = `var(--${r.encoding === 'end-to-end' ? 'e2e' : r.encoding})`;
+      const c = encColor(r.encoding);
       const tip = `<title>${r.entry}: Elo ${fmt(r.elo)} (${fmt(r.lo)}–${fmt(r.hi)})</title>`;
       if (r.hi > r.lo) s += `<line x1="${xs[j]}" x2="${xs[j]}" y1="${y(r.hi)}" y2="${y(r.lo)}" stroke="${c}" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/>`;
       s += `<circle cx="${xs[j]}" cy="${y(r.elo)}" r="4.5" fill="${c}">${tip}</circle>`;
