@@ -42,7 +42,6 @@ BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabPFN-v2 (Frozen),TabP
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.082887,0.00312,0.917113,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.090704,0.003579,0.909296,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.082222,0.002973,0.917778,6,10000.0
-BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabSTAR,TabSTAR,end-to-end,roc_auc,0.09581,0.00452,0.90419,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.094861,0.003855,0.905139,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.10787,0.003478,0.89213,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,XGBoost (TAR),XGBoost,tar,roc_auc,0.091642,0.004934,0.908358,6,10000.0
@@ -91,7 +90,6 @@ BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabPFN-v2 (Frozen),TabPFN-v2,fr
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.249226,0.022241,0.750774,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.226522,0.006538,0.773478,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.239065,0.021376,0.760935,6,6000.0
-BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabSTAR,TabSTAR,end-to-end,roc_auc,0.259294,0.009948,0.740706,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.267191,0.014131,0.732809,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.29582,0.004643,0.70418,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,XGBoost (TAR),XGBoost,tar,roc_auc,0.307842,0.026349,0.692158,6,6000.0
@@ -140,7 +138,6 @@ BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabPFN-v2 (Frozen),TabPFN-v
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.221589,0.004451,0.778411,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.212729,0.014339,0.787271,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.212204,0.010658,0.787796,6,3468.0
-BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabSTAR,TabSTAR,end-to-end,roc_auc,0.275464,0.013729,0.724536,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.270733,0.006956,0.729267,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.276838,0.01779,0.723162,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,XGBoost (TAR),XGBoost,tar,roc_auc,0.284468,0.017411,0.715532,6,3468.0
@@ -189,7 +186,6 @@ BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabPFN-v2 (Frozen),TabP
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.068566,0.009565,0.931434,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.075556,0.008545,0.924444,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.067909,0.010268,0.932091,6,291.0
-BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabSTAR,TabSTAR,end-to-end,roc_auc,0.11225,0.026323,0.88775,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.107351,0.023105,0.892649,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.108274,0.016402,0.891726,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,XGBoost (TAR),XGBoost,tar,roc_auc,0.095608,0.031263,0.904392,6,291.0
@@ -238,7 +234,6 @@ BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabPFN-v2 (Frozen),Tab
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.330759,0.015579,0.669241,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.322047,0.018616,0.677953,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.325161,0.019014,0.674839,6,1003.0
-BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabSTAR,TabSTAR,end-to-end,roc_auc,0.348806,0.018074,0.651194,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.403504,0.066727,0.596496,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.377935,0.032686,0.622065,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,XGBoost (TAR),XGBoost,tar,roc_auc,0.365412,0.018592,0.634588,6,1003.0
@@ -287,7 +282,6 @@ BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabPFN-v2 (Frozen),TabPF
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.006753,0.000475,0.993247,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.006021,0.000516,0.993979,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.006941,0.000407,0.993059,6,10000.0
-BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabSTAR,TabSTAR,end-to-end,roc_auc,0.007212,0.001071,0.992788,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.007053,0.000722,0.992947,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.007969,0.000481,0.992031,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,XGBoost (TAR),XGBoost,tar,roc_auc,0.008919,0.000719,0.991081,6,10000.0
@@ -336,7 +330,6 @@ BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.079261,0.011722,0.920739,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.057164,0.007252,0.942836,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.070676,0.008068,0.929324,6,8484.0
-BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabSTAR,TabSTAR,end-to-end,roc_auc,0.065615,0.010675,0.934385,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.078359,0.0119,0.921641,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.102043,0.00992,0.897957,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,XGBoost (TAR),XGBoost,tar,roc_auc,0.115373,0.018576,0.884627,6,8484.0
@@ -385,7 +378,6 @@ BIN_TEXT_IMDB_GENRE,extended,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,fr
 BIN_TEXT_IMDB_GENRE,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.148754,0.013766,0.851246,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.139266,0.022654,0.860734,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.146275,0.014763,0.853725,6,534.0
-BIN_TEXT_IMDB_GENRE,extended,classification,text,TabSTAR,TabSTAR,end-to-end,roc_auc,0.17565,0.018574,0.82435,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.192852,0.031768,0.807148,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.221148,0.024268,0.778852,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,XGBoost (TAR),XGBoost,tar,roc_auc,0.225003,0.025475,0.774997,6,534.0
@@ -434,7 +426,6 @@ BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,f
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.059611,0.004914,0.940389,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.150321,0.007393,0.849679,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.058754,0.0049,0.941246,6,10000.0
-BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabSTAR,TabSTAR,end-to-end,roc_auc,0.053108,0.005066,0.946892,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.055157,0.007064,0.944843,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.196231,0.007055,0.803769,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,XGBoost (TAR),XGBoost,tar,roc_auc,0.06954,0.006427,0.93046,6,10000.0
@@ -483,7 +474,6 @@ BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabPFN-v2 (Frozen),TabPFN-
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.257912,0.009828,0.742088,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.251661,0.004795,0.748339,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.249988,0.008647,0.750012,6,10000.0
-BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabSTAR,TabSTAR,end-to-end,roc_auc,0.23916,0.00962,0.76084,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.249406,0.010243,0.750594,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.292863,0.008242,0.707137,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,XGBoost (TAR),XGBoost,tar,roc_auc,0.276584,0.016016,0.723416,6,10000.0
@@ -532,7 +522,6 @@ BIN_TEXT_OSHA_INJURY,extended,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,f
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,roc_auc,0.417251,0.011878,0.582749,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,roc_auc,0.400463,0.014956,0.599537,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,roc_auc,0.407542,0.012926,0.592458,6,3232.0
-BIN_TEXT_OSHA_INJURY,extended,classification,text,TabSTAR,TabSTAR,end-to-end,roc_auc,0.434554,0.020522,0.565446,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,roc_auc,0.426966,0.017531,0.573034,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,roc_auc,0.450749,0.01585,0.549251,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,XGBoost (TAR),XGBoost,tar,roc_auc,0.455633,0.014443,0.544367,6,3232.0
@@ -581,7 +570,6 @@ MUL_IMAGE_CBIS_DDSM,core,classification,image,TabPFN-v2 (Frozen),TabPFN-v2,froze
 MUL_IMAGE_CBIS_DDSM,core,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.736828,0.032333,-0.736828,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.771844,0.020552,-0.771844,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.726291,0.034067,-0.726291,6,1131.0
-MUL_IMAGE_CBIS_DDSM,core,classification,image,TabSTAR,TabSTAR,end-to-end,log_loss,0.883632,0.051856,-0.883632,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.907837,0.128205,-0.907837,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,0.937132,0.035563,-0.937132,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,0.826359,0.040408,-0.826359,6,1131.0
@@ -630,7 +618,6 @@ MUL_IMAGE_CHEXPERT,core,classification,image,TabPFN-v2 (Frozen),TabPFN-v2,frozen
 MUL_IMAGE_CHEXPERT,core,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.656116,0.006827,-0.656116,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.701811,0.006573,-0.701811,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.656197,0.006204,-0.656197,6,10000.0
-MUL_IMAGE_CHEXPERT,core,classification,image,TabSTAR,TabSTAR,end-to-end,log_loss,0.718061,0.007928,-0.718061,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.713469,0.01391,-0.713469,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,0.812374,0.005671,-0.812374,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,0.725467,0.006891,-0.725467,6,10000.0
@@ -679,7 +666,6 @@ MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image-text,TabPFN-v2 (Frozen),TabP
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.416545,0.101057,-1.416545,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.256507,0.053601,-1.256507,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.454104,0.131706,-1.454104,6,638.0
-MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image-text,TabSTAR,TabSTAR,end-to-end,log_loss,1.469905,0.041634,-1.469905,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.688332,0.045403,-1.688332,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image-text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.755922,0.055089,-1.755922,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image-text,XGBoost (TAR),XGBoost,tar,log_loss,1.803956,0.065399,-1.803956,6,638.0
@@ -728,7 +714,6 @@ MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image-text,TabPFN-v2 (Frozen),TabP
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.486216,0.053285,-1.486216,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.424964,0.045662,-1.424964,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.49613,0.065539,-1.49613,6,400.0
-MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image-text,TabSTAR,TabSTAR,end-to-end,log_loss,1.528561,0.013559,-1.528561,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.535493,0.014678,-1.535493,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image-text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.542488,0.030159,-1.542488,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image-text,XGBoost (TAR),XGBoost,tar,log_loss,1.568485,0.066886,-1.568485,6,400.0
@@ -777,7 +762,6 @@ MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabPFN-v2 (Frozen),TabPFN-v2,f
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.313687,0.008294,-0.313687,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.300008,0.008398,-0.300008,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.304966,0.008556,-0.304966,6,8300.0
-MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabSTAR,TabSTAR,end-to-end,log_loss,0.332919,0.011522,-0.332919,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.325593,0.006462,-0.325593,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,0.347625,0.009456,-0.347625,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,0.33418,0.010463,-0.33418,6,8300.0
@@ -826,7 +810,6 @@ MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabPFN-v2 (Frozen),TabPF
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.440409,0.047177,-0.440409,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.443342,0.010471,-0.443342,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.435909,0.050202,-0.435909,6,4980.0
-MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabSTAR,TabSTAR,end-to-end,log_loss,0.514422,0.014465,-0.514422,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.502945,0.011741,-0.502945,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,0.575367,0.013554,-0.575367,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,0.49096,0.034758,-0.49096,6,4980.0
@@ -869,7 +852,6 @@ MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image-text,TabPFN-3.5 (Froze
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image-text,TabPFN-3.5 (TAR),TabPFN-3.5,tar,log_loss,1.184455,0.10101,-1.184455,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image-text,TabPFN-3.5-Fast (Frozen),TabPFN-3.5-Fast,frozen,log_loss,1.043712,0.017041,-1.043712,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image-text,TabPFN-3.5-Fast (TAR),TabPFN-3.5-Fast,tar,log_loss,1.203687,0.10429,-1.203687,6,2854.0
-MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image-text,TabSTAR,TabSTAR,end-to-end,log_loss,1.407053,0.022108,-1.407053,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.303303,0.014706,-1.303303,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image-text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.358017,0.034431,-1.358017,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image-text,XGBoost (TAR),XGBoost,tar,log_loss,1.517068,0.115365,-1.517068,6,2854.0
@@ -918,7 +900,6 @@ MUL_IMAGE_HUBMAP_HPA,core,classification,image-text,TabPFN-v2 (Frozen),TabPFN-v2
 MUL_IMAGE_HUBMAP_HPA,core,classification,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.692407,0.030039,-0.692407,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.747937,0.008921,-0.747937,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.686571,0.040649,-0.686571,6,8388.0
-MUL_IMAGE_HUBMAP_HPA,core,classification,image-text,TabSTAR,TabSTAR,end-to-end,log_loss,0.894426,0.027484,-0.894426,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.898639,0.036925,-0.898639,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image-text,XGBoost (Frozen),XGBoost,frozen,log_loss,0.983587,0.016273,-0.983587,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image-text,XGBoost (TAR),XGBoost,tar,log_loss,1.020116,0.070539,-1.020116,6,8388.0
@@ -967,7 +948,6 @@ MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabPFN-v2 (Frozen),TabPFN-v
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.308644,0.024131,-0.308644,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.328418,0.004495,-0.328418,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.294661,0.024501,-0.294661,6,6880.0
-MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabSTAR,TabSTAR,end-to-end,log_loss,0.398276,0.00615,-0.398276,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.40438,0.015213,-0.40438,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,0.412079,0.006172,-0.412079,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,0.373591,0.033117,-0.373591,6,6880.0
@@ -1016,7 +996,6 @@ MUL_IMAGE_MINECRAFT,extended,classification,image,TabPFN-v2 (Frozen),TabPFN-v2,f
 MUL_IMAGE_MINECRAFT,extended,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.298972,0.023941,-0.298972,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.26466,0.021451,-0.26466,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.291198,0.025206,-0.291198,6,4060.0
-MUL_IMAGE_MINECRAFT,extended,classification,image,TabSTAR,TabSTAR,end-to-end,log_loss,0.388747,0.028284,-0.388747,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.403506,0.033617,-0.403506,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,0.401589,0.018756,-0.401589,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,0.3692,0.027081,-0.3692,6,4060.0
@@ -1065,7 +1044,6 @@ MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabPFN-v2 (Frozen),TabPF
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.523456,0.07139,-0.523456,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.513231,0.020658,-0.513231,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.518167,0.081376,-0.518167,6,1094.0
-MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabSTAR,TabSTAR,end-to-end,log_loss,0.702368,0.059809,-0.702368,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.767346,0.044975,-0.767346,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,0.736726,0.07718,-0.736726,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,0.682755,0.075862,-0.682755,6,1094.0
@@ -1114,7 +1092,6 @@ MUL_IMAGE_PETFINDER,core,classification,image-text,TabPFN-v2 (Frozen),TabPFN-v2,
 MUL_IMAGE_PETFINDER,core,classification,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.36176,0.012431,-1.36176,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.341594,0.002987,-1.341594,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.33224,0.014795,-1.33224,6,9768.0
-MUL_IMAGE_PETFINDER,core,classification,image-text,TabSTAR,TabSTAR,end-to-end,log_loss,1.351814,0.014885,-1.351814,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.36014,0.014863,-1.36014,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image-text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.510679,0.008845,-1.510679,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image-text,XGBoost (TAR),XGBoost,tar,log_loss,1.458704,0.02091,-1.458704,6,9768.0
@@ -1163,7 +1140,6 @@ MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image-text,TabPFN-v2 (Frozen),T
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.439383,0.060987,-1.439383,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.382621,0.039721,-1.382621,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.446679,0.060492,-1.446679,6,718.0
-MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image-text,TabSTAR,TabSTAR,end-to-end,log_loss,1.555319,0.083626,-1.555319,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.514404,0.050535,-1.514404,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image-text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.781914,0.028859,-1.781914,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image-text,XGBoost (TAR),XGBoost,tar,log_loss,1.822262,0.066685,-1.822262,6,718.0
@@ -1212,7 +1188,6 @@ MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabPFN-v2 (Frozen),TabPFN-v
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.673436,0.014916,-0.673436,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.771691,0.011938,-0.771691,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.801357,0.045414,-0.801357,6,3214.0
-MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabSTAR,TabSTAR,end-to-end,log_loss,1.117813,0.013355,-1.117813,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.063665,0.01398,-1.063665,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,1.050102,0.019826,-1.050102,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,1.088645,0.052169,-1.088645,6,3214.0
@@ -1261,7 +1236,6 @@ MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabPFN-v2 (Frozen),TabPF
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.363545,0.0096,-0.363545,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.347514,0.011067,-0.347514,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.339352,0.015014,-0.339352,6,10000.0
-MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabSTAR,TabSTAR,end-to-end,log_loss,0.459717,0.014863,-0.459717,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.450505,0.009616,-0.450505,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,0.505179,0.025077,-0.505179,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,0.426135,0.00794,-0.426135,6,10000.0
@@ -1310,7 +1284,6 @@ MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabPFN-v2 (Frozen),T
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.13171,0.009618,-0.13171,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.094299,0.009743,-0.094299,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.094602,0.011119,-0.094602,6,10000.0
-MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,0.122931,0.010342,-0.122931,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.125508,0.016305,-0.125508,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,0.11613,0.006932,-0.11613,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,0.115506,0.010447,-0.115506,6,10000.0
@@ -1359,7 +1332,6 @@ MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabPFN-v2 (Frozen),TabPFN-
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.92822,0.00933,-0.92822,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.92234,0.007006,-0.92234,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.926109,0.012594,-0.926109,6,2645.0
-MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,0.919429,0.011282,-0.919429,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.922064,0.014868,-0.922064,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,0.92173,0.018377,-0.92173,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,0.916442,0.014827,-0.916442,6,2645.0
@@ -1408,7 +1380,6 @@ MUL_TEXT_BOX_OFFICE,extended,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,fr
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.939782,0.023146,-0.939782,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.909377,0.01843,-0.909377,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.921003,0.022185,-0.921003,6,4939.0
-MUL_TEXT_BOX_OFFICE,extended,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,0.989188,0.024032,-0.989188,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.986957,0.029293,-0.986957,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.057872,0.022229,-1.057872,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,1.066837,0.018518,-1.066837,6,4939.0
@@ -1457,7 +1428,6 @@ MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabPFN-v2 (Frozen),TabP
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.550094,0.003958,-0.550094,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.527535,0.002195,-0.527535,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.530691,0.004057,-0.530691,6,10000.0
-MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,0.569512,0.006525,-0.569512,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.567625,0.008997,-0.567625,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,0.581759,0.003172,-0.581759,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,0.579174,0.005012,-0.579174,6,10000.0
@@ -1506,7 +1476,6 @@ MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabPFN-v2 (Frozen),TabPF
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.203159,0.010283,-1.203159,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.174458,0.012189,-1.174458,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.169691,0.015367,-1.169691,6,10000.0
-MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,1.207467,0.009095,-1.207467,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.196183,0.017088,-1.196183,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.297979,0.010992,-1.297979,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,1.259871,0.01522,-1.259871,6,10000.0
@@ -1555,7 +1524,6 @@ MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.973178,0.039033,-1.973178,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.944414,0.017224,-1.944414,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.968856,0.034583,-1.968856,6,1098.0
-MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,2.0303,0.035317,-2.0303,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,2.035288,0.037789,-2.035288,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,2.220321,0.035963,-2.220321,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,2.210287,0.028439,-2.210287,6,1098.0
@@ -1602,7 +1570,6 @@ MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabPFN-v2 (Frozen),TabPFN
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.532695,0.012064,-1.532695,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.592883,0.013859,-1.592883,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.688791,0.019497,-1.688791,6,10000.0
-MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,1.5474,0.01538,-1.5474,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.515329,0.009635,-1.515329,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.636268,0.006206,-1.636268,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,1.647335,0.009449,-1.647335,6,10000.0
@@ -1651,7 +1618,6 @@ MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabPFN-v2 (Frozen),TabPFN
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.588188,0.009016,-0.588188,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.60277,0.004593,-0.60277,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.577713,0.00801,-0.577713,6,10000.0
-MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,0.609268,0.012117,-0.609268,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.610662,0.010359,-0.610662,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,0.695955,0.007642,-0.695955,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,0.673229,0.010224,-0.673229,6,10000.0
@@ -1700,7 +1666,6 @@ MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.217473,0.008195,-1.217473,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.201475,0.007207,-1.201475,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.19683,0.007861,-1.19683,6,10000.0
-MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,1.297999,0.016879,-1.297999,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.281091,0.016173,-1.281091,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.319599,0.011702,-1.319599,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,1.313781,0.011197,-1.313781,6,10000.0
@@ -1749,7 +1714,6 @@ MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabPFN-v2 (Frozen),TabPFN-v2
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.364183,0.013911,-0.364183,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.375129,0.011092,-0.375129,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.359005,0.010996,-0.359005,6,3394.0
-MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,0.390277,0.012678,-0.390277,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.395248,0.019898,-0.395248,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,0.413338,0.018397,-0.413338,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,0.392236,0.014392,-0.392236,6,3394.0
@@ -1792,7 +1756,6 @@ MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-3.5 (Frozen),TabPFN-3.5,
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-3.5 (TAR),TabPFN-3.5,tar,log_loss,1.42728,0.023715,-1.42728,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-3.5-Fast (Frozen),TabPFN-3.5-Fast,frozen,log_loss,1.496383,0.020614,-1.496383,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-3.5-Fast (TAR),TabPFN-3.5-Fast,tar,log_loss,1.466982,0.023152,-1.466982,6,10000.0
-MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,2.081342,0.032016,-2.081342,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,2.083005,0.026756,-2.083005,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,2.52181,0.027071,-2.52181,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,2.477003,0.027272,-2.477003,6,10000.0
@@ -1841,7 +1804,6 @@ MUL_TEXT_US_ACCIDENTS,core,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,froz
 MUL_TEXT_US_ACCIDENTS,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.167923,0.006793,-0.167923,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.173604,0.007934,-0.173604,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.1587,0.009022,-0.1587,6,10000.0
-MUL_TEXT_US_ACCIDENTS,core,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,0.171699,0.009491,-0.171699,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.166834,0.011613,-0.166834,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,0.219064,0.007386,-0.219064,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,0.190098,0.008647,-0.190098,6,10000.0
@@ -1884,7 +1846,6 @@ MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-3.5 (Frozen),TabPFN-3.5,fro
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-3.5 (TAR),TabPFN-3.5,tar,log_loss,0.687973,0.011787,-0.687973,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-3.5-Fast (Frozen),TabPFN-3.5-Fast,frozen,log_loss,0.766334,0.015576,-0.766334,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-3.5-Fast (TAR),TabPFN-3.5-Fast,tar,log_loss,0.692458,0.011544,-0.692458,6,10000.0
-MUL_TEXT_WINE_REVIEW,core,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,0.768842,0.014342,-0.768842,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.783438,0.026942,-0.783438,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.090897,0.019382,-1.090897,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,0.899548,0.020124,-0.899548,6,10000.0
@@ -1933,7 +1894,6 @@ MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabPFN-v2 (Frozen),TabPF
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.644909,0.007496,-0.644909,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.656626,0.006446,-0.656626,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.644861,0.008817,-0.644861,6,10000.0
-MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabSTAR,TabSTAR,end-to-end,log_loss,0.660188,0.011107,-0.660188,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.665849,0.007953,-0.665849,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,0.709258,0.005363,-0.709258,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,0.680999,0.008776,-0.680999,6,10000.0
@@ -1982,7 +1942,6 @@ REG_IMAGE_AIRBNB_NYC,extended,regression,image-text,TabPFN-v2 (Frozen),TabPFN-v2
 REG_IMAGE_AIRBNB_NYC,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.398285,0.010412,-0.398285,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.385622,0.009285,-0.385622,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.386432,0.010242,-0.386432,6,10000.0
-REG_IMAGE_AIRBNB_NYC,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.412907,0.010616,-0.412907,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.403994,0.009778,-0.403994,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.434752,0.007751,-0.434752,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.432011,0.008762,-0.432011,6,10000.0
@@ -2031,7 +1990,6 @@ REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabPFN-v2 (Frozen),TabPFN-v2,
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.666237,0.029529,-0.666237,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.655333,0.018432,-0.655333,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.656101,0.035195,-0.656101,6,2326.0
-REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.747049,0.022814,-0.747049,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.749549,0.016252,-0.749549,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.78168,0.019887,-0.78168,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.704272,0.026109,-0.704272,6,2326.0
@@ -2080,7 +2038,6 @@ REG_IMAGE_AMAZON_PACKAGES,core,regression,image-text,TabPFN-v2 (Frozen),TabPFN-v
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,2.952858,0.115454,-2.952858,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,3.097531,0.117095,-3.097531,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,2.925703,0.111402,-2.925703,6,10000.0
-REG_IMAGE_AMAZON_PACKAGES,core,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,3.077445,0.139489,-3.077445,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,3.085467,0.105469,-3.085467,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,3.497709,0.134171,-3.497709,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,3.163868,0.10902,-3.163868,6,10000.0
@@ -2129,7 +2086,6 @@ REG_IMAGE_DVM_CAR,extended,regression,image-text,TabPFN-v2 (Frozen),TabPFN-v2,fr
 REG_IMAGE_DVM_CAR,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,20938.976693,14626.479888,-20938.976693,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,19699.472803,11048.194314,-19699.472803,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,20144.18724,11724.249369,-20144.18724,6,10000.0
-REG_IMAGE_DVM_CAR,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,23926.857933,12681.359176,-23926.857933,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,19921.856443,13884.967816,-19921.856443,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,19380.429593,12600.806316,-19380.429593,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,21053.687825,11029.059949,-21053.687825,6,10000.0
@@ -2178,7 +2134,6 @@ REG_IMAGE_FLIPKART_RATIO,extended,regression,image-text,TabPFN-v2 (Frozen),TabPF
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.116679,0.006749,-0.116679,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.088689,0.001342,-0.088689,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.106076,0.00695,-0.106076,6,10000.0
-REG_IMAGE_FLIPKART_RATIO,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.104882,0.001351,-0.104882,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.102125,0.001726,-0.102125,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.103777,0.001027,-0.103777,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.116605,0.003811,-0.116605,6,10000.0
@@ -2227,7 +2182,6 @@ REG_IMAGE_GOIAS_HOUSES,extended,regression,image-text,TabPFN-v2 (Frozen),TabPFN-
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.181213,0.010322,-0.181213,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.133386,0.002808,-0.133386,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.163448,0.012558,-0.163448,6,6554.0
-REG_IMAGE_GOIAS_HOUSES,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.178385,0.004764,-0.178385,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.176201,0.003765,-0.176201,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.169569,0.002204,-0.169569,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.208972,0.017858,-0.208972,6,6554.0
@@ -2276,7 +2230,6 @@ REG_IMAGE_HNM_FASHION,core,regression,image-text,TabPFN-v2 (Frozen),TabPFN-v2,fr
 REG_IMAGE_HNM_FASHION,core,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,4.460817,0.089174,-4.460817,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,4.382283,0.086805,-4.382283,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,4.411542,0.090563,-4.411542,6,10000.0
-REG_IMAGE_HNM_FASHION,core,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,4.530787,0.09268,-4.530787,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,4.487813,0.085915,-4.487813,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,4.621915,0.091688,-4.621915,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,4.654455,0.067374,-4.654455,6,10000.0
@@ -2325,7 +2278,6 @@ REG_IMAGE_KAMERNET_SIZE,extended,regression,image-text,TabPFN-v2 (Frozen),TabPFN
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.50988,0.01643,-0.50988,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.502447,0.01112,-0.502447,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.504975,0.01478,-0.504975,6,1092.0
-REG_IMAGE_KAMERNET_SIZE,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.524817,0.008877,-0.524817,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.531602,0.017276,-0.531602,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.552177,0.015056,-0.552177,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.559926,0.014662,-0.559926,6,1092.0
@@ -2374,7 +2326,6 @@ REG_IMAGE_KHAADI_CLOTHES,core,regression,image-text,TabPFN-v2 (Frozen),TabPFN-v2
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,2395.248402,618.395348,-2395.248402,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,3669.998918,1933.516769,-3669.998918,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,2652.212211,914.128306,-2652.212211,6,267.0
-REG_IMAGE_KHAADI_CLOTHES,core,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,3171.796692,657.657947,-3171.796692,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,3214.724297,986.474179,-3214.724297,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,3982.623003,958.360828,-3982.623003,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,3295.441976,898.662118,-3295.441976,6,267.0
@@ -2423,7 +2374,6 @@ REG_IMAGE_LAHAINA_AUCTION,extended,regression,image-text,TabPFN-v2 (Frozen),TabP
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,431.164292,49.015553,-431.164292,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,429.138108,43.267322,-429.138108,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,430.43832,41.907339,-430.43832,6,646.0
-REG_IMAGE_LAHAINA_AUCTION,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,448.335123,49.642105,-448.335123,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,479.371311,42.774142,-479.371311,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,509.158341,51.547554,-509.158341,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,520.726152,49.439427,-520.726152,6,646.0
@@ -2472,7 +2422,6 @@ REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image-text,TabPFN-v2 (Frozen),TabPFN
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.324886,0.004348,-0.324886,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.320017,0.003492,-0.320017,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.319433,0.004493,-0.319433,6,8376.0
-REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.335134,0.003074,-0.335134,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.333449,0.002356,-0.333449,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.348182,0.002772,-0.348182,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.344346,0.00467,-0.344346,6,8376.0
@@ -2521,7 +2470,6 @@ REG_IMAGE_MANGO_MASS,core,regression,image,TabPFN-v2 (Frozen),TabPFN-v2,frozen,r
 REG_IMAGE_MANGO_MASS,core,regression,image,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.047528,0.001501,-0.047528,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.055944,0.002524,-0.055944,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.048166,0.000996,-0.048166,6,364.0
-REG_IMAGE_MANGO_MASS,core,regression,image,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.063634,0.002969,-0.063634,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.065922,0.011928,-0.065922,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.068796,0.003703,-0.068796,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.053678,0.003077,-0.053678,6,364.0
@@ -2570,7 +2518,6 @@ REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabPFN-v2 (Frozen),TabPFN-v2,frozen
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.101262,0.001865,-0.101262,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.100397,0.001019,-0.100397,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.099366,0.001751,-0.099366,6,9166.0
-REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.102968,0.00109,-0.102968,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.105189,0.001816,-0.105189,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.107204,0.001239,-0.107204,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.103166,0.002489,-0.103166,6,9166.0
@@ -2619,7 +2566,6 @@ REG_IMAGE_PAINTING_PRICE,core,regression,image-text,TabPFN-v2 (Frozen),TabPFN-v2
 REG_IMAGE_PAINTING_PRICE,core,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,3478.749942,396.39212,-3478.749942,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,3226.423905,439.765816,-3226.423905,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,3255.845166,409.928121,-3255.845166,6,8246.0
-REG_IMAGE_PAINTING_PRICE,core,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,3518.872385,363.826346,-3518.872385,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,3563.66268,412.767262,-3563.66268,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,3697.589993,340.157513,-3697.589993,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,3651.675715,295.997786,-3651.675715,6,8246.0
@@ -2668,7 +2614,6 @@ REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabPFN-v2 (Frozen),TabPFN-v2,f
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.669887,0.006225,-0.669887,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.606364,0.010516,-0.606364,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.669316,0.011864,-0.669316,6,10000.0
-REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.704872,0.010052,-0.704872,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.685816,0.013302,-0.685816,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.730609,0.010242,-0.730609,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.731666,0.013006,-0.731666,6,10000.0
@@ -2717,7 +2662,6 @@ REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image-text,TabPFN-v2 (Frozen),Tab
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.349643,0.022196,-0.349643,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.333213,0.028708,-0.333213,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.334555,0.023444,-0.334555,6,10000.0
-REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.363963,0.028903,-0.363963,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.361505,0.028448,-0.361505,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.384039,0.021252,-0.384039,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.386038,0.019942,-0.386038,6,10000.0
@@ -2766,7 +2710,6 @@ REG_IMAGE_SOCAL_HOUSES,extended,regression,image-text,TabPFN-v2 (Frozen),TabPFN-
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,187591.255704,6553.554012,-187591.255704,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,163821.499847,5063.386146,-163821.499847,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,171604.371566,6331.628303,-171604.371566,6,10000.0
-REG_IMAGE_SOCAL_HOUSES,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,191672.359781,3133.907547,-191672.359781,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,183651.883876,4607.484289,-183651.883876,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,198778.302719,3956.662776,-198778.302719,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,204017.623105,6687.583874,-204017.623105,6,10000.0
@@ -2815,7 +2758,6 @@ REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image-text,TabPFN-v2 (Frozen),Tab
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.931264,0.039963,-0.931264,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.911008,0.040996,-0.911008,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.932936,0.033494,-0.932936,6,798.0
-REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,1.087054,0.033248,-1.087054,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,1.072949,0.036511,-1.072949,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,1.082134,0.020131,-1.082134,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,1.076357,0.0205,-1.076357,6,798.0
@@ -2864,7 +2806,6 @@ REG_IMAGE_WATCH_TIER,extended,regression,image-text,TabPFN-v2 (Frozen),TabPFN-v2
 REG_IMAGE_WATCH_TIER,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.353656,0.053504,-0.353656,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.32625,0.07232,-0.32625,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.354618,0.043853,-0.354618,6,840.0
-REG_IMAGE_WATCH_TIER,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.347787,0.068722,-0.347787,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.368016,0.058211,-0.368016,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.41138,0.068653,-0.41138,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.419902,0.05509,-0.419902,6,840.0
@@ -2913,7 +2854,6 @@ REG_IMAGE_ZEPTO_PRICE,extended,regression,image-text,TabPFN-v2 (Frozen),TabPFN-v
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image-text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.554346,0.026705,-0.554346,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image-text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.474485,0.006451,-0.474485,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image-text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.52134,0.028078,-0.52134,6,8897.0
-REG_IMAGE_ZEPTO_PRICE,extended,regression,image-text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.562695,0.005878,-0.562695,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image-text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.553072,0.020688,-0.553072,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image-text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.560718,0.005326,-0.560718,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image-text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.595685,0.027465,-0.595685,6,8897.0
@@ -2962,7 +2902,6 @@ REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,fr
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,53.76391,5.628483,-53.76391,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,50.54484,5.321873,-50.54484,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,52.132889,5.711407,-52.132889,6,2546.0
-REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,55.44929,4.396608,-55.44929,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,54.73999,5.695905,-54.73999,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,60.475602,2.995659,-60.475602,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,58.520459,4.179257,-58.520459,6,2546.0
@@ -3011,7 +2950,6 @@ REG_TEXT_ANIME_PLANET,extended,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,froz
 REG_TEXT_ANIME_PLANET,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.459143,0.007319,-0.459143,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.421852,0.007776,-0.421852,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.435127,0.007414,-0.435127,6,9594.0
-REG_TEXT_ANIME_PLANET,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.459665,0.003999,-0.459665,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.447494,0.005234,-0.447494,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.484846,0.004193,-0.484846,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.493508,0.004953,-0.493508,6,9594.0
@@ -3060,7 +2998,6 @@ REG_TEXT_BABIES_PRICES,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,frozen,
 REG_TEXT_BABIES_PRICES,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,17.571457,3.301466,-17.571457,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,16.70649,3.058908,-16.70649,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,16.311442,3.437925,-16.311442,6,3390.0
-REG_TEXT_BABIES_PRICES,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,18.579459,3.086181,-18.579459,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,17.676912,2.789686,-17.676912,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,21.708008,2.559621,-21.708008,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,21.315128,2.807836,-21.315128,6,3390.0
@@ -3109,7 +3046,6 @@ REG_TEXT_BOOK_PRICE,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,frozen,roo
 REG_TEXT_BOOK_PRICE,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.233127,0.005287,-0.233127,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.220577,0.008017,-0.220577,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.228317,0.004974,-0.228317,6,3326.0
-REG_TEXT_BOOK_PRICE,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.228658,0.008083,-0.228658,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.240185,0.007513,-0.240185,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.248667,0.008481,-0.248667,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.240504,0.006974,-0.240504,6,3326.0
@@ -3158,7 +3094,6 @@ REG_TEXT_BOOK_READABILITY,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,froz
 REG_TEXT_BOOK_READABILITY,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.785604,0.023421,-0.785604,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.794583,0.027899,-0.794583,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.781183,0.020721,-0.781183,6,3150.0
-REG_TEXT_BOOK_READABILITY,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.801098,0.032305,-0.801098,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.786692,0.028713,-0.786692,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.910202,0.018195,-0.910202,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.864486,0.034023,-0.864486,6,3150.0
@@ -3207,7 +3142,6 @@ REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabPFN-v2 (Frozen),TabPF
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.424577,0.008068,-0.424577,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.414777,0.009582,-0.414777,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.415846,0.007792,-0.415846,6,1197.0
-REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.445739,0.015503,-0.445739,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.44532,0.012989,-0.44532,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.449318,0.018608,-0.449318,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.448741,0.014892,-0.448741,6,1197.0
@@ -3256,7 +3190,6 @@ REG_TEXT_FIFA22_WAGES,extended,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,froz
 REG_TEXT_FIFA22_WAGES,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,10020.880208,672.422476,-10020.880208,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,8893.706761,320.02837,-8893.706761,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,8904.529589,338.771778,-8904.529589,6,10000.0
-REG_TEXT_FIFA22_WAGES,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,12396.633203,504.400491,-12396.633203,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,9255.665512,343.913768,-9255.665512,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,9633.588368,352.782592,-9633.588368,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,9455.335892,359.980476,-9455.335892,6,10000.0
@@ -3305,7 +3238,6 @@ REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,f
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.559401,0.009713,-0.559401,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.548636,0.014575,-0.548636,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.546895,0.01004,-0.546895,6,10000.0
-REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.604684,0.095526,-0.604684,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.556572,0.01207,-0.556572,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.600483,0.016373,-0.600483,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.579817,0.009425,-0.579817,6,10000.0
@@ -3354,7 +3286,6 @@ REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,f
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,3706.463106,680.456776,-3706.463106,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,3422.498076,424.411536,-3422.498076,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,3232.062962,401.409889,-3232.062962,6,6152.0
-REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,5213.136758,521.046402,-5213.136758,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,4158.847894,364.142626,-4158.847894,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,4809.188391,417.957012,-4809.188391,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,4725.621981,619.669596,-4725.621981,6,6152.0
@@ -3403,7 +3334,6 @@ REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,fro
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.9787,0.038307,-0.9787,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.93181,0.02468,-0.93181,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.935156,0.029808,-0.935156,6,2737.0
-REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.969077,0.033341,-0.969077,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.967523,0.032221,-0.967523,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.995432,0.035433,-0.995432,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.99717,0.023184,-0.99717,6,2737.0
@@ -3452,7 +3382,6 @@ REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,froze
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.770374,0.016918,-0.770374,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.767598,0.016042,-0.767598,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.757922,0.017043,-0.757922,6,4772.0
-REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.82441,0.015035,-0.82441,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.777221,0.012569,-0.777221,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.872355,0.014561,-0.872355,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.858319,0.014872,-0.858319,6,4772.0
@@ -3501,7 +3430,6 @@ REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,froz
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,21.338047,2.540227,-21.338047,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,20.817505,2.156434,-20.817505,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,20.374393,2.196758,-20.374393,6,10000.0
-REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,27.574992,4.101184,-27.574992,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,21.225711,1.957783,-21.225711,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,24.801408,2.371404,-24.801408,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,24.319469,2.854896,-24.319469,6,10000.0
@@ -3550,7 +3478,6 @@ REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabPFN-v2 (Frozen),TabPFN-v2
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,1428307.590025,381460.704186,-1428307.590025,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,1084990.334854,282122.861906,-1084990.334854,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,1130815.296161,149016.609046,-1130815.296161,6,10000.0
-REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,2121195.381123,175520.801464,-2121195.381123,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,921713.660327,162359.632639,-921713.660327,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,1021788.177278,217853.776807,-1021788.177278,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,1014823.591583,222550.57643,-1014823.591583,6,10000.0
@@ -3599,7 +3526,6 @@ REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,fr
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,26439.089808,2663.744769,-26439.089808,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,24531.800018,2250.705454,-24531.800018,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,24160.23497,1817.252651,-24160.23497,6,5357.0
-REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,31339.545327,4043.640723,-31339.545327,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,25620.526575,2963.136549,-25620.526575,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,28209.134469,3256.261626,-28209.134469,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,27349.755862,2665.231985,-27349.755862,6,5357.0
@@ -3648,7 +3574,6 @@ REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,fr
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,13537.199599,685.219434,-13537.199599,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,12287.730617,466.276428,-12287.730617,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,12234.137594,607.472482,-12234.137594,6,10000.0
-REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,14058.050059,719.592975,-14058.050059,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,12640.651513,486.448111,-12640.651513,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,14246.889787,579.804175,-14246.889787,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,13254.739235,620.323642,-13254.739235,6,10000.0
@@ -3697,7 +3622,6 @@ REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,fro
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,1.331727,0.223661,-1.331727,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,1.239539,0.224034,-1.239539,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,1.231439,0.222837,-1.231439,6,10000.0
-REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,1.287366,0.226347,-1.287366,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,1.223291,0.228803,-1.223291,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,1.453709,0.280193,-1.453709,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,1.32084,0.231612,-1.32084,6,10000.0
@@ -3746,7 +3670,6 @@ REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,fr
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,918.413219,139.781196,-918.413219,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,775.56674,138.557463,-775.56674,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,792.331091,123.902005,-792.331091,6,8380.0
-REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,870.595205,136.317593,-870.595205,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,769.206925,116.325838,-769.206925,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,850.695154,126.462113,-850.695154,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,848.31425,152.035543,-848.31425,6,8380.0
@@ -3795,7 +3718,6 @@ REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabPFN-v2 (Frozen),TabPFN-v
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,344.911536,73.98298,-344.911536,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,262.424485,76.875699,-262.424485,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,280.388234,71.627749,-280.388234,6,1498.0
-REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,328.980186,76.493644,-328.980186,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,299.517526,61.341986,-299.517526,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,318.268847,81.421215,-318.268847,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,330.595841,71.098407,-330.595841,6,1498.0
@@ -3844,7 +3766,6 @@ REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabPFN-v2 (Frozen),TabPFN-v2
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.092054,0.003016,-0.092054,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.08905,0.002067,-0.08905,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.088954,0.002205,-0.088954,6,5767.0
-REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.094728,0.001814,-0.094728,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.089518,0.00279,-0.089518,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.09417,0.002745,-0.09417,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.094152,0.002147,-0.094152,6,5767.0
@@ -3893,7 +3814,6 @@ REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabPFN-v2 (Frozen),TabPFN-v2,fr
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabPFN-v2 (TAR),TabPFN-v2,tar,root_mean_squared_error,0.222707,0.00814,-0.222707,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,root_mean_squared_error,0.158005,0.004148,-0.158005,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,root_mean_squared_error,0.161944,0.004243,-0.161944,6,10000.0
-REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabSTAR,TabSTAR,end-to-end,root_mean_squared_error,0.194805,0.011833,-0.194805,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,root_mean_squared_error,0.18952,0.008079,-0.18952,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,XGBoost (Frozen),XGBoost,frozen,root_mean_squared_error,0.18966,0.004297,-0.18966,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,XGBoost (TAR),XGBoost,tar,root_mean_squared_error,0.178266,0.003294,-0.178266,6,10000.0
