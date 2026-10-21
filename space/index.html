@@ -199,7 +199,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       <h2>Pareto Frontier</h2>
       <div class="group tabs" id="encTabs" role="group" aria-label="Encoding time"></div>
     </div>
-    <p class="muted">Each entry's Elo, under the filters above, against its median train + predict time per 1,000 rows (log scale), TAR's fine-tuning included; <b>With encoding time</b> adds an estimate of the encoders' time on those rows. <span class="star">★</span> marks the Pareto front: no other model is both faster and stronger.</p>
+    <p class="muted">Each entry's Elo, under the filters above, against its median train + predict time per 1,000 rows (log scale), TAR's fine-tuning included; <b>With encoding time</b> adds an estimate of the encoders' time on those rows. The times come from runs and caches on different machines, so the comparison is an approximation, but where encoding counts it dominates the cost. <span class="star">★</span> marks the Pareto front: no other model is both faster and stronger.</p>
     <div class="panel chart pareto" id="paretoChart"></div>
   </section>
 
