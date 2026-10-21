@@ -24,7 +24,7 @@ from multabench.baselines.tabicl_v2 import TabICLv2
 from multabench.baselines.tabldm import XiaomiTabLDM
 from multabench.baselines.tabm import TabM
 from multabench.baselines.tabpfn import TabPFN3, TabPFN3p5, TabPFN3p5Fast, TabPFNv2, TabPFNv2p5
-from multabench.baselines.tabstar import TabSTARv1p1
+from multabench.baselines.tabstar_v1p1 import TabSTARv1p1
 from multabench.baselines.xgboost import XGBoost
 from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
 from multabench.benchmark.runs import Run
