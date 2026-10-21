@@ -35,14 +35,13 @@
 body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); padding-inline: 16px; padding-block: 28px 64px; }
 .wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 40px; }
 .wrap > *, section > * { min-width: 0; }
-h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
-h1 { font-size: clamp(28px, 4.4vw, 40px); font-weight: 800; }
+h2 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
 h2 { font-size: 21px; font-weight: 700; }
 p { margin: 0; max-width: 68ch; }
 .muted { color: var(--muted); }
 .mono, td.num, th.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 header { display: grid; gap: 14px; }
-.logo { display: block; width: min(420px, 100%); }
+.logo { display: block; width: min(640px, 100%); }
 .logo img { display: block; width: 100%; height: auto; }
 .logo .dark { display: none; }
 :root[data-theme="dark"] .logo .light { display: none; }
@@ -51,7 +50,6 @@ header { display: grid; gap: 14px; }
   :root:not([data-theme="light"]) .logo .light { display: none; }
   :root:not([data-theme="light"]) .logo .dark { display: block; }
 }
-.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
 .facts { display: flex; flex-wrap: wrap; gap: 8px 22px; font: 13px/1.4 var(--mono); color: var(--muted); }
 .facts b { color: var(--ink); font-weight: 500; }
 section { display: grid; gap: 16px; }
@@ -108,7 +106,6 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
 .topbar .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .btn { font: 500 13px/1 var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer; text-decoration: none; }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
 .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .version { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font: 12px/1 var(--mono); color: var(--muted); }
 .version .tag { background: var(--accent); color: var(--surface); border-radius: 999px; padding: 4px 9px; font-weight: 500; }
@@ -135,13 +132,9 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       <a class="logo" href="https://github.com/alanarazi7/MulTaBench"><img class="light" src="assets/logo.svg" alt="MulTaBench: Benchmarking Multimodal Tabular Learning"><img class="dark" src="assets/logo-dark.svg" alt="MulTaBench: Benchmarking Multimodal Tabular Learning"></a>
       <div class="actions">
         <div class="tabs" id="themeTabs" role="group" aria-label="Theme"></div>
-        <a class="btn primary" href="https://github.com/alanarazi7/MulTaBench/issues/new?title=Add%20a%20model%3A%20">Submit a model</a>
-        <a class="btn" href="#paper">Cite</a>
       </div>
     </div>
     <div class="version" id="version"></div>
-    <div class="eyebrow">MulTaBench · frozen and TAR encoders · 10K rows</div>
-    <h1>How should tabular models see text and images?</h1>
     <p class="muted" id="intro">Tabular models on 80 datasets whose columns hold free text or images. Each model that reads embeddings is ranked with <b>Frozen</b> encoders and with <b>TAR</b> encoders, fine-tuned on each fold's training rows; <b>E2E</b> models read raw text themselves.</p>
     <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="https://github.com/alanarazi7/MulTaBench/blob/master/docs/protocol.md">Protocol</a> · <a href="data/leaderboards.csv">CSV</a></p>
     <div class="facts" id="facts"></div>
@@ -225,9 +218,9 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
   </div>
 
   <section class="cta">
-    <h2>Have a model that should be on the board?</h2>
+    <h2>Have a model or an encoding method that should be on the board?</h2>
     <div style="display:grid; gap:14px; justify-items:start">
-      <p>Open a GitHub issue with the model, or a feature, bug or question about the board. Models run on the same hardware and protocol as everyone else.</p>
+      <p>Open a GitHub issue with the model or encoding method, or a feature, bug or question about the board. Everything runs on the same hardware and protocol.</p>
       <a class="btn" href="https://github.com/alanarazi7/MulTaBench/issues/new">Open an issue</a>
     </div>
   </section>
@@ -322,8 +315,7 @@ setTheme(store.get('theme') || 'auto');
 
 // The multabench package version the board is built with; a placeholder until v0.1 goes out with the board.
 const LATEST = { version: 'v0.1', date: D.updated };
-document.getElementById('version').innerHTML = `<span>Leaderboard</span><span class="tag">${LATEST.version}</span><span>preview</span>` +
-  (LATEST.date ? `<span>Updated ${LATEST.date}</span>` : '');
+document.getElementById('version').innerHTML = `<span class="tag">${LATEST.version}</span>`;
 // Page tabs follow the URL hash, so each can be linked to; the filters only show where they apply.
 const TABS = [...document.querySelectorAll('#pageTabs a')].map(a => a.dataset.tab);
 function showTab() {
