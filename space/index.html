@@ -34,7 +34,7 @@
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); padding-inline: 16px; padding-block: 28px 64px; }
 .wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 40px; }
-.wrap > *, section > *, .notes > * { min-width: 0; }
+.wrap > *, section > * { min-width: 0; }
 h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
 h1 { font-size: clamp(28px, 4.4vw, 40px); font-weight: 800; }
 h2 { font-size: 21px; font-weight: 700; }
@@ -80,23 +80,6 @@ td.num, th.num { text-align: right; }
 .chart.wide svg { min-width: 760px; }
 .narrow { max-width: 640px; }
 #boardTable th, #boardTable td { padding-inline: 9px; }
-.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; font-size: 13px; color: var(--muted); }
-.ramp { display: inline-flex; align-items: center; gap: 8px; }
-.ramp i { display: inline-block; width: 120px; height: 10px; border-radius: 3px; background: linear-gradient(90deg, var(--best), var(--surface)); border: 1px solid var(--line); }
-.heat td { padding: 0; border-bottom: 1px solid var(--surface); }
-.heat td.ds { padding: 6px 12px; font-size: 13px; background: var(--surface); position: sticky; left: 0; z-index: 1; border-right: 1px solid var(--line); }
-.heat td.cell { font: 12px/1 var(--mono); font-variant-numeric: tabular-nums; text-align: right; padding: 7px 9px; min-width: 64px; border-left: 1px solid var(--surface); }
-.heat td.cell.win { font-weight: 600; box-shadow: inset 0 0 0 2px var(--ink); }
-.heat td.cell.na { color: var(--warn); text-align: center; background: var(--soft); }
-.heat th { position: sticky; top: 0; background: var(--surface); z-index: 2; }
-.heat th.ds { left: 0; z-index: 3; }
-.heat th.m { writing-mode: vertical-rl; transform: rotate(180deg); text-align: left; padding: 10px 6px; height: 196px; vertical-align: bottom; }
-.mod { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
-.mod.text { background: var(--text-mod); } .mod.image { background: var(--image-mod); } .mod.image-text { background: linear-gradient(90deg, var(--text-mod) 50%, var(--image-mod) 50%); }
-.task { font: 11px/1 var(--mono); color: var(--muted); margin-left: 6px; }
-.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
-.note { padding: 16px 18px; display: grid; gap: 8px; align-content: start; font-size: 14px; }
-.note h3 { margin: 0; font: 600 14px/1.3 var(--body); }
 .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 select { font: 13px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; }
 .bar { display: inline-block; height: 8px; border-radius: 2px; background: var(--accent); vertical-align: middle; margin-right: 8px; opacity: .75; }
@@ -121,7 +104,6 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
 .links a { color: var(--accent); }
 code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
-.note a { color: var(--accent); }
 
 .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
 .topbar .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
@@ -161,17 +143,15 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="eyebrow">MulTaBench · frozen and TAR encoders · 10K rows</div>
     <h1>How should tabular models see text and images?</h1>
     <p class="muted" id="intro">Tabular models on 80 datasets whose columns hold free text or images. Each model that reads embeddings is ranked with <b>Frozen</b> encoders and with <b>TAR</b> encoders, fine-tuned on each fold's training rows; <b>E2E</b> models read raw text themselves.</p>
-    <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="data/leaderboards.csv">CSV</a></p>
+    <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="https://github.com/alanarazi7/MulTaBench/blob/master/docs/protocol.md">Protocol</a> · <a href="data/leaderboards.csv">CSV</a></p>
     <div class="facts" id="facts"></div>
   </header>
 
   <div class="sticky">
   <nav class="pagetabs" id="pageTabs" role="tablist">
     <a role="tab" href="#board" data-tab="board">Leaderboard</a>
-    <a role="tab" href="#encodings" data-tab="encodings">Frozen vs TAR</a>
-    <a role="tab" href="#cost" data-tab="cost">Cost</a>
-    <a role="tab" href="#datasets" data-tab="datasets">Per dataset</a>
-    <a role="tab" href="#protocol" data-tab="protocol">Protocol</a>
+    <a role="tab" href="#encodings" data-tab="encodings">Encoders</a>
+    <a role="tab" href="#cost" data-tab="cost">Pareto</a>
     <a role="tab" href="#paper" data-tab="paper">Cite & data</a>
   </nav>
   <div class="filters">
@@ -216,44 +196,6 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <h2>Cost</h2>
     <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Runs read the cached embeddings, so this leaves out encoding; the text and image columns estimate it from the cached encoders' own time, and the toggles above add it to the total. Fine-tune is the mean time TAR's LoRA fine-tuning took per 1,000 training rows, on an H100, and always counts.</p>
     <div class="panel scroll"><table id="costTable"></table></div>
-  </section>
-  </div>
-
-  <div class="tabpanel" id="tab-datasets" role="tabpanel">
-  <section>
-    <div class="head">
-      <h2>Per-dataset results</h2>
-      <div class="controls">
-        <label class="muted" for="sortBy" style="font-size:13px">Sort</label>
-        <select id="sortBy">
-          <option value="name">Dataset name</option>
-          <option value="spread">Hardest to separate first</option>
-          <option value="winner">By winning model</option>
-        </select>
-      </div>
-    </div>
-    <div class="legend">
-      <span class="ramp">best <i></i> worst</span>
-      <span>cell = test error, mean of 6 folds · outlined = best on the dataset · shading normalized per dataset</span>
-      <span><span class="mod text"></span>text <span class="mod image" style="margin-left:10px"></span>image <span class="mod image-text" style="margin-left:10px"></span>image + text</span>
-    </div>
-    <div class="panel scroll" style="max-height: 640px; overflow: auto"><table class="heat" id="heat"></table></div>
-  </section>
-  </div>
-
-  <div class="tabpanel" id="tab-protocol" role="tabpanel">
-  <section>
-    <h2>Evaluation protocol</h2>
-    <div class="notes">
-      <div class="panel note"><h3>Setup</h3><p class="muted">Text is encoded with e5-small and images with DINOv3-small, Frozen or TAR (LoRA fine-tuned on each fold's training rows), and reduced to 30 PCA components per column. E2E models (ConTextTab, TabSTAR-v1.1) read raw text themselves. Default hyperparameters, no bagging, 3 folds × 2 repeats, up to 10K training rows.</p></div>
-      <div class="panel note"><h3>Datasets</h3><p class="muted">The 40 core datasets, 20 text-tabular and 20 image-tabular, show both <b>joint signal</b>, each modality carrying signal about the target that the others don't, and <b>target awareness</b>, the best representation of the text or images depending on the task. The 40 extended ones show joint signal. Their Hugging Face repos are named <code>core-…</code> and <code>extended-…</code>.</p></div>
-      <div class="panel note"><h3>Elo</h3><p class="muted">As in TabArena, every fold is its own battle: on each of a dataset's 6 folds, each pair of models plays one battle, won by the lower test error. The battles are fit as a Bradley–Terry model, with RandomForest (Frozen) fixed at 1000, or RandomForest (TAR) when only TAR is shown, by TabArena's bencheval. The interval is the 95% range over 1,000 bootstrap resamples of datasets, each with all its folds, bootstrapped before anchoring, so each is the model's own. Win rate is per fold as well; the CSVs also give average rank, normalized error and the best-on count.</p></div>
-      <div class="panel note"><h3>Missing results are not imputed</h3><p class="muted" id="missingNote"></p></div>
-      <div class="panel note"><h3>Data</h3><p class="muted">Every run is in <a href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models"><code>multabench/leaderboard/models/&lt;model&gt;.csv</code></a>, and the TAR runs in <a href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models_tar"><code>models_tar/</code></a>. The tables here are plain CSVs in this Space's <a href="https://huggingface.co/spaces/multabench/leaderboard/tree/main/data">data</a> folder: <code>leaderboards.csv</code> (one leaderboard per <code>tier</code>, <code>task</code>, <code>modality</code> and <code>encodings</code> filter), <code>encodings.csv</code> (Frozen vs TAR), <code>per_dataset.csv</code> and <code>cost.csv</code>.</p></div>
-      <div class="panel note"><h3>Metrics</h3><p class="muted">Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized error rescales each dataset to 0 (best model) – 1 (worst).</p></div>
-      <div class="panel note"><h3>Encoding time is an estimate</h3><p class="muted">Runs read cached e5-small and DINOv3-small embeddings, so their own time leaves encoding out. The estimate is each dataset's encoding time per row from those caches, which were computed on A100s rather than the leaderboard's H100 (image time includes reading the files), averaged over a model's runs, with 0 where a run doesn't use the encoder. It is counted on the 1,000 training rows and the 1,000 predicted ones. ConTextTab and TabSTAR-v1.1 encode raw text themselves, inside their own time.</p></div>
-      <div class="panel note"><h3>Hardware</h3><p class="muted">Each run gets 8 CPUs and 32 GB. Tree models run on CPU (Xeon 8581C); the others on one H100 80 GB (Xeon 8481C).</p></div>
-    </div>
   </section>
   </div>
 
@@ -388,7 +330,7 @@ function showTab() {
   const k = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'board';
   TABS.forEach(t => { document.getElementById('tab-' + t).hidden = t !== k; });
   document.querySelectorAll('#pageTabs a').forEach(a => a.setAttribute('aria-selected', a.dataset.tab === k));
-  document.querySelector('.filters').hidden = ['protocol', 'paper'].includes(k);
+  document.querySelector('.filters').hidden = k === 'paper';
 }
 window.addEventListener('hashchange', () => { showTab(); document.querySelector('.sticky').scrollIntoView(); });
 showTab();
@@ -536,12 +478,6 @@ document.getElementById('facts').innerHTML = [
   ['datasets', D.meta.datasets], ['models', D.meta.models], ['entries', D.meta.entries.length], ['runs', fmt(D.meta.runs)]
 ].map(([k, v]) => `<span>${k} <b>${v}</b></span>`).join('');
 
-const errByModel = {};
-D.errors.forEach(e => { (errByModel[e.entry] ||= new Set()).add(e.dataset); });
-const dsLabel = d => d.replace(/^(BIN|MUL|REG)_(TEXT|IMAGE)_/, '').replace(/_/g, ' ').toLowerCase();
-document.getElementById('missingNote').textContent =
-  'A model with no successful run on a dataset has no battles there, so it is rated on the others. TabPFN-v2, TabPFN-v2p5 and Mitra-v2 support at most 10 classes, and Mitra-v2 runs out of GPU memory on melbourne airbnb (680 features), with Frozen and TAR encoders alike. Missing: ' +
-  Object.entries(errByModel).map(([m, ds]) => `${m}, ${ds.size} (${[...ds].sort().map(dsLabel).join(', ')})`).join('; ') + '.';
 
 const dsInfo = {};
 D.per_dataset.forEach(r => { dsInfo[r.dataset] = { tier: r.tier, task: taskOf(r.dataset), modality: r.modality }; });
@@ -661,54 +597,13 @@ function renderBoard() {
   document.getElementById('dlNote').textContent = `Download the current board, with its version and date, to include it in a paper. Current view: ${names.length} datasets, sorted by ${SORTS.find(s => s[0] === boardSort)[1].replace('★ ', '')}.`;
 }
 
-const byDs = {};
-D.per_dataset.forEach(r => { (byDs[r.dataset] ||= { modality: r.modality, task: r.task_type, metric: r.metric, m: {} }).m[r.entry] = r; });
-const errSet = new Set(D.errors.map(e => e.entry + '|' + e.dataset));
 const orderOf = () => D.boards['all|all|all|' + encKey()].map(r => r.entry);
-const sortSel = document.getElementById('sortBy');
-sortSel.value = store.get('heatSort') || 'name';
-sortSel.onchange = () => { store.set('heatSort', sortSel.value); renderHeat(); };
-
-function renderHeat() {
-  const order = orderOf();
-  let names = Object.keys(byDs).filter(inFilter);
-  const stats = {};
-  names.forEach(n => {
-    const v = order.map(m => byDs[n].m[m]?.test_error).filter(x => x != null);
-    const mn = Math.min(...v), mx = Math.max(...v);
-    const winner = order.find(m => byDs[n].m[m]?.test_error === mn);
-    stats[n] = { mn, mx, winner, spread: mx > 0 ? (mx - mn) / Math.abs(mx) : 0 };
-  });
-  if (sortSel.value === 'spread') names.sort((a, b) => stats[a].spread - stats[b].spread);
-  else if (sortSel.value === 'winner') names.sort((a, b) => order.indexOf(stats[a].winner) - order.indexOf(stats[b].winner) || a.localeCompare(b));
-  else names.sort();
-  const t = document.getElementById('heat');
-  t.innerHTML = `<thead><tr><th class="ds">Dataset (${names.length})</th>${order.map(m => `<th class="m">${m}</th>`).join('')}</tr></thead>`;
-  const tb = el('tbody');
-  names.forEach(n => {
-    const ds = byDs[n], s = stats[n];
-    const label = n.replace(/^(BIN|MUL|REG)_(TEXT|IMAGE)_/, '').replace(/_/g, ' ').toLowerCase();
-    let row = `<td class="ds" title="${n} · ${ds.metric}"><span class="mod ${ds.modality}"></span>${label}<span class="task">${ds.task}</span></td>`;
-    order.forEach(m => {
-      const r = ds.m[m];
-      if (!r) { row += `<td class="cell na" title="${errSet.has(m + '|' + n) ? 'No successful run: see Protocol, Missing results' : 'No result'}">✕</td>`; return; }
-      const norm = s.mx > s.mn ? (r.test_error - s.mn) / (s.mx - s.mn) : 0;
-      const pct = Math.round((1 - norm) * 78);
-      const ink = pct > 48 ? 'color:var(--surface)' : '';
-      const v = r.test_error >= 100 ? fmt(r.test_error, 0) : r.test_error >= 1 ? fmt(r.test_error, 2) : fmt(r.test_error, 3);
-      row += `<td class="cell${r.test_error === s.mn ? ' win' : ''}" style="background:color-mix(in oklab, var(--best) ${pct}%, var(--surface));${ink}" title="${m} · ${ds.metric} error ${r.test_error.toPrecision(5)} ± ${(r.test_error_std ?? 0).toPrecision(3)}">${v}</td>`;
-    });
-    tb.appendChild(el('tr', {}, row));
-  });
-  t.appendChild(tb);
-}
 function render() {
   toggles(document.getElementById('tierTabs'), TIERS, 'tier', 'tiers');
   toggles(document.getElementById('taskTabs'), TASKS, 'task', 'tasks');
   toggles(document.getElementById('modTabs'), MODS, 'modality', 'mods');
   encodingToggles();
   renderBoard();
-  renderHeat();
   renderCost();
 }
 render();

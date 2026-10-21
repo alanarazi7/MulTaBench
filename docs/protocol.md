@@ -5,7 +5,8 @@
 Elo is computed with TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
 pinned in the `leaderboard` extra. Every fold is its own battle: on each of a dataset's 6 folds, each pair of models
 plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a Bradley–Terry
-model, with RandomForest anchored at 1000. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
+model, with RandomForest (Frozen) anchored at 1000,
+or RandomForest (TAR) on a TAR-only board. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
 drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many folds. They
 are bootstrapped before anchoring, so each model's interval is its own, RandomForest's included, rather than relative
 to RandomForest. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
@@ -25,6 +26,19 @@ Every model that reads embeddings also ran with fine-tuned encoders: `e5-small-t
 `dino-small-tar` on image datasets, LoRA-tuned on each fold's training rows (see [embeddings](embeddings.md)). Those
 runs are in `multabench/leaderboard/models_tar/`, with the same failures. The leaderboard ranks each such model
 as two entries, e.g. `LimiX-2 (Frozen)` and `LimiX-2 (TAR)`, and rates the encodings against each other.
+
+## Metrics
+
+Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized
+error rescales each dataset to 0 (best model) – 1 (worst).
+
+## Hardware and time
+
+Each run gets 8 CPUs and 32 GB. Tree models run on CPU (Xeon 8581C); the others on one H100 80 GB (Xeon 8481C).
+Times are medians per 1,000 rows over successful runs. Runs read cached embeddings, so encoding is left out of them;
+the board estimates it from the caches' own encoding time per row (frozen caches on A100s, TAR caches on H100s; image
+time includes reading the files), counted on the 1,000 training rows and the 1,000 predicted ones. TAR's LoRA
+fine-tuning, per 1,000 training rows, always counts. ConTextTab and TabSTAR-v1.1 encode raw text inside their own time.
 
 ## Reproducibility
 
