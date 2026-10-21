@@ -17,7 +17,7 @@ BASELINE_NOISY_MARKERS: Tuple[str, ...] = (
     "Stopped training because there are no more leaves that meet the split",
     "Met negative value in categorical features",
     "Met categorical feature which contains sparse values",
-    # TabSTAR-v1
+    # TabSTAR
     "UserWarning: Please use the new API settings to control TF32 behavior",
 )
 

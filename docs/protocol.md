@@ -16,8 +16,7 @@ the then 17 models, Kumo-Tabular was at 2670 rather than 2347, with the same ran
 ## Coverage
 
 Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino-small` image embeddings
-(ConTextTab, TabSTAR and TabSTAR-v1.1 read raw text themselves; TabSTAR loads, for each dataset it was pretrained
-on, the checkpoint that held that dataset out, and TabSTAR-v1.1's pretraining left MulTaBench out). TabPFN-v2,
+(ConTextTab and TabSTAR-v1.1 read raw text themselves; TabSTAR-v1.1's pretraining left MulTaBench out). TabPFN-v2,
 v2.5 and Mitra-v2 take at most 10 classes, which leaves out 3 of the 80 datasets; TabFM and LimiX-2 cover them with
 tabpfn-extensions' output coding. Mitra-v2 also runs out of GPU memory on MUL_TEXT_MELBOURNE_AIRBNB, whose 680
 features it doesn't reduce since the table has categorical columns.
@@ -31,7 +30,7 @@ as two entries, e.g. `LimiX-2 (Frozen)` and `LimiX-2 (TAR)`, and rates the encod
 
 Every model is seeded, and a rerun of the same run on the leaderboard's hardware gives the same test error, except for
 four models whose packages aren't deterministic on GPU even with torch's deterministic algorithms. In a check of two
-identical runs on six datasets, Mitra-v2 differed by up to 1.5%, TabSTAR and TabSTAR-v1.1 by up to 0.25%, and Causilo
+identical runs on six datasets, Mitra-v2 differed by up to 1.5%, TabSTAR-v1.1 by up to 0.25%, and Causilo
 by up to 0.04%; TabDPT, TabICLv2 and Xiaomi-TabLDM differ by float rounding only (below 1e-7).
 
 ## MulTaBench and TabArena
