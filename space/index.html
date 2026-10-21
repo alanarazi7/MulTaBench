@@ -95,6 +95,8 @@ b.enc { color: var(--c); }
 .tabpanel { display: grid; gap: 40px; }
 .tabpanel[hidden] { display: none; }
 .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; }
+.tabpanel[data-empty] > section { display: none; }
+.tabpanel[data-empty]::before { content: attr(data-empty); display: block; padding: 48px 0; text-align: center; font-size: 17px; color: var(--muted); }
 .filters .hint { flex-basis: 100%; max-width: none; font-size: 13px; color: var(--muted); }
 .filters[hidden], .filters .encrow[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -341,7 +343,7 @@ computeTime();
 function drawEncTabs() {
   const box = document.getElementById('encTabs');
   const b = el('button', { type: 'button', title: "Estimate, from the cached encoders' own time", onclick: () => {
-    withEnc = !withEnc; store.set('enc_time', withEnc ? '1' : '0'); computeTime(); drawEncTabs(); renderBoard(); renderCost();
+    withEnc = !withEnc; store.set('enc_time', withEnc ? '1' : '0'); computeTime(); drawEncTabs(); render();
   } }, 'With encoding time');
   b.setAttribute('aria-pressed', withEnc);
   box.replaceChildren(b);
@@ -424,10 +426,9 @@ function encodingToggles() {
   ENCS.forEach(([key, label]) => {
     const n = D.meta.entries.filter(m => D.encodingOf[m] === key).length;
     const on = encSel.includes(key);
-    const b = el('button', { type: 'button', title: on && encSel.length === 1 ? 'Keep at least one selected' : '' }, `${label}<span class="n">${n}</span>`);
+    const b = el('button', { type: 'button' }, `${label}<span class="n">${n}</span>`);
     b.setAttribute('aria-pressed', on);
     b.onclick = () => {
-      if (on && encSel.length === 1) return;
       encSel = on ? encSel.filter(k => k !== key) : [...encSel, key];
       store.set('encodings', JSON.stringify(encSel));
       render();
@@ -445,9 +446,7 @@ function toggles(container, items, field, storeKey) {
     const b = el('button', { type: 'button' }, `${label}<span class="n">${n}</span>`);
     const on = sel[field].includes(key);
     b.setAttribute('aria-pressed', on);
-    b.title = on && sel[field].length === 1 ? 'Keep at least one selected' : '';
     b.onclick = () => {
-      if (on && sel[field].length === 1) return;
       sel[field] = on ? sel[field].filter(k => k !== key) : [...sel[field], key];
       store.set(storeKey, JSON.stringify(sel[field]));
       render();
@@ -506,9 +505,9 @@ function drawBoard(board, front) {
   t.appendChild(tb);
 }
 
+const filterKey = () => keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS);
 function renderBoard() {
-  const filterKey = keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS);
-  const board = D.boards[filterKey + '|' + encKey()];
+  const board = D.boards[filterKey() + '|' + encKey()];
   const names = Object.keys(dsInfo).filter(inFilter);
   const count = (field, key) => names.filter(d => dsInfo[d][field] === key).length;
   const line = (title, field, all) => `<span class="label">${title}</span> ` + all.filter(([k]) => count(field, k))
@@ -519,17 +518,31 @@ function renderBoard() {
   drawElo(board);
   drawBoard(board, front);
   drawPareto(board, front);
-  renderEncodings(filterKey);
 }
 
 const orderOf = () => D.boards['all|all|all|' + encKey()].map(r => r.entry);
+// What each empty filter asks for; a tab with an empty filter it uses shows the request instead of its content.
+const ASKS = { tier: 'a dataset slice', task: 'a task', modality: 'a modality', encoding: 'an encoder' };
+function emptyNote(fields) {
+  const asks = fields.map(f => ASKS[f]);
+  if (!asks.length) return null;
+  return `⚠️ Please select ${asks.length > 1 ? asks.slice(0, -1).join(', ') + ' and ' + asks.at(-1) : asks[0]}.`;
+}
 function render() {
   toggles(document.getElementById('tierTabs'), TIERS, 'tier', 'tiers');
   toggles(document.getElementById('taskTabs'), TASKS, 'task', 'tasks');
   toggles(document.getElementById('modTabs'), MODS, 'modality', 'mods');
   encodingToggles();
-  renderBoard();
-  renderCost();
+  const empty = FIELDS.filter(f => !sel[f].length);
+  const withEncoders = encSel.length ? empty : [...empty, 'encoding'];
+  const notes = { board: emptyNote(withEncoders), encodings: emptyNote(empty), cost: emptyNote(withEncoders) };
+  Object.entries(notes).forEach(([k, note]) => {
+    const panel = document.getElementById('tab-' + k);
+    if (note) panel.dataset.empty = note;
+    else delete panel.dataset.empty;
+  });
+  if (!notes.encodings) renderEncodings(filterKey());
+  if (!notes.board) { renderBoard(); renderCost(); }
 }
 render();
 
