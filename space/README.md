@@ -21,5 +21,3 @@ To update the Space after the results change:
 python -m multabench.leaderboard.export
 huggingface-cli upload multabench/leaderboard space . --repo-type space
 ```
-
-Each change to the board also adds a row to `data/versions.csv`, which the page shows as its version and history.
