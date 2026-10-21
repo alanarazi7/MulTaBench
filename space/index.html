@@ -84,7 +84,6 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
   color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface)); }
 .frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .end-to-end { --c: var(--e2e); }
 b.enc { color: var(--c); }
-.tabs button.enc[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--surface); }
 
 .sticky { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
 .pagetabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: none; }
@@ -96,6 +95,7 @@ b.enc { color: var(--c); }
 .tabpanel { display: grid; gap: 40px; }
 .tabpanel[hidden] { display: none; }
 .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; }
+.filters .hint { flex-basis: 100%; max-width: none; font-size: 13px; color: var(--muted); }
 .filters[hidden], .filters .encrow[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .encrow { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
@@ -153,9 +153,10 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <a role="tab" href="#board" data-tab="board">Leaderboard</a>
     <a role="tab" href="#encodings" data-tab="encodings">Encoders</a>
     <a role="tab" href="#cost" data-tab="cost">Pareto</a>
-    <a role="tab" href="#paper" data-tab="paper">Cite & data</a>
+    <a role="tab" href="#paper" data-tab="paper">Cite & Data</a>
   </nav>
   <div class="filters">
+    <p class="hint">Press the buttons to focus on a slice of the benchmark.</p>
     <div class="group tabs" id="tierTabs" role="group" aria-label="Datasets"><span class="label">Datasets</span></div>
     <div class="group tabs" id="taskTabs" role="group" aria-label="Task"><span class="label">Task</span></div>
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
@@ -209,12 +210,10 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-paper" role="tabpanel">
   <section>
-    <h2>Using the leaderboard in your paper</h2>
-    <p class="muted" id="dlNote"></p>
-    <div class="panel dl">
-      <div><span class="label">Ranking table</span><button class="btn" data-dl="csv">CSV</button><button class="btn" data-dl="json">JSON</button><a class="btn" href="data/leaderboards.csv" download>CSV · every filter</a></div>
-      <div><span class="label">Per dataset and fold</span><a class="btn" href="data/per_dataset.csv" download>Per dataset CSV</a><a class="btn" href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models">Every run, per model (GitHub)</a></div>
-    </div>
+    <h2>All results</h2>
+    <p class="muted">Every run on the board, one row per model, encoding, dataset and fold, with its test score and error and its train and predict time, compiled into one CSV:</p>
+    <div class="panel"><pre class="bib">pip install multabench
+python -m multabench.leaderboard.results multabench_results.csv</pre></div>
   </section>
 
   <section id="cite">
@@ -409,20 +408,6 @@ function drawPareto(board, front) {
   document.getElementById('paretoChart').innerHTML = `<div style="padding:12px 8px 4px">${s}</div>`;
 }
 
-let current = { board: [], front: new Set(), label: '' };
-function save(blob, name) {
-  const a = el('a', { href: URL.createObjectURL(blob), download: name });
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-}
-document.querySelectorAll('[data-dl]').forEach(b => b.onclick = () => {
-  const kind = b.dataset.dl, base = `multabench-${LATEST.version}-${current.label}`;
-  const rows = current.board.map((r, i) => ({ rank: i + 1, entry: r.entry, model: r.model, encoding: r.encoding, elo: +r.elo.toFixed(1), elo_low: +r.lo.toFixed(1),
-    elo_high: +r.hi.toFixed(1), datasets: r.datasets, win_rate: r.win_rate, avg_rank: r.avg_rank,
-    normalized_error: r.norm_error, best_on: r.champions, s_per_1k: timeOf[r.entry], pareto: current.front.has(r.entry) }));
-  if (kind === 'csv') save(new Blob([[Object.keys(rows[0]).join(','), ...rows.map(r => Object.values(r).join(','))].join('\n')], { type: 'text/csv' }), base + '.csv');
-  if (kind === 'json') save(new Blob([JSON.stringify({ version: LATEST.version, date: LATEST.date, filter: current.label, rows }, null, 2)], { type: 'application/json' }), base + '.json');
-});
 
 
 const dsInfo = {};
@@ -439,7 +424,7 @@ function encodingToggles() {
   ENCS.forEach(([key, label]) => {
     const n = D.meta.entries.filter(m => D.encodingOf[m] === key).length;
     const on = encSel.includes(key);
-    const b = el('button', { type: 'button', className: `enc ${key}`, title: on && encSel.length === 1 ? 'Keep at least one selected' : '' }, `${label}<span class="n">${n}</span>`);
+    const b = el('button', { type: 'button', title: on && encSel.length === 1 ? 'Keep at least one selected' : '' }, `${label}<span class="n">${n}</span>`);
     b.setAttribute('aria-pressed', on);
     b.onclick = () => {
       if (on && encSel.length === 1) return;
@@ -531,12 +516,10 @@ function renderBoard() {
   document.getElementById('boardNote').innerHTML = [`<b>${names.length} datasets</b>` + (names.length < 10 ? ' (few, so wide intervals)' : ''),
     line('Datasets', 'tier', TIERS), line('Task', 'task', TASKS), line('Modality', 'modality', MODS)].join('<br>');
   const front = paretoFront(board);
-  current = { board, front, label: [...[sel.tier, sel.task, sel.modality].map((v, i) => keyOf(v, [TIERS, TASKS, MODS][i])), encKey()].join('_') };
   drawElo(board);
   drawBoard(board, front);
   drawPareto(board, front);
   renderEncodings(filterKey);
-  document.getElementById('dlNote').textContent = `Download the current board, with its version and date, to include it in a paper. Current view: ${names.length} datasets, sorted by Elo.`;
 }
 
 const orderOf = () => D.boards['all|all|all|' + encKey()].map(r => r.entry);
