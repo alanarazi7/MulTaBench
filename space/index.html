@@ -105,7 +105,17 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
   color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface)); }
 .chip.frozen { --c: var(--frozen); } .chip.tar { --c: var(--tar); } .chip.end-to-end { --c: var(--e2e); }
 
-.filters { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; background: var(--bg); border-bottom: 1px solid var(--line); }
+.sticky { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.pagetabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: none; }
+.pagetabs a { font: 500 14px/1 var(--body); color: var(--muted); text-decoration: none; padding: 14px 14px 12px; white-space: nowrap;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.pagetabs a:hover { color: var(--ink); }
+.pagetabs a[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.pagetabs a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.tabpanel { display: grid; gap: 40px; }
+.tabpanel[hidden] { display: none; }
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; }
+.filters[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
@@ -144,7 +154,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       <div class="actions">
         <div class="tabs" id="themeTabs" role="group" aria-label="Theme"></div>
         <a class="btn primary" href="https://github.com/alanarazi7/MulTaBench/issues/new?title=Add%20a%20model%3A%20">Submit a model</a>
-        <a class="btn" href="#cite">Cite</a>
+        <a class="btn" href="#paper">Cite</a>
       </div>
     </div>
     <div class="version" id="version"></div>
@@ -155,13 +165,24 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="facts" id="facts"></div>
   </header>
 
+  <div class="sticky">
+  <nav class="pagetabs" id="pageTabs" role="tablist">
+    <a role="tab" href="#board" data-tab="board">Leaderboard</a>
+    <a role="tab" href="#encodings" data-tab="encodings">Frozen vs TAR</a>
+    <a role="tab" href="#cost" data-tab="cost">Cost</a>
+    <a role="tab" href="#datasets" data-tab="datasets">Per dataset</a>
+    <a role="tab" href="#protocol" data-tab="protocol">Protocol</a>
+    <a role="tab" href="#paper" data-tab="paper">Cite & data</a>
+  </nav>
   <div class="filters">
     <div class="group tabs" id="tierTabs" role="group" aria-label="Datasets"><span class="label">Datasets</span></div>
     <div class="group tabs" id="taskTabs" role="group" aria-label="Task"><span class="label">Task</span></div>
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
     <div class="group tabs" id="encodingTabs" role="group" aria-label="Encoders"><span class="label">Encoders</span></div>
   </div>
+  </div>
 
+  <div class="tabpanel" id="tab-board" role="tabpanel">
   <section>
     <div class="head">
       <h2>Elo rating</h2>
@@ -171,13 +192,17 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="panel scroll chart wide" id="eloChart"></div>
     <div class="panel scroll"><table id="boardTable"></table></div>
   </section>
+  </div>
 
+  <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
     <h2>Frozen vs TAR</h2>
     <p class="muted" id="encodingNote"></p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
+  </div>
 
+  <div class="tabpanel" id="tab-cost" role="tabpanel">
   <section>
     <div class="head">
       <h2>Elo vs cost</h2>
@@ -187,6 +212,14 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="panel chart pareto" id="paretoChart"></div>
   </section>
 
+  <section>
+    <h2>Cost</h2>
+    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Runs read the cached embeddings, so this leaves out encoding; the text and image columns estimate it from the cached encoders' own time, and the toggles above add it to the total. Fine-tune is the mean time TAR's LoRA fine-tuning took per 1,000 training rows, on an H100, and always counts.</p>
+    <div class="panel scroll"><table id="costTable"></table></div>
+  </section>
+  </div>
+
+  <div class="tabpanel" id="tab-datasets" role="tabpanel">
   <section>
     <div class="head">
       <h2>Per-dataset results</h2>
@@ -206,13 +239,9 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     </div>
     <div class="panel scroll" style="max-height: 640px; overflow: auto"><table class="heat" id="heat"></table></div>
   </section>
+  </div>
 
-  <section>
-    <h2>Cost</h2>
-    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Runs read the cached embeddings, so this leaves out encoding; the text and image columns estimate it from the cached encoders' own time, and the toggles above add it to the total. Fine-tune is the mean time TAR's LoRA fine-tuning took per 1,000 training rows, on an H100, and always counts.</p>
-    <div class="panel scroll"><table id="cost"></table></div>
-  </section>
-
+  <div class="tabpanel" id="tab-protocol" role="tabpanel">
   <section>
     <h2>Evaluation protocol</h2>
     <div class="notes">
@@ -226,7 +255,9 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       <div class="panel note"><h3>Hardware</h3><p class="muted">Each run gets 8 CPUs and 32 GB. Tree models run on CPU (Xeon 8581C); the others on one H100 80 GB (Xeon 8481C).</p></div>
     </div>
   </section>
+  </div>
 
+  <div class="tabpanel" id="tab-paper" role="tabpanel">
   <section>
     <h2>Using the leaderboard in your paper</h2>
     <p class="muted" id="dlNote"></p>
@@ -249,6 +280,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
   url={https://arxiv.org/abs/2605.10616},
 }</pre></div>
   </section>
+  </div>
 
   <section class="cta">
     <h2>Have a model that should be on the board?</h2>
@@ -350,6 +382,16 @@ setTheme(store.get('theme') || 'auto');
 const LATEST = { version: 'v0.1', date: D.updated };
 document.getElementById('version').innerHTML = `<span>Leaderboard</span><span class="tag">${LATEST.version}</span><span>preview</span>` +
   (LATEST.date ? `<span>Updated ${LATEST.date}</span>` : '');
+// Page tabs follow the URL hash, so each can be linked to; the filters only show where they apply.
+const TABS = [...document.querySelectorAll('#pageTabs a')].map(a => a.dataset.tab);
+function showTab() {
+  const k = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'board';
+  TABS.forEach(t => { document.getElementById('tab-' + t).hidden = t !== k; });
+  document.querySelectorAll('#pageTabs a').forEach(a => a.setAttribute('aria-selected', a.dataset.tab === k));
+  document.querySelector('.filters').hidden = ['protocol', 'paper'].includes(k);
+}
+window.addEventListener('hashchange', () => { showTab(); document.querySelector('.sticky').scrollIntoView(); });
+showTab();
 document.getElementById('copyBib').onclick = e => {
   navigator.clipboard?.writeText(document.getElementById('bib').textContent).then(() => { e.target.textContent = 'Copied'; });
 };
@@ -649,7 +691,7 @@ function renderHeat() {
     let row = `<td class="ds" title="${n} · ${ds.metric}"><span class="mod ${ds.modality}"></span>${label}<span class="task">${ds.task}</span></td>`;
     order.forEach(m => {
       const r = ds.m[m];
-      if (!r) { row += `<td class="cell na" title="${errSet.has(m + '|' + n) ? 'No successful run: see Missing results below' : 'No result'}">✕</td>`; return; }
+      if (!r) { row += `<td class="cell na" title="${errSet.has(m + '|' + n) ? 'No successful run: see Protocol, Missing results' : 'No result'}">✕</td>`; return; }
       const norm = s.mx > s.mn ? (r.test_error - s.mn) / (s.mx - s.mn) : 0;
       const pct = Math.round((1 - norm) * 78);
       const ink = pct > 48 ? 'color:var(--surface)' : '';
@@ -676,7 +718,7 @@ function renderCost() {
   const rows = D.cost.filter(r => order.includes(r.entry)).sort((a, b) => order.indexOf(a.entry) - order.indexOf(b.entry));
   const maxT = Math.max(...rows.map(r => timeOf[r.entry]));
   const what = ['Train + fine-tune + predict', ...ENC.filter(([k]) => enc[k]).map(([k]) => k)].join(' + ');
-  const t = document.getElementById('cost');
+  const t = document.getElementById('costTable');
   t.innerHTML = `<thead><tr><th>Encoding</th><th>Model</th><th>Device</th><th>${what} s / 1K rows</th><th class="num">Train</th><th class="num" title="TAR's LoRA fine-tuning, per 1K training rows">Fine-tune</th><th class="num">Predict</th><th class="num" title="Estimate, per 1K rows">Text enc.</th><th class="num" title="Estimate, per 1K rows">Image enc.</th></tr></thead>`;
   const tb = el('tbody');
   rows.forEach(r => {
