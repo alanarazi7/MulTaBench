@@ -50,8 +50,6 @@ header { display: grid; gap: 14px; }
   :root:not([data-theme="light"]) .logo .light { display: none; }
   :root:not([data-theme="light"]) .logo .dark { display: block; }
 }
-.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; font: 13px/1.4 var(--mono); color: var(--muted); }
-.facts b { color: var(--ink); font-weight: 500; }
 section { display: grid; gap: 16px; }
 .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -105,7 +103,9 @@ b.enc { color: var(--c); }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
-.links a { color: var(--accent); }
+.links a { color: var(--accent); white-space: nowrap; text-decoration: none; font-weight: 500; }
+.links a:hover { text-decoration: underline; }
+.links .ico { display: inline-block; width: 1.05em; height: 1.05em; margin-right: 5px; vertical-align: -0.15em; line-height: 1; }
 code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
 .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
@@ -141,8 +141,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     </div>
     <div class="version" id="version"></div>
     <p class="muted" id="intro">MulTaBench is a benchmark for multimodal tabular learning with text and images. Its purpose is to drive smarter encoding methods, towards our vision of truly Multimodal Tabular Foundation Models. Its 80 datasets balance image and text modalities, classification and regression, and how hard the text or images are to encode, with the <b>Core</b> slice focusing on the 40 datasets where frozen embeddings are not enough.</p>
-    <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="https://github.com/alanarazi7/MulTaBench/blob/master/docs/protocol.md">Protocol</a> · <a href="data/leaderboards.csv">CSV</a></p>
-    <div class="facts" id="facts"></div>
+    <p class="links"><a href="https://github.com/alanarazi7/MulTaBench"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Code</a> · <a href="https://huggingface.co/multabench"><span class="ico">🤗</span>Datasets</a> · <a href="https://arxiv.org/abs/2605.10616"><span class="ico">📄</span>Paper</a> · <a href="https://github.com/alanarazi7/MulTaBench/blob/master/docs/protocol.md"><span class="ico">📋</span>Protocol</a></p>
   </header>
 
   <div class="sticky">
@@ -209,7 +208,6 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <h2>Using the leaderboard in your paper</h2>
     <p class="muted" id="dlNote"></p>
     <div class="panel dl">
-      <div><span class="label">Elo vs cost plot</span><button class="btn" data-dl="svg">SVG</button><button class="btn" data-dl="png">PNG</button></div>
       <div><span class="label">Ranking table</span><button class="btn" data-dl="csv">CSV</button><button class="btn" data-dl="json">JSON</button><a class="btn" href="data/leaderboards.csv" download>CSV · every filter</a></div>
       <div><span class="label">Per dataset and fold</span><a class="btn" href="data/per_dataset.csv" download>Per dataset CSV</a><a class="btn" href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models">Every run, per model (GitHub)</a></div>
     </div>
@@ -273,13 +271,7 @@ async function load() {
   const info = Object.fromEntries((await get('models')).map(r => [r.model, r]));
   const entries = boards['all|all|all|all'].map(r => r.entry).sort();
   const encodingOf = Object.fromEntries(boards['all|all|all|all'].map(r => [r.entry, r.encoding]));
-  const datasets = [...new Set(per_dataset.map(r => r.dataset))];
-  const have = new Set(per_dataset.map(r => r.entry + '|' + r.dataset));
-  const errors = [];
-  entries.forEach(m => datasets.forEach(d => { if (!have.has(m + '|' + d)) errors.push({ entry: m, dataset: d }); }));
-  const runs = per_dataset.reduce((n, r) => n + r.folds, 0);
-  return { boards, encodingBoards, per_dataset, cost, updated, info, errors, encodingOf,
-    meta: { entries, models: Object.keys(info).length, datasets: datasets.length, runs } };
+  return { boards, encodingBoards, per_dataset, cost, updated, info, encodingOf, meta: { entries } };
 }
 load().then(start).catch(err => {
   document.querySelector('.wrap').insertAdjacentHTML('afterbegin', `<p class="flag">Could not load the leaderboard data: ${err.message}</p>`);
@@ -414,18 +406,6 @@ function drawPareto(board, front) {
 }
 
 let current = { board: [], front: new Set(), label: '' };
-function resolvedSVG() {
-  const css = getComputedStyle(document.documentElement);
-  const svg = document.querySelector('#paretoChart svg').cloneNode(true);
-  svg.setAttribute('font-family', css.getPropertyValue('--mono'));
-  svg.setAttribute('font-size', '11');
-  const [, , vw, vh] = svg.getAttribute('viewBox').split(' ');
-  svg.setAttribute('width', vw);
-  svg.setAttribute('height', vh);
-  svg.insertAdjacentHTML('afterbegin', `<rect width="100%" height="100%" fill="var(--surface)"/>`);
-  svg.querySelectorAll('text').forEach(t => { if (!t.getAttribute('fill')) t.setAttribute('fill', t.classList.contains('name') ? 'var(--ink)' : 'var(--muted)'); });
-  return new XMLSerializer().serializeToString(svg).replace(/var\((--[a-z-]+)\)/g, (_, v) => css.getPropertyValue(v).trim());
-}
 function save(blob, name) {
   const a = el('a', { href: URL.createObjectURL(blob), download: name });
   a.click();
@@ -438,20 +418,7 @@ document.querySelectorAll('[data-dl]').forEach(b => b.onclick = () => {
     normalized_error: r.norm_error, best_on: r.champions, s_per_1k: timeOf[r.entry], pareto: current.front.has(r.entry) }));
   if (kind === 'csv') save(new Blob([[Object.keys(rows[0]).join(','), ...rows.map(r => Object.values(r).join(','))].join('\n')], { type: 'text/csv' }), base + '.csv');
   if (kind === 'json') save(new Blob([JSON.stringify({ version: LATEST.version, date: LATEST.date, filter: current.label, rows }, null, 2)], { type: 'application/json' }), base + '.json');
-  if (kind === 'svg') save(new Blob([resolvedSVG()], { type: 'image/svg+xml' }), base + '-pareto.svg');
-  if (kind === 'png') {
-    const img = new Image();
-    img.onload = () => {
-      const c = el('canvas', { width: img.width * 2, height: img.height * 2 });
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      c.toBlob(blob => save(blob, base + '-pareto.png'));
-    };
-    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(resolvedSVG());
-  }
 });
-document.getElementById('facts').innerHTML = [
-  ['datasets', D.meta.datasets], ['models', D.meta.models], ['entries', D.meta.entries.length], ['runs', fmt(D.meta.runs)]
-].map(([k, v]) => `<span>${k} <b>${v}</b></span>`).join('');
 
 
 const dsInfo = {};
