@@ -12,6 +12,7 @@
 :root {
   --bg: #F3F5F2; --surface: #FFFFFF; --ink: #1C2228; --muted: #5C666F; --line: #D9DED7; --soft: #EBEEE9;
   --accent: #2C5C8A; --text-mod: #A4581B; --image-mod: #2D7653; --best: #2C5C8A; --warn: #A33A2A;
+  --frozen: #7E8A94; --tar: #2C5C8A; --e2e: #8A5FA8;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -20,18 +21,20 @@
   :root:not([data-theme="light"]) {
     --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
     --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
+    --frozen: #8F9BA5; --tar: #84B3E0; --e2e: #C29BDF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
   --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
+    --frozen: #8F9BA5; --tar: #84B3E0; --e2e: #C29BDF;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); padding-inline: 16px; padding-block: 28px 64px; }
 .wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 40px; }
-.wrap > *, section > *, .notes > * { min-width: 0; }
+.wrap > *, section > * { min-width: 0; }
 h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
 h1 { font-size: clamp(28px, 4.4vw, 40px); font-weight: 800; }
 h2 { font-size: 21px; font-weight: 700; }
@@ -74,38 +77,33 @@ td.num, th.num { text-align: right; }
 .chart svg { display: block; width: 100%; height: auto; }
 .chart text { font-family: var(--mono); font-size: 11px; fill: var(--muted); }
 .chart .lbl { font-family: var(--body); font-size: 13px; fill: var(--ink); font-weight: 500; }
-.grid-2 { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 16px; align-items: start; }
-@media (max-width: 1000px) { .grid-2 { grid-template-columns: 1fr; } }
+.chart.wide svg { min-width: 760px; }
+.narrow { max-width: 640px; }
 #boardTable th, #boardTable td { padding-inline: 9px; }
-.legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; font-size: 13px; color: var(--muted); }
-.ramp { display: inline-flex; align-items: center; gap: 8px; }
-.ramp i { display: inline-block; width: 120px; height: 10px; border-radius: 3px; background: linear-gradient(90deg, var(--best), var(--surface)); border: 1px solid var(--line); }
-.heat td { padding: 0; border-bottom: 1px solid var(--surface); }
-.heat td.ds { padding: 6px 12px; font-size: 13px; background: var(--surface); position: sticky; left: 0; z-index: 1; border-right: 1px solid var(--line); }
-.heat td.cell { font: 12px/1 var(--mono); font-variant-numeric: tabular-nums; text-align: right; padding: 7px 9px; min-width: 64px; border-left: 1px solid var(--surface); }
-.heat td.cell.win { font-weight: 600; box-shadow: inset 0 0 0 2px var(--ink); }
-.heat td.cell.na { color: var(--warn); text-align: center; background: var(--soft); }
-.heat th { position: sticky; top: 0; background: var(--surface); z-index: 2; }
-.heat th.ds { left: 0; z-index: 3; }
-.heat th.m { writing-mode: vertical-rl; transform: rotate(180deg); text-align: left; padding: 10px 6px; height: 118px; vertical-align: bottom; }
-.mod { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
-.mod.text { background: var(--text-mod); } .mod.image { background: var(--image-mod); } .mod.image-text { background: linear-gradient(90deg, var(--text-mod) 50%, var(--image-mod) 50%); }
-.task { font: 11px/1 var(--mono); color: var(--muted); margin-left: 6px; }
-.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
-.note { padding: 16px 18px; display: grid; gap: 8px; align-content: start; font-size: 14px; }
-.note h3 { margin: 0; font: 600 14px/1.3 var(--body); }
 .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 select { font: 13px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; }
 .bar { display: inline-block; height: 8px; border-radius: 2px; background: var(--accent); vertical-align: middle; margin-right: 8px; opacity: .75; }
 .flag { color: var(--warn); }
+.chip { display: inline-block; font: 600 11.5px/1 var(--mono); letter-spacing: 0.03em; padding: 4px 8px; border-radius: 999px;
+  color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface)); }
+.chip.frozen { --c: var(--frozen); } .chip.tar { --c: var(--tar); } .chip.end-to-end { --c: var(--e2e); }
 
-.filters { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; background: var(--bg); border-bottom: 1px solid var(--line); }
+.sticky { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.pagetabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: none; }
+.pagetabs a { font: 500 14px/1 var(--body); color: var(--muted); text-decoration: none; padding: 14px 14px 12px; white-space: nowrap;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.pagetabs a:hover { color: var(--ink); }
+.pagetabs a[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.pagetabs a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.tabpanel { display: grid; gap: 40px; }
+.tabpanel[hidden] { display: none; }
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; }
+.filters[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
 .links a { color: var(--accent); }
 code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
-.note a { color: var(--accent); }
 
 .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
 .topbar .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
@@ -115,7 +113,6 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 .version { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font: 12px/1 var(--mono); color: var(--muted); }
 .version .tag { background: var(--accent); color: var(--surface); border-radius: 999px; padding: 4px 9px; font-weight: 500; }
 .version a { color: var(--accent); }
-.protocol { font-size: 13px; }
 .star { color: var(--warn); }
 tr.front td { background: color-mix(in oklab, var(--accent) 7%, var(--surface)); }
 .pareto text.name { font-family: var(--body); font-size: 12px; fill: var(--ink); font-weight: 500; }
@@ -123,10 +120,6 @@ tr.front td { background: color-mix(in oklab, var(--accent) 7%, var(--surface));
 .dl > div { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--soft); }
 .dl > div:last-child { border-bottom: 0; }
 .dl .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); min-width: 190px; }
-.history td:first-child { font-family: var(--mono); font-weight: 600; width: 4em; }
-.history td.date { font-family: var(--mono); color: var(--muted); white-space: nowrap; width: 8em; }
-.history td { white-space: normal; }
-.history a { color: var(--accent); }
 pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-space: pre-wrap; word-break: break-word; }
 .cta { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 32px; align-items: center; padding: 26px 28px; background: var(--ink); color: var(--bg); border-radius: 12px; }
 .cta h2 { color: var(--bg); font-size: 24px; }
@@ -143,84 +136,70 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       <div class="actions">
         <div class="tabs" id="themeTabs" role="group" aria-label="Theme"></div>
         <a class="btn primary" href="https://github.com/alanarazi7/MulTaBench/issues/new?title=Add%20a%20model%3A%20">Submit a model</a>
-        <a class="btn" href="#cite">Cite</a>
+        <a class="btn" href="#paper">Cite</a>
       </div>
     </div>
     <div class="version" id="version"></div>
-    <div class="eyebrow">MulTaBench · frozen encoders · 10K rows</div>
+    <div class="eyebrow">MulTaBench · frozen and TAR encoders · 10K rows</div>
     <h1>How should tabular models see text and images?</h1>
-    <p class="muted" id="intro">MulTaBench is a benchmark for multimodal tabular learning: tables whose columns hold free text or images alongside numbers and categories. Its 40 core datasets, 20 text-tabular and 20 image-tabular, were kept only if they show both <b>joint signal</b>, each modality carrying signal about the target that the others don't, and <b>target awareness</b>, the best representation of the text or images depending on the task. 40 more datasets with joint signal are released alongside them, 80 in total. Models are ranked here, but the benchmark's purpose is to compare ways of encoding text and images for tabular learners: this board uses frozen encoders, fine-tuned ones are next, and we expect new encoding methods to be submitted.</p>
-    <p class="muted protocol">* Frozen e5-small for text and DINOv3-small for images, 30 PCA components per column; ConTextTab and TabSTAR-v1.1 read raw text themselves. Default hyperparameters, no bagging, 3 folds × 2 repeats, up to 10K training rows.</p>
-    <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="data/leaderboards.csv">CSV</a></p>
+    <p class="muted" id="intro">Tabular models on 80 datasets whose columns hold free text or images. Each model that reads embeddings is ranked with <b>Frozen</b> encoders and with <b>TAR</b> encoders, fine-tuned on each fold's training rows; <b>E2E</b> models read raw text themselves.</p>
+    <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="https://github.com/alanarazi7/MulTaBench/blob/master/docs/protocol.md">Protocol</a> · <a href="data/leaderboards.csv">CSV</a></p>
     <div class="facts" id="facts"></div>
   </header>
 
+  <div class="sticky">
+  <nav class="pagetabs" id="pageTabs" role="tablist">
+    <a role="tab" href="#board" data-tab="board">Leaderboard</a>
+    <a role="tab" href="#encodings" data-tab="encodings">Encoders</a>
+    <a role="tab" href="#cost" data-tab="cost">Pareto</a>
+    <a role="tab" href="#paper" data-tab="paper">Cite & data</a>
+  </nav>
   <div class="filters">
     <div class="group tabs" id="tierTabs" role="group" aria-label="Datasets"><span class="label">Datasets</span></div>
     <div class="group tabs" id="taskTabs" role="group" aria-label="Task"><span class="label">Task</span></div>
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
+    <div class="group tabs" id="encodingTabs" role="group" aria-label="Encoders"><span class="label">Encoders</span></div>
+  </div>
   </div>
 
+  <div class="tabpanel" id="tab-board" role="tabpanel">
   <section>
     <div class="head">
       <h2>Elo rating</h2>
       <div class="group tabs" id="boardSort" role="group" aria-label="Sort"></div>
     </div>
     <p class="muted" id="boardNote"></p>
-    <div class="grid-2">
-      <div class="panel chart" id="eloChart"></div>
-      <div class="panel scroll"><table id="boardTable"></table></div>
-    </div>
+    <div class="panel scroll chart wide" id="eloChart"></div>
+    <div class="panel scroll"><table id="boardTable"></table></div>
   </section>
+  </div>
 
+  <div class="tabpanel" id="tab-encodings" role="tabpanel">
+  <section>
+    <h2>Frozen vs TAR</h2>
+    <p class="muted" id="encodingNote"></p>
+    <div class="panel scroll narrow"><table id="encodingTable"></table></div>
+  </section>
+  </div>
+
+  <div class="tabpanel" id="tab-cost" role="tabpanel">
   <section>
     <div class="head">
       <h2>Elo vs cost</h2>
       <div class="group tabs" id="encTabs" role="group" aria-label="Count encoding time"></div>
     </div>
-    <p class="muted">Each model's Elo, under the filters above, against its median train + predict time per 1,000 rows (log scale), optionally with an estimate of the frozen encoders' time on those rows. <span class="star">★</span> marks the Pareto front: no other model is both faster and stronger.</p>
+    <p class="muted">Each entry's Elo, under the filters above, against its median train + predict time per 1,000 rows (log scale), TAR's fine-tuning included, optionally with an estimate of the encoders' time on those rows. <span class="star">★</span> marks the Pareto front: no other model is both faster and stronger.</p>
     <div class="panel chart pareto" id="paretoChart"></div>
   </section>
 
   <section>
-    <div class="head">
-      <h2>Per-dataset results</h2>
-      <div class="controls">
-        <label class="muted" for="sortBy" style="font-size:13px">Sort</label>
-        <select id="sortBy">
-          <option value="name">Dataset name</option>
-          <option value="spread">Hardest to separate first</option>
-          <option value="winner">By winning model</option>
-        </select>
-      </div>
-    </div>
-    <div class="legend">
-      <span class="ramp">best <i></i> worst</span>
-      <span>cell = test error, mean of 6 folds · outlined = best on the dataset · shading normalized per dataset</span>
-      <span><span class="mod text"></span>text <span class="mod image" style="margin-left:10px"></span>image <span class="mod image-text" style="margin-left:10px"></span>image + text</span>
-    </div>
-    <div class="panel scroll" style="max-height: 640px; overflow: auto"><table class="heat" id="heat"></table></div>
-  </section>
-
-  <section>
     <h2>Cost</h2>
-    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Runs read the cached embeddings, so this leaves out encoding; the text and image columns estimate it, and the toggles above add it to the total.</p>
-    <div class="panel scroll"><table id="cost"></table></div>
+    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Runs read the cached embeddings, so this leaves out encoding; the text and image columns estimate it from the cached encoders' own time, and the toggles above add it to the total. Fine-tune is the mean time TAR's LoRA fine-tuning took per 1,000 training rows, on an H100, and always counts.</p>
+    <div class="panel scroll"><table id="costTable"></table></div>
   </section>
+  </div>
 
-  <section>
-    <h2>How to read this</h2>
-    <div class="notes">
-      <div class="panel note"><h3>Elo</h3><p class="muted">As in TabArena, every fold is its own battle: on each of a dataset's 6 folds, each pair of models plays one battle, won by the lower test error. The battles are fit as a Bradley–Terry model, with RandomForest fixed at 1000, by TabArena's bencheval. The interval is the 95% range over 1,000 bootstrap resamples of datasets, each with all its folds, bootstrapped before anchoring, so each is the model's own. Win rate, average rank, normalized error and best-on count are per fold as well.</p></div>
-      <div class="panel note"><h3>Missing results are not imputed</h3><p class="muted" id="missingNote"></p></div>
-      <div class="panel note"><h3>Datasets</h3><p class="muted">The benchmark's 80 datasets are 40 core and 40 extended ones, as their Hugging Face repos are named (<code>core-…</code>, <code>extended-…</code>); the Datasets filter keeps either half.</p></div>
-      <div class="panel note"><h3>Data</h3><p class="muted">Every run is in <a href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models"><code>multabench/leaderboard/models/&lt;model&gt;.csv</code></a>. The tables here are plain CSVs in this Space's <a href="https://huggingface.co/spaces/multabench/leaderboard/tree/main/data">data</a> folder: <code>leaderboards.csv</code> (one leaderboard per <code>tier</code>, <code>task</code> and <code>modality</code> filter), <code>per_dataset.csv</code> and <code>cost.csv</code>.</p></div>
-      <div class="panel note"><h3>Metrics</h3><p class="muted">Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized error rescales each dataset to 0 (best model) – 1 (worst).</p></div>
-      <div class="panel note"><h3>Encoding time is an estimate</h3><p class="muted">Runs read cached e5-small and DINOv3-small embeddings, so their own time leaves encoding out. The estimate is each dataset's encoding time per row from those caches, which were computed on A100s rather than the leaderboard's H100 (image time includes reading the files), averaged over a model's runs, with 0 where a run doesn't use the encoder. It is counted on the 1,000 training rows and the 1,000 predicted ones. ConTextTab and TabSTAR-v1.1 encode raw text themselves, inside their own time.</p></div>
-      <div class="panel note"><h3>Hardware</h3><p class="muted">Each run gets 8 CPUs and 32 GB. Tree models run on CPU (Xeon 8581C); the others on one H100 80 GB (Xeon 8481C).</p></div>
-    </div>
-  </section>
-
+  <div class="tabpanel" id="tab-paper" role="tabpanel">
   <section>
     <h2>Using the leaderboard in your paper</h2>
     <p class="muted" id="dlNote"></p>
@@ -229,12 +208,6 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       <div><span class="label">Ranking table</span><button class="btn" data-dl="csv">CSV</button><button class="btn" data-dl="json">JSON</button><a class="btn" href="data/leaderboards.csv" download>CSV · every filter</a></div>
       <div><span class="label">Per dataset and fold</span><a class="btn" href="data/per_dataset.csv" download>Per dataset CSV</a><a class="btn" href="https://github.com/alanarazi7/MulTaBench/tree/master/multabench/leaderboard/models">Every run, per model (GitHub)</a></div>
     </div>
-  </section>
-
-  <section id="history">
-    <h2>Version history</h2>
-    <p class="muted" id="citeRank"></p>
-    <div class="panel scroll"><table class="history" id="historyTable"></table></div>
   </section>
 
   <section id="cite">
@@ -249,6 +222,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
   url={https://arxiv.org/abs/2605.10616},
 }</pre></div>
   </section>
+  </div>
 
   <section class="cta">
     <h2>Have a model that should be on the board?</h2>
@@ -287,32 +261,41 @@ document.addEventListener('click', e => {
 });
 async function load() {
   const get = async name => parseCSV(await (await fetch(`data/${name}.csv`)).text());
-  const boards = {};
+  const boards = {}, encodingBoards = {};
   (await get('leaderboards')).forEach(r => {
-    (boards[r.tier + '|' + r.task + '|' + r.modality] ||= []).push({ ...r, lo: r.elo_low, hi: r.elo_high, norm_error: r.normalized_error, champions: r.best_on });
+    (boards[[r.tier, r.task, r.modality, r.encodings].join('|')] ||= []).push({ ...r, lo: r.elo_low, hi: r.elo_high, norm_error: r.normalized_error, champions: r.best_on });
+  });
+  (await get('encodings')).forEach(r => {
+    (encodingBoards[[r.tier, r.task, r.modality].join('|')] ||= []).push({ ...r, entry: r.encoding, lo: r.elo_low, hi: r.elo_high, champions: r.best_on });
   });
   const per_dataset = (await get('per_dataset')).map(r => ({ ...r, task_type: r.dataset.slice(0, 3) }));
   const cost = await get('cost');
-  const versions = await get('versions');
+  const res = await fetch('data/leaderboards.csv', { method: 'HEAD' });
+  const updated = res.headers.get('last-modified') && new Date(res.headers.get('last-modified')).toISOString().slice(0, 10);
   const info = Object.fromEntries((await get('models')).map(r => [r.model, r]));
-  const models = boards['all|all|all'].map(r => r.model).sort();
+  const entries = boards['all|all|all|all'].map(r => r.entry).sort();
+  const encodingOf = Object.fromEntries(boards['all|all|all|all'].map(r => [r.entry, r.encoding]));
   const datasets = [...new Set(per_dataset.map(r => r.dataset))];
-  const have = new Set(per_dataset.map(r => r.model + '|' + r.dataset));
+  const have = new Set(per_dataset.map(r => r.entry + '|' + r.dataset));
   const errors = [];
-  models.forEach(m => datasets.forEach(d => { if (!have.has(m + '|' + d)) errors.push({ model: m, dataset: d }); }));
+  entries.forEach(m => datasets.forEach(d => { if (!have.has(m + '|' + d)) errors.push({ entry: m, dataset: d }); }));
   const runs = per_dataset.reduce((n, r) => n + r.folds, 0);
-  return { boards, per_dataset, cost, versions, info, errors, meta: { models, datasets: datasets.length, runs } };
+  return { boards, encodingBoards, per_dataset, cost, updated, info, errors, encodingOf,
+    meta: { entries, models: Object.keys(info).length, datasets: datasets.length, runs } };
 }
 load().then(start).catch(err => {
   document.querySelector('.wrap').insertAdjacentHTML('afterbegin', `<p class="flag">Could not load the leaderboard data: ${err.message}</p>`);
 });
 function start(D) {
 
-const MODELS = D.meta.models;
 const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
+const ENC_LABEL = { frozen: 'Frozen', tar: 'TAR', 'end-to-end': 'E2E' };
+const ENC_TITLE = { frozen: 'Frozen encoders', tar: 'Encoders fine-tuned on each fold', 'end-to-end': 'Reads raw text itself' };
+const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image'], ['image-text', 'Image + text']];
+const ENCS = [['frozen', 'Frozen'], ['tar', 'TAR']];
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -337,15 +320,20 @@ function setTheme(t) {
 }
 setTheme(store.get('theme') || 'auto');
 
-const LATEST = D.versions[0];
-const SITE = 'https://huggingface.co/spaces/multabench/leaderboard';
-document.getElementById('version').innerHTML = `<span>Leaderboard</span><span class="tag">${LATEST.version}</span>` +
-  `<a href="#history">Version history</a><span>Updated ${LATEST.date}</span>`;
-document.getElementById('citeRank').innerHTML =
-  `What changed in each version. To cite a rank: <code>MulTaBench leaderboard ${LATEST.version}, ${LATEST.date}, ${SITE}</code>`;
-const ht = document.getElementById('historyTable');
-D.versions.forEach(v => ht.appendChild(el('tr', {},
-  `<td>${v.version}</td><td class="date">${v.date}</td><td>${v.change} <a href="https://github.com/alanarazi7/MulTaBench/pull/${v.pr}">#${v.pr}</a></td>`)));
+// The multabench package version the board is built with; a placeholder until v0.1 goes out with the board.
+const LATEST = { version: 'v0.1', date: D.updated };
+document.getElementById('version').innerHTML = `<span>Leaderboard</span><span class="tag">${LATEST.version}</span><span>preview</span>` +
+  (LATEST.date ? `<span>Updated ${LATEST.date}</span>` : '');
+// Page tabs follow the URL hash, so each can be linked to; the filters only show where they apply.
+const TABS = [...document.querySelectorAll('#pageTabs a')].map(a => a.dataset.tab);
+function showTab() {
+  const k = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'board';
+  TABS.forEach(t => { document.getElementById('tab-' + t).hidden = t !== k; });
+  document.querySelectorAll('#pageTabs a').forEach(a => a.setAttribute('aria-selected', a.dataset.tab === k));
+  document.querySelector('.filters').hidden = k === 'paper';
+}
+window.addEventListener('hashchange', () => { showTab(); document.querySelector('.sticky').scrollIntoView(); });
+showTab();
 document.getElementById('copyBib').onclick = e => {
   navigator.clipboard?.writeText(document.getElementById('bib').textContent).then(() => { e.target.textContent = 'Copied'; });
 };
@@ -355,7 +343,8 @@ const ENC = [['text', 'Text encoding'], ['image', 'Image encoding']];
 const enc = Object.fromEntries(ENC.map(([k]) => [k, store.get('enc_' + k) === '1']));
 const encodeOf = r => 2 * ((enc.text ? r.text_encode_s_per_1k : 0) + (enc.image ? r.image_encode_s_per_1k : 0));
 let timeOf = {};
-const computeTime = () => { timeOf = Object.fromEntries(D.cost.map(r => [r.model, r.train_s_per_1k + r.inference_s_per_1k + encodeOf(r)])); };
+// TAR's fine-tuning is part of training, so it always counts; encoding the rows is optional, as for frozen encoders.
+const computeTime = () => { timeOf = Object.fromEntries(D.cost.map(r => [r.entry, r.train_s_per_1k + r.finetune_s_per_1k + r.inference_s_per_1k + encodeOf(r)])); };
 computeTime();
 function drawEncTabs() {
   const box = document.getElementById('encTabs');
@@ -372,16 +361,16 @@ drawEncTabs();
 function paretoFront(board) {
   const front = new Set();
   let best = -Infinity;
-  [...board].filter(r => timeOf[r.model] != null).sort((a, b) => timeOf[a.model] - timeOf[b.model] || b.elo - a.elo)
-    .forEach(r => { if (r.elo > best) { front.add(r.model); best = r.elo; } });
+  [...board].filter(r => timeOf[r.entry] != null).sort((a, b) => timeOf[a.entry] - timeOf[b.entry] || b.elo - a.elo)
+    .forEach(r => { if (r.elo > best) { front.add(r.entry); best = r.elo; } });
   return front;
 }
 const SORTS = [['elo', 'Elo'], ['pareto', '★ Pareto'], ['time', 'Time']];
 let boardSort = SORTS.some(s => s[0] === store.get('boardSort')) ? store.get('boardSort') : 'elo';
 function sortBoard(board, front) {
   const rows = [...board];
-  if (boardSort === 'pareto') rows.sort((a, b) => front.has(b.model) - front.has(a.model) || b.elo - a.elo);
-  else if (boardSort === 'time') rows.sort((a, b) => timeOf[a.model] - timeOf[b.model]);
+  if (boardSort === 'pareto') rows.sort((a, b) => front.has(b.entry) - front.has(a.entry) || b.elo - a.elo);
+  else if (boardSort === 'time') rows.sort((a, b) => timeOf[a.entry] - timeOf[b.entry]);
   return rows;
 }
 function drawSortTabs() {
@@ -395,9 +384,9 @@ function drawSortTabs() {
 }
 
 function drawPareto(board, front) {
-  const rows = board.filter(r => timeOf[r.model] != null);
+  const rows = board.filter(r => timeOf[r.entry] != null);
   const W = 1080, H = 460, left = 64, right = 24, top = 20, bottom = 52;
-  const lt = rows.map(r => Math.log10(timeOf[r.model]));
+  const lt = rows.map(r => Math.log10(timeOf[r.entry]));
   const tMin = Math.floor(Math.min(...lt)), tMax = Math.ceil(Math.max(...lt));
   const eMin = Math.floor((Math.min(...rows.map(r => r.elo)) - 60) / 200) * 200;
   const eMax = Math.ceil((Math.max(...rows.map(r => r.elo)) + 60) / 200) * 200;
@@ -414,12 +403,12 @@ function drawPareto(board, front) {
     s += `<text x="${left - 10}" y="${y(e) + 4}" text-anchor="end">${e}</text>`;
   }
   const encLabel = ENC.filter(([k]) => enc[k]).map(([k]) => k).join(' + ');
-  s += `<text x="${(left + W - right) / 2}" y="${H - 10}" text-anchor="middle">Train + predict s per 1K rows, median${encLabel ? `, + ${encLabel} encoding (estimate)` : ''}, log scale</text>`;
+  s += `<text x="${(left + W - right) / 2}" y="${H - 10}" text-anchor="middle">Train (with TAR fine-tuning) + predict s per 1K rows${encLabel ? `, + ${encLabel} encoding (estimate)` : ''}, log scale</text>`;
   s += `<text transform="translate(16 ${(top + H - bottom) / 2}) rotate(-90)" text-anchor="middle">Elo</text>`;
-  const fr = rows.filter(r => front.has(r.model)).sort((a, b) => timeOf[a.model] - timeOf[b.model]);
+  const fr = rows.filter(r => front.has(r.entry)).sort((a, b) => timeOf[a.entry] - timeOf[b.entry]);
   let path = '';
   fr.forEach((r, i) => {
-    const px = x(timeOf[r.model]), py = y(r.elo);
+    const px = x(timeOf[r.entry]), py = y(r.elo);
     path += i === 0 ? `M${px} ${H - bottom} L${px} ${py}` : ` L${px} ${y(fr[i - 1].elo)} L${px} ${py}`;
   });
   if (fr.length) path += ` L${W - right} ${y(fr[fr.length - 1].elo)}`;
@@ -427,24 +416,24 @@ function drawPareto(board, front) {
   // Front labels first, then the others wherever they fit; a label that fits nowhere is left to the tooltip.
   const boxes = [], hit = (b) => boxes.some(o => b.x0 < o.x1 && o.x0 < b.x1 && b.y0 < o.y1 && o.y0 < b.y1);
   const place = (r, onFront) => {
-    const px = x(timeOf[r.model]), py = y(r.elo), w = r.model.length * (onFront ? 7 : 6.4), h = 12;
+    const px = x(timeOf[r.entry]), py = y(r.elo), w = r.entry.length * (onFront ? 7 : 6.4), h = 12;
     const spots = onFront ? [[px - 10 - w, py - 9 - h]] : [[px + 8, py - 4], [px - 8 - w, py - 4], [px - w / 2, py - 18], [px - w / 2, py + 8]];
     for (const [x0, y0] of spots) {
       const box = { x0, y0, x1: x0 + w, y1: y0 + h };
-      if (onFront || !hit(box)) { boxes.push(box); return `<text${onFront ? ' class="name"' : ' font-size="10.5"'} x="${x0}" y="${y0 + 10}">${r.model}</text>`; }
+      if (onFront || !hit(box)) { boxes.push(box); return `<text${onFront ? ' class="name"' : ' font-size="10.5"'} x="${x0}" y="${y0 + 10}">${r.entry}</text>`; }
     }
     return '';
   };
-  rows.forEach(r => boxes.push({ x0: x(timeOf[r.model]) - 6, x1: x(timeOf[r.model]) + 6, y0: y(r.elo) - 6, y1: y(r.elo) + 6 }));
-  const tip = r => `<title>${r.model}: Elo ${fmt(r.elo)}, ${fmt(timeOf[r.model], 2)} s per 1K rows</title>`;
-  rows.filter(r => !front.has(r.model)).forEach(r => {
-    s += `<rect x="${x(timeOf[r.model]) - 4}" y="${y(r.elo) - 4}" width="8" height="8" fill="var(--muted)" opacity=".55">${tip(r)}</rect>`;
+  rows.forEach(r => boxes.push({ x0: x(timeOf[r.entry]) - 6, x1: x(timeOf[r.entry]) + 6, y0: y(r.elo) - 6, y1: y(r.elo) + 6 }));
+  const tip = r => `<title>${r.entry}: Elo ${fmt(r.elo)}, ${fmt(timeOf[r.entry], 2)} s per 1K rows</title>`;
+  rows.filter(r => !front.has(r.entry)).forEach(r => {
+    s += `<rect x="${x(timeOf[r.entry]) - 4}" y="${y(r.elo) - 4}" width="8" height="8" fill="var(--muted)" opacity=".55">${tip(r)}</rect>`;
   });
   fr.forEach(r => {
-    s += `<rect x="${x(timeOf[r.model]) - 5.5}" y="${y(r.elo) - 5.5}" width="11" height="11" fill="var(--warn)">${tip(r)}</rect>`;
+    s += `<rect x="${x(timeOf[r.entry]) - 5.5}" y="${y(r.elo) - 5.5}" width="11" height="11" fill="var(--warn)">${tip(r)}</rect>`;
   });
   fr.forEach(r => { s += place(r, true); });
-  [...rows].filter(r => !front.has(r.model)).sort((a, b) => b.elo - a.elo).forEach(r => { s += place(r, false); });
+  [...rows].filter(r => !front.has(r.entry)).sort((a, b) => b.elo - a.elo).forEach(r => { s += place(r, false); });
   s += '</svg>';
   document.getElementById('paretoChart').innerHTML = `<div style="padding:12px 8px 4px">${s}</div>`;
 }
@@ -469,9 +458,9 @@ function save(blob, name) {
 }
 document.querySelectorAll('[data-dl]').forEach(b => b.onclick = () => {
   const kind = b.dataset.dl, base = `multabench-${LATEST.version}-${current.label}`;
-  const rows = current.sorted.map(r => ({ rank: current.board.indexOf(r) + 1, model: r.model, elo: +r.elo.toFixed(1), elo_low: +r.lo.toFixed(1),
+  const rows = current.sorted.map(r => ({ rank: current.board.indexOf(r) + 1, entry: r.entry, model: r.model, encoding: r.encoding, elo: +r.elo.toFixed(1), elo_low: +r.lo.toFixed(1),
     elo_high: +r.hi.toFixed(1), datasets: r.datasets, win_rate: r.win_rate, avg_rank: r.avg_rank,
-    normalized_error: r.norm_error, best_on: r.champions, s_per_1k: timeOf[r.model], pareto: current.front.has(r.model) }));
+    normalized_error: r.norm_error, best_on: r.champions, s_per_1k: timeOf[r.entry], pareto: current.front.has(r.entry) }));
   if (kind === 'csv') save(new Blob([[Object.keys(rows[0]).join(','), ...rows.map(r => Object.values(r).join(','))].join('\n')], { type: 'text/csv' }), base + '.csv');
   if (kind === 'json') save(new Blob([JSON.stringify({ version: LATEST.version, date: LATEST.date, filter: current.label, rows }, null, 2)], { type: 'application/json' }), base + '.json');
   if (kind === 'svg') save(new Blob([resolvedSVG()], { type: 'image/svg+xml' }), base + '-pareto.svg');
@@ -485,28 +474,36 @@ document.querySelectorAll('[data-dl]').forEach(b => b.onclick = () => {
     img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(resolvedSVG());
   }
 });
-function errByModelOf(errors) {
-  const out = {};
-  errors.forEach(e => { (out[e.model] ||= new Set()).add(e.dataset); });
-  return out;
-}
 document.getElementById('facts').innerHTML = [
-  ['datasets', D.meta.datasets], ['models', MODELS.length], ['successful runs', fmt(D.meta.runs)],
-  ['missing', `${D.errors.length} model-dataset pairs (${Object.keys(errByModelOf(D.errors)).join(', ')})`]
+  ['datasets', D.meta.datasets], ['models', D.meta.models], ['entries', D.meta.entries.length], ['runs', fmt(D.meta.runs)]
 ].map(([k, v]) => `<span>${k} <b>${v}</b></span>`).join('');
 
-const errByModel = errByModelOf(D.errors);
-const dsLabel = d => d.replace(/^(BIN|MUL|REG)_(TEXT|IMAGE)_/, '').replace(/_/g, ' ').toLowerCase();
-document.getElementById('missingNote').textContent =
-  'A model with no successful run on a dataset has no battles there, so it is rated on the others. TabPFN-v2, TabPFN-v2p5 and Mitra-v2 support at most 10 classes, and Mitra-v2 runs out of GPU memory on melbourne airbnb (680 features). Missing: ' +
-  Object.entries(errByModel).map(([m, ds]) => `${m}, ${ds.size} (${[...ds].sort().map(dsLabel).join(', ')})`).join('; ') + '.';
 
 const dsInfo = {};
 D.per_dataset.forEach(r => { dsInfo[r.dataset] = { tier: r.tier, task: taskOf(r.dataset), modality: r.modality }; });
-const restore = (k, all) => { try { const v = JSON.parse(store.get(k)); return v.length && v.every(x => all.includes(x)) ? v : all; } catch (e) { return all; } };
-const sel = { tier: restore('tiers', TIERS.map(t => t[0])), task: restore('tasks', TASKS.map(t => t[0])),
+const restore = (k, all, dflt = all) => { try { const v = JSON.parse(store.get(k)); return v.length && v.every(x => all.includes(x)) ? v : dflt; } catch (e) { return dflt; } };
+const sel = { tier: restore('tiers_v2', TIERS.map(t => t[0]), ['core']), task: restore('tasks', TASKS.map(t => t[0])),
   modality: restore('mods', MODS.map(m => m[0])) };
 const FIELDS = Object.keys(sel);
+let encSel = restore('encodings', ENCS.map(e => e[0]));
+const encKey = () => keyOf(encSel, ENCS);
+function encodingToggles() {
+  const box = document.getElementById('encodingTabs');
+  box.querySelectorAll('button').forEach(b => b.remove());
+  ENCS.forEach(([key, label]) => {
+    const n = D.meta.entries.filter(m => D.encodingOf[m] === key).length;
+    const on = encSel.includes(key);
+    const b = el('button', { type: 'button', title: on && encSel.length === 1 ? 'Keep at least one selected' : '' }, `${label}<span class="n">${n}</span>`);
+    b.setAttribute('aria-pressed', on);
+    b.onclick = () => {
+      if (on && encSel.length === 1) return;
+      encSel = on ? encSel.filter(k => k !== key) : [...encSel, key];
+      store.set('encodings', JSON.stringify(encSel));
+      render();
+    };
+    box.appendChild(b);
+  });
+}
 const keyOf = (picked, all) => picked.length === all.length ? 'all' : all.map(a => a[0]).filter(a => picked.includes(a)).join('+');
 const inFilter = d => FIELDS.every(f => sel[f].includes(dsInfo[d][f]));
 
@@ -529,124 +526,115 @@ function toggles(container, items, field, storeKey) {
 }
 
 function drawElo(board) {
-  const rows = board, W = 520, rowH = 30, top = 18, bottom = 34, left = 162, right = 20;
-  const H = top + rows.length * rowH + bottom;
-  const lo = Math.min(...rows.map(r => r.lo)), hi = Math.max(...rows.map(r => r.hi));
-  const step = hi - Math.min(lo, 1000) > 1600 ? 400 : 200;
-  const min = Math.floor((Math.min(lo, 1000) - 50) / step) * step, max = Math.ceil((hi + 50) / step) * step;
-  const x = v => left + (v - min) / (max - min) * (W - left - right);
-  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elo ratings with 95% intervals">`;
+  const groups = [];
+  board.forEach(r => { let g = groups.find(g => g.model === r.model); if (!g) groups.push(g = { model: r.model, rows: [] }); g.rows.push(r); });
+  const ORDER = ['frozen', 'tar', 'end-to-end'];
+  groups.forEach(g => g.rows.sort((a, b) => ORDER.indexOf(a.encoding) - ORDER.indexOf(b.encoding)));
+  const W = 1080, H = 420, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
+  const lo = Math.min(1000, ...board.map(r => r.lo)), hi = Math.max(...board.map(r => r.hi));
+  const step = hi - lo > 1200 ? 400 : 200;
+  const min = Math.floor((lo - 50) / step) * step, max = Math.ceil((hi + 50) / step) * step;
+  const y = v => top + (max - v) / (max - min) * (H - top - bottom);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elo ratings with 95% intervals, by model and encoding">`;
   for (let t = min; t <= max; t += step) {
-    s += `<line x1="${x(t)}" x2="${x(t)}" y1="${top - 6}" y2="${H - bottom + 4}" stroke="var(--soft)" stroke-width="1"/>`;
-    s += `<text x="${x(t)}" y="${H - bottom + 20}" text-anchor="middle">${t}</text>`;
+    s += `<line x1="${left}" x2="${W - right}" y1="${y(t)}" y2="${y(t)}" stroke="var(--soft)"/>`;
+    s += `<text x="${left - 10}" y="${y(t) + 4}" text-anchor="end">${t}</text>`;
   }
-  s += `<line x1="${x(1000)}" x2="${x(1000)}" y1="${top - 6}" y2="${H - bottom + 4}" stroke="var(--muted)" stroke-dasharray="3 3" stroke-width="1"/>`;
-  rows.forEach((r, i) => {
-    const y = top + i * rowH + rowH / 2;
-    s += `<text class="lbl" x="${left - 12}" y="${y + 4}" text-anchor="end">${r.model}</text>`;
-    if (r.model !== 'RandomForest') s += `<line x1="${x(r.lo)}" x2="${x(r.hi)}" y1="${y}" y2="${y}" stroke="var(--accent)" stroke-opacity=".45" stroke-width="6" stroke-linecap="round"/>`;
-    s += `<circle cx="${x(r.elo)}" cy="${y}" r="5" fill="${i === 0 ? 'var(--accent)' : 'var(--surface)'}" stroke="var(--accent)" stroke-width="2"/>`;
+  s += `<line x1="${left}" x2="${W - right}" y1="${y(1000)}" y2="${y(1000)}" stroke="var(--muted)" stroke-dasharray="3 3"/>`;
+  let lx = left;
+  ORDER.filter(e => board.some(r => r.encoding === e)).forEach(e => {
+    s += `<circle cx="${lx + 6}" cy="16" r="5" fill="var(--${e === 'end-to-end' ? 'e2e' : e})"/><text x="${lx + 16}" y="20">${ENC_LABEL[e]}</text>`;
+    lx += 26 + ENC_LABEL[e].length * 7 + 18;
+  });
+  groups.forEach((g, i) => {
+    const cx = left + (i + 0.5) * slot, dx = g.rows.length > 1 ? Math.min(7, slot / 5) : 0;
+    const xs = g.rows.map((r, j) => cx + (j - (g.rows.length - 1) / 2) * 2 * dx);
+    if (g.rows.length > 1) s += `<line x1="${xs[0]}" x2="${xs[1]}" y1="${y(g.rows[0].elo)}" y2="${y(g.rows[1].elo)}" stroke="var(--muted)" stroke-opacity=".5"/>`;
+    g.rows.forEach((r, j) => {
+      const c = `var(--${r.encoding === 'end-to-end' ? 'e2e' : r.encoding})`;
+      const tip = `<title>${r.entry}: Elo ${fmt(r.elo)} (${fmt(r.lo)}–${fmt(r.hi)})</title>`;
+      if (r.hi > r.lo) s += `<line x1="${xs[j]}" x2="${xs[j]}" y1="${y(r.hi)}" y2="${y(r.lo)}" stroke="${c}" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/>`;
+      s += `<circle cx="${xs[j]}" cy="${y(r.elo)}" r="4.5" fill="${c}">${tip}</circle>`;
+    });
+    s += `<text class="lbl" text-anchor="end" transform="translate(${cx + 4} ${H - bottom + 14}) rotate(-50)">${g.model}</text>`;
   });
   s += '</svg>';
-  document.getElementById('eloChart').innerHTML = `<div style="padding:12px 8px 4px">${s}</div>`;
+  document.getElementById('eloChart').innerHTML = `<div style="padding:8px 8px 0">${s}</div>`;
 }
 
 function drawBoard(board, front, byElo) {
   const t = document.getElementById('boardTable');
   const maxN = Math.max(...board.map(r => r.datasets));
-  t.innerHTML = `<thead><tr><th></th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num">Win rate</th><th class="num">Avg rank</th><th class="num">Norm. err</th><th class="num" title="Folds on which the model has the lowest test error">Best</th></tr></thead>`;
+  t.innerHTML = `<thead><tr><th></th><th>Encoding</th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num" title="Share of its battles the entry wins">Win rate</th></tr></thead>`;
   const tb = el('tbody');
   board.forEach((r, i) => {
     const ci = `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
     const n = r.datasets < maxN ? ` <span class="flag" title="Rated on ${r.datasets} of ${maxN} datasets">${r.datasets}/${maxN}</span>` : '';
-    const star = front.has(r.model) ? ' <span class="star" title="On the Pareto front of Elo and run time">★</span>' : '';
-    tb.appendChild(el('tr', { className: front.has(r.model) ? 'front' : '' }, `<td class="rank">${byElo.indexOf(r) + 1}</td><td class="model">${modelName(r.model)}${star}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td><td class="num">${fmt(r.avg_rank, 2)}</td><td class="num">${fmt(r.norm_error, 3)}</td><td class="num">${r.champions}</td>`));
+    const star = front.has(r.entry) ? ' <span class="star" title="On the Pareto front of Elo and run time">★</span>' : '';
+    tb.appendChild(el('tr', { className: front.has(r.entry) ? 'front' : '' }, `<td class="rank">${byElo.indexOf(r) + 1}</td>${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}${star}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
   });
   t.appendChild(tb);
 }
 
 const MOD_NAMES = { text: 'text', image: 'image', 'image-text': 'image + text' };
 function renderBoard() {
-  const board = D.boards[keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS)];
+  const filterKey = keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS);
+  const board = D.boards[filterKey + '|' + encKey()];
   const names = Object.keys(dsInfo).filter(inFilter);
   const count = (field, key) => names.filter(d => dsInfo[d][field] === key).length;
   const parts = [...TIERS.map(([k]) => [count('tier', k), k]), ...TASKS.map(([k]) => [count('task', k), k]),
     ...MODS.map(([k]) => [count('modality', k), MOD_NAMES[k]])].filter(([n]) => n);
   document.getElementById('boardNote').textContent = `${names.length} datasets: ${parts.map(([n, k]) => `${n} ${k}`).join(', ')}.` + (names.length < 10 ? ' Few datasets, so wide intervals.' : '');
   const front = paretoFront(board);
-  current = { board, front, label: [sel.tier, sel.task, sel.modality].map((v, i) => keyOf(v, [TIERS, TASKS, MODS][i])).join('_') };
+  current = { board, front, label: [...[sel.tier, sel.task, sel.modality].map((v, i) => keyOf(v, [TIERS, TASKS, MODS][i])), encKey()].join('_') };
   drawSortTabs();
   drawElo(board);
   const sorted = sortBoard(board, front);
   drawBoard(sorted, front, board);
   current.sorted = sorted;
   drawPareto(board, front);
+  renderEncodings(filterKey);
   document.getElementById('dlNote').textContent = `Download the current board, with its version and date, to include it in a paper. Current view: ${names.length} datasets, sorted by ${SORTS.find(s => s[0] === boardSort)[1].replace('★ ', '')}.`;
 }
 
-const byDs = {};
-D.per_dataset.forEach(r => { (byDs[r.dataset] ||= { modality: r.modality, task: r.task_type, metric: r.metric, m: {} }).m[r.model] = r; });
-const errSet = new Set(D.errors.map(e => e.model + '|' + e.dataset));
-const order = D.boards['all|all|all'].map(r => r.model);
-const sortSel = document.getElementById('sortBy');
-sortSel.value = store.get('heatSort') || 'name';
-sortSel.onchange = () => { store.set('heatSort', sortSel.value); renderHeat(); };
-
-function renderHeat() {
-  let names = Object.keys(byDs).filter(inFilter);
-  const stats = {};
-  names.forEach(n => {
-    const v = order.map(m => byDs[n].m[m]?.test_error).filter(x => x != null);
-    const mn = Math.min(...v), mx = Math.max(...v);
-    const winner = order.find(m => byDs[n].m[m]?.test_error === mn);
-    stats[n] = { mn, mx, winner, spread: mx > 0 ? (mx - mn) / Math.abs(mx) : 0 };
-  });
-  if (sortSel.value === 'spread') names.sort((a, b) => stats[a].spread - stats[b].spread);
-  else if (sortSel.value === 'winner') names.sort((a, b) => order.indexOf(stats[a].winner) - order.indexOf(stats[b].winner) || a.localeCompare(b));
-  else names.sort();
-  const t = document.getElementById('heat');
-  t.innerHTML = `<thead><tr><th class="ds">Dataset (${names.length})</th>${order.map(m => `<th class="m">${m}</th>`).join('')}</tr></thead>`;
-  const tb = el('tbody');
-  names.forEach(n => {
-    const ds = byDs[n], s = stats[n];
-    const label = n.replace(/^(BIN|MUL|REG)_(TEXT|IMAGE)_/, '').replace(/_/g, ' ').toLowerCase();
-    let row = `<td class="ds" title="${n} · ${ds.metric}"><span class="mod ${ds.modality}"></span>${label}<span class="task">${ds.task}</span></td>`;
-    order.forEach(m => {
-      const r = ds.m[m];
-      if (!r) { row += `<td class="cell na" title="${errSet.has(m + '|' + n) ? 'No successful run: see Missing results below' : 'No result'}">✕</td>`; return; }
-      const norm = s.mx > s.mn ? (r.test_error - s.mn) / (s.mx - s.mn) : 0;
-      const pct = Math.round((1 - norm) * 78);
-      const ink = pct > 48 ? 'color:var(--surface)' : '';
-      const v = r.test_error >= 100 ? fmt(r.test_error, 0) : r.test_error >= 1 ? fmt(r.test_error, 2) : fmt(r.test_error, 3);
-      row += `<td class="cell${r.test_error === s.mn ? ' win' : ''}" style="background:color-mix(in oklab, var(--best) ${pct}%, var(--surface));${ink}" title="${m} · ${ds.metric} error ${r.test_error.toPrecision(5)} ± ${(r.test_error_std ?? 0).toPrecision(3)}">${v}</td>`;
-    });
-    tb.appendChild(el('tr', {}, row));
-  });
-  t.appendChild(tb);
-}
+const orderOf = () => D.boards['all|all|all|' + encKey()].map(r => r.entry);
 function render() {
   toggles(document.getElementById('tierTabs'), TIERS, 'tier', 'tiers');
   toggles(document.getElementById('taskTabs'), TASKS, 'task', 'tasks');
   toggles(document.getElementById('modTabs'), MODS, 'modality', 'mods');
+  encodingToggles();
   renderBoard();
-  renderHeat();
+  renderCost();
 }
 render();
 
 function renderCost() {
-  const rows = [...D.cost].sort((a, b) => order.indexOf(a.model) - order.indexOf(b.model));
-  const maxT = Math.max(...rows.map(r => timeOf[r.model]));
-  const what = ['Train + predict', ...ENC.filter(([k]) => enc[k]).map(([k]) => k)].join(' + ');
-  const t = document.getElementById('cost');
-  t.innerHTML = `<thead><tr><th>Model</th><th>Device</th><th>${what} s / 1K rows</th><th class="num">Train</th><th class="num">Predict</th><th class="num" title="Estimate, per 1K rows">Text enc.</th><th class="num" title="Estimate, per 1K rows">Image enc.</th></tr></thead>`;
+  const order = orderOf();
+  const rows = D.cost.filter(r => order.includes(r.entry)).sort((a, b) => order.indexOf(a.entry) - order.indexOf(b.entry));
+  const maxT = Math.max(...rows.map(r => timeOf[r.entry]));
+  const what = ['Train + fine-tune + predict', ...ENC.filter(([k]) => enc[k]).map(([k]) => k)].join(' + ');
+  const t = document.getElementById('costTable');
+  t.innerHTML = `<thead><tr><th>Encoding</th><th>Model</th><th>Device</th><th>${what} s / 1K rows</th><th class="num">Train</th><th class="num" title="TAR's LoRA fine-tuning, per 1K training rows">Fine-tune</th><th class="num">Predict</th><th class="num" title="Estimate, per 1K rows">Text enc.</th><th class="num" title="Estimate, per 1K rows">Image enc.</th></tr></thead>`;
   const tb = el('tbody');
   rows.forEach(r => {
-    const total = timeOf[r.model];
-    tb.appendChild(el('tr', {}, `<td class="model">${modelName(r.model)}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td><td class="num">${fmt(r.text_encode_s_per_1k, 2)}</td><td class="num">${fmt(r.image_encode_s_per_1k, 2)}</td>`));
+    const total = timeOf[r.entry];
+    tb.appendChild(el('tr', {}, `${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${r.finetune_s_per_1k ? fmt(r.finetune_s_per_1k, 2) : '—'}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td><td class="num">${fmt(r.text_encode_s_per_1k, 2)}</td><td class="num">${fmt(r.image_encode_s_per_1k, 2)}</td>`));
   });
   t.appendChild(tb);
 }
-renderCost();
+
+function renderEncodings(filterKey) {
+  const board = D.encodingBoards[filterKey];
+  document.getElementById('encodingNote').textContent = `The encodings ranked against each other, under the dataset filters above: each battle is one model's TAR run against its Frozen run on one dataset fold, won by the lower test error. E2E models are left out. ${board[0].models} models on ${board[0].datasets} datasets, with Frozen fixed at 1000; the interval resamples model-dataset pairs. More encodings will join.`;
+  const t = document.getElementById('encodingTable');
+  t.innerHTML = `<thead><tr><th></th><th>Encoders</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num" title="Share of the battles these encoders win">Win rate</th></tr></thead>`;
+  const tb = el('tbody');
+  board.forEach((r, i) => {
+    const ci = r.hi > r.lo ? `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>` : '<span class="ci">anchor</span>';
+    tb.appendChild(el('tr', {}, `<td class="rank">${i + 1}</td><td><span class="chip ${r.encoding.toLowerCase()}">${r.encoding}</span></td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
+  });
+  t.appendChild(tb);
+}
 }
 </script>
 </body>

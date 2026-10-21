@@ -41,21 +41,21 @@ def _datasets(table: pd.DataFrame) -> pd.Index:
     return table.index.get_level_values(0)
 
 
-def elo_ratings(table: pd.DataFrame, bootstraps: int = 1000) -> pd.DataFrame:
-    """bencheval's Elo, with the 95% interval bounds, indexed by model."""
+def elo_ratings(table: pd.DataFrame, bootstraps: int = 1000, anchor: str = ANCHOR) -> pd.DataFrame:
+    """bencheval's Elo, with the 95% interval bounds, indexed by model, with the anchor at 1000."""
     from bencheval.evaluator import BenchmarkEvaluator
     named = table.rename_axis(index=[ResultKey.DATASET, ResultKey.FOLD], columns=ResultKey.MODEL)
     runs = named.stack().rename(ResultKey.TEST_ERROR).reset_index()
     evaluator = BenchmarkEvaluator(method_col=ResultKey.MODEL, task_col=ResultKey.DATASET,
                                    error_col=ResultKey.TEST_ERROR, seed_column=ResultKey.FOLD)
-    elo = evaluator.compute_elo(results_per_task=runs, calibration_framework=ANCHOR, calibration_elo=INIT,
+    elo = evaluator.compute_elo(results_per_task=runs, calibration_framework=anchor, calibration_elo=INIT,
                                 BOOTSTRAP_ROUNDS=bootstraps, round_decimals=None)
     return pd.DataFrame({"elo": elo["elo"], "elo_low": elo["elo"] - elo["elo-"], "elo_high": elo["elo"] + elo["elo+"]})
 
 
-def leaderboard(table: pd.DataFrame, bootstraps: int = 1000) -> pd.DataFrame:
+def leaderboard(table: pd.DataFrame, bootstraps: int = 1000, anchor: str = ANCHOR) -> pd.DataFrame:
     models = list(table.columns)
-    elo = elo_ratings(table, bootstraps=bootstraps).loc[models]
+    elo = elo_ratings(table, bootstraps=bootstraps, anchor=anchor).loc[models]
     best, worst = table.min(axis=1), table.max(axis=1)
     normalized = table.sub(best, axis=0).div((worst - best).replace(0, np.nan), axis=0)
     board = pd.DataFrame({
