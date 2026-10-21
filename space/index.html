@@ -165,10 +165,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-board" role="tabpanel">
   <section>
-    <div class="head">
-      <h2>Elo rating</h2>
-      <div class="group tabs" id="boardSort" role="group" aria-label="Sort"></div>
-    </div>
+    <h2>Elo rating</h2>
     <p class="muted" id="boardNote"></p>
     <div class="panel scroll chart wide" id="eloChart"></div>
     <div class="panel scroll"><table id="boardTable"></table></div>
@@ -366,24 +363,6 @@ function paretoFront(board) {
     .forEach(r => { if (r.elo > best) { front.add(r.entry); best = r.elo; } });
   return front;
 }
-const SORTS = [['elo', 'Elo'], ['pareto', '★ Pareto'], ['time', 'Time']];
-let boardSort = SORTS.some(s => s[0] === store.get('boardSort')) ? store.get('boardSort') : 'elo';
-function sortBoard(board, front) {
-  const rows = [...board];
-  if (boardSort === 'pareto') rows.sort((a, b) => front.has(b.entry) - front.has(a.entry) || b.elo - a.elo);
-  else if (boardSort === 'time') rows.sort((a, b) => timeOf[a.entry] - timeOf[b.entry]);
-  return rows;
-}
-function drawSortTabs() {
-  const box = document.getElementById('boardSort');
-  box.innerHTML = '<span class="label" style="font:500 11.5px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-right:4px">Sort</span>';
-  SORTS.forEach(([k, label]) => {
-    const b = el('button', { type: 'button', onclick: () => { boardSort = k; store.set('boardSort', k); renderBoard(); } }, label);
-    b.setAttribute('aria-pressed', k === boardSort);
-    box.appendChild(b);
-  });
-}
-
 function drawPareto(board, front) {
   const rows = board.filter(r => timeOf[r.entry] != null);
   const W = 1080, H = 460, left = 64, right = 24, top = 20, bottom = 52;
@@ -459,7 +438,7 @@ function save(blob, name) {
 }
 document.querySelectorAll('[data-dl]').forEach(b => b.onclick = () => {
   const kind = b.dataset.dl, base = `multabench-${LATEST.version}-${current.label}`;
-  const rows = current.sorted.map(r => ({ rank: current.board.indexOf(r) + 1, entry: r.entry, model: r.model, encoding: r.encoding, elo: +r.elo.toFixed(1), elo_low: +r.lo.toFixed(1),
+  const rows = current.board.map((r, i) => ({ rank: i + 1, entry: r.entry, model: r.model, encoding: r.encoding, elo: +r.elo.toFixed(1), elo_low: +r.lo.toFixed(1),
     elo_high: +r.hi.toFixed(1), datasets: r.datasets, win_rate: r.win_rate, avg_rank: r.avg_rank,
     normalized_error: r.norm_error, best_on: r.champions, s_per_1k: timeOf[r.entry], pareto: current.front.has(r.entry) }));
   if (kind === 'csv') save(new Blob([[Object.keys(rows[0]).join(','), ...rows.map(r => Object.values(r).join(','))].join('\n')], { type: 'text/csv' }), base + '.csv');
@@ -563,7 +542,7 @@ function drawElo(board) {
   document.getElementById('eloChart').innerHTML = `<div style="padding:8px 8px 0">${s}</div>`;
 }
 
-function drawBoard(board, front, byElo) {
+function drawBoard(board, front) {
   const t = document.getElementById('boardTable');
   const maxN = Math.max(...board.map(r => r.datasets));
   t.innerHTML = `<thead><tr><th></th><th>Encoding</th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num" title="Share of its battles the entry wins">Win rate</th></tr></thead>`;
@@ -572,7 +551,7 @@ function drawBoard(board, front, byElo) {
     const ci = `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
     const n = r.datasets < maxN ? ` <span class="flag" title="Rated on ${r.datasets} of ${maxN} datasets">${r.datasets}/${maxN}</span>` : '';
     const star = front.has(r.entry) ? ' <span class="star" title="On the Pareto front of Elo and run time">★</span>' : '';
-    tb.appendChild(el('tr', { className: front.has(r.entry) ? 'front' : '' }, `<td class="rank">${byElo.indexOf(r) + 1}</td>${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}${star}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
+    tb.appendChild(el('tr', { className: front.has(r.entry) ? 'front' : '' }, `<td class="rank">${i + 1}</td>${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}${star}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
   });
   t.appendChild(tb);
 }
@@ -588,14 +567,11 @@ function renderBoard() {
   document.getElementById('boardNote').textContent = `${names.length} datasets: ${parts.map(([n, k]) => `${n} ${k}`).join(', ')}.` + (names.length < 10 ? ' Few datasets, so wide intervals.' : '');
   const front = paretoFront(board);
   current = { board, front, label: [...[sel.tier, sel.task, sel.modality].map((v, i) => keyOf(v, [TIERS, TASKS, MODS][i])), encKey()].join('_') };
-  drawSortTabs();
   drawElo(board);
-  const sorted = sortBoard(board, front);
-  drawBoard(sorted, front, board);
-  current.sorted = sorted;
+  drawBoard(board, front);
   drawPareto(board, front);
   renderEncodings(filterKey);
-  document.getElementById('dlNote').textContent = `Download the current board, with its version and date, to include it in a paper. Current view: ${names.length} datasets, sorted by ${SORTS.find(s => s[0] === boardSort)[1].replace('★ ', '')}.`;
+  document.getElementById('dlNote').textContent = `Download the current board, with its version and date, to include it in a paper. Current view: ${names.length} datasets, sorted by Elo.`;
 }
 
 const orderOf = () => D.boards['all|all|all|' + encKey()].map(r => r.entry);
