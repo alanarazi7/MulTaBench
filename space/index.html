@@ -100,6 +100,9 @@ b.enc { color: var(--c); }
 .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; }
 .filters[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.encrow { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
+.encnote { flex: 1 1 360px; max-width: 92ch; font-size: 13px; line-height: 1.45; color: var(--muted); }
+#intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
 .links a { color: var(--accent); }
@@ -137,7 +140,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       </div>
     </div>
     <div class="version" id="version"></div>
-    <p class="muted" id="intro">MulTaBench is a benchmark for multimodal tabular learning with text and images. It balances tasks across modalities and evaluates pairs of a tabular model and an encoding method, alongside end-to-end (<b class="enc end-to-end">E2E</b>) models that read raw text themselves. The leaderboard's purpose is to drive smarter encoding methods. Two are on it today: <b class="enc frozen">Frozen</b>, which embeds text with e5-small and images with DINOv3-small and projects each column to 30 dimensions with PCA, and <b class="enc tar">TAR</b>, target-aware representations, which naively fine-tunes the encoder on the training labels as a preprocessing step before the same projection.</p>
+    <p class="muted" id="intro">MulTaBench is a benchmark for multimodal tabular learning with text and images. It balances tasks across modalities and evaluates pairs of a tabular model and an encoding method. The leaderboard's purpose is to drive smarter encoding methods.</p>
     <p class="links"><a href="https://github.com/alanarazi7/MulTaBench">Code</a> · <a href="https://huggingface.co/multabench">Datasets</a> · <a href="https://arxiv.org/abs/2605.10616">Paper</a> · <a href="https://github.com/alanarazi7/MulTaBench/blob/master/docs/protocol.md">Protocol</a> · <a href="data/leaderboards.csv">CSV</a></p>
     <div class="facts" id="facts"></div>
   </header>
@@ -153,7 +156,10 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="group tabs" id="tierTabs" role="group" aria-label="Datasets"><span class="label">Datasets</span></div>
     <div class="group tabs" id="taskTabs" role="group" aria-label="Task"><span class="label">Task</span></div>
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
-    <div class="group tabs" id="encodingTabs" role="group" aria-label="Encoders"><span class="label">Encoders</span></div>
+    <div class="encrow">
+      <div class="group tabs" id="encodingTabs" role="group" aria-label="Encoders"><span class="label">Encoders</span></div>
+      <p class="encnote"><b class="enc frozen">Frozen</b> embeds text with e5-small and images with DINOv3-small, and projects each column to 30 dimensions with PCA. <b class="enc tar">TAR</b>, target-aware representations, first fine-tunes the encoder on the training labels, then projects the same way.</p>
+    </div>
   </div>
   </div>
 
