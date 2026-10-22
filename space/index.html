@@ -780,13 +780,13 @@ function renderCost() {
   const order = orderOf();
   const rows = D.cost.filter(r => order.includes(r.entry)).sort((a, b) => order.indexOf(a.entry) - order.indexOf(b.entry));
   const maxT = Math.max(...rows.map(r => timeOf[r.entry]));
-  const what = 'Train + fine-tune + predict' + (withEnc ? ' + encoding' : '');
+  const what = 'Train + finetune' + (withEnc ? ' + encode' : '') + ' + predict';
   const t = document.getElementById('costTable');
-  t.innerHTML = `<thead><tr><th>Encoding</th><th>Model</th><th>Device</th><th>${what} s / 1K rows</th><th class="num">Train</th><th class="num" title="TAR's LoRA fine-tuning, per 1K training rows">Fine-tune</th><th class="num">Predict</th><th class="num" title="Estimate, per 1K rows">Text enc.</th><th class="num" title="Estimate, per 1K rows">Image enc.</th></tr></thead>`;
+  t.innerHTML = `<thead><tr><th>Encoding</th><th>Model</th><th>Device</th><th>${what} s / 1K rows</th><th class="num">Train</th><th class="num" title="TAR's LoRA fine-tuning, per 1K training rows">Finetune</th><th class="num" title="Text and image encoding, estimate per 1K rows">Encode</th><th class="num">Predict</th></tr></thead>`;
   const tb = el('tbody');
   rows.forEach(r => {
     const total = timeOf[r.entry];
-    tb.appendChild(el('tr', {}, `${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${r.finetune_s_per_1k ? fmt(r.finetune_s_per_1k, 2) : '—'}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td><td class="num">${fmt(r.text_encode_s_per_1k, 2)}</td><td class="num">${fmt(r.image_encode_s_per_1k, 2)}</td>`));
+    tb.appendChild(el('tr', {}, `${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}</td><td><span class="dev">${r.gpu ? 'H100' : 'CPU'}</span></td><td class="mono"><span class="bar" style="width:${Math.max(2, total / maxT * 140)}px"></span>${fmt(total, 2)}</td><td class="num">${fmt(r.train_s_per_1k, 2)}</td><td class="num">${r.finetune_s_per_1k ? fmt(r.finetune_s_per_1k, 2) : '—'}</td><td class="num">${fmt(r.text_encode_s_per_1k + r.image_encode_s_per_1k, 2)}</td><td class="num">${fmt(r.inference_s_per_1k, 2)}</td>`));
   });
   t.appendChild(tb);
 }
