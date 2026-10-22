@@ -633,7 +633,7 @@ function drawPareto(board, front) {
   const boxes = [], hit = (b) => boxes.some(o => b.x0 < o.x1 && o.x0 < b.x1 && b.y0 < o.y1 && o.y0 < b.y1);
   // With emojis the point carries the encoding; without, a name does once both encodings are on the board.
   const name = r => withEmojis || encSel.length < 2 ? r.model : r.entry;
-  const half = withEmojis ? 9 : 6;
+  const half = 6;
   const place = (r, onFront) => {
     const px = x(timeOf[r.entry]), py = y(r.elo), w = name(r).length * (onFront ? 7 : 6.4), h = 12;
     const spots = onFront ? [[px - half - 4 - w, py - half - 3 - h]] : [[px + half + 3, py - 4], [px - half - 3 - w, py - 4], [px - w / 2, py - half - 13], [px - w / 2, py + half + 2]];
@@ -645,14 +645,12 @@ function drawPareto(board, front) {
   };
     rows.forEach(r => boxes.push({ x0: x(timeOf[r.entry]) - half, x1: x(timeOf[r.entry]) + half, y0: y(r.elo) - half, y1: y(r.elo) + half }));
   const tip = r => `<title>${r.entry}: Elo ${fmt(r.elo)}, ${fmt(timeOf[r.entry], 2)} s per 1K rows</title>`;
-  // A point is its encoding's emoji in a small square, or a plain colored square; the front's are outlined.
+  // A point is its encoding's emoji, or a colored square outlined on the front; both the size of the old squares.
   const point = (px, py, e, onFront, title = '') => {
-    const h = withEmojis ? (onFront ? 10 : 9) : (onFront ? 5.5 : 4);
-    const edge = onFront ? ' stroke="var(--warn)" stroke-width="2"' : withEmojis ? ` stroke="${encColor(e)}"` : '';
-    const box = `<rect x="${px - h}" y="${py - h}" width="${2 * h}" height="${2 * h}" rx="${withEmojis ? 2 : 0}"`
-      + ` fill="${withEmojis ? 'var(--surface)' : encColor(e)}"${edge}${!withEmojis && !onFront ? ' opacity=".7"' : ''}/>`;
-    const mark = withEmojis ? `<text x="${px}" y="${py + h * 0.45}" text-anchor="middle" font-size="${h * 1.3}">${ENC_MARK[e]}</text>` : '';
-    return `<g>${title}${box}${mark}</g>`;
+    const h = onFront ? 5.5 : 4;
+    if (withEmojis) return `<text x="${px}" y="${py + h}" text-anchor="middle" font-size="${2 * h + 2}">${title}${ENC_MARK[e]}</text>`;
+    const edge = onFront ? ' stroke="var(--warn)" stroke-width="2"' : ' opacity=".7"';
+    return `<rect x="${px - h}" y="${py - h}" width="${2 * h}" height="${2 * h}" fill="${encColor(e)}"${edge}>${title}</rect>`;
   };
   rows.filter(r => !front.has(r.entry)).forEach(r => { s += point(x(timeOf[r.entry]), y(r.elo), r.encoding, false, tip(r)); });
   fr.forEach(r => { s += point(x(timeOf[r.entry]), y(r.elo), r.encoding, true, tip(r)); });
