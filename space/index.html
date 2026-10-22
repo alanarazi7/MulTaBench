@@ -95,8 +95,6 @@ b.enc { color: var(--c); }
 .tabpanel { display: grid; gap: 40px; }
 .tabpanel[hidden] { display: none; }
 .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding: 12px 0; }
-.tabpanel[data-empty] > section { display: none; }
-.tabpanel[data-empty]::before { content: attr(data-empty); display: block; padding: 48px 0; text-align: center; font-size: 17px; color: var(--muted); }
 .filters .hint { flex-basis: 100%; max-width: none; font-size: 13px; color: var(--muted); }
 .filters[hidden], .filters .group[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -525,6 +523,8 @@ const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
 const ENCS = [['frozen', 'Frozen'], ['tar', 'TAR']];
+const ENCODERS = '<td class="model"><a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a></td>'
+  + '<td class="model"><a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a></td>';
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -674,39 +674,27 @@ const sel = { tier: restore('tiers_v2', TIERS.map(t => t[0]), ['core']), task: r
 const FIELDS = Object.keys(sel);
 let encSel = restore('encodings', ENCS.map(e => e[0]));
 const encKey = () => keyOf(encSel, ENCS);
-function encodingToggles() {
-  const box = document.getElementById('encodingTabs');
-  box.querySelectorAll('button').forEach(b => b.remove());
-  ENCS.forEach(([key, label]) => {
-    const n = D.meta.entries.filter(m => D.encodingOf[m] === key).length;
-    const on = encSel.includes(key);
-    const b = el('button', { type: 'button' }, `${label}<span class="n">${n}</span>`);
-    b.setAttribute('aria-pressed', on);
-    b.onclick = () => {
-      encSel = on ? encSel.filter(k => k !== key) : [...encSel, key];
-      store.set('encodings', JSON.stringify(encSel));
-      render();
-    };
-    box.appendChild(b);
-  });
-}
 const keyOf = (picked, all) => picked.length === all.length ? 'all' : all.map(a => a[0]).filter(a => picked.includes(a)).join('+');
 const inFilter = d => FIELDS.every(f => sel[f].includes(dsInfo[d][f]));
 
-function toggles(container, items, field, storeKey) {
+// One choice per row: All, or a single slice; count(keys) is how many datasets or entries that choice keeps.
+function choices(container, items, picked, count, pick) {
   container.querySelectorAll('button').forEach(b => b.remove());
-  items.forEach(([key, label]) => {
-    const n = Object.values(dsInfo).filter(i => i[field] === key && FIELDS.every(f => f === field || sel[f].includes(i[f]))).length;
-    const b = el('button', { type: 'button' }, `${label}<span class="n">${n}</span>`);
-    const on = sel[field].includes(key);
-    b.setAttribute('aria-pressed', on);
-    b.onclick = () => {
-      sel[field] = on ? sel[field].filter(k => k !== key) : [...sel[field], key];
-      store.set(storeKey, JSON.stringify(sel[field]));
-      render();
-    };
+  [['all', 'All'], ...items].forEach(([key, label]) => {
+    const keys = key === 'all' ? items.map(i => i[0]) : [key];
+    const b = el('button', { type: 'button' }, `${label}<span class="n">${count(keys)}</span>`);
+    b.setAttribute('aria-pressed', keys.length === picked.length && keys.every(k => picked.includes(k)));
+    b.onclick = () => { pick(keys); render(); };
     container.appendChild(b);
   });
+}
+function toggles(container, items, field, storeKey) {
+  const count = keys => Object.values(dsInfo).filter(i => keys.includes(i[field]) && FIELDS.every(f => f === field || sel[f].includes(i[f]))).length;
+  choices(container, items, sel[field], count, keys => { sel[field] = keys; store.set(storeKey, JSON.stringify(keys)); });
+}
+function encodingToggles() {
+  const count = keys => D.meta.entries.filter(m => keys.includes(D.encodingOf[m])).length;
+  choices(document.getElementById('encodingTabs'), ENCS, encSel, count, keys => { encSel = keys; store.set('encodings', JSON.stringify(keys)); });
 }
 
 function drawElo(board) {
@@ -775,28 +763,14 @@ function renderBoard() {
 }
 
 const orderOf = () => D.boards['all|all|all|' + encKey()].map(r => r.entry);
-// What each empty filter asks for; a tab with an empty filter it uses shows the request instead of its content.
-const ASKS = { tier: 'a dataset slice', task: 'a task', modality: 'a modality', encoding: 'an encoder' };
-function emptyNote(fields) {
-  const asks = fields.map(f => ASKS[f]);
-  if (!asks.length) return null;
-  return `⚠️ Please select ${asks.length > 1 ? asks.slice(0, -1).join(', ') + ' and ' + asks.at(-1) : asks[0]}.`;
-}
 function render() {
   toggles(document.getElementById('tierTabs'), TIERS, 'tier', 'tiers');
   toggles(document.getElementById('taskTabs'), TASKS, 'task', 'tasks');
   toggles(document.getElementById('modTabs'), MODS, 'modality', 'mods');
   encodingToggles();
-  const empty = FIELDS.filter(f => !sel[f].length);
-  const withEncoders = encSel.length ? empty : [...empty, 'encoding'];
-  const notes = { board: emptyNote(withEncoders), encodings: emptyNote(empty), cost: emptyNote(withEncoders) };
-  Object.entries(notes).forEach(([k, note]) => {
-    const panel = document.getElementById('tab-' + k);
-    if (note) panel.dataset.empty = note;
-    else delete panel.dataset.empty;
-  });
-  if (!notes.encodings) renderEncodings(filterKey());
-  if (!notes.board) { renderBoard(); renderCost(); }
+  renderEncodings(filterKey());
+  renderBoard();
+  renderCost();
 }
 render();
 
@@ -818,11 +792,11 @@ function renderCost() {
 function renderEncodings(filterKey) {
   const board = D.encodingBoards[filterKey];
   const t = document.getElementById('encodingTable');
-  t.innerHTML = `<thead><tr><th></th><th>Encoders</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num" title="Share of the battles these encoders win">Win rate</th></tr></thead>`;
+  t.innerHTML = `<thead><tr><th></th><th>Encoding</th><th>Text encoder</th><th>Image encoder</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num" title="Share of the battles these encoders win">Win rate</th></tr></thead>`;
   const tb = el('tbody');
   board.forEach((r, i) => {
     const ci = r.hi > r.lo ? `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>` : '<span class="ci">anchor</span>';
-    tb.appendChild(el('tr', {}, `<td class="rank">${i + 1}</td><td><span class="chip ${r.encoding.toLowerCase()}">${r.encoding}</span></td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
+    tb.appendChild(el('tr', {}, `<td class="rank">${i + 1}</td><td><span class="chip ${r.encoding.toLowerCase()}">${r.encoding}</span></td>${ENCODERS}<td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
   });
   t.appendChild(tb);
 }
