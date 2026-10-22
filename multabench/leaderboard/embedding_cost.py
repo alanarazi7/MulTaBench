@@ -44,8 +44,8 @@ def with_tar_encode_times(caches: pd.DataFrame) -> pd.DataFrame:
     # TODO: re-time the frozen encoders on an H100, as the tuned ones were, and drop this.
     tuned = caches[caches["encoder"].str.endswith(TAR_SUFFIX)]
     tar_time = tuned.groupby([tuned["encoder"].str.removesuffix(TAR_SUFFIX), "dataset"])["encode_s_per_1k"].mean()
-    keys = pd.MultiIndex.from_frame(caches[["encoder", "dataset"]])
-    return caches.assign(encode_s_per_1k=tar_time.reindex(keys).fillna(caches["encode_s_per_1k"]).to_numpy())
+    twin = tar_time.reindex(pd.MultiIndex.from_frame(caches[["encoder", "dataset"]])).set_axis(caches.index)
+    return caches.assign(encode_s_per_1k=twin.fillna(caches["encode_s_per_1k"]))
 
 
 if __name__ == "__main__":
