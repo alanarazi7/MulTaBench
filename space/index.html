@@ -128,6 +128,7 @@ tr.front td { background: color-mix(in oklab, var(--accent) 7%, var(--surface));
 .dl > div { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--soft); }
 .dl > div:last-child { border-bottom: 0; }
 .dl .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); min-width: 190px; }
+.bibs { max-height: 420px; overflow-y: auto; }
 pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-space: pre-wrap; word-break: break-word; }
 .cta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; align-items: center; padding: 26px 28px; background: var(--ink); color: var(--bg); border-radius: 12px; }
 .cta h2 { color: var(--bg); font-size: 24px; }
@@ -222,6 +223,242 @@ python -m multabench.leaderboard.results multabench_results.csv</pre></div>
   archivePrefix={arXiv},
   primaryClass={cs.LG},
   url={https://arxiv.org/abs/2605.10616},
+}</pre></div>
+  </section>
+
+  <section id="cite-models">
+    <div class="head"><h2>Cite the models and encoders</h2><button class="btn" id="copyModelsBib" type="button">Copy BibTeX</button></div>
+    <p class="muted">Every model on the board, then the text and image encoders, e5 and DINOv3.</p>
+    <div class="panel scroll bibs"><pre class="bib" id="modelsBib">@misc{prokhorenkova2019catboostunbiasedboostingcategorical,
+  title={CatBoost: unbiased boosting with categorical features},
+  author={Liudmila Prokhorenkova and Gleb Gusev and Aleksandr Vorobev and Anna Veronika Dorogush and Andrey Gulin},
+  year={2019},
+  eprint={1706.09516},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/1706.09516},
+}
+
+@inproceedings{ke2017lightgbm,
+  author={Ke, Guolin and Meng, Qi and Finley, Thomas and Wang, Taifeng and Chen, Wei and Ma, Weidong and Ye, Qiwei and Liu, Tie-Yan},
+  booktitle={Advances in Neural Information Processing Systems},
+  publisher={Curran Associates, Inc.},
+  title={LightGBM: A Highly Efficient Gradient Boosting Decision Tree},
+  url={https://proceedings.neurips.cc/paper_files/paper/2017/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf},
+  volume={30},
+  year={2017},
+}
+
+@misc{chen2016xgboostscalabletreeboosting,
+  title={XGBoost: A Scalable Tree Boosting System},
+  author={Tianqi Chen and Carlos Guestrin},
+  year={2016},
+  eprint={1603.02754},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  doi={https://doi.org/10.1145/2939672.2939785},
+  url={https://arxiv.org/abs/1603.02754},
+}
+
+@article{breiman2001randomforests,
+  title={Random Forests},
+  author={Breiman, Leo},
+  journal={Machine Learning},
+  volume={45},
+  number={1},
+  pages={5--32},
+  year={2001},
+  publisher={Springer},
+  doi={10.1023/A:1010933404324},
+}
+
+@misc{holzmuller2025betterdefaultstrongpretuned,
+  title={Better by Default: Strong Pre-Tuned MLPs and Boosted Trees on Tabular Data},
+  author={David Holzmüller and Léo Grinsztajn and Ingo Steinwart},
+  year={2025},
+  eprint={2407.04491},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2407.04491},
+}
+
+@misc{gorishniy2025tabmadvancingtabulardeep,
+  title={TabM: Advancing Tabular Deep Learning with Parameter-Efficient Ensembling},
+  author={Yury Gorishniy and Akim Kotelnikov and Artem Babenko},
+  year={2025},
+  eprint={2410.24210},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2410.24210},
+}
+
+@article{hollmann2025accurate,
+  title={Accurate predictions on small data with a tabular foundation model},
+  author={Hollmann, Noah and M{\"u}ller, Samuel and Purucker, Lennart and Krishnakumar, Arjun and K{\"o}rfer, Max and Hoo, Shi Bin and Schirrmeister, Robin Tibor and Hutter, Frank},
+  journal={Nature},
+  volume={637},
+  number={8045},
+  pages={319--326},
+  year={2025},
+  doi={10.1038/s41586-024-08328-6},
+}
+
+@misc{grinsztajn2026tabpfn25advancingstateart,
+  title={TabPFN-2.5: Advancing the State of the Art in Tabular Foundation Models},
+  author={Léo Grinsztajn and Klemens Flöge and Oscar Key and Felix Birkel and Philipp Jund and Brendan Roof and Benjamin Jäger and Dominik Safaric and Simone Alessi and Adrian Hayler and Mihir Manium and Rosen Yu and Felix Jablonski and Shi Bin Hoo and Anurag Garg and Jake Robertson and Magnus Bühler and Vladyslav Moroshan and Lennart Purucker and Clara Cornu and Lilly Charlotte Wehrhahn and Alessandro Bonetto and Bernhard Schölkopf and Sauraj Gambhir and Noah Hollmann and Frank Hutter},
+  year={2026},
+  eprint={2511.08667},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2511.08667},
+}
+
+@misc{grinsztajn2026tabpfn3technicalreport,
+  title={TabPFN-3: Technical Report},
+  author={Léo Grinsztajn and Klemens Flöge and Oscar Key and Felix Birkel and Philipp Jund and Brendan Roof and Mihir Manium and Shi Bin Hoo and Magnus Bühler and Anurag Garg and Dominik Safaric and Jake Robertson and Benjamin Jäger and Simone Alessi and Adrian Hayler and Vladyslav Moroshan and Lennart Purucker and Philipp Singer and Alan Arazi and Julien Siems and Jan Hendrik Metzen and Georg Grab and Nick Erickson and Siyuan Guo and Eliott Kalfon and Simon Bing and David Salinas and Clara Cornu and Lilly Charlotte Wehrhahn and Diana Kriuchkova and Kursat Kaya and Lydia Sidhoum and Marie Salmon and Jerry Chen and Madelon Hulsebos and Yann LeCun and Samuel Müller and Bernhard Schölkopf and Sauraj Gambhir and Noah Hollmann and Frank Hutter},
+  year={2026},
+  eprint={2605.13986},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2605.13986},
+}
+
+@misc{jager2026tabpfn35technicalreport,
+  title={TabPFN-3.5: Technical Report},
+  author={Benjamin Jäger and Nick Erickson and Léo Grinsztajn and Felix Birkel and Klemens Flöge and Oscar Key and Kürşat Kaya and Jonas Kübler and Adèle Frankel and Tobias Schröder and Anurag Garg and Jan Hendrik Metzen and David Salinas and Simon Bing and Kristina Collins and Tuana Çelik and Vahid Balazadeh and Lydia Sidhoum and Tomás Pereda and Brendan Roof and Andrej Tschalzev and Siyuan Guo and Philipp Singer and Lennart Purucker and Jake Robertson and Marie Salmon and Philipp Jund and Jerry Chen and Diana Kriuchkova and Arthur Cahu and Eliott Kalfon and Adrian Hayler and Georg Grab and Vitor Monteiro and Lilly Wehrhahn and Dominik Safaric and Clara Cornu and Alan Arazi and Rylee Grace and Simone Alessi and Mihir Manium and Bernhard Schölkopf and Yann LeCun and Madelon Hulsebos and Sauraj Gambhir and Noah Hollmann and Frank Hutter},
+  year={2026},
+  eprint={2609.17895},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2609.17895},
+}
+
+@misc{ma2026tabdptscalingtabularfoundation,
+  title={TabDPT: Scaling Tabular Foundation Models on Real Data},
+  author={Junwei Ma and Valentin Thomas and Rasa Hosseinzadeh and Alex Labach and Hamidreza Kamkari and Jesse C. Cresswell and Keyvan Golestan and Guangwei Yu and Anthony L. Caterini and Maksims Volkovs},
+  year={2026},
+  eprint={2410.18164},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2410.18164},
+}
+
+@misc{qu2026tabiclv2betterfasterscalable,
+  title={TabICLv2: A better, faster, scalable, and open tabular foundation model},
+  author={Jingang Qu and David Holzmüller and Gaël Varoquaux and Marine Le Morvan},
+  year={2026},
+  eprint={2602.11139},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2602.11139},
+}
+
+@misc{spinaci2025contexttabsemanticsawaretabularincontext,
+  title={ConTextTab: A Semantics-Aware Tabular In-Context Learner},
+  author={Marco Spinaci and Marek Polewczyk and Maximilian Schambach and Sam Thelin},
+  year={2025},
+  eprint={2506.10707},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2506.10707},
+}
+
+@misc{arazi2025tabstartabularfoundationmodel,
+  title={TabSTAR: A Tabular Foundation Model for Tabular Data with Text Fields},
+  author={Alan Arazi and Eilam Shapira and Roi Reichart},
+  year={2025},
+  eprint={2505.18125},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2505.18125},
+}
+
+@misc{tao2026mitrav2technicalreport,
+  title={Mitra-v2 Technical Report},
+  author={Yefan Tao and Xiyuan Zhang and Xinyi Liu and Boran Han and Danielle Maddix and Haoyang Fang and Zhen Han and Jiading Gai and Xuanqing Liu and Michael Bohlke-Schneider and Yuyang and Wang and Gerald Friedland and Kevan Mah and Chris Lee and Chris Kong},
+  year={2026},
+  eprint={2609.04540},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2609.04540},
+}
+
+@misc{zhang2026limix2contextualmechanismnetwork,
+  title={LimiX-2: A Contextual Mechanism Network Towards General Structured-Data Intelligence},
+  author={Xingxuan Zhang and Gang Ren and Hao Yuan and Hao Zou and Hongze Tan and Hui Wang and Jianhao Song and Jiansheng Li and Jiayao Zhang and Jinghan Zhang and Kaifang Li and Lang Mo and Li Mao and Mingchao Hao and Nuo Xu and Rui Ding and Ruiji Zhang and Shuyang Li and Siyu Mei and Tianyang Zhang and Weiyang Mu and Yancheng Dong and Yongxian Wei and Yuan Xue and Yuanrui Wang and Yue He and Zijia Yang and Ziyun Li and Dongzhe Li and Fuqiang Wang and Jiandong Liu and Jiawei Chen and Jiaxin Du and Kaijie Cheng and Kehan Li and Lei Sun and Linjun Zhou and Ningbo Dai and Qi Wang and Renzhe Xu and Shaoxing Du and Shumeng Yang and Wang Lu and Wenjing Chu and Xiannan Huang and Xiaoyu Lin and Xing Ai and Xinyan Han and Xuanyue Li and Xuanyue Su and Xukun Zhang and Yan Lu and Yaxin Zhang and Yi Qin and Yifei Huang and Yihan Xu and Yongle Lv and Yuanyuan Jiang and Yushan Han and Peng Cui},
+  year={2026},
+  eprint={2609.17488},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  url={https://arxiv.org/abs/2609.17488},
+}
+
+@misc{nvidia2026kumotabular,
+  title={NVIDIA Kumo Tabular Sets a New Accuracy-Efficiency Frontier for Tabular Prediction},
+  author={{NVIDIA}},
+  year={2026},
+  howpublished={Hugging Face blog},
+  url={https://huggingface.co/blog/nvidia/kumo-tabular},
+}
+
+@misc{eo2026exaonetabular10,
+  title={EXAONE Tabular 1.0 : Technical Report},
+  author={Moonjung Eo and Min-Kook Suh and Hye-Seung Cho and Jiwon Kim and Seoyoon Kim and Sangjun Nam and Soonyoung Lee},
+  year={2026},
+  eprint={2608.25774},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2608.25774},
+}
+
+@misc{cho2026causilotechnicalreport,
+  title={Causilo Technical Report},
+  author={Minyong Cho and Minho Jeong and Dooho Lee and Jinmo Lee and Jaemin Yoo},
+  year={2026},
+  eprint={2609.22866},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2609.22866},
+}
+
+@misc{kong2026tabfmzeroshotfoundationmodel,
+  title={TabFM: A Zero-Shot Foundation Model for Tabular Data},
+  author={Weihao Kong and Erez Louidor Ilan and Shuxin Nie and Taman Narayan and Rajat Sen and Yichen Zhou and Deqing Fu and Samet Oymak and Abhimanyu Das},
+  year={2026},
+  eprint={2609.37959},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2609.37959},
+}
+
+@misc{tabldmteam2026xiaomitabldmtabularfoundationmodel,
+  title={Xiaomi-TabLDM: A Tabular Foundation Model Technical Report},
+  author={TabLDM Team and Penghui Wang and Wei Liu and Hong Wang and Chengyue Huang and Yuxi Sun and Zirui Wang and Hongming Huang and Quan Wang and Zhenwei Xin and Ping Hou and Jie Yu and Chunxiao Liu and Erli Meng and Bin Wang},
+  year={2026},
+  eprint={2609.03880},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  url={https://arxiv.org/abs/2609.03880},
+}
+
+@misc{wang2024textembeddingsweaklysupervisedcontrastive,
+  title={Text Embeddings by Weakly-Supervised Contrastive Pre-training},
+  author={Liang Wang and Nan Yang and Xiaolong Huang and Binxing Jiao and Linjun Yang and Daxin Jiang and Rangan Majumder and Furu Wei},
+  year={2024},
+  eprint={2212.03533},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  url={https://arxiv.org/abs/2212.03533},
+}
+
+@misc{simeoni2025dinov3,
+  title={DINOv3},
+  author={Oriane Siméoni and Huy V. Vo and Maximilian Seitzer and Federico Baldassarre and Maxime Oquab and Cijo Jose and Vasil Khalidov and Marc Szafraniec and Seungeun Yi and Michaël Ramamonjisoa and Francisco Massa and Daniel Haziza and Luca Wehrstedt and Jianyuan Wang and Timothée Darcet and Théo Moutakanni and Leonel Sentana and Claire Roberts and Andrea Vedaldi and Jamie Tolan and John Brandt and Camille Couprie and Julien Mairal and Hervé Jégou and Patrick Labatut and Piotr Bojanowski},
+  year={2025},
+  eprint={2508.10104},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2508.10104},
 }</pre></div>
   </section>
   </div>
@@ -325,9 +562,11 @@ function showTab() {
 }
 window.addEventListener('hashchange', () => { showTab(); document.querySelector('.sticky').scrollIntoView(); });
 showTab();
-document.getElementById('copyBib').onclick = e => {
-  navigator.clipboard?.writeText(document.getElementById('bib').textContent).then(() => { e.target.textContent = 'Copied'; });
-};
+[['copyBib', 'bib'], ['copyModelsBib', 'modelsBib']].forEach(([button, pre]) => {
+  document.getElementById(button).onclick = e => {
+    navigator.clipboard?.writeText(document.getElementById(pre).textContent).then(() => { e.target.textContent = 'Copied'; });
+  };
+});
 
 // Encoding counts twice: on the 1K training rows and on the 1K predicted rows.
 let withEnc = store.get('enc_time') === '1';
