@@ -8,7 +8,7 @@ import pandas as pd
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.info import Tier, dataset_info
 from multabench.leaderboard.elo import ANCHOR, RESULTS_DIR, TAR_RESULTS_DIR, error_table, leaderboard, load_runs
-from multabench.leaderboard.embedding_cost import EMBEDDING_COST_CSV
+from multabench.leaderboard.embedding_cost import EMBEDDING_COST_CSV, with_tar_encode_times
 from multabench.result_keys import ResultKey, RunStatus
 
 SPACE_DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "space", "data")
@@ -131,9 +131,9 @@ def per_dataset(runs: pd.DataFrame) -> pd.DataFrame:
 def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd.DataFrame:
     """Median train and predict time per 1K rows, which leave out reading the cached embeddings; the mean time a TAR
     run's encoders took to fine-tune per 1K training rows; and the mean time its encoders would take to embed 1K rows
-    live, estimated from the caches' own encoding time."""
+    live, estimated from the caches' own encoding time, the tuned caches' for both encodings."""
     ok = _by_entry(runs[runs[ResultKey.STATUS] == RunStatus.OK])
-    caches = pd.read_csv(embedding_cost_csv).astype({"fold": "Int64"}).fillna({"fold": -1})
+    caches = with_tar_encode_times(pd.read_csv(embedding_cost_csv)).astype({"fold": "Int64"}).fillna({"fold": -1})
     caches = caches.set_index(["dataset", "encoder", "fold"])
 
     def per_run(col: str, field: str) -> pd.Series:

@@ -2,7 +2,8 @@
 
 A frozen encoder has one cache per dataset; a tuned (-tar) one has one per fold, with the time fine-tuning took on the
 fold's training rows. The encoding time estimates what a run would pay to embed its rows live: the frozen caches were
-computed on A100s and the tuned ones on H100s, and the image time includes reading the files.
+computed on A100s and the tuned ones on H100s, and the image time includes reading the files. The board charges frozen
+runs the tuned caches' time, see `with_tar_encode_times`.
 """
 import json
 import os
@@ -14,7 +15,7 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.embeddings.hub import CACHED_ENCODERS, META_JSON, download_embeddings, embeds_dataset, is_tuned
 
 EMBEDDING_COST_CSV = os.path.join(os.path.dirname(__file__), "embedding_cost.csv")
-# TODO: re-time the frozen encoders on an H100, as the tuned ones were, so both encodings share one encoding time.
+TAR_SUFFIX = "-tar"
 
 
 def embedding_cost() -> pd.DataFrame:
@@ -32,6 +33,19 @@ def embedding_cost() -> pd.DataFrame:
                              "encode_s_per_1k": sum(meta["encode_seconds"].values()) / int(meta["n_rows"]) * 1000,
                              "finetune_s_per_1k": finetune if fold is not None else 0.0, "gpu": meta["gpu_type"]})
     return pd.DataFrame(rows).astype({"fold": "Int64"})
+
+
+def with_tar_encode_times(caches: pd.DataFrame) -> pd.DataFrame:
+    """A hack: each frozen cache takes its tuned twin's mean encoding time over the folds, on the same dataset.
+
+    Frozen and tuned encoders embed with the same model, but the frozen caches were timed on A100s and the tuned ones
+    on H100s, so frozen looked about twice as slow. A frozen encoder with no tuned twin on a dataset keeps its own time.
+    """
+    # TODO: re-time the frozen encoders on an H100, as the tuned ones were, and drop this.
+    tuned = caches[caches["encoder"].str.endswith(TAR_SUFFIX)]
+    tar_time = tuned.groupby([tuned["encoder"].str.removesuffix(TAR_SUFFIX), "dataset"])["encode_s_per_1k"].mean()
+    keys = pd.MultiIndex.from_frame(caches[["encoder", "dataset"]])
+    return caches.assign(encode_s_per_1k=tar_time.reindex(keys).fillna(caches["encode_s_per_1k"]).to_numpy())
 
 
 if __name__ == "__main__":
