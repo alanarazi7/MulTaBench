@@ -129,11 +129,9 @@ tr.front td { background: color-mix(in oklab, var(--accent) 7%, var(--surface));
 .dl > div:last-child { border-bottom: 0; }
 .dl .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); min-width: 190px; }
 pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-space: pre-wrap; word-break: break-word; }
-.cta { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 32px; align-items: center; padding: 26px 28px; background: var(--ink); color: var(--bg); border-radius: 12px; }
+.cta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; align-items: center; padding: 26px 28px; background: var(--ink); color: var(--bg); border-radius: 12px; }
 .cta h2 { color: var(--bg); font-size: 24px; }
-.cta p { color: color-mix(in oklab, var(--bg) 80%, var(--ink)); }
 .cta .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
-@media (max-width: 700px) { .cta { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -178,16 +176,14 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
   </section>
   <section class="cta">
     <h2>Have a model or an encoding method that should be on the board?</h2>
-    <div style="display:grid; gap:14px; justify-items:start">
-      <a class="btn" href="https://github.com/alanarazi7/MulTaBench/issues/new">Open an issue</a>
-    </div>
+    <a class="btn" href="https://github.com/alanarazi7/MulTaBench/issues/new">Open an issue</a>
   </section>
   </div>
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
     <p id="encodingText">For models that are not E2E, we embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.<br><br><b class="enc frozen">Frozen</b> uses the encoders as they are; <b class="enc tar">TAR</b> (Target-Aware Representations) first fine-tunes them on the training labels with default hyperparameters.</p>
-    <p id="encodingText2">Their Elo pits the two against each other on every model and dataset, leaving out E2E models.</p>
+    <p id="encodingText2">🚧 <b>Under Construction:</b> More encoding methods coming soon!</p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
   </div>
