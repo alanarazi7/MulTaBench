@@ -16,6 +16,8 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
       today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
       rows.
+- [ ] Re-time the frozen encoders on an H100, as the tuned ones were. Until then, `with_tar_encode_times` in
+      `multabench/leaderboard/embedding_cost.py` charges frozen runs the tuned caches' encoding time.
 
 ## Runs
 

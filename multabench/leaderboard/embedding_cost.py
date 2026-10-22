@@ -40,8 +40,8 @@ def with_tar_encode_times(caches: pd.DataFrame) -> pd.DataFrame:
 
     Frozen and tuned encoders embed with the same model, but the frozen caches were timed on A100s and the tuned ones
     on H100s, so frozen looked about twice as slow. A frozen encoder with no tuned twin on a dataset keeps its own time.
+    Once the frozen encoders are re-timed on an H100, this can go.
     """
-    # TODO: re-time the frozen encoders on an H100, as the tuned ones were, and drop this.
     tuned = caches[caches["encoder"].str.endswith(TAR_SUFFIX)]
     tar_time = tuned.groupby([tuned["encoder"].str.removesuffix(TAR_SUFFIX), "dataset"])["encode_s_per_1k"].mean()
     twin = tar_time.reindex(pd.MultiIndex.from_frame(caches[["encoder", "dataset"]])).set_axis(caches.index)
