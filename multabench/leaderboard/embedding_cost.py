@@ -14,6 +14,7 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.embeddings.hub import CACHED_ENCODERS, META_JSON, download_embeddings, embeds_dataset, is_tuned
 
 EMBEDDING_COST_CSV = os.path.join(os.path.dirname(__file__), "embedding_cost.csv")
+# TODO: re-time the frozen encoders on an H100, as the tuned ones were, so both encodings share one encoding time.
 
 
 def embedding_cost() -> pd.DataFrame:
