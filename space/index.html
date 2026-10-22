@@ -90,6 +90,15 @@ b.enc { color: var(--c); }
 .pagetabs a { font: 500 14px/1 var(--body); color: var(--muted); text-decoration: none; padding: 14px 14px 12px; white-space: nowrap;
   border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .pagetabs a:hover { color: var(--ink); }
+/* On a phone only the page tabs stay pinned, so the filters scroll away and leave the screen to the board. */
+@media (max-width: 700px) {
+  .sticky { display: contents; }
+  .pagetabs { position: sticky; top: 0; z-index: 5; background: var(--bg); }
+  .filters { gap: 8px 16px; }
+  .filters .hint { display: none; }
+  .tabs button { font-size: 12px; padding: 6px 10px; }
+  .encnote { font-size: 14px; line-height: 1.5; }
+}
 .pagetabs a[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
 .pagetabs a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .tabpanel { display: grid; gap: 40px; }
@@ -561,7 +570,7 @@ function showTab() {
   document.querySelector('.filters').hidden = k === 'paper';
   document.getElementById('encodingTabs').hidden = k === 'encodings';
 }
-window.addEventListener('hashchange', () => { showTab(); document.querySelector('.sticky').scrollIntoView(); });
+window.addEventListener('hashchange', () => { showTab(); document.getElementById('pageTabs').scrollIntoView(); });
 showTab();
 [['copyBib', 'bib'], ['copyModelsBib', 'modelsBib']].forEach(([button, pre]) => {
   document.getElementById(button).onclick = e => {
