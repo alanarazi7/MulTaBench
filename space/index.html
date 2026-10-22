@@ -100,8 +100,8 @@ b.enc { color: var(--c); }
 .filters .hint { flex-basis: 100%; max-width: none; font-size: 13px; color: var(--muted); }
 .filters[hidden], .filters .encrow[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.encrow { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
-.encnote { flex: 1 1 360px; max-width: 92ch; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.encrow { flex-basis: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.encnote { max-width: 84ch; font-size: 16px; line-height: 1.6; }
 #encodingText, #encodingText2 { font-size: 16px; line-height: 1.6; max-width: 84ch; }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
@@ -179,7 +179,6 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
   <section class="cta">
     <h2>Have a model or an encoding method that should be on the board?</h2>
     <div style="display:grid; gap:14px; justify-items:start">
-      <p>Open a GitHub issue with the model or encoding method, or a feature, bug or question about the board. Everything runs on the same hardware and protocol.</p>
       <a class="btn" href="https://github.com/alanarazi7/MulTaBench/issues/new">Open an issue</a>
     </div>
   </section>
