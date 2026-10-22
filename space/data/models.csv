@@ -18,8 +18,8 @@ TabSTAR-v1.1,Technion,technion.svg,https://github.com/alanarazi7/TabSTAR#tabstar
 Mitra-v2,Amazon,amazon.png,https://arxiv.org/abs/2609.04540
 LimiX-2,Stable AI & Tsinghua University,limix.png,https://arxiv.org/abs/2609.17488
 Kumo-Tabular,NVIDIA,nvidia.png,https://huggingface.co/blog/nvidia/kumo-tabular
-Kumo-Tabular-Medium,NVIDIA,nvidia.png,https://huggingface.co/blog/nvidia/kumo-tabular
-Kumo-Tabular-Small,NVIDIA,nvidia.png,https://huggingface.co/blog/nvidia/kumo-tabular
+Kumo-Tabular-M,NVIDIA,nvidia.png,https://huggingface.co/blog/nvidia/kumo-tabular
+Kumo-Tabular-S,NVIDIA,nvidia.png,https://huggingface.co/blog/nvidia/kumo-tabular
 EXAONE-Tabular,LG AI Research,lg.svg,https://arxiv.org/abs/2608.25774
 Causilo,Nums AI,nums-ai.png,https://arxiv.org/abs/2609.22866
 TabFM,Google Research,google.png,https://arxiv.org/abs/2609.37959

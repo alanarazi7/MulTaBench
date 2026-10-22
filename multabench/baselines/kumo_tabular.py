@@ -95,7 +95,7 @@ class KumoTabular(Kumo):
 
 class KumoTabularMedium(Kumo):
 
-    MODEL_NAME = "Kumo-Tabular-Medium"
+    MODEL_NAME = "Kumo-Tabular-M"
     SHORT_NAME = "kumomedium"
     SIZE = "medium"
     NUM_ESTIMATORS = 8
@@ -103,7 +103,7 @@ class KumoTabularMedium(Kumo):
 
 class KumoTabularSmall(Kumo):
 
-    MODEL_NAME = "Kumo-Tabular-Small"
+    MODEL_NAME = "Kumo-Tabular-S"
     SHORT_NAME = "kumosmall"
     SIZE = "small"
     NUM_ESTIMATORS = 8

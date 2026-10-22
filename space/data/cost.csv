@@ -16,16 +16,16 @@ LightGBM (Frozen),LightGBM,frozen,0.2751,0.0197,0.0,0.7333,6.7195,,INTEL(R) XEON
 TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,0.2847,0.2223,0.0,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 Causilo (Frozen),Causilo,frozen,0.3145,0.5456,0.0,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 Causilo (TAR),Causilo,tar,0.3228,0.5502,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-Kumo-Tabular-Small (TAR),Kumo-Tabular-Small,tar,0.3672,0.1174,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+Kumo-Tabular-S (TAR),Kumo-Tabular-S,tar,0.3672,0.1174,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 EXAONE-Tabular (Frozen),EXAONE-Tabular,frozen,0.4243,2.7887,0.0,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 EXAONE-Tabular (TAR),EXAONE-Tabular,tar,0.4305,2.7526,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,0.4337,1.3744,100.6949,0.7399,6.9181,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 Xiaomi-TabLDM (TAR),Xiaomi-TabLDM,tar,0.4742,0.5767,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 XGBoost (TAR),XGBoost,tar,0.4845,0.0214,101.5254,0.7333,6.7195,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
-Kumo-Tabular-Small (Frozen),Kumo-Tabular-Small,frozen,0.4932,0.1156,0.0,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+Kumo-Tabular-S (Frozen),Kumo-Tabular-S,frozen,0.4932,0.1156,0.0,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,0.501,1.3786,0.0,0.7399,6.9181,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 Xiaomi-TabLDM (Frozen),Xiaomi-TabLDM,frozen,0.521,0.5792,0.0,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-Kumo-Tabular-Medium (TAR),Kumo-Tabular-Medium,tar,0.5263,0.2165,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+Kumo-Tabular-M (TAR),Kumo-Tabular-M,tar,0.5263,0.2165,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 XGBoost (Frozen),XGBoost,frozen,0.5454,0.0254,0.0,0.7333,6.7195,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 LimiX-2 (TAR),LimiX-2,tar,0.5789,16.6645,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 RandomForest (TAR),RandomForest,tar,0.5832,0.038,101.5254,0.7333,6.7195,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
@@ -33,7 +33,7 @@ LimiX-2 (Frozen),LimiX-2,frozen,0.5883,17.6665,0.0,0.7333,6.7195,NVIDIA H100 80G
 TabM (Frozen),TabM,frozen,0.6253,0.0519,0.0,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 RandomForest (Frozen),RandomForest,frozen,0.6489,0.0348,0.0,0.7333,6.7195,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 TabM (TAR),TabM,tar,0.6497,0.0574,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-Kumo-Tabular-Medium (Frozen),Kumo-Tabular-Medium,frozen,0.6741,0.2237,0.0,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+Kumo-Tabular-M (Frozen),Kumo-Tabular-M,frozen,0.6741,0.2237,0.0,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 TabPFN-v2 (TAR),TabPFN-v2,tar,0.738,1.7376,100.6949,0.7399,6.9181,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 Kumo-Tabular (TAR),Kumo-Tabular,tar,0.7969,0.4124,101.5254,0.7333,6.7195,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 TabPFN-v2 (Frozen),TabPFN-v2,frozen,0.8065,1.6817,0.0,0.7399,6.9181,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
