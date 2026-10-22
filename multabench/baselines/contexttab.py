@@ -12,7 +12,6 @@ class ConTextTab(TabularModel):
     USE_VAL_SPLIT = False
     USE_MEDIAN_FILLING = False
     USE_CATEGORICAL_ENCODING = False
-    # TODO: Should we use text embeddings for ConTextTab?
     USE_TEXT_EMBEDDINGS = False
     USE_TARGET_ENCODER = False
 
@@ -25,6 +24,5 @@ class ConTextTab(TabularModel):
         return model
 
     def fit_model(self, x_train: DataFrame, y_train: Series, x_val: DataFrame, y_val: Series):
-        # TODO: ConTextTab natively supports dates, perhaps we need to process them differently
         self.model_.fit(x_train, y_train)
 
