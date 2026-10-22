@@ -31,6 +31,8 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
       the models that embed text with `--text_encoders tfidf` as their own leaderboard entries;
       until then, sweeps pass `--text_encoders e5-small`, since the default also lists TF-IDF.
 - [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing.
+- [ ] ConTextTab reads dates natively, but the shared preprocessing expands them first. Add a
+      `USE_DATE_TRANSFORMATION` flag that ConTextTab turns off, see the TODO in `abstract_model.py`.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
 - [ ] Run the fine-tuned (`-tar`) encoders and AutoGluon multimodal under the leaderboard protocol, which the paper
