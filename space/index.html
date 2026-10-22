@@ -517,7 +517,7 @@ const ENC_LABEL = { frozen: 'Frozen', tar: 'TAR', 'end-to-end': 'E2E' };
 const ENC_TITLE = { frozen: 'Frozen encoders', tar: 'Encoders fine-tuned on each fold', 'end-to-end': 'Reads raw text itself' };
 const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
 // A short mark for the encoding, in place of the "(Frozen)" or "(TAR)" of an entry's name.
-const ENC_MARK = { frozen: '❄️', tar: '🎯' };
+const ENC_MARK = { frozen: '❄️', tar: '🎯', 'end-to-end': '🔚' };
 const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
@@ -586,7 +586,7 @@ function drawEncTabs() {
     showNames = !showNames; store.set('pareto_names', showNames ? '1' : '0'); drawEncTabs(); render();
   } }, 'Show names');
   n.setAttribute('aria-pressed', showNames);
-  const m = el('button', { type: 'button', title: '❄️ for Frozen and 🎯 for TAR, in place of the words', onclick: () => {
+  const m = el('button', { type: 'button', title: '❄️ for Frozen, 🎯 for TAR and 🔚 for E2E, as the points', onclick: () => {
     withEmojis = !withEmojis; store.set('pareto_emojis', withEmojis ? '1' : '0'); drawEncTabs(); render();
   } }, 'With emojis');
   m.setAttribute('aria-pressed', withEmojis);
@@ -631,34 +631,38 @@ function drawPareto(board, front) {
   s += `<path d="${path}" fill="none" stroke="var(--warn)" stroke-width="1.6"/>`;
   // Front labels first, then the others wherever they fit; a label that fits nowhere is left to the tooltip.
   const boxes = [], hit = (b) => boxes.some(o => b.x0 < o.x1 && o.x0 < b.x1 && b.y0 < o.y1 && o.y0 < b.y1);
-  // With both encodings on the board, a name carries its encoding, as a mark or a word; with one, the model is enough.
-  const name = r => encSel.length < 2 || !ENC_MARK[r.encoding] ? r.model
-    : withEmojis ? `${r.model} ${ENC_MARK[r.encoding]}` : r.entry;
+  // With emojis the point carries the encoding; without, a name does once both encodings are on the board.
+  const name = r => withEmojis || encSel.length < 2 ? r.model : r.entry;
+  const half = withEmojis ? 9 : 6;
   const place = (r, onFront) => {
     const px = x(timeOf[r.entry]), py = y(r.elo), w = name(r).length * (onFront ? 7 : 6.4), h = 12;
-    const spots = onFront ? [[px - 10 - w, py - 9 - h]] : [[px + 8, py - 4], [px - 8 - w, py - 4], [px - w / 2, py - 18], [px - w / 2, py + 8]];
+    const spots = onFront ? [[px - half - 4 - w, py - half - 3 - h]] : [[px + half + 3, py - 4], [px - half - 3 - w, py - 4], [px - w / 2, py - half - 13], [px - w / 2, py + half + 2]];
     for (const [x0, y0] of spots) {
       const box = { x0, y0, x1: x0 + w, y1: y0 + h };
       if (onFront || !hit(box)) { boxes.push(box); return `<text${onFront ? ' class="name"' : ' font-size="10.5"'} x="${x0}" y="${y0 + 10}">${name(r)}</text>`; }
     }
     return '';
   };
-  rows.forEach(r => boxes.push({ x0: x(timeOf[r.entry]) - 6, x1: x(timeOf[r.entry]) + 6, y0: y(r.elo) - 6, y1: y(r.elo) + 6 }));
+    rows.forEach(r => boxes.push({ x0: x(timeOf[r.entry]) - half, x1: x(timeOf[r.entry]) + half, y0: y(r.elo) - half, y1: y(r.elo) + half }));
   const tip = r => `<title>${r.entry}: Elo ${fmt(r.elo)}, ${fmt(timeOf[r.entry], 2)} s per 1K rows</title>`;
-  rows.filter(r => !front.has(r.entry)).forEach(r => {
-    s += `<rect x="${x(timeOf[r.entry]) - 4}" y="${y(r.elo) - 4}" width="8" height="8" fill="${encColor(r.encoding)}" opacity=".7">${tip(r)}</rect>`;
-  });
-  fr.forEach(r => {
-    s += `<rect x="${x(timeOf[r.entry]) - 5.5}" y="${y(r.elo) - 5.5}" width="11" height="11" fill="${encColor(r.encoding)}" stroke="var(--warn)" stroke-width="2">${tip(r)}</rect>`;
-  });
+  // A point is its encoding's emoji in a small square, or a plain colored square; the front's are outlined.
+  const point = (px, py, e, onFront, title = '') => {
+    const h = withEmojis ? (onFront ? 10 : 9) : (onFront ? 5.5 : 4);
+    const edge = onFront ? ' stroke="var(--warn)" stroke-width="2"' : withEmojis ? ` stroke="${encColor(e)}"` : '';
+    const box = `<rect x="${px - h}" y="${py - h}" width="${2 * h}" height="${2 * h}" rx="${withEmojis ? 2 : 0}"`
+      + ` fill="${withEmojis ? 'var(--surface)' : encColor(e)}"${edge}${!withEmojis && !onFront ? ' opacity=".7"' : ''}/>`;
+    const mark = withEmojis ? `<text x="${px}" y="${py + h * 0.45}" text-anchor="middle" font-size="${h * 1.3}">${ENC_MARK[e]}</text>` : '';
+    return `<g>${title}${box}${mark}</g>`;
+  };
+  rows.filter(r => !front.has(r.entry)).forEach(r => { s += point(x(timeOf[r.entry]), y(r.elo), r.encoding, false, tip(r)); });
+  fr.forEach(r => { s += point(x(timeOf[r.entry]), y(r.elo), r.encoding, true, tip(r)); });
   // The front keeps its names; Show names adds the others.
   fr.forEach(r => { s += place(r, true); });
   if (showNames) [...rows].filter(r => !front.has(r.entry)).sort((a, b) => b.elo - a.elo).forEach(r => { s += place(r, false); });
   let lx = left + 12;
   [...new Set(rows.map(r => r.encoding))].forEach(e => {
-    const label = `${ENC_MARK[e] && withEmojis && encSel.length > 1 ? ENC_MARK[e] + ' ' : ''}${ENC_LABEL[e]}`;
-    s += `<rect x="${lx}" y="${top + 6}" width="9" height="9" fill="${encColor(e)}"/><text x="${lx + 15}" y="${top + 15}">${label}</text>`;
-    lx += 30 + label.length * 7;
+    s += point(lx + 5, top + 11, e, false) + `<text x="${lx + 17}" y="${top + 15}">${ENC_LABEL[e]}</text>`;
+    lx += 36 + ENC_LABEL[e].length * 7;
   });
   s += '</svg>';
   document.getElementById('paretoChart').innerHTML = `<div style="padding:12px 8px 4px">${s}</div>`;
