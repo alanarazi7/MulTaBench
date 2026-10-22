@@ -199,6 +199,8 @@ mdurl==0.1.2
     # via markdown-it-py
 minio==7.2.20
     # via openml
+mitra-finetune @ git+https://huggingface.co/autogluon/mitra-finetune@b4701e8148dc33b00ed15d7086ff59816957cde4
+    # via -r requirements-mitra2.in
 mpmath==1.3.0
     # via sympy
 msgpack==1.2.3

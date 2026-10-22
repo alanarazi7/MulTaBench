@@ -3,3 +3,5 @@
 # The commit that added the wrapper TabArena benchmarked (#520).
 tabarena @ git+https://github.com/autogluon/tabarena.git@30f4b10bc54cba2baab39997c8b940ca48e6b3cd#subdirectory=packages/tabarena
 autogluon.tabular[mitra] >= 1.6, < 1.7
+# The official fine-tuning package, for its class hierarchy above the 10-class head (v0.3.0).
+mitra-finetune @ git+https://huggingface.co/autogluon/mitra-finetune@b4701e8148dc33b00ed15d7086ff59816957cde4
