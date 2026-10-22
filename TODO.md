@@ -43,6 +43,8 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 ## Leaderboard
 
 - [ ] Improvability as a secondary column.
+- [ ] Once NVIDIA publishes a technical report for Kumo-Tabular, link and cite it in place of its Hugging Face blog
+      post: its three models' link in `space/data/models.csv` and its BibTeX on the Cite & Data tab.
 - [ ] Update the Space from `master` with a GitHub Action: rerun `multabench.leaderboard.export` and upload
       `space/` when `multabench/leaderboard/models/` changes. It is uploaded by hand for now.
 
