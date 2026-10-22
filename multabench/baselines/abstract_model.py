@@ -145,7 +145,7 @@ class TabularModel:
         feature_types = detect_feature_types(x, image_column=self.image_column)
         self.date_transformers = fit_date_encoders(x=x, date_features=feature_types.date_features)
         self.vprint(f"📅 Detected {len(self.date_transformers)} date features: {sorted(self.date_transformers)}")
-        # TODO: ConTextTab supports dates natively, perhaps we need to change this to "USE_DATE_TRANSFORMATION"
+        # TODO: a bug for ConTextTab, which reads dates natively: add a USE_DATE_TRANSFORMATION flag so it skips this.
         x = transform_date_features(x=x, date_transformers=self.date_transformers)
         if self.is_cls:
             self.d_output = len(set(y))
@@ -170,7 +170,6 @@ class TabularModel:
         self.categorical_indices = [i for i, c in enumerate(x.columns) if c in self.categorical_features]
         self.target_transformer = fit_preprocess_y(y=y, is_cls=self.is_cls)
         # d_output already set above for fit_image_encoders
-        # TODO: drop constant columns, where constants means all values are the same (and no nulls)
         return x, y
 
     def predict(self, x: DataFrame) -> np.ndarray:
