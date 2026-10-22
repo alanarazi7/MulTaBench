@@ -98,16 +98,16 @@ b.enc { color: var(--c); }
 .tabpanel[data-empty] > section { display: none; }
 .tabpanel[data-empty]::before { content: attr(data-empty); display: block; padding: 48px 0; text-align: center; font-size: 17px; color: var(--muted); }
 .filters .hint { flex-basis: 100%; max-width: none; font-size: 13px; color: var(--muted); }
-.filters[hidden], .filters .encrow[hidden] { display: none; }
+.filters[hidden], .filters .group[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .encrow { flex-basis: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .encnote { max-width: 84ch; font-size: 16px; line-height: 1.6; }
-#encodingText, #encodingText2 { font-size: 16px; line-height: 1.6; max-width: 84ch; }
+#encodingText2 { font-size: 16px; line-height: 1.6; max-width: 84ch; }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
-.links a, #encodingText a, .encnote a { color: var(--accent); white-space: nowrap; text-decoration: none; font-weight: 500; }
-.links a:hover, #encodingText a:hover, .encnote a:hover { text-decoration: underline; }
+.links a, .encnote a { color: var(--accent); white-space: nowrap; text-decoration: none; font-weight: 500; }
+.links a:hover, .encnote a:hover { text-decoration: underline; }
 .links .ico { display: inline-block; width: 1.05em; height: 1.05em; margin-right: 5px; vertical-align: -0.15em; line-height: 1; }
 code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 
@@ -129,11 +129,9 @@ tr.front td { background: color-mix(in oklab, var(--accent) 7%, var(--surface));
 .dl > div:last-child { border-bottom: 0; }
 .dl .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); min-width: 190px; }
 pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-space: pre-wrap; word-break: break-word; }
-.cta { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 32px; align-items: center; padding: 26px 28px; background: var(--ink); color: var(--bg); border-radius: 12px; }
+.cta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; align-items: center; padding: 26px 28px; background: var(--ink); color: var(--bg); border-radius: 12px; }
 .cta h2 { color: var(--bg); font-size: 24px; }
-.cta p { color: color-mix(in oklab, var(--bg) 80%, var(--ink)); }
 .cta .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
-@media (max-width: 700px) { .cta { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -178,16 +176,13 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
   </section>
   <section class="cta">
     <h2>Have a model or an encoding method that should be on the board?</h2>
-    <div style="display:grid; gap:14px; justify-items:start">
-      <a class="btn" href="https://github.com/alanarazi7/MulTaBench/issues/new">Open an issue</a>
-    </div>
+    <a class="btn" href="https://github.com/alanarazi7/MulTaBench/issues/new">Open an issue</a>
   </section>
   </div>
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
-    <p id="encodingText">For models that are not E2E, we embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.<br><br><b class="enc frozen">Frozen</b> uses the encoders as they are; <b class="enc tar">TAR</b> (Target-Aware Representations) first fine-tunes them on the training labels with default hyperparameters.</p>
-    <p id="encodingText2">Their Elo pits the two against each other on every model and dataset, leaving out E2E models.</p>
+    <p id="encodingText2">🚧 <b>Under Construction:</b> More encoding methods coming soon!</p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
   </div>
@@ -204,7 +199,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <section>
     <h2>Cost</h2>
-    <p class="muted">Median time per 1,000 rows over all successful runs, on the hardware each model is assigned. Runs read the cached embeddings, so this leaves out encoding; the text and image columns estimate it from the cached encoders' own time, and With encoding time adds it to the total. Fine-tune is the mean time TAR's LoRA fine-tuning took per 1,000 training rows, on an H100, and always counts.</p>
+    <p class="muted">Median time per 1,000 rows, as a ballpark: models run on different hardware, so their times are not directly comparable, and some encoders were timed on different GPUs, which we plan to fix. Most of the cost is encoding the text and images, which could be optimized.</p>
     <div class="panel scroll"><table id="costTable"></table></div>
   </section>
   </div>
@@ -326,7 +321,7 @@ function showTab() {
   TABS.forEach(t => { document.getElementById('tab-' + t).hidden = t !== k; });
   document.querySelectorAll('#pageTabs a').forEach(a => a.setAttribute('aria-selected', a.dataset.tab === k));
   document.querySelector('.filters').hidden = k === 'paper';
-  document.querySelector('.encrow').hidden = k === 'encodings';
+  document.getElementById('encodingTabs').hidden = k === 'encodings';
 }
 window.addEventListener('hashchange', () => { showTab(); document.querySelector('.sticky').scrollIntoView(); });
 showTab();
