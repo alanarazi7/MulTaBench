@@ -22,7 +22,7 @@ BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,RandomForest (Frozen),R
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,RandomForest (TAR),RandomForest,tar,roc_auc,0.088187,0.004015,0.911813,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.094807,0.004329,0.905193,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,RealMLP (TAR),RealMLP,tar,roc_auc,0.085536,0.003675,0.914464,6,10000.0
-BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.094025,0.003631,0.905975,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.094819,0.003687,0.905181,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabDPT (TAR),TabDPT,tar,roc_auc,0.08378,0.003192,0.91622,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.090632,0.003681,0.909368,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.081654,0.00327,0.918346,6,10000.0
@@ -70,7 +70,7 @@ BIN_IMAGE_HATEFUL_MEME,core,classification,image,RandomForest (Frozen),RandomFor
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,RandomForest (TAR),RandomForest,tar,roc_auc,0.290199,0.015808,0.709801,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.241691,0.013495,0.758309,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,RealMLP (TAR),RealMLP,tar,roc_auc,0.242002,0.015887,0.757998,6,6000.0
-BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.24066,0.003961,0.75934,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.238628,0.006127,0.761372,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabDPT (TAR),TabDPT,tar,roc_auc,0.250409,0.02022,0.749591,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.224657,0.004856,0.775343,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.237082,0.021971,0.762918,6,6000.0
@@ -118,7 +118,7 @@ BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,RandomForest (Frozen),Rando
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,RandomForest (TAR),RandomForest,tar,roc_auc,0.276339,0.009665,0.723661,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.259959,0.014422,0.740041,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,RealMLP (TAR),RealMLP,tar,roc_auc,0.263718,0.023102,0.736282,6,3468.0
-BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.220483,0.012387,0.779517,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.227682,0.012841,0.772318,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabDPT (TAR),TabDPT,tar,roc_auc,0.228114,0.005351,0.771886,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.214785,0.010972,0.785215,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.2228,0.004418,0.7772,6,3468.0
@@ -166,7 +166,7 @@ BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,RandomForest (Frozen),R
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,RandomForest (TAR),RandomForest,tar,roc_auc,0.073805,0.009596,0.926195,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.106974,0.018433,0.893026,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,RealMLP (TAR),RealMLP,tar,roc_auc,0.11138,0.011242,0.88862,6,291.0
-BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.081463,0.009153,0.918537,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.082,0.011442,0.918,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabDPT (TAR),TabDPT,tar,roc_auc,0.075772,0.010033,0.924228,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.077256,0.009365,0.922744,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.071804,0.012005,0.928196,6,291.0
@@ -214,7 +214,7 @@ BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,RandomForest (Frozen),
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,RandomForest (TAR),RandomForest,tar,roc_auc,0.326866,0.003853,0.673134,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.351511,0.024403,0.648489,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,RealMLP (TAR),RealMLP,tar,roc_auc,0.346638,0.01721,0.653362,6,1003.0
-BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.321405,0.013274,0.678595,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.327683,0.011775,0.672317,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabDPT (TAR),TabDPT,tar,roc_auc,0.327893,0.015792,0.672107,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.315763,0.015837,0.684237,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.317495,0.014839,0.682505,6,1003.0
@@ -262,7 +262,7 @@ BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,RandomForest (Frozen),Ra
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,RandomForest (TAR),RandomForest,tar,roc_auc,0.011308,0.001009,0.988692,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.009118,0.000657,0.990882,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,RealMLP (TAR),RealMLP,tar,roc_auc,0.010233,0.000966,0.989767,6,10000.0
-BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.040031,0.001242,0.959969,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.044012,0.001878,0.955988,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabDPT (TAR),TabDPT,tar,roc_auc,0.039127,0.002053,0.960873,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.035356,0.001563,0.964644,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.031329,0.001662,0.968671,6,10000.0
@@ -310,7 +310,7 @@ BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,RandomForest (Frozen),RandomF
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,RandomForest (TAR),RandomForest,tar,roc_auc,0.09369,0.01019,0.90631,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.096944,0.012911,0.903056,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,RealMLP (TAR),RealMLP,tar,roc_auc,0.093367,0.012872,0.906633,6,8484.0
-BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.056444,0.005973,0.943556,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.066456,0.002971,0.933544,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabDPT (TAR),TabDPT,tar,roc_auc,0.064167,0.005896,0.935833,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.05031,0.002558,0.94969,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.056535,0.007484,0.943465,6,8484.0
@@ -358,7 +358,7 @@ BIN_TEXT_IMDB_GENRE,extended,classification,text,RandomForest (Frozen),RandomFor
 BIN_TEXT_IMDB_GENRE,extended,classification,text,RandomForest (TAR),RandomForest,tar,roc_auc,0.184542,0.014791,0.815458,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.182638,0.022917,0.817362,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,RealMLP (TAR),RealMLP,tar,roc_auc,0.184803,0.017943,0.815197,6,534.0
-BIN_TEXT_IMDB_GENRE,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.167534,0.011825,0.832466,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.172349,0.013943,0.827651,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,TabDPT (TAR),TabDPT,tar,roc_auc,0.179961,0.020122,0.820039,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.139779,0.016411,0.860221,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.152948,0.016121,0.847052,6,534.0
@@ -406,7 +406,7 @@ BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,RandomForest (Frozen),RandomFo
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,RandomForest (TAR),RandomForest,tar,roc_auc,0.081144,0.009371,0.918856,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.163063,0.008542,0.836937,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,RealMLP (TAR),RealMLP,tar,roc_auc,0.063563,0.005087,0.936437,6,10000.0
-BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.178285,0.00972,0.821715,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.172486,0.009898,0.827514,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabDPT (TAR),TabDPT,tar,roc_auc,0.069329,0.008381,0.930671,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.149927,0.006206,0.850073,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.057672,0.005463,0.942328,6,10000.0
@@ -454,7 +454,7 @@ BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,RandomForest (Frozen),Rand
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,RandomForest (TAR),RandomForest,tar,roc_auc,0.276511,0.008997,0.723489,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.270366,0.006165,0.729634,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,RealMLP (TAR),RealMLP,tar,roc_auc,0.264469,0.009423,0.735531,6,10000.0
-BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.296373,0.007575,0.703627,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.3114,0.011202,0.6886,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabDPT (TAR),TabDPT,tar,roc_auc,0.298926,0.009584,0.701074,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.267568,0.00594,0.732432,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.266199,0.008781,0.733801,6,10000.0
@@ -502,7 +502,7 @@ BIN_TEXT_OSHA_INJURY,extended,classification,text,RandomForest (Frozen),RandomFo
 BIN_TEXT_OSHA_INJURY,extended,classification,text,RandomForest (TAR),RandomForest,tar,roc_auc,0.426611,0.011651,0.573389,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,roc_auc,0.446025,0.010624,0.553975,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,RealMLP (TAR),RealMLP,tar,roc_auc,0.436193,0.009852,0.563807,6,3232.0
-BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.414975,0.011235,0.585025,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,roc_auc,0.423583,0.012917,0.576417,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT (TAR),TabDPT,tar,roc_auc,0.419049,0.012328,0.580951,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,roc_auc,0.394932,0.01503,0.605068,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,roc_auc,0.395491,0.014005,0.604509,6,3232.0
@@ -550,7 +550,7 @@ MUL_IMAGE_CBIS_DDSM,core,classification,image,RandomForest (Frozen),RandomForest
 MUL_IMAGE_CBIS_DDSM,core,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,0.754843,0.025346,-0.754843,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,0.871517,0.024496,-0.871517,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,0.825801,0.066985,-0.825801,6,1131.0
-MUL_IMAGE_CBIS_DDSM,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.753981,0.029448,-0.753981,6,1131.0
+MUL_IMAGE_CBIS_DDSM,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.754143,0.023012,-0.754143,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,0.720564,0.034535,-0.720564,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.758536,0.020258,-0.758536,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.693572,0.02828,-0.693572,6,1131.0
@@ -598,7 +598,7 @@ MUL_IMAGE_CHEXPERT,core,classification,image,RandomForest (Frozen),RandomForest,
 MUL_IMAGE_CHEXPERT,core,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,0.735347,0.006347,-0.735347,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,0.788071,0.005287,-0.788071,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,0.719347,0.011668,-0.719347,6,10000.0
-MUL_IMAGE_CHEXPERT,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.72077,0.009166,-0.72077,6,10000.0
+MUL_IMAGE_CHEXPERT,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.730619,0.00628,-0.730619,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,0.674266,0.007675,-0.674266,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.696612,0.006727,-0.696612,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.650965,0.005416,-0.650965,6,10000.0
@@ -646,7 +646,7 @@ MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,RandomForest (Frozen),Random
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,1.853716,0.209091,-1.853716,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,1.787783,0.101088,-1.787783,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,1.962994,0.191237,-1.962994,6,638.0
-MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.346392,0.020564,-1.346392,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.38639,0.035306,-1.38639,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,1.481457,0.043036,-1.481457,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.216313,0.028538,-1.216313,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.388704,0.089234,-1.388704,6,638.0
@@ -694,7 +694,7 @@ MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,RandomForest (Frozen),Random
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,1.472818,0.035378,-1.472818,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,1.860912,0.159756,-1.860912,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,1.911684,0.144433,-1.911684,6,400.0
-MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.425838,0.04394,-1.425838,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.432718,0.0487,-1.432718,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,1.486728,0.076337,-1.486728,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.419259,0.033062,-1.419259,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.456461,0.046964,-1.456461,6,400.0
@@ -742,7 +742,7 @@ MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,RandomForest (Frozen),RandomFo
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,0.369521,0.016786,-0.369521,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,0.327041,0.005789,-0.327041,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,0.322684,0.016256,-0.322684,6,8300.0
-MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.299358,0.006989,-0.299358,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.299897,0.006517,-0.299897,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,0.299175,0.008061,-0.299175,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.285987,0.007989,-0.285987,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.295454,0.007762,-0.295454,6,8300.0
@@ -790,7 +790,7 @@ MUL_IMAGE_HAM10000_LESION,extended,classification,image,RandomForest (Frozen),Ra
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,0.538066,0.062239,-0.538066,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,0.483404,0.019454,-0.483404,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,0.508616,0.080253,-0.508616,6,4980.0
-MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.477659,0.01003,-0.477659,6,4980.0
+MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.477995,0.01013,-0.477995,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,0.439834,0.030699,-0.439834,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.44137,0.013786,-0.44137,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.419044,0.038908,-0.419044,6,4980.0
@@ -836,7 +836,7 @@ MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,RandomForest (Frozen),
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,1.532039,0.043216,-1.532039,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,1.408775,0.040105,-1.408775,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,1.640092,0.105398,-1.640092,6,2854.0
-MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.394839,0.022504,-1.394839,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.459458,0.00648,-1.459458,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,1.47071,0.054902,-1.47071,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.181756,0.015694,-1.181756,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.200735,0.040225,-1.200735,6,2854.0
@@ -880,7 +880,7 @@ MUL_IMAGE_HUBMAP_HPA,core,classification,image,RandomForest (Frozen),RandomFores
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,0.993482,0.025135,-0.993482,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,0.841408,0.017685,-0.841408,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,0.975051,0.126604,-0.975051,6,8388.0
-MUL_IMAGE_HUBMAP_HPA,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.875087,0.010361,-0.875087,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.927821,0.013643,-0.927821,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,0.880147,0.065849,-0.880147,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.652558,0.011084,-0.652558,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.693195,0.052345,-0.693195,6,8388.0
@@ -928,7 +928,7 @@ MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,RandomForest (Frozen),Rando
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,0.450237,0.05859,-0.450237,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,0.387084,0.008067,-0.387084,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,0.369282,0.047118,-0.369282,6,6880.0
-MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.34927,0.002831,-0.34927,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.348453,0.004637,-0.348453,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,0.299892,0.01926,-0.299892,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.316481,0.002528,-0.316481,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.28163,0.020762,-0.28163,6,6880.0
@@ -976,7 +976,7 @@ MUL_IMAGE_MINECRAFT,extended,classification,image,RandomForest (Frozen),RandomFo
 MUL_IMAGE_MINECRAFT,extended,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,0.444253,0.035153,-0.444253,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,0.351972,0.02063,-0.351972,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,0.383188,0.03519,-0.383188,6,4060.0
-MUL_IMAGE_MINECRAFT,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.255582,0.016908,-0.255582,6,4060.0
+MUL_IMAGE_MINECRAFT,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.269598,0.014959,-0.269598,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,0.278654,0.019698,-0.278654,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.237894,0.017451,-0.237894,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.264921,0.025327,-0.264921,6,4060.0
@@ -1024,7 +1024,7 @@ MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,RandomForest (Frozen),Ra
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,0.6571,0.051049,-0.6571,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,0.654507,0.070852,-0.654507,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,0.691273,0.12719,-0.691273,6,1094.0
-MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.554987,0.029322,-0.554987,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.551737,0.019578,-0.551737,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,0.557059,0.053377,-0.557059,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.519853,0.016074,-0.519853,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.521743,0.057974,-0.521743,6,1094.0
@@ -1072,7 +1072,7 @@ MUL_IMAGE_PETFINDER,core,classification,image,RandomForest (Frozen),RandomForest
 MUL_IMAGE_PETFINDER,core,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,1.477565,0.014175,-1.477565,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,1.411933,0.00766,-1.411933,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,1.397299,0.011435,-1.397299,6,9768.0
-MUL_IMAGE_PETFINDER,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.425863,0.005434,-1.425863,6,9768.0
+MUL_IMAGE_PETFINDER,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.456632,0.00809,-1.456632,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,1.426706,0.008176,-1.426706,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.368077,0.00418,-1.368077,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.328851,0.00578,-1.328851,6,9768.0
@@ -1120,7 +1120,7 @@ MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,RandomForest (Frozen),Ran
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,1.713736,0.055281,-1.713736,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,2.069121,0.129024,-2.069121,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,2.083449,0.103455,-2.083449,6,718.0
-MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.630252,0.055204,-1.630252,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.745865,0.024205,-1.745865,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,1.760207,0.045098,-1.760207,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.589291,0.036127,-1.589291,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.598631,0.036522,-1.598631,6,718.0
@@ -1168,7 +1168,7 @@ MUL_IMAGE_REDDIT_MEMES,extended,classification,image,RandomForest (Frozen),Rando
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,1.155292,0.043129,-1.155292,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,1.25657,0.014321,-1.25657,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,1.260217,0.074628,-1.260217,6,3214.0
-MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.16516,0.011519,-1.16516,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,1.177471,0.013728,-1.177471,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,1.185319,0.045542,-1.185319,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.04564,0.030211,-1.04564,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.091032,0.057495,-1.091032,6,3214.0
@@ -1216,7 +1216,7 @@ MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,RandomForest (Frozen),Ra
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,0.435402,0.036585,-0.435402,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,0.398733,0.019168,-0.398733,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,RealMLP (TAR),RealMLP,tar,log_loss,0.403031,0.012176,-0.403031,6,10000.0
-MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.378073,0.015424,-0.378073,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabDPT (Frozen),TabDPT,frozen,log_loss,0.394367,0.017245,-0.394367,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabDPT (TAR),TabDPT,tar,log_loss,0.348081,0.003373,-0.348081,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.322842,0.012948,-0.322842,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.319533,0.010578,-0.319533,6,10000.0
@@ -1264,7 +1264,7 @@ MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,RandomForest (Frozen
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,0.238047,0.056591,-0.238047,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,0.148569,0.011427,-0.148569,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,0.145047,0.013446,-0.145047,6,10000.0
-MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.164797,0.00321,-0.164797,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.161891,0.005111,-0.161891,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,0.158216,0.008551,-0.158216,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.119739,0.009105,-0.119739,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.119112,0.011349,-0.119112,6,10000.0
@@ -1312,7 +1312,7 @@ MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,RandomForest (Frozen),Rand
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,0.895856,0.011989,-0.895856,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,1.046197,0.010462,-1.046197,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,1.061354,0.019295,-1.061354,6,2645.0
-MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.934784,0.012539,-0.934784,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.936677,0.016213,-0.936677,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,0.94547,0.017731,-0.94547,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.927412,0.015305,-0.927412,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.939384,0.017634,-0.939384,6,2645.0
@@ -1360,7 +1360,7 @@ MUL_TEXT_BOX_OFFICE,extended,classification,text,RandomForest (Frozen),RandomFor
 MUL_TEXT_BOX_OFFICE,extended,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,1.154673,0.008248,-1.154673,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,1.068081,0.014037,-1.068081,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,1.08793,0.035648,-1.08793,6,4939.0
-MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.158845,0.02026,-1.158845,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.189881,0.018366,-1.189881,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,1.197597,0.024038,-1.197597,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.124891,0.018678,-1.124891,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.140304,0.024732,-1.140304,6,4939.0
@@ -1408,7 +1408,7 @@ MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,RandomForest (Frozen),R
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,0.679686,0.019897,-0.679686,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,0.603216,0.00235,-0.603216,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,0.601323,0.011998,-0.601323,6,10000.0
-MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.638148,0.006622,-0.638148,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.664858,0.005949,-0.664858,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,0.662736,0.006047,-0.662736,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.614801,0.004546,-0.614801,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.605993,0.004382,-0.605993,6,10000.0
@@ -1456,7 +1456,7 @@ MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,RandomForest (Frozen),Ra
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,1.554884,0.040204,-1.554884,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,1.230524,0.011805,-1.230524,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,1.226715,0.020209,-1.226715,6,10000.0
-MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.143043,0.011584,-1.143043,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.160525,0.010286,-1.160525,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,1.169344,0.017427,-1.169344,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.140272,0.007696,-1.140272,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.131749,0.009007,-1.131749,6,10000.0
@@ -1504,7 +1504,7 @@ MUL_TEXT_KOREAN_DRAMA,extended,classification,text,RandomForest (Frozen),RandomF
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,2.088303,0.016328,-2.088303,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,2.342142,0.084998,-2.342142,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,2.333781,0.033006,-2.333781,6,1098.0
-MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,2.011262,0.017202,-2.011262,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,2.007799,0.025174,-2.007799,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,2.026774,0.044245,-2.026774,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.961859,0.018794,-1.961859,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.966471,0.025292,-1.966471,6,1098.0
@@ -1550,7 +1550,7 @@ MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,RandomForest (Frozen),Ran
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,1.681055,0.019378,-1.681055,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,1.66822,0.014606,-1.66822,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,1.682715,0.0088,-1.682715,6,10000.0
-MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.611835,0.02185,-1.611835,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.622283,0.019665,-1.622283,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,1.615921,0.026688,-1.615921,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.533183,0.019478,-1.533183,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.521753,0.017526,-1.521753,6,10000.0
@@ -1598,7 +1598,7 @@ MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,RandomForest (Frozen),Ran
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,0.729566,0.014905,-0.729566,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,0.637115,0.007229,-0.637115,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,0.615546,0.005786,-0.615546,6,10000.0
-MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.793125,0.007085,-0.793125,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.803117,0.006147,-0.803117,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,0.748098,0.009862,-0.748098,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.75735,0.007229,-0.75735,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.699046,0.00684,-0.699046,6,10000.0
@@ -1646,7 +1646,7 @@ MUL_TEXT_NEWS_CHANNEL,extended,classification,text,RandomForest (Frozen),RandomF
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,1.388859,0.013494,-1.388859,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,1.270658,0.008551,-1.270658,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,1.265083,0.010144,-1.265083,6,10000.0
-MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.293158,0.008851,-1.293158,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.317679,0.012845,-1.317679,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,1.31213,0.011302,-1.31213,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,1.195592,0.006071,-1.195592,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,1.192896,0.006731,-1.192896,6,10000.0
@@ -1694,7 +1694,7 @@ MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,RandomForest (Frozen),Random
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,0.49199,0.040856,-0.49199,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,0.398239,0.005982,-0.398239,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,0.385199,0.015154,-0.385199,6,3394.0
-MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.381331,0.015376,-0.381331,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.380358,0.012072,-0.380358,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,0.36218,0.014877,-0.36218,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.367522,0.007044,-0.367522,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.352338,0.00895,-0.352338,6,3394.0
@@ -1740,7 +1740,7 @@ MUL_TEXT_SPOTIFY_GENRES,core,classification,text,RandomForest (Frozen),RandomFor
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,3.896351,0.062389,-3.896351,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,2.253941,0.015672,-2.253941,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,2.214624,0.024182,-2.214624,6,10000.0
-MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,3.38665,0.030916,-3.38665,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,3.508455,0.027368,-3.508455,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,3.429395,0.033401,-3.429395,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,2.483071,0.023525,-2.483071,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,2.402088,0.039667,-2.402088,6,10000.0
@@ -1784,7 +1784,7 @@ MUL_TEXT_US_ACCIDENTS,core,classification,text,RandomForest (Frozen),RandomFores
 MUL_TEXT_US_ACCIDENTS,core,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,0.225528,0.021006,-0.225528,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,0.237783,0.014298,-0.237783,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,0.213848,0.010687,-0.213848,6,10000.0
-MUL_TEXT_US_ACCIDENTS,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.29523,0.009058,-0.29523,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.317812,0.009716,-0.317812,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,0.241287,0.009539,-0.241287,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.257062,0.010113,-0.257062,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.196244,0.009681,-0.196244,6,10000.0
@@ -1830,7 +1830,7 @@ MUL_TEXT_WINE_REVIEW,core,classification,text,RandomForest (Frozen),RandomForest
 MUL_TEXT_WINE_REVIEW,core,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,1.133516,0.036158,-1.133516,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,0.910312,0.023848,-0.910312,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,0.792358,0.017582,-0.792358,6,10000.0
-MUL_TEXT_WINE_REVIEW,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.311906,0.01954,-1.311906,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,1.356271,0.01192,-1.356271,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,1.146555,0.014262,-1.146555,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.872779,0.02115,-0.872779,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.752781,0.016051,-0.752781,6,10000.0
@@ -1874,7 +1874,7 @@ MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,RandomForest (Frozen),Ra
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,0.7225,0.019171,-0.7225,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,0.672096,0.007454,-0.672096,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,RealMLP (TAR),RealMLP,tar,log_loss,0.659415,0.011252,-0.659415,6,10000.0
-MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.676179,0.003689,-0.676179,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabDPT (Frozen),TabDPT,frozen,log_loss,0.680958,0.002698,-0.680958,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabDPT (TAR),TabDPT,tar,log_loss,0.668711,0.005418,-0.668711,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,log_loss,0.654807,0.004913,-0.654807,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,log_loss,0.639083,0.007152,-0.639083,6,10000.0
@@ -1922,7 +1922,7 @@ REG_IMAGE_AIRBNB_NYC,extended,regression,image,RandomForest (Frozen),RandomFores
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.445969,0.011269,-0.445969,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.432805,0.00727,-0.432805,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.427754,0.008085,-0.427754,6,10000.0
-REG_IMAGE_AIRBNB_NYC,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.425627,0.011287,-0.425627,6,10000.0
+REG_IMAGE_AIRBNB_NYC,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.426448,0.012271,-0.426448,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.424383,0.011457,-0.424383,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.411046,0.011787,-0.411046,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.41084,0.011108,-0.41084,6,10000.0
@@ -1970,7 +1970,7 @@ REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,RandomForest (Frozen),RandomF
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.689421,0.032312,-0.689421,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.709876,0.019979,-0.709876,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.67426,0.031812,-0.67426,6,2326.0
-REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.645962,0.021682,-0.645962,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.64658,0.022212,-0.64658,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.64393,0.035654,-0.64393,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.645359,0.019528,-0.645359,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.644819,0.040625,-0.644819,6,2326.0
@@ -2018,7 +2018,7 @@ REG_IMAGE_AMAZON_PACKAGES,core,regression,image,RandomForest (Frozen),RandomFore
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,3.12634,0.104772,-3.12634,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,3.347045,0.146723,-3.347045,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,3.121292,0.116839,-3.121292,6,10000.0
-REG_IMAGE_AMAZON_PACKAGES,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,3.111699,0.096762,-3.111699,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,3.101952,0.101448,-3.101952,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,2.945499,0.116151,-2.945499,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,3.054495,0.117507,-3.054495,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,2.915712,0.117637,-2.915712,6,10000.0
@@ -2066,7 +2066,7 @@ REG_IMAGE_DVM_CAR,extended,regression,image,RandomForest (Frozen),RandomForest,f
 REG_IMAGE_DVM_CAR,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,19769.347439,9085.462104,-19769.347439,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,19226.091494,11714.495785,-19226.091494,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,19405.152924,11491.98337,-19405.152924,6,10000.0
-REG_IMAGE_DVM_CAR,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,22534.970161,13391.649096,-22534.970161,6,10000.0
+REG_IMAGE_DVM_CAR,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,22431.985118,13414.286557,-22431.985118,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,22401.55351,13617.74578,-22401.55351,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,20324.678277,14057.62875,-20324.678277,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,20374.36917,14235.077191,-20374.36917,6,10000.0
@@ -2114,7 +2114,7 @@ REG_IMAGE_FLIPKART_RATIO,extended,regression,image,RandomForest (Frozen),RandomF
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.121156,0.004593,-0.121156,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.101488,0.001789,-0.101488,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.112311,0.004185,-0.112311,6,10000.0
-REG_IMAGE_FLIPKART_RATIO,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.092451,0.001538,-0.092451,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.093203,0.001655,-0.093203,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.106312,0.004643,-0.106312,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.089099,0.001834,-0.089099,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.102356,0.004931,-0.102356,6,10000.0
@@ -2162,7 +2162,7 @@ REG_IMAGE_GOIAS_HOUSES,extended,regression,image,RandomForest (Frozen),RandomFor
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.229532,0.021482,-0.229532,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.155959,0.003105,-0.155959,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.19063,0.017029,-0.19063,6,6554.0
-REG_IMAGE_GOIAS_HOUSES,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.177243,0.005176,-0.177243,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.178858,0.006563,-0.178858,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.200935,0.010632,-0.200935,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.160828,0.006036,-0.160828,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.191392,0.011872,-0.191392,6,6554.0
@@ -2210,7 +2210,7 @@ REG_IMAGE_HNM_FASHION,core,regression,image,RandomForest (Frozen),RandomForest,f
 REG_IMAGE_HNM_FASHION,core,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,4.557132,0.084236,-4.557132,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,4.590277,0.153161,-4.590277,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,4.592566,0.081502,-4.592566,6,10000.0
-REG_IMAGE_HNM_FASHION,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,4.416893,0.093176,-4.416893,6,10000.0
+REG_IMAGE_HNM_FASHION,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,4.411352,0.090431,-4.411352,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,4.415281,0.091326,-4.415281,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,4.412165,0.088776,-4.412165,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,4.405033,0.094177,-4.405033,6,10000.0
@@ -2258,7 +2258,7 @@ REG_IMAGE_KAMERNET_SIZE,extended,regression,image,RandomForest (Frozen),RandomFo
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.535536,0.009753,-0.535536,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.552186,0.022244,-0.552186,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.550582,0.018114,-0.550582,6,1092.0
-REG_IMAGE_KAMERNET_SIZE,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.548221,0.007485,-0.548221,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.545202,0.01095,-0.545202,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.549862,0.008696,-0.549862,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.537343,0.011698,-0.537343,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.5408,0.011544,-0.5408,6,1092.0
@@ -2306,7 +2306,7 @@ REG_IMAGE_KHAADI_CLOTHES,core,regression,image,RandomForest (Frozen),RandomFores
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,3344.341614,906.388134,-3344.341614,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,2939.874688,995.13364,-2939.874688,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,2714.23851,1032.207599,-2714.23851,6,267.0
-REG_IMAGE_KHAADI_CLOTHES,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,3263.607807,645.986234,-3263.607807,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,3247.423729,680.878457,-3247.423729,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,3189.530754,787.308498,-3189.530754,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,2909.134252,754.672228,-2909.134252,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,2639.140299,797.778588,-2639.140299,6,267.0
@@ -2354,7 +2354,7 @@ REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,RandomForest (Frozen),Random
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,473.39279,56.745186,-473.39279,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,478.638369,60.605085,-478.638369,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,477.407156,52.197611,-477.407156,6,646.0
-REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,446.344288,38.679936,-446.344288,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,448.906481,38.664938,-448.906481,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,450.309534,38.939806,-450.309534,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,433.047925,39.390302,-433.047925,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,433.061198,39.749534,-433.061198,6,646.0
@@ -2402,7 +2402,7 @@ REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,RandomForest (Frozen),RandomFo
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.341242,0.005163,-0.341242,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.341552,0.006674,-0.341552,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.338633,0.003658,-0.338633,6,8376.0
-REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.350049,0.003542,-0.350049,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.350498,0.002486,-0.350498,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.347291,0.004043,-0.347291,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.335129,0.003303,-0.335129,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.33202,0.003806,-0.33202,6,8376.0
@@ -2450,7 +2450,7 @@ REG_IMAGE_MANGO_MASS,core,regression,image,RandomForest (Frozen),RandomForest,fr
 REG_IMAGE_MANGO_MASS,core,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.051203,0.002979,-0.051203,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.059106,0.003119,-0.059106,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.051429,0.004172,-0.051429,6,364.0
-REG_IMAGE_MANGO_MASS,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.053432,0.002942,-0.053432,6,364.0
+REG_IMAGE_MANGO_MASS,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.053448,0.002894,-0.053448,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.047427,0.001536,-0.047427,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.054247,0.003323,-0.054247,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.047278,0.001293,-0.047278,6,364.0
@@ -2498,7 +2498,7 @@ REG_IMAGE_MKPHOTO_BOTS,core,regression,image,RandomForest (Frozen),RandomForest,
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.100071,0.001625,-0.100071,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.106792,0.003831,-0.106792,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.104127,0.003567,-0.104127,6,9166.0
-REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.097034,0.001586,-0.097034,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.0972,0.001553,-0.0972,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.095232,0.002092,-0.095232,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.095889,0.00117,-0.095889,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.095055,0.001606,-0.095055,6,9166.0
@@ -2546,7 +2546,7 @@ REG_IMAGE_PAINTING_PRICE,core,regression,image,RandomForest (Frozen),RandomFores
 REG_IMAGE_PAINTING_PRICE,core,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,3585.903363,301.158205,-3585.903363,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,3536.73132,510.216974,-3536.73132,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,3509.455655,530.746886,-3509.455655,6,8246.0
-REG_IMAGE_PAINTING_PRICE,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,3342.155858,373.456536,-3342.155858,6,8246.0
+REG_IMAGE_PAINTING_PRICE,core,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,3334.680309,373.115111,-3334.680309,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,3352.573426,366.784926,-3352.573426,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,3175.282095,348.898476,-3175.282095,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,3177.15251,382.187601,-3177.15251,6,8246.0
@@ -2594,7 +2594,7 @@ REG_IMAGE_ROMANIA_PRICE,extended,regression,image,RandomForest (Frozen),RandomFo
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.733924,0.007412,-0.733924,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.670062,0.017094,-0.670062,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.680107,0.008907,-0.680107,6,10000.0
-REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.634464,0.006862,-0.634464,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.63476,0.006021,-0.63476,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.683044,0.008825,-0.683044,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.608608,0.00556,-0.608608,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.67209,0.010465,-0.67209,6,10000.0
@@ -2642,7 +2642,7 @@ REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,RandomForest (Frozen),Rando
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.406605,0.021135,-0.406605,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.366321,0.021892,-0.366321,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.377403,0.01922,-0.377403,6,10000.0
-REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.346054,0.02715,-0.346054,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.345512,0.026982,-0.345512,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.350341,0.024929,-0.350341,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.335685,0.025812,-0.335685,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.341371,0.023003,-0.341371,6,10000.0
@@ -2690,7 +2690,7 @@ REG_IMAGE_SOCAL_HOUSES,extended,regression,image,RandomForest (Frozen),RandomFor
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,226083.668435,5767.213167,-226083.668435,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,191788.826301,2743.026576,-191788.826301,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,198678.358624,2658.45902,-198678.358624,6,10000.0
-REG_IMAGE_SOCAL_HOUSES,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,178751.85646,2965.595641,-178751.85646,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,176001.267014,2943.497902,-176001.267014,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,187801.04802,4409.684187,-187801.04802,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,161199.089477,4675.412909,-161199.089477,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,178698.029038,6289.450946,-178698.029038,6,10000.0
@@ -2738,7 +2738,7 @@ REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,RandomForest (Frozen),Rando
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,1.076348,0.032628,-1.076348,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,1.12538,0.04475,-1.12538,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,1.113943,0.047267,-1.113943,6,798.0
-REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,1.071629,0.040494,-1.071629,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,1.06977,0.037629,-1.06977,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,1.059312,0.012015,-1.059312,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,1.010775,0.039757,-1.010775,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,1.026699,0.022349,-1.026699,6,798.0
@@ -2786,7 +2786,7 @@ REG_IMAGE_WATCH_TIER,extended,regression,image,RandomForest (Frozen),RandomFores
 REG_IMAGE_WATCH_TIER,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.418614,0.052169,-0.418614,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.334402,0.05853,-0.334402,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.345768,0.061769,-0.345768,6,840.0
-REG_IMAGE_WATCH_TIER,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.340619,0.074643,-0.340619,6,840.0
+REG_IMAGE_WATCH_TIER,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.341879,0.074385,-0.341879,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.367151,0.053335,-0.367151,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.338152,0.074426,-0.338152,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.376602,0.046919,-0.376602,6,840.0
@@ -2834,7 +2834,7 @@ REG_IMAGE_ZEPTO_PRICE,extended,regression,image,RandomForest (Frozen),RandomFore
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.634322,0.020872,-0.634322,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.525006,0.004318,-0.525006,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.55833,0.021016,-0.55833,6,8897.0
-REG_IMAGE_ZEPTO_PRICE,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.474822,0.00385,-0.474822,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,extended,regression,image,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.474772,0.003511,-0.474772,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.50697,0.02211,-0.50697,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.46582,0.003005,-0.46582,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.492204,0.022221,-0.492204,6,8897.0
@@ -2882,7 +2882,7 @@ REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,RandomForest (Frozen),RandomFor
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,58.160609,5.306227,-58.160609,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,56.271344,5.06779,-56.271344,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,57.62949,4.564227,-57.62949,6,2546.0
-REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,55.566064,5.506604,-55.566064,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,55.837385,5.256653,-55.837385,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,55.977627,5.824758,-55.977627,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,54.59203,5.440561,-54.59203,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,54.751206,5.722017,-54.751206,6,2546.0
@@ -2930,7 +2930,7 @@ REG_TEXT_ANIME_PLANET,extended,regression,text,RandomForest (Frozen),RandomFores
 REG_TEXT_ANIME_PLANET,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.497425,0.004435,-0.497425,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.482493,0.008846,-0.482493,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.492663,0.005897,-0.492663,6,9594.0
-REG_TEXT_ANIME_PLANET,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.559269,0.008734,-0.559269,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.558887,0.007052,-0.558887,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.543859,0.005191,-0.543859,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.517389,0.005526,-0.517389,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.51418,0.00567,-0.51418,6,9594.0
@@ -2978,7 +2978,7 @@ REG_TEXT_BABIES_PRICES,core,regression,text,RandomForest (Frozen),RandomForest,f
 REG_TEXT_BABIES_PRICES,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,20.838683,3.151238,-20.838683,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,19.253552,3.006673,-19.253552,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,19.537589,2.992437,-19.537589,6,3390.0
-REG_TEXT_BABIES_PRICES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,20.460092,3.327354,-20.460092,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,20.498882,3.036199,-20.498882,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,18.82415,3.467232,-18.82415,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,16.985522,3.545318,-16.985522,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,16.752161,3.566816,-16.752161,6,3390.0
@@ -3026,7 +3026,7 @@ REG_TEXT_BOOK_PRICE,core,regression,text,RandomForest (Frozen),RandomForest,froz
 REG_TEXT_BOOK_PRICE,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.235981,0.005372,-0.235981,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.234754,0.008876,-0.234754,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.232015,0.005378,-0.232015,6,3326.0
-REG_TEXT_BOOK_PRICE,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.226455,0.007933,-0.226455,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.226879,0.007801,-0.226879,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.225054,0.005079,-0.225054,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.220813,0.007417,-0.220813,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.221927,0.005548,-0.221927,6,3326.0
@@ -3074,7 +3074,7 @@ REG_TEXT_BOOK_READABILITY,core,regression,text,RandomForest (Frozen),RandomFores
 REG_TEXT_BOOK_READABILITY,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.836492,0.019792,-0.836492,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.885175,0.053035,-0.885175,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.900416,0.039493,-0.900416,6,3150.0
-REG_TEXT_BOOK_READABILITY,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.863585,0.022841,-0.863585,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.863606,0.019956,-0.863606,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.8821,0.010312,-0.8821,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.849399,0.017694,-0.849399,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.863368,0.008913,-0.863368,6,3150.0
@@ -3122,7 +3122,7 @@ REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,RandomForest (Frozen),Ra
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.428769,0.012517,-0.428769,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.46011,0.021649,-0.46011,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.456371,0.019739,-0.456371,6,1197.0
-REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.433511,0.014695,-0.433511,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.431573,0.015293,-0.431573,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.429567,0.013292,-0.429567,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.431013,0.014503,-0.431013,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.425821,0.011807,-0.425821,6,1197.0
@@ -3170,7 +3170,7 @@ REG_TEXT_FIFA22_WAGES,extended,regression,text,RandomForest (Frozen),RandomFores
 REG_TEXT_FIFA22_WAGES,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,9301.366285,226.538299,-9301.366285,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,9490.20948,752.369004,-9490.20948,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,9649.504509,297.062748,-9649.504509,6,10000.0
-REG_TEXT_FIFA22_WAGES,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,10576.011266,389.158931,-10576.011266,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,10596.443664,388.815238,-10596.443664,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,10585.538323,395.510244,-10585.538323,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,9115.900994,275.033665,-9115.900994,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,9116.979376,274.370988,-9116.979376,6,10000.0
@@ -3218,7 +3218,7 @@ REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,RandomForest (Frozen),RandomFo
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.576261,0.009127,-0.576261,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.594772,0.014757,-0.594772,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.577612,0.013941,-0.577612,6,10000.0
-REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.557746,0.016275,-0.557746,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.557695,0.015514,-0.557695,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.548487,0.011655,-0.548487,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.552428,0.015081,-0.552428,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.54441,0.011605,-0.54441,6,10000.0
@@ -3266,7 +3266,7 @@ REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,RandomForest (Frozen),RandomFo
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,5015.860737,632.391485,-5015.860737,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,4798.65137,526.403149,-4798.65137,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,4525.35458,525.056626,-4525.35458,6,6152.0
-REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,4853.042975,488.649001,-4853.042975,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,4800.160783,531.092565,-4800.160783,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,5111.617863,452.742151,-5111.617863,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,4071.407096,462.671328,-4071.407096,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,3841.955974,391.649964,-3841.955974,6,6152.0
@@ -3314,7 +3314,7 @@ REG_TEXT_RAMEN_RATINGS,extended,regression,text,RandomForest (Frozen),RandomFore
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.959269,0.031587,-0.959269,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.982544,0.020068,-0.982544,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.981973,0.026921,-0.981973,6,2737.0
-REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.935623,0.027901,-0.935623,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.934791,0.028882,-0.934791,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.946238,0.032181,-0.946238,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.932033,0.021726,-0.932033,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.941302,0.025641,-0.941302,6,2737.0
@@ -3362,7 +3362,7 @@ REG_TEXT_ROTTEN_TOMATOES,core,regression,text,RandomForest (Frozen),RandomForest
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.844894,0.01633,-0.844894,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.823139,0.015403,-0.823139,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.809895,0.018509,-0.809895,6,4772.0
-REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.887086,0.023339,-0.887086,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.881153,0.022653,-0.881153,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.875259,0.016906,-0.875259,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.851046,0.019935,-0.851046,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.850648,0.016579,-0.850648,6,4772.0
@@ -3410,7 +3410,7 @@ REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,RandomForest (Frozen),RandomFores
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,24.398058,2.462967,-24.398058,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,25.10705,3.394433,-25.10705,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,24.514252,3.644754,-24.514252,6,10000.0
-REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,27.816115,2.90327,-27.816115,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,27.886317,3.052019,-27.886317,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,25.884566,2.924562,-25.884566,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,25.054966,2.412865,-25.054966,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,23.825904,2.421061,-23.825904,6,10000.0
@@ -3458,7 +3458,7 @@ REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,RandomForest (Frozen),Random
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,1063016.258899,180226.160844,-1063016.258899,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,871563.125446,153583.321172,-871563.125446,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,949471.267829,274894.937877,-949471.267829,6,10000.0
-REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,2221207.88568,141990.057663,-2221207.88568,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,2221151.219051,135221.787286,-2221151.219051,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,2076687.32958,155052.785717,-2076687.32958,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,928504.233053,169396.245877,-928504.233053,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,930363.619254,190372.619528,-930363.619254,6,10000.0
@@ -3506,7 +3506,7 @@ REG_TEXT_USED_CAR_SAUDI,extended,regression,text,RandomForest (Frozen),RandomFor
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,28776.799104,2982.228078,-28776.799104,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,25197.06502,2756.350367,-25197.06502,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,24998.593713,2576.947382,-24998.593713,6,5357.0
-REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,28690.337541,3201.644295,-28690.337541,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,28602.623269,3087.504928,-28602.623269,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,28162.594735,3072.10665,-28162.594735,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,25058.33533,2464.127806,-25058.33533,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,24951.41518,2430.749431,-24951.41518,6,5357.0
@@ -3554,7 +3554,7 @@ REG_TEXT_VANCOUVER_SALARIES,core,regression,text,RandomForest (Frozen),RandomFor
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,12882.150523,507.811775,-12882.150523,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,14125.543169,810.064687,-14125.543169,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,13560.500224,588.036029,-13560.500224,6,10000.0
-REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,13448.508748,748.691601,-13448.508748,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,13489.011741,755.875289,-13489.011741,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,12697.005359,619.507104,-12697.005359,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,12089.463053,447.697067,-12089.463053,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,11966.193981,656.674878,-11966.193981,6,10000.0
@@ -3602,7 +3602,7 @@ REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,RandomForest (Frozen),RandomFore
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,1.311603,0.211315,-1.311603,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,1.344397,0.243993,-1.344397,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,1.28855,0.203435,-1.28855,6,10000.0
-REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,1.305677,0.221222,-1.305677,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,1.305182,0.220561,-1.305182,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,1.275319,0.213944,-1.275319,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,1.224097,0.217379,-1.224097,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,1.210883,0.185454,-1.210883,6,10000.0
@@ -3650,7 +3650,7 @@ REG_TEXT_WIKILIQ_PRICES,extended,regression,text,RandomForest (Frozen),RandomFor
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,805.276855,118.710116,-805.276855,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,824.673331,140.536109,-824.673331,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,810.940814,83.881771,-810.940814,6,8380.0
-REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,883.641133,132.61684,-883.641133,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,884.911991,132.54722,-884.911991,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,864.178962,129.816599,-864.178962,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,756.458448,113.876949,-756.458448,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,740.432675,116.141729,-740.432675,6,8380.0
@@ -3698,7 +3698,7 @@ REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,RandomForest (Frozen),Rando
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,288.923073,70.480133,-288.923073,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,342.836181,94.829127,-342.836181,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,324.135505,76.775385,-324.135505,6,1498.0
-REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,341.092059,81.400825,-341.092059,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,340.579883,81.10629,-340.579883,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,342.849867,80.243797,-342.849867,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,254.540445,72.773043,-254.540445,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,249.405868,70.095117,-249.405868,6,1498.0
@@ -3746,7 +3746,7 @@ REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,RandomForest (Frozen),Random
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.090756,0.001809,-0.090756,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.096893,0.004054,-0.096893,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.097426,0.000964,-0.097426,6,5767.0
-REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.088921,0.002631,-0.088921,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.089296,0.002355,-0.089296,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.088037,0.002205,-0.088037,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.088198,0.002879,-0.088198,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.087918,0.001958,-0.087918,6,5767.0
@@ -3794,7 +3794,7 @@ REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,RandomForest (Frozen),RandomFor
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,RandomForest (TAR),RandomForest,tar,root_mean_squared_error,0.186894,0.005801,-0.186894,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,RealMLP (Frozen),RealMLP,frozen,root_mean_squared_error,0.177042,0.00874,-0.177042,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,RealMLP (TAR),RealMLP,tar,root_mean_squared_error,0.170344,0.002908,-0.170344,6,10000.0
-REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.182504,0.004563,-0.182504,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabDPT (Frozen),TabDPT,frozen,root_mean_squared_error,0.183388,0.004003,-0.183388,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabDPT (TAR),TabDPT,tar,root_mean_squared_error,0.179183,0.004362,-0.179183,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabDPT-1.3 (Frozen),TabDPT-1.3,frozen,root_mean_squared_error,0.168511,0.004057,-0.168511,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,TabDPT-1.3 (TAR),TabDPT-1.3,tar,root_mean_squared_error,0.16405,0.005892,-0.16405,6,10000.0
