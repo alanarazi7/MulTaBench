@@ -5,11 +5,13 @@ file as the PRs that complete them are merged.
 
 ## Full rerun
 
-Every leaderboard run is rerun from `master` once the fixes below are merged, so all results share one code version.
+The frozen runs are rerun from `master` 1ae2320 with `sweep.py --official`, the `-tar` runs' commit. A model's update
+drops it from `NOT_RERUN` in `tests/test_leaderboard_results.py`, which fails while the two disagree.
 
-- [ ] The other fixes that should land before the rerun.
-- [ ] Rerun every model with `sweep.py --official`. This also reruns TabDPT with its seeding (#165), and the Kumo
-      models, whose timings mix two code versions around the cache fix (#170).
+- [ ] Pending: Mitra-v2, TabDPT (with its seeding, #165), TabDPT-1.3, TabFM, TabICLv2, TabM, TabPFN-3, TabPFN-3.5,
+      TabPFN-3.5-Fast, TabPFN-v2, TabPFN-v2p5 and TabSTAR-v1.1.
+- Updated: CatBoost, Causilo, ConTextTab, EXAONE-Tabular, Kumo-Tabular, Kumo-Tabular-M, Kumo-Tabular-S, LightGBM,
+  LimiX-2, RandomForest, RealMLP, XGBoost and Xiaomi-TabLDM.
 
 ## Embedding cache
 
@@ -33,15 +35,11 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 - [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing.
 - [ ] ConTextTab reads dates natively, but the shared preprocessing expands them first. Add a
       `USE_DATE_TRANSFORMATION` flag that ConTextTab turns off, see the TODO in `abstract_model.py`.
-- [ ] ConTextTab reads dates natively, but the shared preprocessing expands them first. Add a
-      `USE_DATE_TRANSFORMATION` flag that ConTextTab turns off, see the TODO in `abstract_model.py`.
 - [ ] Mitra-v2 covers 76 of 80 datasets, as its authors pointed out. Run the three with more than 10 classes through
       mitra-finetune's class hierarchy, fix its out-of-memory failure on MUL_TEXT_MELBOURNE_AIRBNB (680 features),
       and rerun those four datasets, frozen and `-tar`.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
-- [ ] Run the fine-tuned (`-tar`) encoders and AutoGluon multimodal under the leaderboard protocol, which the paper
-      also covered.
 
 ## Leaderboard
 

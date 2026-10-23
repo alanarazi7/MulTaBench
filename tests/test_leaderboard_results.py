@@ -25,6 +25,11 @@ EXPECTED_FAILURES = {
                  "MUL_TEXT_MELBOURNE_AIRBNB": "No models were trained successfully"},
 }
 
+# Every run comes from this commit, but for the frozen runs still awaiting their rerun; drop a model once it lands.
+RUN_COMMIT = "1ae2320"
+NOT_RERUN = {"Mitra-v2", "TabDPT", "TabDPT-1.3", "TabFM", "TabICLv2", "TabM", "TabPFN-3", "TabPFN-3.5",
+             "TabPFN-3.5-Fast", "TabPFN-v2", "TabPFN-v2p5", "TabSTAR-v1.1"}
+
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
 def runs(request):
@@ -90,3 +95,9 @@ def test_runs_used_their_hardware(runs):
         assert ok[ResultKey.GPU_TYPE].str.startswith(hardware.gpu_prefix).all()
     else:
         assert ok[ResultKey.GPU_TYPE].isna().all()
+
+
+def test_runs_come_from_the_rerun_commit(runs):
+    name, df, tuned = runs
+    commits = set(df[ResultKey.GIT].astype(str))
+    assert (commits != {RUN_COMMIT}) if name in NOT_RERUN and not tuned else (commits == {RUN_COMMIT})
