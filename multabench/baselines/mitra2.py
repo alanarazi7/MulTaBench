@@ -14,6 +14,8 @@ from multabench.utils.hardware import visible_cpus
 LABEL = "__target__"
 HEAD_CLASSES = 10
 BAG_FOLDS = 8
+# Out of GPU memory, predict may halve its context to 512 rows as fine-tuning does, not stop at TabArena's 8,192.
+PREDICT_SUPPORT_FLOOR = 512
 PROBLEM_TYPES = {SupervisedTask.BINARY: "binary", SupervisedTask.MULTICLASS: "multiclass",
                  SupervisedTask.REGRESSION: "regression"}
 METRICS = {SupervisedTask.BINARY: "roc_auc", SupervisedTask.MULTICLASS: "log_loss",
@@ -48,10 +50,10 @@ class MitraV2(TabularModel):
                                        eval_metric=METRICS[self.problem_type], path=self.path_, verbosity=0)
         # As in TabArena, each of the bag's children gets its own seed.
         seeds = {"model_random_seed": SEED, "vary_seed_across_folds": True}
+        params = {"ag_args_ensemble": seeds, "predict_support_floor": PREDICT_SUPPORT_FLOOR}
         self.model_.fit(x_train.assign(**{LABEL: y_train.to_numpy()}),
-                        hyperparameters={MitraV2Model: {"ag_args_ensemble": seeds}}, num_bag_folds=BAG_FOLDS,
-                        num_bag_sets=1, fit_weighted_ensemble=False, calibrate=False, num_cpus=visible_cpus(),
-                        num_gpus=1)
+                        hyperparameters={MitraV2Model: params}, num_bag_folds=BAG_FOLDS, num_bag_sets=1,
+                        fit_weighted_ensemble=False, calibrate=False, num_cpus=visible_cpus(), num_gpus=1)
 
     def _fit_hierarchy(self, x_train: DataFrame, y_train: Series):
         """mitra-finetune's balanced class tree of native-head nodes, which validate on a stratified split."""
