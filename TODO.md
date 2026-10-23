@@ -8,10 +8,10 @@ file as the PRs that complete them are merged.
 The frozen runs are rerun from `master` 1ae2320 with `sweep.py --official`, the `-tar` runs' commit. A model's update
 drops it from `NOT_RERUN` in `tests/test_leaderboard_results.py`, which fails while the two disagree.
 
-- [ ] Pending: Mitra-v2, TabDPT-1.3, TabFM, TabICLv2, TabM, TabPFN-3, TabPFN-3.5, TabPFN-3.5-Fast, TabPFN-v2,
-      TabPFN-v2p5 and TabSTAR-v1.1.
+- [ ] Pending: Mitra-v2, TabFM, TabICLv2, TabM, TabPFN-3, TabPFN-3.5, TabPFN-3.5-Fast, TabPFN-v2, TabPFN-v2p5 and
+      TabSTAR-v1.1.
 - Updated: CatBoost, Causilo, ConTextTab, EXAONE-Tabular, Kumo-Tabular, Kumo-Tabular-M, Kumo-Tabular-S, LightGBM,
-  LimiX-2, RandomForest, RealMLP, TabDPT (with its seeding, #165), XGBoost and Xiaomi-TabLDM.
+  LimiX-2, RandomForest, RealMLP, TabDPT (with its seeding, #165), TabDPT-1.3, XGBoost and Xiaomi-TabLDM.
 
 ## Embedding cache
 

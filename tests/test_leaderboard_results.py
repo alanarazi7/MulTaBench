@@ -27,8 +27,8 @@ EXPECTED_FAILURES = {
 
 # Every run comes from this commit, but for the frozen runs still awaiting their rerun; drop a model once it lands.
 RUN_COMMIT = "1ae2320"
-NOT_RERUN = {"Mitra-v2", "TabDPT-1.3", "TabFM", "TabICLv2", "TabM", "TabPFN-3", "TabPFN-3.5", "TabPFN-3.5-Fast",
-             "TabPFN-v2", "TabPFN-v2p5", "TabSTAR-v1.1"}
+NOT_RERUN = {"Mitra-v2", "TabFM", "TabICLv2", "TabM", "TabPFN-3", "TabPFN-3.5", "TabPFN-3.5-Fast", "TabPFN-v2",
+             "TabPFN-v2p5", "TabSTAR-v1.1"}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
