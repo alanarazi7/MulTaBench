@@ -35,9 +35,9 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
       `USE_DATE_TRANSFORMATION` flag that ConTextTab turns off, see the TODO in `abstract_model.py`.
 - [ ] ConTextTab reads dates natively, but the shared preprocessing expands them first. Add a
       `USE_DATE_TRANSFORMATION` flag that ConTextTab turns off, see the TODO in `abstract_model.py`.
-- [ ] Mitra-v2 covers 76 of 80 datasets, as its authors pointed out. Run the three with more than 10 classes through
-      mitra-finetune's class hierarchy, fix its out-of-memory failure on MUL_TEXT_MELBOURNE_AIRBNB (680 features),
-      and rerun those four datasets, frozen and `-tar`.
+- [ ] Rerun Mitra-v2's four missing datasets from `master`, frozen and `-tar`: the three with more than 10 classes,
+      now through mitra-finetune's class hierarchy (#253), and MUL_TEXT_MELBOURNE_AIRBNB, out of GPU memory before
+      #255. Then drop them from `EXPECTED_FAILURES` and `docs/protocol.md`.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
 - [ ] Run the fine-tuned (`-tar`) encoders and AutoGluon multimodal under the leaderboard protocol, which the paper
