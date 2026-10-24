@@ -3,14 +3,6 @@
 Work in progress towards the first release of the living leaderboard. Items are removed from this
 file as the PRs that complete them are merged.
 
-## Full rerun
-
-Every leaderboard run is rerun from `master` once the fixes below are merged, so all results share one code version.
-
-- [ ] The other fixes that should land before the rerun.
-- [ ] Rerun every model with `sweep.py --official`. This also reruns TabDPT with its seeding (#165), and the Kumo
-      models, whose timings mix two code versions around the cache fix (#170).
-
 ## Embedding cache
 
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
@@ -33,15 +25,11 @@ Every leaderboard run is rerun from `master` once the fixes below are merged, so
 - [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing.
 - [ ] ConTextTab reads dates natively, but the shared preprocessing expands them first. Add a
       `USE_DATE_TRANSFORMATION` flag that ConTextTab turns off, see the TODO in `abstract_model.py`.
-- [ ] ConTextTab reads dates natively, but the shared preprocessing expands them first. Add a
-      `USE_DATE_TRANSFORMATION` flag that ConTextTab turns off, see the TODO in `abstract_model.py`.
 - [ ] Rerun Mitra-v2's four missing datasets from `master`, frozen and `-tar`: the three with more than 10 classes,
       now through mitra-finetune's class hierarchy (#253), and MUL_TEXT_MELBOURNE_AIRBNB, out of GPU memory before
       #255. Then drop them from `EXPECTED_FAILURES` and `docs/protocol.md`.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
-- [ ] Run the fine-tuned (`-tar`) encoders and AutoGluon multimodal under the leaderboard protocol, which the paper
-      also covered.
 
 ## Leaderboard
 

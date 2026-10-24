@@ -25,6 +25,9 @@ EXPECTED_FAILURES = {
                  "MUL_TEXT_MELBOURNE_AIRBNB": "No models were trained successfully"},
 }
 
+# Every run, frozen and -tar, comes from this commit.
+RUN_COMMIT = "1ae2320"
+
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
 def runs(request):
@@ -90,3 +93,8 @@ def test_runs_used_their_hardware(runs):
         assert ok[ResultKey.GPU_TYPE].str.startswith(hardware.gpu_prefix).all()
     else:
         assert ok[ResultKey.GPU_TYPE].isna().all()
+
+
+def test_runs_come_from_the_rerun_commit(runs):
+    _, df, _ = runs
+    assert set(df[ResultKey.GIT].astype(str)) == {RUN_COMMIT}
