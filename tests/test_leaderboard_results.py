@@ -17,16 +17,17 @@ PATHS = [p for d in (RESULTS_DIR, TAR_RESULTS_DIR) for p in sorted(glob.glob(os.
 MODELS = {model.MODEL_NAME: model for model in BASELINES}
 TASK_METRICS = {"BIN": "roc_auc", "MUL": "log_loss", "REG": "root_mean_squared_error"}
 TOO_MANY_CLASSES = ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_SPOTIFY_GENRES", "MUL_TEXT_WINE_REVIEW"]
-# The only failures: the models that take at most 10 classes, and Mitra-v2 out of GPU memory on 680 features.
+# The only failures: the models that took at most 10 classes at RUN_COMMIT, until their rerun from FIXED_COMMIT.
 EXPECTED_FAILURES = {
     "TabPFN-v2": dict.fromkeys(TOO_MANY_CLASSES, "exceeds the maximum number of classes"),
     "TabPFN-v2p5": dict.fromkeys(TOO_MANY_CLASSES, "exceeds the maximum number of classes"),
-    "Mitra-v2": {**dict.fromkeys(TOO_MANY_CLASSES, "supports at most 10 classes"),
-                 "MUL_TEXT_MELBOURNE_AIRBNB": "No models were trained successfully"},
+    "Mitra-v2": dict.fromkeys(["MUL_TEXT_SPOTIFY_GENRES", "MUL_TEXT_WINE_REVIEW"], "supports at most 10 classes"),
 }
 
-# Every run, frozen and -tar, comes from this commit.
+# Every run, frozen and -tar, comes from RUN_COMMIT, but for the failed runs rerun from FIXED_COMMIT once fixed.
 RUN_COMMIT = "1ae2320"
+FIXED_COMMIT = "b71ecb7"
+RERUN = {"Mitra-v2": ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_MELBOURNE_AIRBNB"]}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
@@ -96,5 +97,7 @@ def test_runs_used_their_hardware(runs):
 
 
 def test_runs_come_from_the_rerun_commit(runs):
-    _, df, _ = runs
-    assert set(df[ResultKey.GIT].astype(str)) == {RUN_COMMIT}
+    name, df, _ = runs
+    rerun = df[ResultKey.DATASET].isin(RERUN.get(name, []))
+    assert set(df[~rerun][ResultKey.GIT].astype(str)) == {RUN_COMMIT}
+    assert set(df[rerun][ResultKey.GIT].astype(str)) <= {FIXED_COMMIT}
