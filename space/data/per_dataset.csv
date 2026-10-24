@@ -854,6 +854,8 @@ MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-3.5 (Frozen),Ta
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-3.5 (TAR),TabPFN-3.5,tar,log_loss,1.184455,0.10101,-1.184455,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-3.5-Fast (Frozen),TabPFN-3.5-Fast,frozen,log_loss,1.043541,0.015991,-1.043541,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-3.5-Fast (TAR),TabPFN-3.5-Fast,tar,log_loss,1.203687,0.10429,-1.203687,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-v2 (Frozen),TabPFN-v2,frozen,log_loss,1.332736,0.014487,-1.332736,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.373429,0.062124,-1.373429,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.3266,0.056978,-1.3266,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,1.364112,0.033634,-1.364112,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,1.517068,0.115365,-1.517068,6,2854.0
@@ -1740,6 +1742,8 @@ MUL_TEXT_SPOTIFY_GENRES,core,classification,text,LightGBM (Frozen),LightGBM,froz
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,LightGBM (TAR),LightGBM,tar,log_loss,3.291294,0.05786,-3.291294,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,LimiX-2 (Frozen),LimiX-2,frozen,log_loss,1.341433,0.015846,-1.341433,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,LimiX-2 (TAR),LimiX-2,tar,log_loss,1.316537,0.017193,-1.316537,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Mitra-v2 (Frozen),Mitra-v2,frozen,log_loss,1.541859,0.019449,-1.541859,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Mitra-v2 (TAR),Mitra-v2,tar,log_loss,1.507097,0.024277,-1.507097,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,RandomForest (Frozen),RandomForest,frozen,log_loss,4.318986,0.073946,-4.318986,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,3.896351,0.062389,-3.896351,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,2.253941,0.015672,-2.253941,6,10000.0

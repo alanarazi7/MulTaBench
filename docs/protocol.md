@@ -19,9 +19,10 @@ the then 17 models, Kumo-Tabular was at 2670 rather than 2347, with the same ran
 Default hyperparameters, `--size 10k`, 6 folds, frozen `e5-small` text and `dino-small` image embeddings
 (ConTextTab and TabSTAR-v1.1 read raw text themselves; TabSTAR-v1.1's pretraining left MulTaBench out). TabPFN-v2,
 v2.5 and Mitra-v2 took at most 10 classes at 1ae2320, which left out 3 of the 80 datasets; TabFM and LimiX-2 cover
-them with tabpfn-extensions' output coding. Mitra-v2 now covers MUL_IMAGE_HEARTHSTONE_CLASS with mitra-finetune's class
-hierarchy, and MUL_TEXT_MELBOURNE_AIRBNB, whose 680 features ran it out of GPU memory, by halving its context; both
-ran from b71ecb7.
+them with tabpfn-extensions' output coding. Mitra-v2 now covers MUL_IMAGE_HEARTHSTONE_CLASS and
+MUL_TEXT_SPOTIFY_GENRES with mitra-finetune's class hierarchy, and MUL_TEXT_MELBOURNE_AIRBNB, whose 680 features ran
+it out of GPU memory, by halving its context. TabPFN-v2 covers MUL_IMAGE_HEARTHSTONE_CLASS with the output coding,
+which TabArena doesn't use, leaving these datasets out for it. All of these ran from b71ecb7.
 
 Every model that reads embeddings also ran with fine-tuned encoders: `e5-small-tar` on text datasets and
 `dino-small-tar` on image datasets, LoRA-tuned on each fold's training rows (see [embeddings](embeddings.md)). Those
