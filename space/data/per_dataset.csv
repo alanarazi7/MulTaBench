@@ -856,6 +856,8 @@ MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-3.5-Fast (Froze
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-3.5-Fast (TAR),TabPFN-3.5-Fast,tar,log_loss,1.203687,0.10429,-1.203687,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-v2 (Frozen),TabPFN-v2,frozen,log_loss,1.332736,0.014487,-1.332736,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,1.373429,0.062124,-1.373429,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.15714,0.016599,-1.15714,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.284947,0.095891,-1.284947,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,1.3266,0.056978,-1.3266,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,XGBoost (Frozen),XGBoost,frozen,log_loss,1.364112,0.033634,-1.364112,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,XGBoost (TAR),XGBoost,tar,log_loss,1.517068,0.115365,-1.517068,6,2854.0
@@ -1764,6 +1766,10 @@ MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-3.5 (Frozen),TabPFN-3.5,
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-3.5 (TAR),TabPFN-3.5,tar,log_loss,1.42728,0.023715,-1.42728,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-3.5-Fast (Frozen),TabPFN-3.5-Fast,frozen,log_loss,1.502541,0.021349,-1.502541,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-3.5-Fast (TAR),TabPFN-3.5-Fast,tar,log_loss,1.466982,0.023152,-1.466982,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,frozen,log_loss,2.189006,0.021306,-2.189006,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,2.071842,0.018468,-2.071842,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,1.851976,0.018124,-1.851976,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,1.747833,0.01785,-1.747833,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,2.094027,0.022132,-2.094027,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,2.525658,0.028728,-2.525658,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,2.477003,0.027272,-2.477003,6,10000.0
@@ -1834,6 +1840,8 @@ MUL_TEXT_WINE_REVIEW,core,classification,text,LightGBM (Frozen),LightGBM,frozen,
 MUL_TEXT_WINE_REVIEW,core,classification,text,LightGBM (TAR),LightGBM,tar,log_loss,1.269251,0.024076,-1.269251,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,LimiX-2 (Frozen),LimiX-2,frozen,log_loss,0.779892,0.015989,-0.779892,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,LimiX-2 (TAR),LimiX-2,tar,log_loss,0.692358,0.012097,-0.692358,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Mitra-v2 (Frozen),Mitra-v2,frozen,log_loss,0.813897,0.014568,-0.813897,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Mitra-v2 (TAR),Mitra-v2,tar,log_loss,0.715703,0.008132,-0.715703,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,RandomForest (Frozen),RandomForest,frozen,log_loss,1.57525,0.061173,-1.57525,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,1.133516,0.036158,-1.133516,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,0.910312,0.023848,-0.910312,6,10000.0
@@ -1854,6 +1862,10 @@ MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-3.5 (Frozen),TabPFN-3.5,fro
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-3.5 (TAR),TabPFN-3.5,tar,log_loss,0.687973,0.011787,-0.687973,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-3.5-Fast (Frozen),TabPFN-3.5-Fast,frozen,log_loss,0.768939,0.014646,-0.768939,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-3.5-Fast (TAR),TabPFN-3.5-Fast,tar,log_loss,0.692458,0.011544,-0.692458,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-v2 (Frozen),TabPFN-v2,frozen,log_loss,0.904437,0.018412,-0.904437,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-v2 (TAR),TabPFN-v2,tar,log_loss,0.745445,0.010292,-0.745445,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-v2p5 (Frozen),TabPFN-v2p5,frozen,log_loss,0.843108,0.016903,-0.843108,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,TabPFN-v2p5 (TAR),TabPFN-v2p5,tar,log_loss,0.719603,0.011441,-0.719603,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,log_loss,0.783438,0.026942,-0.783438,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,XGBoost (Frozen),XGBoost,frozen,log_loss,1.085986,0.017564,-1.085986,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,XGBoost (TAR),XGBoost,tar,log_loss,0.899548,0.020124,-0.899548,6,10000.0

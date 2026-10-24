@@ -17,19 +17,12 @@ PATHS = [p for d in (RESULTS_DIR, TAR_RESULTS_DIR) for p in sorted(glob.glob(os.
 MODELS = {model.MODEL_NAME: model for model in BASELINES}
 TASK_METRICS = {"BIN": "roc_auc", "MUL": "log_loss", "REG": "root_mean_squared_error"}
 TOO_MANY_CLASSES = ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_SPOTIFY_GENRES", "MUL_TEXT_WINE_REVIEW"]
-# The only failures: the models that took at most 10 classes at RUN_COMMIT, until their rerun from FIXED_COMMIT.
-EXPECTED_FAILURES = {
-    "TabPFN-v2": dict.fromkeys(["MUL_TEXT_SPOTIFY_GENRES", "MUL_TEXT_WINE_REVIEW"],
-                               "exceeds the maximum number of classes"),
-    "TabPFN-v2p5": dict.fromkeys(TOO_MANY_CLASSES, "exceeds the maximum number of classes"),
-    "Mitra-v2": {"MUL_TEXT_WINE_REVIEW": "supports at most 10 classes"},
-}
 
-# Every run, frozen and -tar, comes from RUN_COMMIT, but for the failed runs rerun from FIXED_COMMIT once fixed.
+# Every run, frozen and -tar, comes from RUN_COMMIT, but for the runs that failed there, rerun from FIXED_COMMIT.
 RUN_COMMIT = "1ae2320"
 FIXED_COMMIT = "b71ecb7"
-RERUN = {"Mitra-v2": ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_MELBOURNE_AIRBNB", "MUL_TEXT_SPOTIFY_GENRES"],
-         "TabPFN-v2": ["MUL_IMAGE_HEARTHSTONE_CLASS"]}
+RERUN = {"Mitra-v2": TOO_MANY_CLASSES + ["MUL_TEXT_MELBOURNE_AIRBNB"], "TabPFN-v2": TOO_MANY_CLASSES,
+         "TabPFN-v2p5": TOO_MANY_CLASSES}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
@@ -75,15 +68,9 @@ def test_successful_runs_score_with_the_task_metric(runs):
     assert np.allclose(ok[ResultKey.TEST_SCORE], optimum - ok[ResultKey.TEST_ERROR])
 
 
-def test_the_only_failures_are_the_expected_ones(runs):
-    name, df, _ = runs
-    failed = df[df[ResultKey.STATUS] != RunStatus.OK]
-    assert (failed[ResultKey.STATUS] == RunStatus.ERROR).all()
-    expected = EXPECTED_FAILURES.get(name, {})
-    assert sorted(failed[ResultKey.DATASET].unique()) == sorted(expected)
-    for dataset, error in expected.items():
-        errors = failed[failed[ResultKey.DATASET] == dataset][ResultKey.ERROR].astype(str)
-        assert len(errors) == SPLITS and errors.str.contains(error).all()
+def test_every_run_succeeded(runs):
+    _, df, _ = runs
+    assert (df[ResultKey.STATUS] == RunStatus.OK).all()
 
 
 def test_runs_used_their_hardware(runs):
