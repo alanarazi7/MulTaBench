@@ -49,7 +49,7 @@ class TabPFNv2(TabPFN):
 
 class TabPFNv2p5(TabPFN):
 
-    MODEL_NAME = "TabPFN-v2p5"
+    MODEL_NAME = "TabPFN-v2.5"
     SHORT_NAME = "tabpfnv2p5"
     VERSION = "v2.5"
     MAX_CLASSES = 10

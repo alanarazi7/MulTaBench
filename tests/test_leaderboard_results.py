@@ -22,7 +22,7 @@ TOO_MANY_CLASSES = ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_SPOTIFY_GENRES", "M
 RUN_COMMIT = "1ae2320"
 FIXED_COMMIT = "b71ecb7"
 RERUN = {"Mitra-v2": TOO_MANY_CLASSES + ["MUL_TEXT_MELBOURNE_AIRBNB"], "TabPFN-v2": TOO_MANY_CLASSES,
-         "TabPFN-v2p5": TOO_MANY_CLASSES}
+         "TabPFN-v2.5": TOO_MANY_CLASSES}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
