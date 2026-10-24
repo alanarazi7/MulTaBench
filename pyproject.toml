@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "multabench"
-version = "0.0.6"
+version = "0.1.0"
 description = "Benchmarking multimodal tabular learning: tables whose columns include text or images"
 readme = "README.md"
 license = "MIT"
