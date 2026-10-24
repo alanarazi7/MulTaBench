@@ -19,15 +19,17 @@ TASK_METRICS = {"BIN": "roc_auc", "MUL": "log_loss", "REG": "root_mean_squared_e
 TOO_MANY_CLASSES = ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_SPOTIFY_GENRES", "MUL_TEXT_WINE_REVIEW"]
 # The only failures: the models that took at most 10 classes at RUN_COMMIT, until their rerun from FIXED_COMMIT.
 EXPECTED_FAILURES = {
-    "TabPFN-v2": dict.fromkeys(TOO_MANY_CLASSES, "exceeds the maximum number of classes"),
+    "TabPFN-v2": dict.fromkeys(["MUL_TEXT_SPOTIFY_GENRES", "MUL_TEXT_WINE_REVIEW"],
+                               "exceeds the maximum number of classes"),
     "TabPFN-v2p5": dict.fromkeys(TOO_MANY_CLASSES, "exceeds the maximum number of classes"),
-    "Mitra-v2": dict.fromkeys(["MUL_TEXT_SPOTIFY_GENRES", "MUL_TEXT_WINE_REVIEW"], "supports at most 10 classes"),
+    "Mitra-v2": {"MUL_TEXT_WINE_REVIEW": "supports at most 10 classes"},
 }
 
 # Every run, frozen and -tar, comes from RUN_COMMIT, but for the failed runs rerun from FIXED_COMMIT once fixed.
 RUN_COMMIT = "1ae2320"
 FIXED_COMMIT = "b71ecb7"
-RERUN = {"Mitra-v2": ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_MELBOURNE_AIRBNB"]}
+RERUN = {"Mitra-v2": ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_MELBOURNE_AIRBNB", "MUL_TEXT_SPOTIFY_GENRES"],
+         "TabPFN-v2": ["MUL_IMAGE_HEARTHSTONE_CLASS"]}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])

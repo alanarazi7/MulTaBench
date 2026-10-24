@@ -25,12 +25,13 @@ file as the PRs that complete them are merged.
 - [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing.
 - [ ] ConTextTab reads dates natively, but the shared preprocessing expands them first. Add a
       `USE_DATE_TRANSFORMATION` flag that ConTextTab turns off, see the TODO in `abstract_model.py`.
-- [ ] Add Mitra-v2's MUL_TEXT_SPOTIFY_GENRES and MUL_TEXT_WINE_REVIEW, rerun from b71ecb7 through mitra-finetune's
-      class hierarchy (#253), frozen and `-tar`, as its Hearthstone and Melbourne runs were. Then add them to the
-      test's `RERUN` and drop them from `EXPECTED_FAILURES` and `docs/protocol.md`.
-- [ ] Add TabPFN-v2 and v2.5 on the three datasets with more than 10 classes, rerun from b71ecb7 through
-      tabpfn-extensions' output coding, as TabFM and LimiX-2, frozen and `-tar`. Then add them to the test's `RERUN`,
-      drop them from `EXPECTED_FAILURES` and note in `docs/protocol.md` that TabArena leaves them out instead.
+- [ ] Add Mitra-v2's MUL_TEXT_WINE_REVIEW, rerun from b71ecb7 through mitra-finetune's class hierarchy (#253), frozen
+      and `-tar`, as its other three were. Then add it to the test's `RERUN` and drop it from `EXPECTED_FAILURES` and
+      `docs/protocol.md`.
+- [ ] Add TabPFN-v2 on MUL_TEXT_SPOTIFY_GENRES and MUL_TEXT_WINE_REVIEW, and TabPFN-v2.5 on all three datasets with
+      more than 10 classes, rerun from b71ecb7 through tabpfn-extensions' output coding, frozen and `-tar`, as
+      TabPFN-v2's Hearthstone was. Then add them to the test's `RERUN` and drop them from `EXPECTED_FAILURES` and
+      `docs/protocol.md`.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
 
