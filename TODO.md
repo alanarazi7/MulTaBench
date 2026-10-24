@@ -28,6 +28,9 @@ file as the PRs that complete them are merged.
 - [ ] Rerun Mitra-v2's four missing datasets from `master`, frozen and `-tar`: the three with more than 10 classes,
       now through mitra-finetune's class hierarchy (#253), and MUL_TEXT_MELBOURNE_AIRBNB, out of GPU memory before
       #255. Then drop them from `EXPECTED_FAILURES` and `docs/protocol.md`.
+- [ ] Rerun TabPFN-v2 and v2.5 on the three datasets with more than 10 classes from `master`, frozen and `-tar`, now
+      through tabpfn-extensions' output coding, as TabFM and LimiX-2. Then drop them from `EXPECTED_FAILURES` and
+      note in `docs/protocol.md` that TabArena leaves these datasets out for them instead.
 - [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
       CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
 

@@ -54,7 +54,8 @@ xgboost = ["xgboost"]
 pytabkit = ["pytabkit"]
 tabicl = ["tabicl >= 2.0.3"]
 tabdpt = ["tabdpt >= 1.1.9"]
-tabpfn = ["tabpfn >= 9.2.0"]
+# With the output coding TabPFN-v2 and v2.5 take above ten classes.
+tabpfn = ["tabpfn >= 9.2.0", "tabpfn-extensions[many_class] >= 0.6.1"]
 tabstar = ["tabstar >= 1.2.2"]
 # TabFM itself is git-pinned; this is the output coding of more than ten classes.
 tabfm = ["tabpfn-extensions[many_class] >= 0.6.1"]
