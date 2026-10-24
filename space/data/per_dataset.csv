@@ -832,6 +832,8 @@ MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,LightGBM (Frozen),Ligh
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,LightGBM (TAR),LightGBM,tar,log_loss,2.290075,0.321167,-2.290075,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,LimiX-2 (Frozen),LimiX-2,frozen,log_loss,0.97377,0.02331,-0.97377,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,LimiX-2 (TAR),LimiX-2,tar,log_loss,1.17688,0.12713,-1.17688,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Mitra-v2 (Frozen),Mitra-v2,frozen,log_loss,1.069455,0.013291,-1.069455,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Mitra-v2 (TAR),Mitra-v2,tar,log_loss,1.233774,0.119047,-1.233774,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,RandomForest (Frozen),RandomForest,frozen,log_loss,1.522723,0.026042,-1.522723,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,RandomForest (TAR),RandomForest,tar,log_loss,1.532039,0.043216,-1.532039,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,RealMLP (Frozen),RealMLP,frozen,log_loss,1.408775,0.040105,-1.408775,6,2854.0
@@ -1546,6 +1548,8 @@ MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,LightGBM (Frozen),LightGB
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,LightGBM (TAR),LightGBM,tar,log_loss,1.718588,0.019687,-1.718588,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,LimiX-2 (Frozen),LimiX-2,frozen,log_loss,1.380867,0.01186,-1.380867,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,LimiX-2 (TAR),LimiX-2,tar,log_loss,1.395699,0.017729,-1.395699,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Mitra-v2 (Frozen),Mitra-v2,frozen,log_loss,1.446599,0.003378,-1.446599,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Mitra-v2 (TAR),Mitra-v2,tar,log_loss,1.4796,0.010094,-1.4796,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,RandomForest (Frozen),RandomForest,frozen,log_loss,1.714337,0.01524,-1.714337,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,RandomForest (TAR),RandomForest,tar,log_loss,1.681055,0.019378,-1.681055,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,RealMLP (Frozen),RealMLP,frozen,log_loss,1.66822,0.014606,-1.66822,6,10000.0
