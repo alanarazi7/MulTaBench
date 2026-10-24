@@ -5,9 +5,6 @@ file as the PRs that complete them are merged.
 
 ## Embedding cache
 
-- [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
-      today; one option is to charge the cached `encode_seconds` from `meta.json`, scaled to the run's
-      rows.
 - [ ] Re-time the frozen encoders on an H100, as the tuned ones were. Until then, `with_tar_encode_times` in
       `multabench/leaderboard/embedding_cost.py` charges frozen runs the tuned caches' encoding time.
 
@@ -22,11 +19,10 @@ file as the PRs that complete them are merged.
 - [ ] TF-IDF runs, deferred: the first release uses one text preprocessing per model, e5-small. Run
       the models that embed text with `--text_encoders tfidf` as their own leaderboard entries;
       until then, sweeps pass `--text_encoders e5-small`, since the default also lists TF-IDF.
-- [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing.
+- [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing; the paper
+      covered it.
 - [ ] ConTextTab reads dates natively, but the shared preprocessing expands them first. Add a
       `USE_DATE_TRANSFORMATION` flag that ConTextTab turns off, see the TODO in `abstract_model.py`.
-- [ ] RealMLP isn't bit-reproducible on GPU despite `random_state` (0.4–1.6% on a rerun), likely nondeterministic
-      CUDA kernels. Check whether `torch.use_deterministic_algorithms` fixes it, or document it.
 
 ## Leaderboard
 
