@@ -3,7 +3,7 @@ import os
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
 from multabench.benchmark import sweep
-from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, IMAGE_TEXT_TEXT_ENCODER,
+from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS,
                                         encoder_pairs, list_runs, pending_runs, prefetch, sbatch_commands,
                                         select_datasets, venv_python, write_jobs_file)
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
@@ -20,7 +20,12 @@ def test_each_modality_gets_only_its_encoders():
     image_text = encoder_pairs(Modality.IMAGE_TEXT, DEFAULT_TEXT_ENCODERS, DEFAULT_IMAGE_ENCODERS)
     assert text == [(t, None) for t in DEFAULT_TEXT_ENCODERS]
     assert image == [(None, i) for i in DEFAULT_IMAGE_ENCODERS]
-    assert image_text == [(IMAGE_TEXT_TEXT_ENCODER, i) for i in DEFAULT_IMAGE_ENCODERS]
+    assert image_text == [(TextEncoder.E5_SMALL, i) for i in DEFAULT_IMAGE_ENCODERS]
+
+
+def test_large_image_runs_embed_text_with_large_e5():
+    assert encoder_pairs(Modality.IMAGE_TEXT, [TextEncoder.E5_LARGE], [ImageEncoder.DINO_LARGE]) == [
+        (TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE)]
 
 
 def test_raw_text_models_get_no_text_encoder():

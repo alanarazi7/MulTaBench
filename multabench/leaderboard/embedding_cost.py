@@ -1,9 +1,9 @@
 """Seconds per 1,000 rows each cached encoder took on each dataset, from its meta.json on the Hub.
 
 A frozen encoder has one cache per dataset; a tuned (-tar) one has one per fold, with the time fine-tuning took on the
-fold's training rows. The encoding time estimates what a run would pay to embed its rows live: the frozen caches were
-computed on A100s and the tuned ones on H100s, and the image time includes reading the files. The board charges frozen
-runs the tuned caches' time, see `with_tar_encode_times`.
+fold's training rows. The encoding time estimates what a run would pay to embed its rows live: the small frozen caches
+were computed on A100s, the tuned and large ones on H100s, and the image time includes reading the files. The board
+charges small frozen runs the tuned caches' time, see `with_tar_encode_times`.
 """
 import json
 import os
@@ -38,8 +38,9 @@ def embedding_cost() -> pd.DataFrame:
 def with_tar_encode_times(caches: pd.DataFrame) -> pd.DataFrame:
     """A hack: each frozen cache takes its tuned twin's mean encoding time over the folds, on the same dataset.
 
-    Frozen and tuned encoders embed with the same model, but the frozen caches were timed on A100s and the tuned ones
-    on H100s, so frozen looked about twice as slow. A frozen encoder with no tuned twin on a dataset keeps its own time.
+    Frozen and tuned encoders embed with the same model, but the small frozen caches were timed on A100s and the tuned
+    ones on H100s, so frozen looked about twice as slow. A frozen encoder with no tuned twin on a dataset, such as a
+    large one, keeps its own time.
     Once the frozen encoders are re-timed on an H100, this can go.
     """
     tuned = caches[caches["encoder"].str.endswith(TAR_SUFFIX)]

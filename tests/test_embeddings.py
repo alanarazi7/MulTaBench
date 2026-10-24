@@ -35,9 +35,9 @@ def test_tuned_encoders_are_cached_per_fold():
 def test_parse_encoder():
     assert parse_encoder("dino-small") is ImageEncoder.DINO_SMALL
     assert parse_encoder("e5-small-tar") is TextEncoder.E5_SMALL_TAR
-    for uncached in ("tfidf", "e5-large", "dino-large"):
-        with pytest.raises(ValueError):
-            parse_encoder(uncached)
+    assert parse_encoder("e5-large") is TextEncoder.E5_LARGE
+    with pytest.raises(ValueError):
+        parse_encoder("tfidf")
 
 
 @pytest.mark.parametrize("dataset_id", list(MulTaBenchDatasetID))
@@ -47,6 +47,8 @@ def test_encoders_follow_the_benchmark_runs(dataset_id):
     assert embeds_dataset(ImageEncoder.DINO_SMALL, dataset_id) == modality.has_images
     assert embeds_dataset(TextEncoder.E5_SMALL_TAR, dataset_id) == (modality == Modality.TEXT)
     assert embeds_dataset(ImageEncoder.DINO_SMALL_TAR, dataset_id) == modality.has_images
+    assert embeds_dataset(TextEncoder.E5_LARGE, dataset_id) == modality.has_text
+    assert embeds_dataset(ImageEncoder.DINO_LARGE, dataset_id) == modality.has_images
 
 
 def test_round_trip_and_lookup(tmp_path):
@@ -95,7 +97,7 @@ def test_tuned_jobs_cover_each_fold(tmp_path):
     assert jobs[1].command(python="python", output_dir="out") == (
         "python -m multabench.embeddings.embed --encoder dino-small-tar --dataset_name MUL_IMAGE_PETFINDER --size 10k "
         "--fold 4 --output_dir out")
-    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6
+    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6 + 1 + 1
 
 
 def test_cached_encoder():
@@ -105,13 +107,13 @@ def test_cached_encoder():
     assert cached_encoder(TF_IDF, tuned=False) is None
 
 
-def test_runs_read_the_small_encoders_from_the_cache():
+def test_runs_read_the_frozen_and_tuned_encoders_from_the_cache():
     for encoder in (TextEncoder.E5_SMALL, TextEncoder.E5_SMALL_TAR):
         assert reads_cache(TEXT_ENCODERS[encoder])
     for encoder in (ImageEncoder.DINO_SMALL, ImageEncoder.DINO_SMALL_TAR):
         assert reads_cache(IMAGE_ENCODERS[encoder])
     assert not reads_cache(TEXT_ENCODERS[TextEncoder.TFIDF])
-    assert not reads_cache(TEXT_ENCODERS[TextEncoder.E5_LARGE])
+    assert reads_cache(TEXT_ENCODERS[TextEncoder.E5_LARGE]) and reads_cache(IMAGE_ENCODERS[ImageEncoder.DINO_LARGE])
 
 
 def test_missing_cached_embeddings_raise(monkeypatch, tmp_path):

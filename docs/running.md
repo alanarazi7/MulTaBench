@@ -53,9 +53,9 @@ reruns it. `--help` lists the available models. `--text_encoder` picks how text 
 don't have a result yet to a jobs file (`sweep_jobs_<timestamp>.txt`, or `--jobs_file`), one command per line,
 which any scheduler can run. `--modalities text`, `image` or `image-text` keeps only those datasets. Text datasets
 run once per text encoder and image datasets once per image encoder; image datasets that also have text columns
-always embed their text with frozen `e5-small`. The default encoders include the fine-tuned `e5-small-tar` and
-`dino-small-tar`, so pass `--text_encoders`/`--image_encoders` to run fewer. Each run is its own process, and a
-failed run doesn't stop the others:
+embed their text with frozen E5 of the image encoder's size: `e5-large` with `dino-large`, else `e5-small`. The
+default encoders include the fine-tuned `e5-small-tar` and `dino-small-tar`, so pass `--text_encoders`/
+`--image_encoders` to run fewer. Each run is its own process, and a failed run doesn't stop the others:
 
 ```bash
 python sweep.py --models light,cat --modalities text --text_encoders e5-small                   # only write the jobs file
