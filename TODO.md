@@ -3,15 +3,6 @@
 Work in progress towards the first release of the living leaderboard. Items are removed from this
 file as the PRs that complete them are merged.
 
-## Full rerun
-
-The frozen runs are rerun from `master` 1ae2320 with `sweep.py --official`, the `-tar` runs' commit. A model's update
-drops it from `NOT_RERUN` in `tests/test_leaderboard_results.py`, which fails while the two disagree.
-
-- [ ] Pending: TabFM, TabICLv2, TabM, TabPFN-3, TabPFN-3.5, TabPFN-3.5-Fast, TabPFN-v2, TabPFN-v2p5 and TabSTAR-v1.1.
-- Updated: CatBoost, Causilo, ConTextTab, EXAONE-Tabular, Kumo-Tabular, Kumo-Tabular-M, Kumo-Tabular-S, LightGBM,
-  LimiX-2, Mitra-v2, RandomForest, RealMLP, TabDPT (with its seeding, #165), TabDPT-1.3, XGBoost and Xiaomi-TabLDM.
-
 ## Embedding cache
 
 - [ ] Decide how a run that reads cached embeddings reports its embedding time. It records almost none
