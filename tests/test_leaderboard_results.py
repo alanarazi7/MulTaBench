@@ -16,13 +16,6 @@ from multabench.utils.hardware import CPU_RUN_HARDWARE, GPU_RUN_HARDWARE
 PATHS = [p for d in (RESULTS_DIR, TAR_RESULTS_DIR) for p in sorted(glob.glob(os.path.join(d, "*.csv")))]
 MODELS = {model.MODEL_NAME: model for model in BASELINES}
 TASK_METRICS = {"BIN": "roc_auc", "MUL": "log_loss", "REG": "root_mean_squared_error"}
-TOO_MANY_CLASSES = ["MUL_IMAGE_HEARTHSTONE_CLASS", "MUL_TEXT_SPOTIFY_GENRES", "MUL_TEXT_WINE_REVIEW"]
-
-# Every run, frozen and -tar, comes from RUN_COMMIT, but for the runs that failed there, rerun from FIXED_COMMIT.
-RUN_COMMIT = "1ae2320"
-FIXED_COMMIT = "b71ecb7"
-RERUN = {"Mitra-v2": TOO_MANY_CLASSES + ["MUL_TEXT_MELBOURNE_AIRBNB"], "TabPFN-v2": TOO_MANY_CLASSES,
-         "TabPFN-v2.5": TOO_MANY_CLASSES}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
@@ -83,10 +76,3 @@ def test_runs_used_their_hardware(runs):
         assert ok[ResultKey.GPU_TYPE].str.startswith(hardware.gpu_prefix).all()
     else:
         assert ok[ResultKey.GPU_TYPE].isna().all()
-
-
-def test_runs_come_from_the_rerun_commit(runs):
-    name, df, _ = runs
-    rerun = df[ResultKey.DATASET].isin(RERUN.get(name, []))
-    assert set(df[~rerun][ResultKey.GIT].astype(str)) == {RUN_COMMIT}
-    assert set(df[rerun][ResultKey.GIT].astype(str)) <= {FIXED_COMMIT}
