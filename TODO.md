@@ -26,6 +26,8 @@ file as the PRs that complete them are merged.
 
 ## Leaderboard
 
+- [ ] A Frozen Large entry: sweep the models with `--text_encoders e5-large --image_encoders dino-large` from master,
+      and add the results and the entry to the board and the Space. The caches are in.
 - [ ] Improvability as a secondary column.
 - [ ] Once NVIDIA publishes a technical report for Kumo-Tabular, link and cite it in place of its Hugging Face blog
       post: its three models' link in `space/data/models.csv` and its BibTeX on the Cite & Data tab.
