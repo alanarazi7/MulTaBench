@@ -3,8 +3,7 @@ import argparse
 
 import pandas as pd
 
-from multabench.leaderboard.elo import TAR_RESULTS_DIR, load_runs
-from multabench.leaderboard.export import ENCODING, board_modality, dataset_task, dataset_tier, entries
+from multabench.leaderboard.export import ENCODING, board_modality, dataset_task, dataset_tier, load_entries
 from multabench.result_keys import ResultKey, RunStatus
 
 COLUMNS = [ResultKey.MODEL, ENCODING, ResultKey.DATASET, ResultKey.FOLD, ResultKey.TEXT_ENCODER,
@@ -14,7 +13,7 @@ COLUMNS = [ResultKey.MODEL, ENCODING, ResultKey.DATASET, ResultKey.FOLD, ResultK
 
 def all_results() -> pd.DataFrame:
     """Every successful run, with its dataset's tier, task and modality as the leaderboard filters them."""
-    runs = entries(load_runs(), load_runs(TAR_RESULTS_DIR))
+    runs = load_entries()
     df = runs.loc[runs[ResultKey.STATUS] == RunStatus.OK, COLUMNS]
     df = df.sort_values([ResultKey.MODEL, ENCODING, ResultKey.DATASET, ResultKey.FOLD], ignore_index=True)
     df.insert(3, "modality", df[ResultKey.DATASET].map(board_modality))

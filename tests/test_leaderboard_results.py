@@ -9,20 +9,22 @@ from benchmark import BASELINES
 from multabench.benchmark.collect import RESULT_COLUMNS
 from multabench.benchmark.splits import SPLITS
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
-from multabench.leaderboard.elo import RESULTS_DIR, TAR_RESULTS_DIR
+from multabench.leaderboard.elo import RESULTS_DIR
+from multabench.leaderboard.export import ENCODING_DIRS
 from multabench.result_keys import RUN_KEY, ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, GPU_RUN_HARDWARE
 
-PATHS = [p for d in (RESULTS_DIR, TAR_RESULTS_DIR) for p in sorted(glob.glob(os.path.join(d, "*.csv")))]
+PATHS = [p for d in ENCODING_DIRS.values() for p in sorted(glob.glob(os.path.join(d, "*.csv")))]
 MODELS = {model.MODEL_NAME: model for model in BASELINES}
 TASK_METRICS = {"BIN": "roc_auc", "MUL": "log_loss", "REG": "root_mean_squared_error"}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
 def runs(request):
-    """The model, its runs, and whether its encoders were fine-tuned (-tar)."""
+    """The model, its runs, and their encoding."""
     path = request.param
-    return os.path.basename(path)[:-len(".csv")], pd.read_csv(path), os.path.dirname(path) == TAR_RESULTS_DIR
+    encoding = next(e for e, d in ENCODING_DIRS.items() if os.path.dirname(path) == d)
+    return os.path.basename(path)[:-len(".csv")], pd.read_csv(path), encoding
 
 
 def test_a_file_holds_one_known_model_with_the_result_columns(runs):
@@ -40,14 +42,15 @@ def test_every_dataset_has_every_fold_once(runs):
 
 
 def test_each_dataset_uses_the_encoders_of_its_columns(runs):
-    """Frozen, or -tar for the image column and a text-only dataset's text; image datasets' text stays frozen."""
-    name, df, tuned = runs
+    """Frozen, large, or -tar for the image column and a text-only dataset's text; image datasets' text stays frozen."""
+    name, df, encoding = runs
     embeds_text = MODELS[name].USE_TEXT_EMBEDDINGS
+    size, tar = ("large", "") if encoding == "large" else ("small", "-tar" if encoding == "tar" else "")
     for dataset, encoders in df.groupby(ResultKey.DATASET)[[ResultKey.TEXT_ENCODER, ResultKey.IMAGE_ENCODER]]:
         modality = dataset_modality(MulTaBenchDatasetID[dataset])
-        text_tar = "-tar" if tuned and modality == Modality.TEXT else ""
-        text = f"e5-small{text_tar}" if modality.has_text and embeds_text else None
-        image = f"dino-small{'-tar' if tuned else ''}" if modality.has_images else None
+        text_tar = tar if modality == Modality.TEXT else ""
+        text = f"e5-{size}{text_tar}" if modality.has_text and embeds_text else None
+        image = f"dino-{size}{tar}" if modality.has_images else None
         assert set(encoders[ResultKey.TEXT_ENCODER].replace({np.nan: None})) == {text}, dataset
         assert set(encoders[ResultKey.IMAGE_ENCODER].replace({np.nan: None})) == {image}, dataset
 

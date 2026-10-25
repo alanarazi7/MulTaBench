@@ -80,5 +80,5 @@ include = ["multabench*"]
 
 # The published runs, for load_published_results, and the pinned Hugging Face revisions.
 [tool.setuptools.package-data]
-"multabench.leaderboard" = ["models/*.csv", "models_tar/*.csv"]
+"multabench.leaderboard" = ["models/*.csv", "models_tar/*.csv", "models_large/*.csv"]
 "multabench.datasets" = ["revisions.json"]

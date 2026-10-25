@@ -12,7 +12,7 @@
 :root {
   --bg: #F3F5F2; --surface: #FFFFFF; --ink: #1C2228; --muted: #5C666F; --line: #D9DED7; --soft: #EBEEE9;
   --accent: #2C5C8A; --text-mod: #A4581B; --image-mod: #2D7653; --best: #2C5C8A; --warn: #A33A2A;
-  --frozen: #7E8A94; --tar: #2C5C8A; --e2e: #8A5FA8;
+  --frozen: #7E8A94; --tar: #2C5C8A; --large: #2F7F8C; --e2e: #8A5FA8;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -21,14 +21,14 @@
   :root:not([data-theme="light"]) {
     --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
     --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --e2e: #C29BDF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
   --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --e2e: #C29BDF;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -82,7 +82,7 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
 .flag { color: var(--warn); }
 .chip { display: inline-block; font: 600 11.5px/1 var(--mono); letter-spacing: 0.03em; padding: 4px 8px; border-radius: 999px;
   color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface)); }
-.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .end-to-end { --c: var(--e2e); }
+.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .large { --c: var(--large); } .end-to-end { --c: var(--e2e); }
 b.enc { color: var(--c); }
 
 .selectors { border-bottom: 1px solid var(--line); }
@@ -168,7 +168,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
     <div class="encrow">
       <div class="group tabs" id="encodingTabs" role="group" aria-label="Encoders"><span class="label">Encoders</span></div>
-      <p class="encnote">For models that are not E2E, we embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.<br><br><b class="enc frozen">Frozen</b> uses the encoders as they are; <b class="enc tar">TAR</b> (Target-Aware Representations) first fine-tunes them on the training labels with default hyperparameters.</p>
+      <p class="encnote">For models that are not E2E, we embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.<br><br><b class="enc frozen">Frozen</b> uses the encoders as they are; <b class="enc tar">TAR</b> (Target-Aware Representations) first fine-tunes them on the training labels with default hyperparameters; <b class="enc large">Frozen Large</b> uses the large encoders as they are, <a href="https://huggingface.co/intfloat/e5-large-v2">e5-large</a> and <a href="https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m">DINOv3-large</a>.</p>
     </div>
   </div>
   </div>
@@ -520,18 +520,22 @@ load().then(start).catch(err => {
 function start(D) {
 
 const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
-const ENC_LABEL = { frozen: 'Frozen', tar: 'TAR', 'end-to-end': 'E2E' };
-const ENC_TITLE = { frozen: 'Frozen encoders', tar: 'Encoders fine-tuned on each fold', 'end-to-end': 'Reads raw text itself' };
+const ENC_LABEL = { frozen: 'Frozen', tar: 'TAR', large: 'Frozen Large', 'end-to-end': 'E2E' };
+const ENC_TITLE = { frozen: 'Frozen encoders', tar: 'Encoders fine-tuned on each fold', large: 'Frozen large encoders', 'end-to-end': 'Reads raw text itself' };
 const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
 // A short mark for the encoding, in place of the "(Frozen)" or "(TAR)" of an entry's name.
-const ENC_MARK = { frozen: '❄️', tar: '🎯', 'end-to-end': '🔚' };
+const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'end-to-end': '🔚' };
 const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
-const ENCS = [['frozen', 'Frozen'], ['tar', 'TAR']];
-const ENCODERS = '<td class="model"><a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a></td>'
-  + '<td class="model"><a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a></td>';
+const ENCS = [['frozen', 'Frozen'], ['tar', 'TAR'], ['large', 'Frozen Large']];
+const encoderCells = (e5, dino) => `<td class="model"><a href="https://huggingface.co/intfloat/${e5}-v2">${e5}</a></td>`
+  + `<td class="model"><a href="https://huggingface.co/facebook/dinov3-vit${dino[0]}16-pretrain-lvd1689m">DINOv3-${dino[1]}</a></td>`;
+const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encoderCells('e5-small', ['s', 'small']),
+  large: encoderCells('e5-large', ['l', 'large']) };
+// The encodings board names each encoding by its label.
+const ENC_KEY = Object.fromEntries(Object.entries(ENC_LABEL).map(([k, v]) => [v, k]));
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -593,7 +597,7 @@ function drawEncTabs() {
     showNames = !showNames; store.set('pareto_names', showNames ? '1' : '0'); drawEncTabs(); render();
   } }, 'Show names');
   n.setAttribute('aria-pressed', showNames);
-  const m = el('button', { type: 'button', title: '❄️ for Frozen, 🎯 for TAR and 🔚 for E2E, as the points', onclick: () => {
+  const m = el('button', { type: 'button', title: '❄️ for Frozen, 🎯 for TAR, 🧊 for Frozen Large and 🔚 for E2E, as the points', onclick: () => {
     withEmojis = !withEmojis; store.set('pareto_emojis', withEmojis ? '1' : '0'); drawEncTabs(); render();
   } }, 'With emojis');
   m.setAttribute('aria-pressed', withEmojis);
@@ -709,7 +713,7 @@ function encodingToggles() {
 function drawElo(board) {
   const groups = [];
   board.forEach(r => { let g = groups.find(g => g.model === r.model); if (!g) groups.push(g = { model: r.model, rows: [] }); g.rows.push(r); });
-  const ORDER = ['frozen', 'tar', 'end-to-end'];
+  const ORDER = ['frozen', 'large', 'tar', 'end-to-end'];
   groups.forEach(g => g.rows.sort((a, b) => ORDER.indexOf(a.encoding) - ORDER.indexOf(b.encoding)));
   const W = 1080, H = 420, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
   const lo = Math.min(1000, ...board.map(r => r.lo)), hi = Math.max(...board.map(r => r.hi));
@@ -805,7 +809,7 @@ function renderEncodings(filterKey) {
   const tb = el('tbody');
   board.forEach((r, i) => {
     const ci = r.hi > r.lo ? `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>` : '<span class="ci">anchor</span>';
-    tb.appendChild(el('tr', {}, `<td class="rank">${i + 1}</td><td><span class="chip ${r.encoding.toLowerCase()}">${r.encoding}</span></td>${ENCODERS}<td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
+    tb.appendChild(el('tr', {}, `<td class="rank">${i + 1}</td><td><span class="chip ${ENC_KEY[r.encoding]}">${r.encoding}</span></td>${ENCODERS[ENC_KEY[r.encoding]]}<td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
   });
   t.appendChild(tb);
 }

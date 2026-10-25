@@ -28,6 +28,9 @@ Every model that reads embeddings also ran with fine-tuned encoders: `e5-small-t
 runs are in `multabench/leaderboard/models_tar/`, with the same failures. The leaderboard ranks each such model
 as two entries, e.g. `LimiX-2 (Frozen)` and `LimiX-2 (TAR)`, and rates the encodings against each other.
 
+They also ran with the frozen large encoders, `e5-large` and `dino-large`; image datasets' text uses `e5-large` too.
+Those runs are in `multabench/leaderboard/models_large/`, as a third entry, e.g. `LimiX-2 (Frozen Large)`.
+
 ## Metrics
 
 Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized

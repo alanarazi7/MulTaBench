@@ -4,21 +4,20 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from multabench.leaderboard.elo import TAR_RESULTS_DIR, load_runs
-from multabench.leaderboard.export import (ENTRY, SPACE_DATA_DIR, cost, encoding_leaderboards, entries, leaderboards,
-                                           per_dataset)
+from multabench.leaderboard.export import (ENCODINGS, ENTRY, SPACE_DATA_DIR, cost, encoding_leaderboards, leaderboards,
+                                           load_entries, per_dataset)
 from multabench.result_keys import ResultKey
 
 
 @pytest.fixture(scope="module")
 def runs():
-    return entries(load_runs(), load_runs(TAR_RESULTS_DIR))
+    return load_entries()
 
 
 def test_the_space_leaderboards_follow_the_results(runs):
     shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "leaderboards.csv"))
     boards = leaderboards(runs, bootstraps=2)
-    assert len(boards.groupby(["tier", "task", "modality", "encodings"])) == 3 * 3 * 3 * 3
+    assert len(boards.groupby(["tier", "task", "modality", "encodings"])) == 3 * 3 * 3 * (2 ** len(ENCODINGS) - 1)
     # Entries whose Elo ties can sort either way from one machine to another, so the boards are compared by entry.
     key = ["tier", "task", "modality", "encodings", ENTRY]
     shown, boards = shown.set_index(key).sort_index(), boards.set_index(key).sort_index()
@@ -37,10 +36,10 @@ def test_the_space_encoding_boards_follow_the_results(runs):
     assert np.allclose(shown["elo"], boards["elo"], atol=1e-3)
 
 
-def test_each_model_reading_embeddings_has_a_frozen_and_a_tar_entry(runs):
+def test_each_model_reading_embeddings_has_an_entry_per_encoding(runs):
     encodings = runs.groupby(ResultKey.MODEL)["encoding"].unique().map(sorted)
     assert set(encodings[["ConTextTab", "TabSTAR-v1.1"]].map(tuple)) == {("end-to-end",)}
-    assert set(encodings.drop(["ConTextTab", "TabSTAR-v1.1"]).map(tuple)) == {("frozen", "tar")}
+    assert set(encodings.drop(["ConTextTab", "TabSTAR-v1.1"]).map(tuple)) == {tuple(sorted(ENCODINGS))}
 
 
 def test_the_space_per_dataset_results_follow_the_results(runs):
