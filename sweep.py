@@ -25,7 +25,7 @@ if __name__ == "__main__":
     parser.add_argument('--modalities', type=csv_arg([m.value for m in Modality], cast=Modality), default=None,
                         help="keep only the datasets of these modalities: text, image, image-text; default: all")
     parser.add_argument('--text_encoders', type=csv_arg(list(TextEncoder), cast=TextEncoder), default=DEFAULT_TEXT_ENCODERS,
-                        help="used on text datasets; image datasets use e5-small; raw-text models get none")
+                        help="used on text datasets; image datasets use E5 of the image encoder's size, raw-text models none")
     parser.add_argument('--image_encoders', type=csv_arg(list(ImageEncoder), cast=ImageEncoder), default=DEFAULT_IMAGE_ENCODERS,
                         help="used on datasets with images")
     parser.add_argument('--folds', type=csv_arg([str(f) for f in range(SPLITS)]), default=[str(f) for f in range(SPLITS)])

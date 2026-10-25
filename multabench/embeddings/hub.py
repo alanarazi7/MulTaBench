@@ -35,7 +35,8 @@ INPUTS_OFFSETS = "inputs_offsets"
 EMBEDDINGS = "embeddings"
 
 CachedEncoder = TextEncoder | ImageEncoder
-CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL, TextEncoder.E5_SMALL_TAR, ImageEncoder.DINO_SMALL_TAR)
+CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL, TextEncoder.E5_SMALL_TAR, ImageEncoder.DINO_SMALL_TAR,
+                   TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE)
 
 
 def parse_encoder(encoder: str) -> CachedEncoder:
@@ -69,7 +70,7 @@ def cached_encoder(model_name: str, tuned: bool) -> Optional[CachedEncoder]:
 
 
 def embeds_dataset(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> bool:
-    """Whether the benchmark's runs use the encoder on the dataset; datasets with images embed text with e5-small."""
+    """Whether the benchmark's runs use the encoder on the dataset; a tuned text encoder only runs on text datasets."""
     modality = dataset_modality(dataset_id)
     if isinstance(encoder, ImageEncoder):
         return modality.has_images

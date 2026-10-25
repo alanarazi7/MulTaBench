@@ -1,7 +1,8 @@
 # Cached embeddings
 
 The frozen text and image embeddings are cached on Hugging Face, one public dataset repo per
-encoder: `multabench/embeddings-e5-small` and `multabench/embeddings-dino-small`. A frozen encoder
+encoder: `multabench/embeddings-e5-small`, `multabench/embeddings-dino-small`, and their large twins
+`multabench/embeddings-e5-large` and `multabench/embeddings-dino-large`. A frozen encoder
 doesn't depend on the split, so each distinct input of a dataset is embedded once, under
 `<dataset>/`, in `embeddings.npz`, which maps every input, exactly as the encoder got it (e5's
 `"passage: <column>: <value>"` after a run's missing-text fill, or the image file name), to its raw
