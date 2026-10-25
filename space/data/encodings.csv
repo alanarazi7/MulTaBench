@@ -1,55 +1,82 @@
 tier,task,modality,encoding,elo,elo_low,elo_high,datasets,models,win_rate,best_on
-core,classification,text,TAR,1257.0105,1236.1097,1280.1621,10,23,0.8145,1124
-core,classification,text,Frozen,1000.0,976.8485,1020.9009,10,23,0.1855,256
-core,classification,image,TAR,1006.2948,989.9042,1023.8104,12,23,0.5091,843
-core,classification,image,Frozen,1000.0,982.4845,1016.3907,12,23,0.4909,813
-core,classification,all,TAR,1105.9307,1092.7865,1118.3773,22,23,0.6479,1967
-core,classification,all,Frozen,1000.0,987.5534,1013.1442,22,23,0.3521,1069
-core,regression,text,TAR,1123.8221,1109.1055,1139.4387,10,23,0.671,926
-core,regression,text,Frozen,1000.0,984.3834,1014.7165,10,23,0.329,454
-core,regression,image,TAR,1125.3926,1109.0777,1143.2228,8,23,0.673,743
-core,regression,image,Frozen,1000.0,982.1699,1016.3149,8,23,0.327,361
-core,regression,all,TAR,1124.5195,1113.1837,1135.3935,18,23,0.6719,1669
-core,regression,all,Frozen,1000.0,989.126,1011.3358,18,23,0.3281,815
-core,all,text,TAR,1184.1982,1171.7714,1197.0206,20,23,0.7428,2050
-core,all,text,Frozen,1000.0,987.1776,1012.4268,20,23,0.2572,710
-core,all,image,TAR,1052.254,1038.7374,1064.1079,20,23,0.5746,1586
-core,all,image,Frozen,1000.0,988.1461,1013.5167,20,23,0.4254,1174
-core,all,all,TAR,1114.2172,1105.6617,1123.7711,40,23,0.6587,3636
-core,all,all,Frozen,1000.0,990.4461,1008.5555,40,23,0.3413,1884
-extended,classification,text,Frozen,1000.0,985.1312,1015.3028,10,23,0.6333,874
-extended,classification,text,TAR,905.0556,889.7528,919.9244,10,23,0.3667,506
-extended,classification,image,Frozen,1000.0,985.9912,1015.1375,8,23,0.5938,656
-extended,classification,image,TAR,934.0759,918.9384,948.0847,8,23,0.4062,449
-extended,classification,all,Frozen,1000.0,989.1276,1010.5807,18,23,0.6157,1530
-extended,classification,all,TAR,918.0906,907.5098,928.963,18,23,0.3843,955
-extended,regression,text,Frozen,1000.0,986.4744,1013.5956,10,23,0.5761,795
-extended,regression,text,TAR,946.7155,933.1199,960.2411,10,23,0.4239,585
-extended,regression,image,Frozen,1000.0,985.4151,1015.6968,12,23,0.7663,1269
-extended,regression,image,TAR,793.6997,778.0029,808.2847,12,23,0.2337,387
-extended,regression,all,Frozen,1000.0,989.8229,1010.075,22,23,0.6798,2064
-extended,regression,all,TAR,869.1826,859.1076,879.3598,22,23,0.3202,972
-extended,all,text,Frozen,1000.0,989.8416,1010.1463,20,23,0.6047,1669
-extended,all,text,TAR,926.1474,916.001,936.3058,20,23,0.3953,1091
-extended,all,image,Frozen,1000.0,989.0806,1011.0197,20,23,0.6973,1925
-extended,all,image,TAR,855.0514,844.0317,865.9708,20,23,0.3027,836
-extended,all,all,Frozen,1000.0,992.747,1007.9752,40,23,0.651,3594
-extended,all,all,TAR,891.7005,883.7253,898.9535,40,23,0.349,1927
-all,classification,text,TAR,1063.6437,1050.6517,1075.9265,20,23,0.5906,1630
-all,classification,text,Frozen,1000.0,987.7172,1012.9919,20,23,0.4094,1130
-all,classification,image,Frozen,1000.0,988.2713,1012.4657,20,23,0.5321,1469
-all,classification,image,TAR,977.6882,965.2225,989.4169,20,23,0.4679,1292
-all,classification,all,TAR,1020.3533,1011.4969,1028.9755,40,23,0.5293,2922
-all,classification,all,Frozen,1000.0,991.3778,1008.8564,40,23,0.4707,2599
-all,regression,text,TAR,1033.0808,1022.7081,1042.7962,20,23,0.5475,1511
-all,regression,text,Frozen,1000.0,990.2846,1010.3727,20,23,0.4525,1249
-all,regression,image,Frozen,1000.0,988.4103,1011.6193,20,23,0.5906,1630
-all,regression,image,TAR,936.3563,924.737,947.946,20,23,0.4094,1130
-all,regression,all,Frozen,1000.0,992.123,1007.7779,40,23,0.5216,2879
-all,regression,all,TAR,985.0107,977.2328,992.8877,40,23,0.4784,2641
-all,all,text,TAR,1048.2694,1040.229,1056.5426,40,23,0.569,3141
-all,all,text,Frozen,1000.0,991.7268,1008.0404,40,23,0.431,2379
-all,all,image,Frozen,1000.0,992.3356,1008.396,40,23,0.5613,3099
-all,all,image,TAR,957.1732,948.7772,964.8376,40,23,0.4387,2422
-all,all,all,TAR,1002.6751,997.0248,1008.5508,80,23,0.5038,5563
-all,all,all,Frozen,1000.0,994.1243,1005.6503,80,23,0.4962,5478
+core,classification,text,TAR,1327.8184,1275.366,1386.6821,10,4,0.7438,148
+core,classification,text,Frozen Large,1243.4544,1199.0043,1289.6772,10,4,0.5917,81
+core,classification,text,Frozen,1000.0,948.6305,1045.1851,10,4,0.1646,11
+core,classification,image,TAR,1121.6338,1075.7969,1176.7577,12,4,0.5955,139
+core,classification,image,Frozen Large,1105.8184,1064.399,1149.8908,12,4,0.5625,109
+core,classification,image,Frozen,1000.0,956.3403,1034.3834,12,4,0.342,40
+core,classification,all,TAR,1203.0701,1169.4314,1240.2865,22,4,0.6629,287
+core,classification,all,Frozen Large,1159.2008,1128.7644,1188.5569,22,4,0.5758,190
+core,classification,all,Frozen,1000.0,969.8864,1028.1614,22,4,0.2614,51
+core,regression,text,TAR,1379.9981,1332.9616,1434.0589,10,4,0.8312,178
+core,regression,text,Frozen Large,1176.5189,1134.4538,1215.3578,10,4,0.4854,48
+core,regression,text,Frozen,1000.0,951.741,1041.8441,10,4,0.1833,14
+core,regression,image,TAR,1210.9932,1160.9459,1258.4488,8,4,0.6536,99
+core,regression,image,Frozen Large,1185.8057,1144.3677,1231.2621,8,4,0.6042,79
+core,regression,image,Frozen,1000.0,953.8699,1039.4773,8,4,0.2422,14
+core,regression,all,TAR,1293.9265,1258.5717,1333.1074,18,4,0.7523,277
+core,regression,all,Frozen Large,1178.5878,1146.507,1208.0673,18,4,0.5382,127
+core,regression,all,Frozen,1000.0,966.6088,1028.4195,18,4,0.2095,28
+core,all,text,TAR,1350.3942,1313.9887,1391.0638,20,4,0.7875,326
+core,all,text,Frozen Large,1209.4245,1180.1767,1239.6236,20,4,0.5385,129
+core,all,text,Frozen,1000.0,962.9608,1027.7275,20,4,0.174,25
+core,all,image,TAR,1155.2593,1116.8723,1193.3049,20,4,0.6188,238
+core,all,image,Frozen Large,1135.8957,1105.9877,1169.8257,20,4,0.5792,188
+core,all,image,Frozen,1000.0,968.5115,1027.4674,20,4,0.3021,54
+core,all,all,TAR,1241.49,1215.2545,1269.6634,40,4,0.7031,564
+core,all,all,Frozen Large,1166.9633,1146.5113,1188.8862,40,4,0.5589,317
+core,all,all,Frozen,1000.0,977.6605,1020.4265,40,4,0.238,79
+extended,classification,text,Frozen Large,1093.9566,1060.1357,1130.5286,10,4,0.6333,113
+extended,classification,text,Frozen,1000.0,972.9622,1028.726,10,4,0.4354,51
+extended,classification,text,TAR,998.0229,949.3655,1041.6722,10,4,0.4312,76
+extended,classification,image,Frozen Large,1137.8521,1089.9995,1183.9591,8,4,0.638,91
+extended,classification,image,TAR,1076.454,1024.5755,1128.1977,8,4,0.5104,78
+extended,classification,image,Frozen,1000.0,965.1287,1035.8563,8,4,0.3516,23
+extended,classification,all,Frozen Large,1112.9608,1084.0296,1141.7851,18,4,0.6354,204
+extended,classification,all,TAR,1032.5003,998.2529,1067.3688,18,4,0.4664,154
+extended,classification,all,Frozen,1000.0,978.3812,1022.9987,18,4,0.3981,74
+extended,regression,text,Frozen Large,1041.8013,1013.5755,1075.7529,10,4,0.5708,96
+extended,regression,text,Frozen,1000.0,974.7042,1026.2265,10,4,0.4812,63
+extended,regression,text,TAR,984.4465,951.0954,1016.4779,10,4,0.4479,81
+extended,regression,image,Frozen Large,1203.226,1152.8411,1260.6984,12,4,0.8264,220
+extended,regression,image,Frozen,1000.0,972.672,1024.9281,12,4,0.4757,42
+extended,regression,image,TAR,840.6338,789.0249,883.0722,12,4,0.1979,26
+extended,regression,all,Frozen Large,1116.1782,1088.5924,1149.1056,22,4,0.7102,316
+extended,regression,all,Frozen,1000.0,982.6833,1017.5567,22,4,0.4782,105
+extended,regression,all,TAR,916.674,886.9028,944.6444,22,4,0.3116,107
+extended,all,text,Frozen Large,1067.5523,1045.2949,1090.7821,20,4,0.6021,209
+extended,all,text,Frozen,1000.0,979.6221,1019.5809,20,4,0.4583,114
+extended,all,text,TAR,991.1903,962.0348,1017.612,20,4,0.4396,157
+extended,all,image,Frozen Large,1166.5655,1133.5645,1206.942,20,4,0.751,311
+extended,all,image,Frozen,1000.0,977.6729,1019.4323,20,4,0.426,65
+extended,all,image,TAR,947.5094,908.1176,982.9256,20,4,0.3229,104
+extended,all,all,Frozen Large,1113.6734,1093.444,1135.0697,40,4,0.6766,520
+extended,all,all,Frozen,1000.0,986.9315,1013.7285,40,4,0.4422,179
+extended,all,all,TAR,970.49,946.1632,993.0881,40,4,0.3812,261
+all,classification,text,Frozen Large,1153.3527,1128.2421,1181.1754,20,4,0.6125,194
+all,classification,text,TAR,1141.1149,1104.6234,1176.4191,20,4,0.5875,224
+all,classification,text,Frozen,1000.0,970.7435,1026.3873,20,4,0.3,62
+all,classification,image,Frozen Large,1118.257,1088.0289,1150.3145,20,4,0.5927,200
+all,classification,image,TAR,1103.2995,1066.424,1138.9042,20,4,0.5615,217
+all,classification,image,Frozen,1000.0,971.066,1026.7722,20,4,0.3458,63
+all,classification,all,Frozen Large,1135.4693,1115.3493,1156.208,40,4,0.6026,394
+all,classification,all,TAR,1121.8664,1096.6227,1146.8749,40,4,0.5745,441
+all,classification,all,Frozen,1000.0,981.5526,1019.8793,40,4,0.3229,125
+all,regression,text,TAR,1148.9249,1119.1222,1184.9311,20,4,0.6396,259
+all,regression,text,Frozen Large,1094.9377,1073.4978,1115.5677,20,4,0.5281,144
+all,regression,text,Frozen,1000.0,971.7175,1026.1712,20,4,0.3323,77
+all,regression,image,Frozen Large,1178.9317,1145.2296,1216.3019,20,4,0.7375,299
+all,regression,image,Frozen,1000.0,976.5497,1022.4541,20,4,0.3823,56
+all,regression,image,TAR,998.9564,961.1782,1034.4806,20,4,0.3802,125
+all,regression,all,Frozen Large,1132.1964,1113.2048,1152.7026,40,4,0.6328,443
+all,regression,all,TAR,1073.2273,1049.0619,1097.6904,40,4,0.5099,384
+all,regression,all,Frozen,1000.0,982.8647,1016.5665,40,4,0.3573,133
+all,all,text,TAR,1144.6428,1119.8586,1168.4325,40,4,0.6135,483
+all,all,text,Frozen Large,1123.6513,1107.0862,1140.3791,40,4,0.5703,338
+all,all,text,Frozen,1000.0,979.3577,1018.3355,40,4,0.3161,139
+all,all,image,Frozen Large,1145.6391,1124.4131,1168.6425,40,4,0.6651,499
+all,all,image,TAR,1051.6262,1026.058,1077.0345,40,4,0.4708,342
+all,all,image,Frozen,1000.0,982.5698,1015.2831,40,4,0.3641,119
+all,all,all,Frozen Large,1133.6111,1120.2069,1147.5353,80,4,0.6177,837
+all,all,all,TAR,1097.2873,1080.0908,1115.0667,80,4,0.5422,825
+all,all,all,Frozen,1000.0,987.0023,1013.1132,80,4,0.3401,258
