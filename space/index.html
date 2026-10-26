@@ -726,6 +726,8 @@ function drawElo(board) {
   const min = Math.floor((lo - 50) / step) * step, max = Math.ceil((hi + 50) / step) * step;
   const y = v => top + (max - v) / (max - min) * (H - top - bottom);
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elo ratings with 95% intervals, by model and encoding">`;
+  // Every other model gets a band, so each model's entries read as one group.
+  groups.forEach((g, i) => { if (i % 2 === 0) s += `<rect x="${left + i * slot}" y="${top}" width="${slot}" height="${H - top - bottom}" fill="var(--bg)"/>`; });
   for (let t = min; t <= max; t += step) {
     s += `<line x1="${left}" x2="${W - right}" y1="${y(t)}" y2="${y(t)}" stroke="var(--soft)"/>`;
     s += `<text x="${left - 10}" y="${y(t) + 4}" text-anchor="end">${t}</text>`;
@@ -737,7 +739,7 @@ function drawElo(board) {
     lx += 26 + ENC_LABEL[e].length * 7 + 18;
   });
   groups.forEach((g, i) => {
-    const cx = left + (i + 0.5) * slot, dx = g.rows.length > 1 ? Math.min(7, slot / 5) : 0;
+    const cx = left + (i + 0.5) * slot, dx = g.rows.length > 1 ? Math.min(9, slot / 4.5) : 0;
     const xs = g.rows.map((r, j) => cx + (j - (g.rows.length - 1) / 2) * 2 * dx);
     g.rows.forEach((r, j) => {
       const c = encColor(r.encoding);
