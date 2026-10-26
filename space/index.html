@@ -12,7 +12,7 @@
 :root {
   --bg: #F3F5F2; --surface: #FFFFFF; --ink: #1C2228; --muted: #5C666F; --line: #D9DED7; --soft: #EBEEE9;
   --accent: #2C5C8A; --text-mod: #A4581B; --image-mod: #2D7653; --best: #2C5C8A; --warn: #A33A2A;
-  --frozen: #7E8A94; --tar: #2C5C8A; --e2e: #8A5FA8;
+  --frozen: #7E8A94; --tar: #2C5C8A; --large: #2F7F8C; --e2e: #8A5FA8;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -21,14 +21,14 @@
   :root:not([data-theme="light"]) {
     --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
     --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --e2e: #C29BDF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
   --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --e2e: #C29BDF;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -82,7 +82,7 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
 .flag { color: var(--warn); }
 .chip { display: inline-block; font: 600 11.5px/1 var(--mono); letter-spacing: 0.03em; padding: 4px 8px; border-radius: 999px;
   color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface)); }
-.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .end-to-end { --c: var(--e2e); }
+.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .large { --c: var(--large); } .end-to-end { --c: var(--e2e); }
 b.enc { color: var(--c); }
 
 .selectors { border-bottom: 1px solid var(--line); }
@@ -105,7 +105,8 @@ b.enc { color: var(--c); }
 .filters[hidden], .filters .group[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .encrow { flex-basis: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-.encnote { max-width: 84ch; font-size: 16px; line-height: 1.6; }
+.encnote { max-width: 84ch; font-size: 16px; line-height: 1.6; margin: 1em 0; }
+.encnote ul { margin: 0.6em 0 0; padding-left: 1.2em; }
 #encodingText2 { font-size: 16px; line-height: 1.6; max-width: 84ch; }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
@@ -128,6 +129,8 @@ code { font-family: var(--mono); font-size: 0.92em; overflow-wrap: anywhere; }
 #boardNote .label { display: inline-block; min-width: 92px; font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; }
 .pf { text-align: center; width: 1%; white-space: nowrap; }
 tr.front td { background: color-mix(in oklab, var(--accent) 7%, var(--surface)); }
+#boardTable tr.groupEnd td, #boardTable td.grouped { border-bottom-color: var(--line); }
+#boardTable td.grouped { vertical-align: top; background: var(--surface); }
 .pareto text.name { font-family: var(--body); font-size: 12px; fill: var(--ink); font-weight: 500; }
 .dl { display: grid; }
 .dl > div { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--soft); }
@@ -168,14 +171,23 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
     <div class="encrow">
       <div class="group tabs" id="encodingTabs" role="group" aria-label="Encoders"><span class="label">Encoders</span></div>
-      <p class="encnote">For models that are not E2E, we embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.<br><br><b class="enc frozen">Frozen</b> uses the encoders as they are; <b class="enc tar">TAR</b> (Target-Aware Representations) first fine-tunes them on the training labels with default hyperparameters.</p>
+      <div class="encnote">For models that are not E2E, we embed texts with e5 (<a href="https://huggingface.co/intfloat/e5-small-v2">small</a>, <a href="https://huggingface.co/intfloat/e5-large-v2">large</a>) and images with DINOv3 (<a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">small</a>, <a href="https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m">large</a>), and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.
+        <ul>
+          <li><b class="enc frozen">Frozen-S</b> uses the small encoders as they are.</li>
+          <li><b class="enc tar">TAR-S</b> (Target-Aware Representations) first fine-tunes the small encoders on the training labels with default hyperparameters.</li>
+          <li><b class="enc large">Frozen-L</b> uses the large encoders as they are.</li>
+        </ul>
+      </div>
     </div>
   </div>
   </div>
 
   <div class="tabpanel" id="tab-board" role="tabpanel">
   <section>
-    <h2>Elo rating</h2>
+    <div class="head">
+      <h2>Elo rating</h2>
+      <div class="group tabs" id="groupTabs" role="group" aria-label="Rows"></div>
+    </div>
     <p class="muted" id="boardNote"></p>
     <div class="panel scroll chart wide" id="eloChart"></div>
     <div class="panel scroll"><table id="boardTable"></table></div>
@@ -520,18 +532,22 @@ load().then(start).catch(err => {
 function start(D) {
 
 const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
-const ENC_LABEL = { frozen: 'Frozen', tar: 'TAR', 'end-to-end': 'E2E' };
-const ENC_TITLE = { frozen: 'Frozen encoders', tar: 'Encoders fine-tuned on each fold', 'end-to-end': 'Reads raw text itself' };
+const ENC_LABEL = { frozen: 'Frozen-S', tar: 'TAR-S', large: 'Frozen-L', 'end-to-end': 'E2E' };
+const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-tuned on each fold', large: 'Frozen large encoders', 'end-to-end': 'Reads raw text itself' };
 const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
-// A short mark for the encoding, in place of the "(Frozen)" or "(TAR)" of an entry's name.
-const ENC_MARK = { frozen: '❄️', tar: '🎯', 'end-to-end': '🔚' };
+// A short mark for the encoding, in place of the "(Frozen-S)" or "(TAR-S)" of an entry's name.
+const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'end-to-end': '🔚' };
 const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
-const ENCS = [['frozen', 'Frozen'], ['tar', 'TAR']];
-const ENCODERS = '<td class="model"><a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a></td>'
-  + '<td class="model"><a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a></td>';
+const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L']];
+const encoderCells = (e5, dino) => `<td class="model"><a href="https://huggingface.co/intfloat/${e5}-v2">${e5}</a></td>`
+  + `<td class="model"><a href="https://huggingface.co/facebook/dinov3-vit${dino[0]}16-pretrain-lvd1689m">DINOv3-${dino[1]}</a></td>`;
+const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encoderCells('e5-small', ['s', 'small']),
+  large: encoderCells('e5-large', ['l', 'large']) };
+// The encodings board names each encoding by its label.
+const ENC_KEY = Object.fromEntries(Object.entries(ENC_LABEL).map(([k, v]) => [v, k]));
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -555,8 +571,8 @@ function setTheme(t) {
 }
 setTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
-// The multabench package version the board is built with; a placeholder until v0.1 goes out with the board.
-const LATEST = { version: 'v0.1', date: D.updated };
+// The multabench package version the board is built with.
+const LATEST = { version: 'v0.1.1', date: D.updated };
 document.getElementById('version').innerHTML = `<span class="tag">${LATEST.version}</span>`;
 // Page tabs follow the URL hash, so each can be linked to; the filters only show where they apply.
 const TABS = [...document.querySelectorAll('#pageTabs a')].map(a => a.dataset.tab);
@@ -593,7 +609,7 @@ function drawEncTabs() {
     showNames = !showNames; store.set('pareto_names', showNames ? '1' : '0'); drawEncTabs(); render();
   } }, 'Show names');
   n.setAttribute('aria-pressed', showNames);
-  const m = el('button', { type: 'button', title: '❄️ for Frozen, 🎯 for TAR and 🔚 for E2E, as the points', onclick: () => {
+  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L and 🔚 for E2E, as the points', onclick: () => {
     withEmojis = !withEmojis; store.set('pareto_emojis', withEmojis ? '1' : '0'); drawEncTabs(); render();
   } }, 'With emojis');
   m.setAttribute('aria-pressed', withEmojis);
@@ -709,7 +725,7 @@ function encodingToggles() {
 function drawElo(board) {
   const groups = [];
   board.forEach(r => { let g = groups.find(g => g.model === r.model); if (!g) groups.push(g = { model: r.model, rows: [] }); g.rows.push(r); });
-  const ORDER = ['frozen', 'tar', 'end-to-end'];
+  const ORDER = ['frozen', 'large', 'tar', 'end-to-end'];
   groups.forEach(g => g.rows.sort((a, b) => ORDER.indexOf(a.encoding) - ORDER.indexOf(b.encoding)));
   const W = 1080, H = 420, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
   const lo = Math.min(1000, ...board.map(r => r.lo)), hi = Math.max(...board.map(r => r.hi));
@@ -717,6 +733,8 @@ function drawElo(board) {
   const min = Math.floor((lo - 50) / step) * step, max = Math.ceil((hi + 50) / step) * step;
   const y = v => top + (max - v) / (max - min) * (H - top - bottom);
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elo ratings with 95% intervals, by model and encoding">`;
+  // Every other model gets a band, so each model's entries read as one group.
+  groups.forEach((g, i) => { if (i % 2 === 0) s += `<rect x="${left + i * slot}" y="${top}" width="${slot}" height="${H - top - bottom}" fill="var(--bg)"/>`; });
   for (let t = min; t <= max; t += step) {
     s += `<line x1="${left}" x2="${W - right}" y1="${y(t)}" y2="${y(t)}" stroke="var(--soft)"/>`;
     s += `<text x="${left - 10}" y="${y(t) + 4}" text-anchor="end">${t}</text>`;
@@ -728,7 +746,7 @@ function drawElo(board) {
     lx += 26 + ENC_LABEL[e].length * 7 + 18;
   });
   groups.forEach((g, i) => {
-    const cx = left + (i + 0.5) * slot, dx = g.rows.length > 1 ? Math.min(7, slot / 5) : 0;
+    const cx = left + (i + 0.5) * slot, dx = g.rows.length > 1 ? Math.min(9, slot / 4.5) : 0;
     const xs = g.rows.map((r, j) => cx + (j - (g.rows.length - 1) / 2) * 2 * dx);
     g.rows.forEach((r, j) => {
       const c = encColor(r.encoding);
@@ -742,16 +760,37 @@ function drawElo(board) {
   document.getElementById('eloChart').innerHTML = `<div style="padding:8px 8px 0">${s}</div>`;
 }
 
+// Grouped, a model's entries sit together, ranked by its best one; on by default.
+let byModel = store.get('group_by_model') !== '0';
+function drawGroupTabs() {
+  const b = el('button', { type: 'button', title: "Each model's entries together, ranked by its best one", onclick: () => {
+    byModel = !byModel; store.set('group_by_model', byModel ? '1' : '0'); drawGroupTabs(); render();
+  } }, 'Group by model');
+  b.setAttribute('aria-pressed', byModel);
+  document.getElementById('groupTabs').replaceChildren(b);
+}
+drawGroupTabs();
+
 function drawBoard(board, front) {
   const t = document.getElementById('boardTable');
+  // The board is sorted by Elo, so a stable sort on each model's first row keeps its entries in Elo order.
+  const first = {}, size = {};
+  board.forEach((r, i) => { first[r.model] ??= i; size[r.model] = (size[r.model] || 0) + 1; });
+  const models = Object.keys(first);
+  const rows = byModel ? [...board].sort((a, b) => first[a.model] - first[b.model]) : board;
   const maxN = Math.max(...board.map(r => r.datasets));
   t.innerHTML = `<thead><tr><th></th><th class="pf" title="No other entry is both faster and stronger">Pareto Frontier</th><th>Encoding</th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num" title="Share of its battles the entry wins">Win rate</th></tr></thead>`;
   const tb = el('tbody');
-  board.forEach((r, i) => {
+  rows.forEach((r, i) => {
     const ci = `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
     const n = r.datasets < maxN ? ` <span class="flag" title="Rated on ${r.datasets} of ${maxN} datasets">${r.datasets}/${maxN}</span>` : '';
     const star = front.has(r.entry) ? '<span class="star" title="On the Pareto front of Elo and run time">★</span>' : '';
-    tb.appendChild(el('tr', { className: front.has(r.entry) ? 'front' : '' }, `<td class="rank">${i + 1}</td><td class="pf">${star}</td>${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}${n}</td><td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
+    const lead = !byModel || first[r.model] === board.indexOf(r), span = byModel ? size[r.model] : 1;
+    const rank = byModel ? (lead ? models.indexOf(r.model) + 1 : '') : i + 1;
+    const model = lead ? `<td class="model${span > 1 ? ' grouped' : ''}" rowspan="${span}">${modelName(r.model)}${n}</td>` : '';
+    const end = byModel && (i === rows.length - 1 || rows[i + 1].model !== r.model);
+    const cls = [front.has(r.entry) ? 'front' : '', end ? 'groupEnd' : ''].filter(Boolean).join(' ');
+    tb.appendChild(el('tr', { className: cls }, `<td class="rank">${rank}</td><td class="pf">${star}</td>${encodingCell(r.encoding)}${model}<td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
   });
   t.appendChild(tb);
 }
@@ -805,7 +844,7 @@ function renderEncodings(filterKey) {
   const tb = el('tbody');
   board.forEach((r, i) => {
     const ci = r.hi > r.lo ? `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>` : '<span class="ci">anchor</span>';
-    tb.appendChild(el('tr', {}, `<td class="rank">${i + 1}</td><td><span class="chip ${r.encoding.toLowerCase()}">${r.encoding}</span></td>${ENCODERS}<td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
+    tb.appendChild(el('tr', {}, `<td class="rank">${i + 1}</td><td><span class="chip ${ENC_KEY[r.encoding]}">${r.encoding}</span></td>${ENCODERS[ENC_KEY[r.encoding]]}<td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
   });
   t.appendChild(tb);
 }

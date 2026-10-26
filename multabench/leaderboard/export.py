@@ -7,7 +7,8 @@ import pandas as pd
 
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.info import Tier, dataset_info
-from multabench.leaderboard.elo import ANCHOR, RESULTS_DIR, TAR_RESULTS_DIR, error_table, leaderboard, load_runs
+from multabench.leaderboard.elo import (ANCHOR, LARGE_RESULTS_DIR, RESULTS_DIR, TAR_RESULTS_DIR, error_table,
+                                        leaderboard, load_runs)
 from multabench.leaderboard.embedding_cost import EMBEDDING_COST_CSV, with_tar_encode_times
 from multabench.result_keys import ResultKey, RunStatus
 
@@ -17,8 +18,10 @@ TASKS = ["classification", "regression"]
 # The board knows two modalities: a dataset with images counts as image, whether or not it also has text.
 MODALITIES = [Modality.TEXT.value, Modality.IMAGE.value]
 ENCODING, ENTRY = "encoding", "entry"
-# How a model reads text and images: frozen or fine-tuned (TAR) encoders, or end-to-end, reading raw text itself.
-ENCODINGS = {"frozen": "Frozen", "tar": "TAR"}
+# How a model reads text and images: frozen, fine-tuned (TAR) or frozen large encoders, or end-to-end, reading raw text.
+ENCODINGS = {"frozen": "Frozen-S", "tar": "TAR-S", "large": "Frozen-L"}
+# Each encoding's runs; the end-to-end models are among the frozen ones.
+ENCODING_DIRS = {"frozen": RESULTS_DIR, "tar": TAR_RESULTS_DIR, "large": LARGE_RESULTS_DIR}
 END_TO_END = "end-to-end"
 
 
@@ -38,12 +41,16 @@ def subsets(values: list[str]) -> list[list[str]]:
     return [list(c) for n in range(1, len(values) + 1) for c in itertools.combinations(values, n)]
 
 
-def entries(frozen: pd.DataFrame, tar: pd.DataFrame) -> pd.DataFrame:
-    """Every run with its encoding and leaderboard entry, e.g. "LimiX-2 (TAR)"; an end-to-end model is its own entry."""
-    frozen, tar = frozen.assign(**{ENCODING: "frozen"}), tar.assign(**{ENCODING: "tar"})
+def load_entries(dirs: dict[str, str] = ENCODING_DIRS) -> pd.DataFrame:
+    return entries({encoding: load_runs(results_dir) for encoding, results_dir in dirs.items()})
+
+
+def entries(runs_by_encoding: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Every run with its encoding and leaderboard entry, e.g. "LimiX-2 (TAR-S)"; an end-to-end model is its own entry."""
+    runs = pd.concat([r.assign(**{ENCODING: e}) for e, r in runs_by_encoding.items()], ignore_index=True)
+    frozen = runs[runs[ENCODING] == "frozen"]
     raw_text = frozen.groupby(ResultKey.MODEL)[ResultKey.TEXT_ENCODER].transform(lambda e: e.isna().all())
-    frozen.loc[raw_text, ENCODING] = END_TO_END
-    runs = pd.concat([frozen, tar], ignore_index=True)
+    runs.loc[raw_text[raw_text].index, ENCODING] = END_TO_END
     names = zip(runs[ResultKey.MODEL], runs[ENCODING])
     runs[ENTRY] = [m if e == END_TO_END else f"{m} ({ENCODINGS[e]})" for m, e in names]
     return runs
@@ -153,10 +160,9 @@ def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd
     return _with_model_and_encoding(df.sort_values("train_s_per_1k", ignore_index=True), runs, at=0)
 
 
-def export(out_dir: str, results_dir: str = RESULTS_DIR, tar_results_dir: str = TAR_RESULTS_DIR,
-           bootstraps: int = 1000):
+def export(out_dir: str, dirs: dict[str, str] = ENCODING_DIRS, bootstraps: int = 1000):
     os.makedirs(out_dir, exist_ok=True)
-    runs = entries(load_runs(results_dir), load_runs(tar_results_dir))
+    runs = load_entries(dirs)
     leaderboards(runs, bootstraps).round(4).to_csv(os.path.join(out_dir, "leaderboards.csv"), index=False)
     encoding_leaderboards(runs, bootstraps).round(4).to_csv(os.path.join(out_dir, "encodings.csv"), index=False)
     per_dataset(runs).round(6).to_csv(os.path.join(out_dir, "per_dataset.csv"), index=False)
@@ -168,5 +174,6 @@ if __name__ == "__main__":
     parser.add_argument('--out_dir', type=str, default=SPACE_DATA_DIR)
     parser.add_argument('--results_dir', type=str, default=RESULTS_DIR)
     parser.add_argument('--tar_results_dir', type=str, default=TAR_RESULTS_DIR)
+    parser.add_argument('--large_results_dir', type=str, default=LARGE_RESULTS_DIR)
     args = parser.parse_args()
-    export(args.out_dir, args.results_dir, args.tar_results_dir)
+    export(args.out_dir, {"frozen": args.results_dir, "tar": args.tar_results_dir, "large": args.large_results_dir})
