@@ -625,7 +625,7 @@ function paretoFront(board) {
 }
 function drawPareto(board, front) {
   const rows = board.filter(r => timeOf[r.entry] != null);
-  const W = 1080, H = 460, left = 64, right = 24, top = 20, bottom = 52;
+  const W = 1080, H = 500, left = 64, right = 24, top = 60, bottom = 52;
   const lt = rows.map(r => Math.log10(timeOf[r.entry]));
   const tMin = Math.floor(Math.min(...lt)), tMax = Math.ceil(Math.max(...lt));
   const eMin = Math.floor((Math.min(...rows.map(r => r.elo)) - 60) / 200) * 200;
@@ -680,10 +680,15 @@ function drawPareto(board, front) {
   // The front keeps its names; Show names adds the others.
   fr.forEach(r => { s += place(r, true); });
   if (showNames) [...rows].filter(r => !front.has(r.entry)).sort((a, b) => b.elo - a.elo).forEach(r => { s += place(r, false); });
-  let lx = left + 12;
-  [...new Set(rows.map(r => r.encoding))].forEach(e => {
-    s += point(lx + 5, top + 11, e, false) + `<text x="${lx + 17}" y="${top + 15}">${ENC_LABEL[e]}</text>`;
-    lx += 36 + ENC_LABEL[e].length * 7;
+  // The legend sits above the plot, boxed, so it is read before the points.
+  const encs = [...ENCS.map(e => e[0]), 'end-to-end'].filter(e => rows.some(r => r.encoding === e));
+  const items = [...encs.map(e => [point(0, 0, e, false), ENC_LABEL[e]]), ['<line x1="-8" x2="6" stroke="var(--warn)" stroke-width="2"/>', 'Pareto front']];
+  const widths = items.map(([, t]) => 30 + t.length * 8), legendW = widths.reduce((a, b) => a + b, 0) + 16;
+  s += `<rect x="${left}" y="8" width="${legendW}" height="30" rx="15" fill="var(--bg)" stroke="var(--line)"/>`;
+  let lx = left + 16;
+  items.forEach(([mark, t], i) => {
+    s += `<g transform="translate(${lx + 6} 23) scale(1.3)">${mark}</g><text class="lbl" x="${lx + 18}" y="28">${t}</text>`;
+    lx += widths[i];
   });
   s += '</svg>';
   document.getElementById('paretoChart').innerHTML = `<div style="padding:12px 8px 4px">${s}</div>`;
