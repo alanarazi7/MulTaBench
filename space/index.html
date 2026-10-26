@@ -571,8 +571,8 @@ function setTheme(t) {
 }
 setTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
-// The multabench package version the board is built with; a placeholder until v0.1 goes out with the board.
-const LATEST = { version: 'v0.1', date: D.updated };
+// The multabench package version the board is built with.
+const LATEST = { version: 'v0.1.1', date: D.updated };
 document.getElementById('version').innerHTML = `<span class="tag">${LATEST.version}</span>`;
 // Page tabs follow the URL hash, so each can be linked to; the filters only show where they apply.
 const TABS = [...document.querySelectorAll('#pageTabs a')].map(a => a.dataset.tab);
