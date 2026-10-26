@@ -168,7 +168,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
     <div class="encrow">
       <div class="group tabs" id="encodingTabs" role="group" aria-label="Encoders"><span class="label">Encoders</span></div>
-      <p class="encnote">For models that are not E2E, we embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.<br><br><b class="enc frozen">Frozen</b> uses the encoders as they are; <b class="enc tar">TAR</b> (Target-Aware Representations) first fine-tunes them on the training labels with default hyperparameters; <b class="enc large">Frozen Large</b> uses the large encoders as they are, <a href="https://huggingface.co/intfloat/e5-large-v2">e5-large</a> and <a href="https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m">DINOv3-large</a>.</p>
+      <p class="encnote">For models that are not E2E, we embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.<br><br><b class="enc frozen">Frozen-S</b> uses the small encoders as they are; <b class="enc tar">TAR-S</b> (Target-Aware Representations) first fine-tunes them on the training labels with default hyperparameters; <b class="enc large">Frozen-L</b> uses the large encoders as they are, <a href="https://huggingface.co/intfloat/e5-large-v2">e5-large</a> and <a href="https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m">DINOv3-large</a>.</p>
     </div>
   </div>
   </div>
@@ -520,16 +520,16 @@ load().then(start).catch(err => {
 function start(D) {
 
 const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
-const ENC_LABEL = { frozen: 'Frozen', tar: 'TAR', large: 'Frozen Large', 'end-to-end': 'E2E' };
-const ENC_TITLE = { frozen: 'Frozen encoders', tar: 'Encoders fine-tuned on each fold', large: 'Frozen large encoders', 'end-to-end': 'Reads raw text itself' };
+const ENC_LABEL = { frozen: 'Frozen-S', tar: 'TAR-S', large: 'Frozen-L', 'end-to-end': 'E2E' };
+const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-tuned on each fold', large: 'Frozen large encoders', 'end-to-end': 'Reads raw text itself' };
 const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
-// A short mark for the encoding, in place of the "(Frozen)" or "(TAR)" of an entry's name.
+// A short mark for the encoding, in place of the "(Frozen-S)" or "(TAR-S)" of an entry's name.
 const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'end-to-end': '🔚' };
 const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
-const ENCS = [['frozen', 'Frozen'], ['tar', 'TAR'], ['large', 'Frozen Large']];
+const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L']];
 const encoderCells = (e5, dino) => `<td class="model"><a href="https://huggingface.co/intfloat/${e5}-v2">${e5}</a></td>`
   + `<td class="model"><a href="https://huggingface.co/facebook/dinov3-vit${dino[0]}16-pretrain-lvd1689m">DINOv3-${dino[1]}</a></td>`;
 const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encoderCells('e5-small', ['s', 'small']),
@@ -597,7 +597,7 @@ function drawEncTabs() {
     showNames = !showNames; store.set('pareto_names', showNames ? '1' : '0'); drawEncTabs(); render();
   } }, 'Show names');
   n.setAttribute('aria-pressed', showNames);
-  const m = el('button', { type: 'button', title: '❄️ for Frozen, 🎯 for TAR, 🧊 for Frozen Large and 🔚 for E2E, as the points', onclick: () => {
+  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L and 🔚 for E2E, as the points', onclick: () => {
     withEmojis = !withEmojis; store.set('pareto_emojis', withEmojis ? '1' : '0'); drawEncTabs(); render();
   } }, 'With emojis');
   m.setAttribute('aria-pressed', withEmojis);

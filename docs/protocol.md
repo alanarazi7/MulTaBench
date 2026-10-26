@@ -5,8 +5,8 @@
 Elo is computed with TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
 pinned in the `leaderboard` extra. Every fold is its own battle: on each of a dataset's 6 folds, each pair of models
 plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a Bradley–Terry
-model, with RandomForest (Frozen) anchored at 1000,
-or RandomForest (TAR) on a TAR-only board. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
+model, with RandomForest (Frozen-S) anchored at 1000,
+or RandomForest (TAR-S) on a TAR-only board. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
 drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many folds. They
 are bootstrapped before anchoring, so each model's interval is its own, RandomForest's included, rather than relative
 to RandomForest. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
@@ -26,10 +26,10 @@ Mitra-v2, TabPFN-v2 and v2.5 failed on these datasets at 1ae2320, and were rerun
 Every model that reads embeddings also ran with fine-tuned encoders: `e5-small-tar` on text datasets and
 `dino-small-tar` on image datasets, LoRA-tuned on each fold's training rows (see [embeddings](embeddings.md)). Those
 runs are in `multabench/leaderboard/models_tar/`, with the same failures. The leaderboard ranks each such model
-as two entries, e.g. `LimiX-2 (Frozen)` and `LimiX-2 (TAR)`, and rates the encodings against each other.
+as two entries, e.g. `LimiX-2 (Frozen-S)` and `LimiX-2 (TAR-S)`, and rates the encodings against each other.
 
 They also ran with the frozen large encoders, `e5-large` and `dino-large`; image datasets' text uses `e5-large` too.
-Those runs are in `multabench/leaderboard/models_large/`, as a third entry, e.g. `LimiX-2 (Frozen Large)`.
+Those runs are in `multabench/leaderboard/models_large/`, as a third entry, e.g. `LimiX-2 (Frozen-L)`.
 
 ## Metrics
 

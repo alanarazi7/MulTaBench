@@ -19,7 +19,7 @@ TASKS = ["classification", "regression"]
 MODALITIES = [Modality.TEXT.value, Modality.IMAGE.value]
 ENCODING, ENTRY = "encoding", "entry"
 # How a model reads text and images: frozen, fine-tuned (TAR) or frozen large encoders, or end-to-end, reading raw text.
-ENCODINGS = {"frozen": "Frozen", "tar": "TAR", "large": "Frozen Large"}
+ENCODINGS = {"frozen": "Frozen-S", "tar": "TAR-S", "large": "Frozen-L"}
 # Each encoding's runs; the end-to-end models are among the frozen ones.
 ENCODING_DIRS = {"frozen": RESULTS_DIR, "tar": TAR_RESULTS_DIR, "large": LARGE_RESULTS_DIR}
 END_TO_END = "end-to-end"
@@ -46,7 +46,7 @@ def load_entries(dirs: dict[str, str] = ENCODING_DIRS) -> pd.DataFrame:
 
 
 def entries(runs_by_encoding: dict[str, pd.DataFrame]) -> pd.DataFrame:
-    """Every run with its encoding and leaderboard entry, e.g. "LimiX-2 (TAR)"; an end-to-end model is its own entry."""
+    """Every run with its encoding and leaderboard entry, e.g. "LimiX-2 (TAR-S)"; an end-to-end model is its own entry."""
     runs = pd.concat([r.assign(**{ENCODING: e}) for e, r in runs_by_encoding.items()], ignore_index=True)
     frozen = runs[runs[ENCODING] == "frozen"]
     raw_text = frozen.groupby(ResultKey.MODEL)[ResultKey.TEXT_ENCODER].transform(lambda e: e.isna().all())
