@@ -717,44 +717,56 @@ function toggles(container, items, field, storeKey) {
   const count = keys => Object.values(dsInfo).filter(i => keys.includes(i[field]) && FIELDS.every(f => f === field || sel[f].includes(i[f]))).length;
   choices(container, items, sel[field], count, keys => { sel[field] = keys; store.set(storeKey, JSON.stringify(keys)); });
 }
+// Encodings combine: from All a click keeps just that one, else it toggles; none or every one is All again.
 function encodingToggles() {
+  const box = document.getElementById('encodingTabs'), all = ENCS.map(e => e[0]), isAll = encSel.length === all.length;
   const count = keys => D.meta.entries.filter(m => keys.includes(D.encodingOf[m])).length;
-  choices(document.getElementById('encodingTabs'), ENCS, encSel, count, keys => { encSel = keys; store.set('encodings', JSON.stringify(keys)); });
+  const pick = keys => { encSel = keys.length ? all.filter(k => keys.includes(k)) : all; store.set('encodings', JSON.stringify(encSel)); render(); };
+  box.querySelectorAll('button').forEach(b => b.remove());
+  [['all', 'All'], ...ENCS].forEach(([key, label]) => {
+    const keys = key === 'all' ? all : [key];
+    const b = el('button', { type: 'button' }, `${label}<span class="n">${count(keys)}</span>`);
+    b.setAttribute('aria-pressed', key === 'all' ? isAll : !isAll && encSel.includes(key));
+    b.onclick = () => pick(key === 'all' || isAll ? keys : encSel.includes(key) ? encSel.filter(k => k !== key) : [...encSel, key]);
+    box.appendChild(b);
+  });
 }
 
+// One row per model, ranked by its best entry, with a line per encoding: names stay readable and encodings compare in place.
 function drawElo(board) {
   const groups = [];
   board.forEach(r => { let g = groups.find(g => g.model === r.model); if (!g) groups.push(g = { model: r.model, rows: [] }); g.rows.push(r); });
   const ORDER = ['frozen', 'large', 'tar', 'end-to-end'];
   groups.forEach(g => g.rows.sort((a, b) => ORDER.indexOf(a.encoding) - ORDER.indexOf(b.encoding)));
-  const W = 1080, H = 420, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
+  const W = 1080, left = 170, right = 24, top = 52, bottom = 32, line = 12, pad = 10;
+  const heights = groups.map(g => g.rows.length * line + pad), H = top + bottom + heights.reduce((a, b) => a + b, 0);
   const lo = Math.min(1000, ...board.map(r => r.lo)), hi = Math.max(...board.map(r => r.hi));
   const step = hi - lo > 1200 ? 400 : 200;
   const min = Math.floor((lo - 50) / step) * step, max = Math.ceil((hi + 50) / step) * step;
-  const y = v => top + (max - v) / (max - min) * (H - top - bottom);
+  const x = v => left + (v - min) / (max - min) * (W - left - right);
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elo ratings with 95% intervals, by model and encoding">`;
-  // Every other model gets a band, so each model's entries read as one group.
-  groups.forEach((g, i) => { if (i % 2 === 0) s += `<rect x="${left + i * slot}" y="${top}" width="${slot}" height="${H - top - bottom}" fill="var(--bg)"/>`; });
+  let y0 = top;
+  groups.forEach((g, i) => { if (i % 2 === 0) s += `<rect x="8" y="${y0}" width="${W - right - 8}" height="${heights[i]}" fill="var(--bg)"/>`; y0 += heights[i]; });
   for (let t = min; t <= max; t += step) {
-    s += `<line x1="${left}" x2="${W - right}" y1="${y(t)}" y2="${y(t)}" stroke="var(--soft)"/>`;
-    s += `<text x="${left - 10}" y="${y(t) + 4}" text-anchor="end">${t}</text>`;
+    s += `<line x1="${x(t)}" x2="${x(t)}" y1="${top}" y2="${H - bottom}" stroke="var(--soft)"/>`;
+    s += `<text x="${x(t)}" y="${top - 8}" text-anchor="middle">${t}</text><text x="${x(t)}" y="${H - bottom + 18}" text-anchor="middle">${t}</text>`;
   }
-  s += `<line x1="${left}" x2="${W - right}" y1="${y(1000)}" y2="${y(1000)}" stroke="var(--muted)" stroke-dasharray="3 3"/>`;
+  s += `<line x1="${x(1000)}" x2="${x(1000)}" y1="${top}" y2="${H - bottom}" stroke="var(--muted)" stroke-dasharray="3 3"/>`;
   let lx = left;
   ORDER.filter(e => board.some(r => r.encoding === e)).forEach(e => {
     s += `<circle cx="${lx + 6}" cy="16" r="5" fill="${encColor(e)}"/><text x="${lx + 16}" y="20">${ENC_LABEL[e]}</text>`;
     lx += 26 + ENC_LABEL[e].length * 7 + 18;
   });
+  y0 = top;
   groups.forEach((g, i) => {
-    const cx = left + (i + 0.5) * slot, dx = g.rows.length > 1 ? Math.min(9, slot / 4.5) : 0;
-    const xs = g.rows.map((r, j) => cx + (j - (g.rows.length - 1) / 2) * 2 * dx);
+    s += `<text class="lbl" x="${left - 14}" y="${y0 + heights[i] / 2 + 4.5}" text-anchor="end">${g.model}</text>`;
     g.rows.forEach((r, j) => {
-      const c = encColor(r.encoding);
+      const c = encColor(r.encoding), cy = y0 + pad / 2 + (j + 0.5) * line;
       const tip = `<title>${r.entry}: Elo ${fmt(r.elo)} (${fmt(r.lo)}–${fmt(r.hi)})</title>`;
-      if (r.hi > r.lo) s += `<line x1="${xs[j]}" x2="${xs[j]}" y1="${y(r.hi)}" y2="${y(r.lo)}" stroke="${c}" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/>`;
-      s += `<circle cx="${xs[j]}" cy="${y(r.elo)}" r="4.5" fill="${c}">${tip}</circle>`;
+      if (r.hi > r.lo) s += `<line x1="${x(r.lo)}" x2="${x(r.hi)}" y1="${cy}" y2="${cy}" stroke="${c}" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/>`;
+      s += `<circle cx="${x(r.elo)}" cy="${cy}" r="4.5" fill="${c}">${tip}</circle>`;
     });
-    s += `<text class="lbl" text-anchor="end" transform="translate(${cx + 4} ${H - bottom + 14}) rotate(-50)">${g.model}</text>`;
+    y0 += heights[i];
   });
   s += '</svg>';
   document.getElementById('eloChart').innerHTML = `<div style="padding:8px 8px 0">${s}</div>`;
