@@ -105,7 +105,8 @@ b.enc { color: var(--c); }
 .filters[hidden], .filters .group[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .encrow { flex-basis: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-.encnote { max-width: 84ch; font-size: 16px; line-height: 1.6; }
+.encnote { max-width: 84ch; font-size: 16px; line-height: 1.6; margin: 1em 0; }
+.encnote ul { margin: 0.6em 0 0; padding-left: 1.2em; }
 #encodingText2 { font-size: 16px; line-height: 1.6; max-width: 84ch; }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
@@ -170,7 +171,13 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <div class="group tabs" id="modTabs" role="group" aria-label="Modality"><span class="label">Modality</span></div>
     <div class="encrow">
       <div class="group tabs" id="encodingTabs" role="group" aria-label="Encoders"><span class="label">Encoders</span></div>
-      <p class="encnote">For models that are not E2E, we embed texts with <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> and images with <a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a>, and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.<br><br><b class="enc frozen">Frozen-S</b> uses the small encoders as they are; <b class="enc tar">TAR-S</b> (Target-Aware Representations) first fine-tunes them on the training labels with default hyperparameters; <b class="enc large">Frozen-L</b> uses the large encoders as they are, <a href="https://huggingface.co/intfloat/e5-large-v2">e5-large</a> and <a href="https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m">DINOv3-large</a>.</p>
+      <div class="encnote">For models that are not E2E, we embed texts with e5 (<a href="https://huggingface.co/intfloat/e5-small-v2">small</a>, <a href="https://huggingface.co/intfloat/e5-large-v2">large</a>) and images with DINOv3 (<a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">small</a>, <a href="https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m">large</a>), and then project each column to 30 dimensions with PCA. From there on, they are treated as any other numeric features.
+        <ul>
+          <li><b class="enc frozen">Frozen-S</b> uses the small encoders as they are.</li>
+          <li><b class="enc tar">TAR-S</b> (Target-Aware Representations) first fine-tunes the small encoders on the training labels with default hyperparameters.</li>
+          <li><b class="enc large">Frozen-L</b> uses the large encoders as they are.</li>
+        </ul>
+      </div>
     </div>
   </div>
   </div>
