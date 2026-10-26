@@ -24,8 +24,9 @@ def test_each_modality_gets_only_its_encoders():
 
 
 def test_large_image_runs_embed_text_with_large_e5():
-    assert encoder_pairs(Modality.IMAGE_TEXT, [TextEncoder.E5_LARGE], [ImageEncoder.DINO_LARGE]) == [
-        (TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE)]
+    assert encoder_pairs(Modality.IMAGE_TEXT, [TextEncoder.E5_LARGE], [ImageEncoder.DINO_LARGE,
+                                                                        ImageEncoder.DINO_LARGE_TAR]) == [
+        (TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE), (TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE_TAR)]
 
 
 def test_raw_text_models_get_no_text_encoder():

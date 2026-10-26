@@ -36,7 +36,7 @@ EMBEDDINGS = "embeddings"
 
 CachedEncoder = TextEncoder | ImageEncoder
 CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL, TextEncoder.E5_SMALL_TAR, ImageEncoder.DINO_SMALL_TAR,
-                   TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE)
+                   TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE, TextEncoder.E5_LARGE_TAR, ImageEncoder.DINO_LARGE_TAR)
 
 
 def parse_encoder(encoder: str) -> CachedEncoder:

@@ -15,7 +15,8 @@ the dataset has embeddings for the encoder, and otherwise embeds live, so new en
 need no cache to run.
 
 The fine-tuned encoders, `e5-small-tar` and `dino-small-tar`, are cached in `multabench/embeddings-e5-small-tar` and
-`multabench/embeddings-dino-small-tar`. The encoder is fine-tuned with LoRA on a fold's training rows, so each fold
+`multabench/embeddings-dino-small-tar`, and their large twins in `multabench/embeddings-e5-large-tar` and
+`multabench/embeddings-dino-large-tar`. The encoder is fine-tuned with LoRA on a fold's training rows, so each fold
 has its own embeddings, under `<dataset>/<size>/fold_<k>/`, with the LoRA adapter beside them and its training
 arguments and validation loss in `meta.json`. `e5-small-tar` is tuned on the text datasets and `dino-small-tar` on
 the image datasets, on all the dataset's columns of that kind together, so a run with other columns raises. Runs
