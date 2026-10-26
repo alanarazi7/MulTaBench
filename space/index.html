@@ -625,7 +625,7 @@ function paretoFront(board) {
 }
 function drawPareto(board, front) {
   const rows = board.filter(r => timeOf[r.entry] != null);
-  const W = 1080, H = 460, left = 64, right = 24, top = 20, bottom = 52;
+  const W = 1080, H = 500, left = 64, right = 24, top = 60, bottom = 52;
   const lt = rows.map(r => Math.log10(timeOf[r.entry]));
   const tMin = Math.floor(Math.min(...lt)), tMax = Math.ceil(Math.max(...lt));
   const eMin = Math.floor((Math.min(...rows.map(r => r.elo)) - 60) / 200) * 200;
@@ -680,10 +680,15 @@ function drawPareto(board, front) {
   // The front keeps its names; Show names adds the others.
   fr.forEach(r => { s += place(r, true); });
   if (showNames) [...rows].filter(r => !front.has(r.entry)).sort((a, b) => b.elo - a.elo).forEach(r => { s += place(r, false); });
-  let lx = left + 12;
-  [...new Set(rows.map(r => r.encoding))].forEach(e => {
-    s += point(lx + 5, top + 11, e, false) + `<text x="${lx + 17}" y="${top + 15}">${ENC_LABEL[e]}</text>`;
-    lx += 36 + ENC_LABEL[e].length * 7;
+  // The legend sits above the plot, boxed, so it is read before the points.
+  const encs = [...ENCS.map(e => e[0]), 'end-to-end'].filter(e => rows.some(r => r.encoding === e));
+  const items = [...encs.map(e => [point(0, 0, e, false), ENC_LABEL[e]]), ['<line x1="-8" x2="6" stroke="var(--warn)" stroke-width="2"/>', 'Pareto front']];
+  const widths = items.map(([, t]) => 30 + t.length * 8), legendW = widths.reduce((a, b) => a + b, 0) + 16;
+  s += `<rect x="${left}" y="8" width="${legendW}" height="30" rx="15" fill="var(--bg)" stroke="var(--line)"/>`;
+  let lx = left + 16;
+  items.forEach(([mark, t], i) => {
+    s += `<g transform="translate(${lx + 6} 23) scale(1.3)">${mark}</g><text class="lbl" x="${lx + 18}" y="28">${t}</text>`;
+    lx += widths[i];
   });
   s += '</svg>';
   document.getElementById('paretoChart').innerHTML = `<div style="padding:12px 8px 4px">${s}</div>`;
@@ -717,17 +722,28 @@ function toggles(container, items, field, storeKey) {
   const count = keys => Object.values(dsInfo).filter(i => keys.includes(i[field]) && FIELDS.every(f => f === field || sel[f].includes(i[f]))).length;
   choices(container, items, sel[field], count, keys => { sel[field] = keys; store.set(storeKey, JSON.stringify(keys)); });
 }
+// Encodings combine: from All a click keeps just that one, else it toggles; none or every one is All again.
 function encodingToggles() {
+  const box = document.getElementById('encodingTabs'), all = ENCS.map(e => e[0]), isAll = encSel.length === all.length;
   const count = keys => D.meta.entries.filter(m => keys.includes(D.encodingOf[m])).length;
-  choices(document.getElementById('encodingTabs'), ENCS, encSel, count, keys => { encSel = keys; store.set('encodings', JSON.stringify(keys)); });
+  const pick = keys => { encSel = keys.length ? all.filter(k => keys.includes(k)) : all; store.set('encodings', JSON.stringify(encSel)); render(); };
+  box.querySelectorAll('button').forEach(b => b.remove());
+  [['all', 'All'], ...ENCS].forEach(([key, label]) => {
+    const keys = key === 'all' ? all : [key];
+    const b = el('button', { type: 'button' }, `${label}<span class="n">${count(keys)}</span>`);
+    b.setAttribute('aria-pressed', key === 'all' ? isAll : !isAll && encSel.includes(key));
+    b.onclick = () => pick(key === 'all' || isAll ? keys : encSel.includes(key) ? encSel.filter(k => k !== key) : [...encSel, key]);
+    box.appendChild(b);
+  });
 }
 
+// A banded column per model, its encodings side by side within it.
 function drawElo(board) {
   const groups = [];
   board.forEach(r => { let g = groups.find(g => g.model === r.model); if (!g) groups.push(g = { model: r.model, rows: [] }); g.rows.push(r); });
   const ORDER = ['frozen', 'large', 'tar', 'end-to-end'];
   groups.forEach(g => g.rows.sort((a, b) => ORDER.indexOf(a.encoding) - ORDER.indexOf(b.encoding)));
-  const W = 1080, H = 420, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
+  const W = 1080, H = 460, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
   const lo = Math.min(1000, ...board.map(r => r.lo)), hi = Math.max(...board.map(r => r.hi));
   const step = hi - lo > 1200 ? 400 : 200;
   const min = Math.floor((lo - 50) / step) * step, max = Math.ceil((hi + 50) / step) * step;
@@ -746,15 +762,15 @@ function drawElo(board) {
     lx += 26 + ENC_LABEL[e].length * 7 + 18;
   });
   groups.forEach((g, i) => {
-    const cx = left + (i + 0.5) * slot, dx = g.rows.length > 1 ? Math.min(9, slot / 4.5) : 0;
-    const xs = g.rows.map((r, j) => cx + (j - (g.rows.length - 1) / 2) * 2 * dx);
+    const cx = left + (i + 0.5) * slot, gap = Math.min(12, slot * 0.7 / g.rows.length);
+    const xs = g.rows.map((r, j) => cx + (j - (g.rows.length - 1) / 2) * gap);
     g.rows.forEach((r, j) => {
       const c = encColor(r.encoding);
       const tip = `<title>${r.entry}: Elo ${fmt(r.elo)} (${fmt(r.lo)}–${fmt(r.hi)})</title>`;
-      if (r.hi > r.lo) s += `<line x1="${xs[j]}" x2="${xs[j]}" y1="${y(r.hi)}" y2="${y(r.lo)}" stroke="${c}" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/>`;
-      s += `<circle cx="${xs[j]}" cy="${y(r.elo)}" r="4.5" fill="${c}">${tip}</circle>`;
+      if (r.hi > r.lo) s += `<line x1="${xs[j]}" x2="${xs[j]}" y1="${y(r.hi)}" y2="${y(r.lo)}" stroke="${c}" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/>`;
+      s += `<circle cx="${xs[j]}" cy="${y(r.elo)}" r="4" fill="${c}">${tip}</circle>`;
     });
-    s += `<text class="lbl" text-anchor="end" transform="translate(${cx + 4} ${H - bottom + 14}) rotate(-50)">${g.model}</text>`;
+    s += `<text class="lbl" text-anchor="end" transform="translate(${cx + 4} ${H - bottom + 16}) rotate(-40)">${g.model}</text>`;
   });
   s += '</svg>';
   document.getElementById('eloChart').innerHTML = `<div style="padding:8px 8px 0">${s}</div>`;
