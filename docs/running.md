@@ -43,9 +43,9 @@ result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.j
 that fails still writes its JSON, with `"status": "error"` and the error, and exits non-zero; a successful one has
 `"status": "ok"`. A run whose JSON already exists is skipped, so a stopped sweep can be relaunched as is; `--overwrite`
 reruns it. `--help` lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
-`e5-small` (the default) or `e5-large`, or `e5-small-tar`, E5 fine-tuned on the task with LoRA (target-aware).
-`--image_encoder` does the same for image columns: frozen `dino-small` (the default) or `dino-large`, or
-`dino-small-tar`. Each applies only to datasets with that kind of column.
+`e5-small` (the default) or `e5-large`, or `e5-small-tar` or `e5-large-tar`, E5 fine-tuned on the task with LoRA
+(target-aware). `--image_encoder` does the same for image columns: frozen `dino-small` (the default) or `dino-large`,
+or `dino-small-tar` or `dino-large-tar`. Each applies only to datasets with that kind of column.
 
 ## Sweeps
 
@@ -53,8 +53,8 @@ reruns it. `--help` lists the available models. `--text_encoder` picks how text 
 don't have a result yet to a jobs file (`sweep_jobs_<timestamp>.txt`, or `--jobs_file`), one command per line,
 which any scheduler can run. `--modalities text`, `image` or `image-text` keeps only those datasets. Text datasets
 run once per text encoder and image datasets once per image encoder; image datasets that also have text columns
-embed their text with frozen E5 of the image encoder's size: `e5-large` with `dino-large`, else `e5-small`. The
-default encoders include the fine-tuned `e5-small-tar` and `dino-small-tar`, so pass `--text_encoders`/
+embed their text with frozen E5 of the image encoder's size: `e5-large` with `dino-large` or `dino-large-tar`, else
+`e5-small`. The default encoders include the fine-tuned `e5-small-tar` and `dino-small-tar`, so pass `--text_encoders`/
 `--image_encoders` to run fewer. Each run is its own process, and a failed run doesn't stop the others:
 
 ```bash
