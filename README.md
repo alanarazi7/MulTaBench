@@ -76,7 +76,7 @@ To run the benchmark itself, set up the environment and evaluate one model on on
 
 ```bash
 source init.sh && source .venv/bin/activate
-cp .env.example .env  # Hugging Face token
+cp .env.example .env  # Hugging Face and TabPFN tokens
 
 python benchmark.py --model light --dataset_name MUL_IMAGE_PETFINDER --fold 0
 ```

@@ -40,6 +40,8 @@ class TabularModel:
     NEEDS_GPU = True
     # A model whose requirements conflict with the shared .venv runs in its own, .venv-<ENV>, from requirements-<ENV>.txt.
     ENV: Optional[str] = None
+    # Variables a run can't do without, e.g. a licence token; benchmark.py stops before running if one is unset.
+    REQUIRED_ENV: Tuple[str, ...] = ()
 
     def __init__(self, problem_type: SupervisedTask, device: torch.device,
                  dataset: MulTaBenchDatasetID | None = None, verbose: bool = False, image_folder: str | None = None,

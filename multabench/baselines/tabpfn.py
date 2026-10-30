@@ -16,6 +16,8 @@ class TabPFN(TabularModel):
     USE_TEXT_EMBEDDINGS = True
     USE_TARGET_ENCODER = True
 
+    # The licensed weights download only with an API key from https://ux.priorlabs.ai, see .env.example.
+    REQUIRED_ENV = ("TABPFN_TOKEN",)
     VERSION: str
     MAX_CLASSES: Optional[int] = None
 
@@ -43,6 +45,7 @@ class TabPFNv2(TabPFN):
 
     MODEL_NAME = "TabPFN-v2"
     SHORT_NAME = "tabpfnv2"
+    REQUIRED_ENV = ()
     VERSION = "v2"
     MAX_CLASSES = 10
 
