@@ -72,8 +72,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     model = SHORT2MODELS[args.model]
-    if missing := [v for v in model.REQUIRED_ENV if not os.getenv(v)]:
-        parser.error(f"{model.MODEL_NAME} needs {', '.join(missing)}: set it in .env or pass it to the job")
+    if error := model.env_error():
+        parser.error(error)
     dataset = MulTaBenchDatasetID[args.dataset_name]
     modality = dataset_modality(dataset)
     if modality.has_text and model.USE_TEXT_EMBEDDINGS:

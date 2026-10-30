@@ -1,3 +1,4 @@
+import os
 from typing import Tuple, Dict, Optional, Set, List
 
 import numpy as np
@@ -42,6 +43,13 @@ class TabularModel:
     ENV: Optional[str] = None
     # Variables a run can't do without, e.g. a licence token; benchmark.py stops before running if one is unset.
     REQUIRED_ENV: Tuple[str, ...] = ()
+
+    @classmethod
+    def env_error(cls) -> Optional[str]:
+        """Why the model can't run here, e.g. an unset REQUIRED_ENV; benchmark.py stops before running if any."""
+        if missing := [v for v in cls.REQUIRED_ENV if not os.getenv(v)]:
+            return f"{cls.MODEL_NAME} needs {', '.join(missing)}: set it in .env or pass it to the job"
+        return None
 
     def __init__(self, problem_type: SupervisedTask, device: torch.device,
                  dataset: MulTaBenchDatasetID | None = None, verbose: bool = False, image_folder: str | None = None,

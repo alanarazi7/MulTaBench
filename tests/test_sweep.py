@@ -1,3 +1,4 @@
+import json
 import os
 
 from multabench.benchmark.runs import Run
@@ -59,6 +60,17 @@ def test_runs_with_a_result_are_not_pending(tmp_path):
     assert done.name == "light_BIN_TEXT_FAKE_JOB_POSTING_tfidf_none_10k_0"
     open(tmp_path / f"{done.name}.json", "w").close()
     assert pending_runs([done, todo], output_dir=str(tmp_path)) == [todo]
+
+
+def test_failed_runs_rerun_only_when_asked(tmp_path):
+    ok, failed = (Run("light", TEXT.name, TextEncoder.TFIDF, None, Size.TEN_K, fold) for fold in (0, 1))
+    for run, status in ((ok, "ok"), (failed, "error")):
+        (tmp_path / f"{run.name}.json").write_text(json.dumps({"status": status}))
+    assert pending_runs([ok, failed], output_dir=str(tmp_path)) == []
+    assert pending_runs([ok, failed], output_dir=str(tmp_path), rerun_failed=True) == [failed]
+    jobs = tmp_path / "jobs.txt"
+    write_jobs_file([failed], path=str(jobs), python="python", output_dir="runs", overwrite=True)
+    assert jobs.read_text().strip().endswith("--overwrite --text_encoder tfidf")
 
 
 def test_sbatch_commands_split_large_arrays():

@@ -23,11 +23,13 @@ class Run:
         img = self.image_encoder or "none"
         return f"{self.model}_{self.dataset}_{txt}_{img}_{self.size}_{self.fold}"
 
-    def command(self, python: str, output_dir: str, official: bool = False) -> str:
+    def command(self, python: str, output_dir: str, official: bool = False, overwrite: bool = False) -> str:
         args = [python, "benchmark.py", "--model", self.model, "--dataset_name", self.dataset,
                 "--size", self.size, "--fold", str(self.fold), "--output_dir", output_dir]
         if official:
             args.append("--official")
+        if overwrite:
+            args.append("--overwrite")
         if self.text_encoder:
             args += ["--text_encoder", self.text_encoder]
         if self.image_encoder:
