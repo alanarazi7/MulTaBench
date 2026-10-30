@@ -4,7 +4,7 @@ import subprocess
 import sys
 import time
 
-from benchmark import BASELINES
+from benchmark import BASELINES, SHORT2MODELS
 from multabench.benchmark.splits import DEFAULT_SIZE, SPLITS, Size
 from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENCODERS, csv_arg, list_runs, pending_runs, prefetch,
                                         run_local, sbatch_commands, select_datasets, venv_python, write_jobs_file,
@@ -32,6 +32,8 @@ if __name__ == "__main__":
     parser.add_argument('--size', type=Size, default=DEFAULT_SIZE, choices=list(Size))
     parser.add_argument('--output_dir', type=str, default='runs')
     parser.add_argument('--official', action='store_true', default=False, help="pass --official to every run")
+    parser.add_argument('--rerun_failed', action='store_true', default=False,
+                        help="also rerun the runs whose result is an error, e.g. after a rate limit or a missing token")
     parser.add_argument('--jobs_file', type=str, default=None,
                         help="default: sweep_jobs_<timestamp>.txt, so a new sweep never rewrites the file a queued "
                              "Slurm array reads its commands from")
@@ -48,17 +50,19 @@ if __name__ == "__main__":
     runs = list_runs(models=args.models, datasets=datasets, text_encoders=args.text_encoders,
                      image_encoders=args.image_encoders, folds=[int(f) for f in args.folds], size=args.size,
                      raw_text_models={m.SHORT_NAME for m in BASELINES if not m.USE_TEXT_EMBEDDINGS})
-    pending = pending_runs(runs, output_dir=output_dir)
+    pending = pending_runs(runs, output_dir=output_dir, rerun_failed=args.rerun_failed)
     print(f"{len(runs)} runs, {len(runs) - len(pending)} already have a result, {len(pending)} to run")
     if not pending:
         sys.exit(0)
+    if args.official and len({SHORT2MODELS[run.model].NEEDS_GPU for run in pending}) > 1:
+        parser.error("official GPU and CPU runs need different machines, so sweep their models apart (docs/running.md)")
     # Models with their own venv run with its python; the others with this one's.
     model_pythons = {m.SHORT_NAME: venv_python(REPO_DIR, m.ENV) for m in BASELINES if m.ENV and m.SHORT_NAME in args.models}
     missing = {model: python for model, python in model_pythons.items() if not os.path.exists(python)}
     if missing:
         parser.error(f"No venv for {sorted(missing)}: set it up with `source init.sh <ENV>` ({missing})")
     write_jobs_file(pending, path=jobs_file, python=sys.executable, output_dir=output_dir, official=args.official,
-                    model_pythons=model_pythons)
+                    model_pythons=model_pythons, overwrite=args.rerun_failed)
     print(f"Wrote {jobs_file}", flush=True)
 
     if args.launcher:

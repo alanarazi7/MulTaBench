@@ -1,5 +1,6 @@
 """Lists the benchmark.py runs of a sweep and runs them, locally or as a Slurm array."""
 import argparse
+import json
 import os
 import shlex
 import subprocess
@@ -12,6 +13,7 @@ from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, data
 from multabench.dino.constants import ImageEncoder
 from multabench.e5.constants import TextEncoder
 from multabench.embeddings.hub import CACHED_ENCODERS, download_embeddings, is_tuned
+from multabench.result_keys import ResultKey, RunStatus
 
 SLURM_ARRAY_LIMIT = 1000
 DEFAULT_TEXT_ENCODERS = [TextEncoder.TFIDF, TextEncoder.E5_SMALL, TextEncoder.E5_SMALL_TAR]
@@ -63,8 +65,18 @@ def csv_arg(choices=None, cast=str):
     return parse
 
 
-def pending_runs(runs: List[Run], output_dir: str) -> List[Run]:
-    return [run for run in runs if not os.path.exists(os.path.join(output_dir, f"{run.name}.json"))]
+def pending_runs(runs: List[Run], output_dir: str, rerun_failed: bool = False) -> List[Run]:
+    """Runs without a result JSON, and with rerun_failed also those whose result is an error."""
+    return [run for run in runs if not keeps_result(os.path.join(output_dir, f"{run.name}.json"), rerun_failed)]
+
+
+def keeps_result(path: str, rerun_failed: bool) -> bool:
+    if not os.path.exists(path):
+        return False
+    if not rerun_failed:
+        return True
+    with open(path) as f:
+        return json.load(f).get(ResultKey.STATUS) == RunStatus.OK
 
 
 def prefetch(runs: List[Run]):
@@ -83,11 +95,11 @@ def venv_python(repo_dir: str, env: str) -> str:
 
 
 def write_jobs_file(runs: List[Run], path: str, python: str, output_dir: str, official: bool = False,
-                    model_pythons: Optional[Dict[str, str]] = None):
+                    model_pythons: Optional[Dict[str, str]] = None, overwrite: bool = False):
     """One command per line, with python, or a model's own venv's python from model_pythons. Embedding jobs, which
-    write the same jobs file, take no --official."""
+    write the same jobs file, take neither --official nor --overwrite."""
     model_pythons = model_pythons or {}
-    flags = {"official": True} if official else {}
+    flags = {flag: True for flag, on in {"official": official, "overwrite": overwrite}.items() if on}
     with open(path, "w") as f:
         for run in runs:
             run_python = model_pythons.get(getattr(run, "model", None), python)

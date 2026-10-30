@@ -43,8 +43,8 @@ result to `runs/<model>_<dataset>_<text_encoder>_<image_encoder>_<size>_<fold>.j
 that fails still writes its JSON, with `"status": "error"` and the error, and exits non-zero; a successful one has
 `"status": "ok"`. A run whose JSON already exists is skipped, so a stopped sweep can be relaunched as is; `--overwrite`
 reruns it. A model that can't run without a variable (`REQUIRED_ENV`), such as `TABPFN_TOKEN` for TabPFN-v2.5, 3, 3.5
-and 3.5-Fast, stops before running and writes no JSON when it is unset; jobs on other machines must be passed it, as
-they don't read your `.env`.
+and 3.5-Fast, stops before running and writes no JSON when it is unset, or when the licence server rejects it; jobs on
+other machines must be passed it, as they don't read your `.env`.
 `--help` lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
 `e5-small` (the default) or `e5-large`, or `e5-small-tar` or `e5-large-tar`, E5 fine-tuned on the task with LoRA
 (target-aware). `--image_encoder` does the same for image columns: frozen `dino-small` (the default) or `dino-large`,
@@ -73,7 +73,9 @@ With `--launcher slurm`, each line becomes a task of a Slurm array; `--sbatch=".
 as is (the `=` is needed, since the value starts with `--`), and without `--submit` the `sbatch` commands are only
 printed. With a launcher, the sweep first downloads the runs' datasets and cached embeddings, since runs that
 download the same files at once into a shared Hugging Face cache (e.g. on NFS) can fail. All the runs of a sweep get
-the same `--sbatch`, so sweep the runs that need a GPU apart from those that don't (see below), as in the last two commands. Relaunching a sweep runs only what is still missing.
+the same `--sbatch`, so sweep the runs that need a GPU apart from those that don't (see below), as in the last two
+commands; with `--official`, a sweep that mixes them stops. Relaunching a sweep runs only what is still missing, and
+with `--rerun_failed` also the runs whose result is an error, e.g. after a Hugging Face rate limit.
 
 ## Hardware
 

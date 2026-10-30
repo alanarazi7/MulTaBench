@@ -21,6 +21,18 @@ class TabPFN(TabularModel):
     VERSION: str
     MAX_CLASSES: Optional[int] = None
 
+    @classmethod
+    def env_error(cls) -> Optional[str]:
+        error = super().env_error()
+        if error or not cls.REQUIRED_ENV:
+            return error
+        from tabpfn.browser_auth import verify_token
+        from tabpfn.settings import settings
+        # An invalid one also makes TabPFN delete a valid token cached in ~/.cache/tabpfn; None: server unreachable.
+        if verify_token(os.environ["TABPFN_TOKEN"], settings.tabpfn.auth_api_url) is False:
+            return f"{cls.MODEL_NAME}: the licence server rejects TABPFN_TOKEN; get one at https://ux.priorlabs.ai"
+        return None
+
     def initialize_model(self) -> None:
         os.environ["HF_TOKEN"] = HF_TOKEN or ""
 
