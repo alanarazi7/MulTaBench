@@ -1,0 +1,2 @@
+# TILE's package, for the tile text encoder, which every model reading embeddings can use; so every lock includes it.
+tile @ git+https://github.com/soda-inria/tile.git@f765ef8a35af9228f69589e94aab072051477e07

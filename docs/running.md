@@ -47,8 +47,12 @@ and 3.5-Fast, stops before running and writes no JSON when it is unset, or when 
 other machines must be passed it, as they don't read your `.env`.
 `--help` lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
 `e5-small` (the default) or `e5-large`, or `e5-small-tar` or `e5-large-tar`, E5 fine-tuned on the task with LoRA
-(target-aware). `--image_encoder` does the same for image columns: frozen `dino-small` (the default) or `dino-large`,
-or `dino-small-tar` or `dino-large-tar`. Each applies only to datasets with that kind of column.
+(target-aware), or `tile`, [TILE](https://github.com/soda-inria/tile): each row serialized as `The <column> is
+<value>. ...`, read by Llama-3.1-8B cut after 14 of its 32 layers, and each text cell's hidden states mean-pooled, so a
+cell's embedding sees the rest of its row. It calls TILE's own package, pinned in `requirements-tile.in` and locked in
+every venv; it embeds live for now and needs the gated Llama licence accepted on the `HF_TOKEN` account.
+`--image_encoder` does the same for image columns: frozen `dino-small` (the default) or `dino-large`, or
+`dino-small-tar` or `dino-large-tar`. Each applies only to datasets with that kind of column.
 
 ## Sweeps
 

@@ -3,6 +3,7 @@
 from enum import StrEnum
 
 from multabench.finetune.train_args import LoraArgs
+from multabench.tile.constants import LLAMA_3_1_8B
 from multabench.utils.encoders import Encoder
 
 E5_SMALL_V2 = "intfloat/e5-small-v2"
@@ -18,6 +19,8 @@ class TextEncoder(StrEnum):
     E5_SMALL_TAR = "e5-small-tar"
     E5_LARGE = "e5-large"
     E5_LARGE_TAR = "e5-large-tar"
+    # Not E5: each text cell embedded by a truncated LLM in the context of its whole row (multabench/tile).
+    TILE = "tile"
 
 
 DEFAULT_TEXT_ENCODER = TextEncoder.E5_SMALL
@@ -29,6 +32,7 @@ TEXT_ENCODERS = {
     TextEncoder.E5_SMALL_TAR: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=True),
     TextEncoder.E5_LARGE: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
     TextEncoder.E5_LARGE_TAR: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=True),
+    TextEncoder.TILE: Encoder(encoder_name=LLAMA_3_1_8B, tune_encoder=False),
 }
 
 E5_LORA = LoraArgs(learning_rate=1e-4, epochs=50)
