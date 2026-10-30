@@ -99,7 +99,7 @@ def test_tuned_jobs_cover_each_fold(tmp_path):
     assert jobs[1].command(python="python", output_dir="out") == (
         "python -m multabench.embeddings.embed --encoder dino-small-tar --dataset_name MUL_IMAGE_PETFINDER --size 10k "
         "--fold 4 --output_dir out")
-    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6 + 1 + 1 + 6
+    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6 + 1 + 1 + 6 + 1
 
 
 def test_cached_encoder():
