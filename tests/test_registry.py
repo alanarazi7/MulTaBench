@@ -21,3 +21,10 @@ print(len(benchmark.BASELINES))
 def test_every_wrapper_imports_without_its_model_package():
     done = subprocess.run([sys.executable, "-c", BLOCK_AND_IMPORT], cwd=REPO_DIR, capture_output=True, text=True)
     assert done.returncode == 0, done.stderr
+
+
+def test_a_run_without_its_required_token_stops_before_writing_a_result(tmp_path):
+    env = {**os.environ, "TABPFN_TOKEN": ""}
+    args = ["--model", "tabpfn3p5", "--dataset_name", "MUL_IMAGE_PETFINDER", "--fold", "0", "--output_dir", str(tmp_path)]
+    done = subprocess.run([sys.executable, "benchmark.py", *args], cwd=REPO_DIR, env=env, capture_output=True, text=True)
+    assert done.returncode == 2 and "TABPFN_TOKEN" in done.stderr and not list(tmp_path.iterdir())
