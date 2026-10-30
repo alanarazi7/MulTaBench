@@ -14,7 +14,7 @@ from multabench.constants import SEED
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TEXT_ENCODERS, TextEncoder
 from multabench.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
-from multabench.embeddings.hub import CACHED_ENCODERS, CachedEmbeddings, e5_passages
+from multabench.embeddings.hub import CACHED_ENCODERS, CachedEmbeddings, cached_embeddings, e5_passages
 from multabench.tile.tile_embed import TileRows
 from multabench.utils.timing import embedding_step
 
@@ -82,7 +82,7 @@ def fit_text_encoders(x: DataFrame, text_features: Set[str], device: torch.devic
                       tile_rows: Optional[TileRows] = None) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
     """One encoder per text column, with the training rows' embeddings, read from the cache when the encoder has
     one: the fold's, for a tuned encoder. Otherwise a tuned encoder is one E5 for all the columns, tuned on (x, y).
-    TILE reads the rows the model saw, as loaded, from tile_rows."""
+    TILE reads the rows the model saw, as loaded, from tile_rows, and their cells from the dataset's cache."""
     columns = sorted(text_features)
     if not columns:
         return {}, {}
@@ -92,6 +92,9 @@ def fit_text_encoders(x: DataFrame, text_features: Set[str], device: torch.devic
         if tile_rows is None:
             raise ValueError("TILE embeds whole rows: pass the TileRows of the rows the model saw")
         tile_rows.text_columns = columns
+        if dataset is not None:
+            tile_rows.cache = cached_embeddings(encoder, dataset)
+            print(f"Reading the TILE embeddings of {columns} from the cache")
         return fit_column_encoders(x, [TileColumnEncoder(col, tile_rows) for col in columns])
     spec = TEXT_ENCODERS[encoder]
     caches = column_caches(encoder, dataset, columns, size=size, fold=fold) if encoder in CACHED_ENCODERS else {}

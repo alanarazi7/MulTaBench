@@ -17,6 +17,7 @@ from multabench.dino.constants import DINO_LORA, ImageEncoder
 from multabench.dino.dino_finetune import finetune_dino
 from multabench.e5.constants import E5_LORA, TextEncoder
 from multabench.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
+from multabench.tile.tile_embed import TileRows, get_tile_llm
 from multabench.embeddings.hub import (CachedEncoder, encoder_inputs, encoder_spec, input_values, is_tuned,
                                        write_embeddings)
 from multabench.utils.hardware import EMBEDDING_HARDWARE, get_hardware_dict, hardware_mismatches
@@ -54,13 +55,17 @@ def compute_embeddings(dataset: MultimodalDataset, encoder: CachedEncoder, path:
     elif features:
         model, processor = _load_frozen(encoder, device)
     load_seconds = pop_embedding_seconds()
-    inputs, embeddings, seconds = _encode(x, dataset.image_folder, encoder, features, model, processor, device)
+    if encoder == TextEncoder.TILE:
+        inputs, embeddings, seconds = _encode_rows(x, dataset.image_column, features, device)
+    else:
+        inputs, embeddings, seconds = _encode(x, dataset.image_folder, encoder, features, model, processor, device)
     total_seconds = load_seconds + sum(seconds.values())
     meta.update(n_rows=len(x), n_inputs=len(inputs), n_columns=x.shape[1], features=features,
                 **{"finetune_seconds" if is_tuned(encoder) else "load_seconds": load_seconds},
                 encode_seconds=seconds, total_seconds=total_seconds, git=get_current_commit_hash(),
                 timestamp=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), **hardware)
-    write_embeddings(path, inputs=inputs, embeddings=embeddings, meta=meta)
+    write_embeddings(path, inputs=inputs, embeddings=embeddings, meta=meta,
+                     dtype=np.float16 if encoder == TextEncoder.TILE else np.float32)
     print(f"Embedded {dataset.dataset_id.name} with {encoder} in {total_seconds:.0f}s ({load_seconds:.0f}s "
           f"{'fine-tuning' if is_tuned(encoder) else 'loading'} the model)")
 
@@ -73,6 +78,8 @@ def _features(x: DataFrame, dataset: MultimodalDataset, encoder: CachedEncoder) 
 
 def _load_frozen(encoder: CachedEncoder, device: torch.device) -> Tuple[Any, Any]:
     model_name = encoder_spec(encoder).encoder_name
+    if encoder == TextEncoder.TILE:
+        return get_tile_llm(device)
     if isinstance(encoder, TextEncoder):
         return get_vanilla_e5(device, model_name=model_name)
     model, processor = get_image_encoder(model_name=model_name)
@@ -109,6 +116,19 @@ def _encode(x: DataFrame, image_folder: str, encoder: CachedEncoder, features: L
         embeddings.append(embedded)
         print(f"Embedded {col}: {len(values)} distinct values of {len(x)} rows in {seconds[col]:.0f}s")
     return inputs, np.concatenate(embeddings), seconds
+
+
+def _encode_rows(x: DataFrame, image_column: Optional[str], features: List[str],
+                 device: torch.device) -> Tuple[List[str], np.ndarray, Dict[str, float]]:
+    """TILE: each distinct row serialized and embedded once, keyed by its text, with all its text cells."""
+    rows = TileRows(image_column=image_column, device=device)
+    rows.add(x)
+    rows.text_columns = features
+    texts = Series([rows.texts[i] for i in x.index], index=x.index).drop_duplicates()
+    cells = rows.cells(texts.index)
+    seconds = {"rows": pop_embedding_seconds()}
+    print(f"Embedded {len(texts)} distinct rows of {len(x)} in {seconds['rows']:.0f}s")
+    return texts.tolist(), cells.transpose(1, 0, 2), seconds
 
 
 def _embed_images_in_chunks(urls: Series, image_folder: str, model: Any, processor: Any) -> np.ndarray:

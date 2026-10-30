@@ -23,7 +23,7 @@ from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, data
 from multabench.datasets.hub import DATA_PARQUET, IMAGES_DIR, extract_images, hf_repo_id, local_repo_dir
 from multabench.datasets.revisions import revision
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
-from multabench.e5.constants import DEFAULT_TEXT_ENCODER
+from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TextEncoder
 from multabench.embeddings.hub import (CACHED_ENCODERS, EMBEDDINGS_NPZ, META_JSON, CachedEmbeddings, CachedEncoder,
                                        download_embeddings, embeddings_dir, embeds_dataset, encoder_inputs,
                                        input_values, is_tuned, parse_encoder, read_embeddings, repo_name)
@@ -141,6 +141,8 @@ def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = 
     train_idx, test_idx = get_split(y.to_numpy(), is_cls=task_type != SupervisedTask.REGRESSION, split=fold, size=size)
     split = dict(size=size, fold=fold) if is_tuned(encoder) else {}
     cache = read_embeddings(download_embeddings(encoder, dataset, **split, data_dir=data_dir))
+    if encoder == TextEncoder.TILE:
+        return SplitEmbeddings(**_lookup_tile(cache, dataset, train_idx, test_idx, data_dir=data_dir), meta=cache.meta)
     x = _load_columns(dataset, columns=cache.meta["features"], data_dir=data_dir)
     return SplitEmbeddings(train=_lookup(cache, x.iloc[train_idx], encoder), test=_lookup(cache, x.iloc[test_idx], encoder),
                            meta=cache.meta)
@@ -149,6 +151,18 @@ def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = 
 def _lookup(cache: CachedEmbeddings, x: pd.DataFrame, encoder: CachedEncoder) -> Dict[str, np.ndarray]:
     return {col: cache.lookup(encoder_inputs(encoder, col, input_values(x, encoder, col)), feature=col)
             for col in cache.meta["features"]}
+
+
+def _lookup_tile(cache: CachedEmbeddings, dataset: MulTaBenchDatasetID, train_idx: np.ndarray, test_idx: np.ndarray,
+                 data_dir: Optional[str] = None) -> Dict[str, Dict[str, np.ndarray]]:
+    """TILE's cache is keyed by the serialized row, so the lookup reads every column but the target."""
+    from multabench.tile.tile_embed import TileRows
+    loaded = load_multabench_dataset(dataset, data_dir=data_dir, with_image_files=False)
+    rows = TileRows(image_column=loaded.image_column, device="cpu")
+    rows.add(loaded.x)
+    rows.text_columns, rows.cache = cache.meta["features"], cache
+    return {part: dict(zip(rows.text_columns, rows.cells(loaded.x.index[idx]).astype(np.float32)))
+            for part, idx in (("train", train_idx), ("test", test_idx))}
 
 
 def load_target(dataset_id: MulTaBenchDatasetID, data_dir: Optional[str] = None) -> tuple[pd.Series, SupervisedTask]:

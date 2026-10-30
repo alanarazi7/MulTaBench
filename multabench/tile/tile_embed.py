@@ -7,6 +7,7 @@ import numpy as np
 import torch
 from pandas import DataFrame, Index
 
+from multabench.embeddings.hub import CachedEmbeddings, tile_cells
 from multabench.tile.constants import LLAMA_3_1_8B_REVISION
 from multabench.utils.timing import embedding_step
 
@@ -36,8 +37,8 @@ def get_tile_llm(device: torch.device) -> Tuple[Any, Any]:
 
 
 class TileRows:
-    """The rows a model has seen, serialized as loaded, by index, and their text cells' embeddings: one forward pass
-    per row, shared by all its text columns."""
+    """The rows a model has seen, serialized as loaded, by index, and their text cells' embeddings: read from the
+    dataset's cache if set, else one forward pass per row, shared by all its text columns."""
 
     def __init__(self, image_column: Optional[str], device: torch.device):
         self.image_column = image_column
@@ -46,6 +47,7 @@ class TileRows:
         self.text_columns: List[str] = []
         self.texts: Dict[Hashable, str] = {}
         self.spans: Dict[Hashable, np.ndarray] = {}
+        self.cache: Optional[CachedEmbeddings] = None
         self._texts: Optional[List[str]] = None
         self._cells: Optional[np.ndarray] = None
 
@@ -67,9 +69,16 @@ class TileRows:
         for as long as the next column asks for the same rows' texts."""
         texts = [self.texts[i] for i in index]
         if texts != self._texts:
-            positions = [self.columns.index(col) for col in self.text_columns]
-            self._texts, self._cells = texts, self._pool(texts, np.stack([self.spans[i] for i in index])[:, positions])
+            self._texts, self._cells = texts, self.cells(index)
         return self._cells[self.text_columns.index(col)].astype(np.float32)
+
+    def cells(self, index: Index) -> np.ndarray:
+        """(n_text_columns, n_rows, hidden), float16."""
+        texts = [self.texts[i] for i in index]
+        if self.cache is not None:
+            return tile_cells(self.cache, texts, self.text_columns)
+        positions = [self.columns.index(col) for col in self.text_columns]
+        return self._pool(texts, np.stack([self.spans[i] for i in index])[:, positions])
 
     @embedding_step
     def _pool(self, texts: List[str], spans: np.ndarray) -> np.ndarray:

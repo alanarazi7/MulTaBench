@@ -7,6 +7,8 @@ from tile.embeddings import serialize
 
 from multabench.baselines.preprocessing.text_embeddings import TileColumnEncoder, fit_text_encoders
 from multabench.e5.constants import TextEncoder
+from multabench.embeddings import compute
+from multabench.embeddings.hub import read_embeddings, tile_cells, write_embeddings
 from multabench.tile import tile_embed
 from multabench.tile.tile_embed import TileRows
 
@@ -61,3 +63,31 @@ def test_tile_needs_the_rows():
 def test_rows_need_a_unique_index():
     with pytest.raises(ValueError, match="unique"):
         TileRows(image_column=None, device="cpu").add(DataFrame({"title": ["a", "b"]}, index=pd.Index([0, 0])))
+
+
+def test_cache_round_trip_keys_rows_and_keeps_float16(pooled, tmp_path):
+    x = DataFrame({"title": ["a", "bb", "a"], "price": [1.0, 2.0, 1.0], "notes": ["x", "y", "x"]})
+    inputs, cells, _ = compute._encode_rows(x, image_column=None, features=["notes", "title"], device="cpu")
+    texts, spans = serialize(x)
+    assert inputs == texts[:2] and cells.shape == (2, 2, 2)
+    write_embeddings(str(tmp_path), inputs=inputs, embeddings=cells, meta={"features": ["notes", "title"]},
+                     dtype=np.float16)
+    cache = read_embeddings(str(tmp_path))
+    assert cache.embeddings.dtype == np.float16
+    title = tile_cells(cache, [texts[2], texts[1]], ["title"])[0]
+    assert np.array_equal(title[:, 1], [spans[2, 0, 0], spans[1, 0, 0]])
+    with pytest.raises(ValueError, match="no \\['price'\\]"):
+        tile_cells(cache, texts, ["price"])
+
+
+def test_rows_read_the_cache_without_the_llm(pooled, tmp_path):
+    x = DataFrame({"title": ["a", "bb"], "notes": ["x", "y"]}, index=[5, 7])
+    texts, _ = serialize(x)
+    cells = np.arange(8, dtype=np.float16).reshape(2, 2, 2)
+    write_embeddings(str(tmp_path), inputs=texts, embeddings=cells, meta={"features": ["notes", "title"]},
+                     dtype=np.float16)
+    rows = TileRows(image_column=None, device="cpu")
+    rows.add(x)
+    rows.text_columns, rows.cache = ["title"], read_embeddings(str(tmp_path))
+    assert rows.embed(x.index[::-1], "title").tolist() == [[6, 7], [2, 3]]
+    assert not pooled

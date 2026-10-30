@@ -5,7 +5,8 @@ tuned (-tar) encoder is fine-tuned on each fold's training rows alone, so it is 
 <dataset>/<size>/fold_<k>/, for that fold's train and test rows, with its LoRA adapter. Each directory has
 embeddings.npz, which maps every input, exactly as the encoder got it, to its embedding, and meta.json, with the timing
 and the hardware it ran on. A run looks its own inputs up, so a cached embedding is never paired with a different text
-or image, and a changed dataset raises instead.
+or image, and a changed dataset raises instead. TILE embeds a text cell in the context of its row, so its input is the
+serialized row, and its embedding all the row's text cells, (features, hidden) in float16.
 """
 import json
 import os
@@ -36,7 +37,8 @@ EMBEDDINGS = "embeddings"
 
 CachedEncoder = TextEncoder | ImageEncoder
 CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL, TextEncoder.E5_SMALL_TAR, ImageEncoder.DINO_SMALL_TAR,
-                   TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE, TextEncoder.E5_LARGE_TAR, ImageEncoder.DINO_LARGE_TAR)
+                   TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE, TextEncoder.E5_LARGE_TAR, ImageEncoder.DINO_LARGE_TAR,
+                   TextEncoder.TILE)
 
 
 def parse_encoder(encoder: str) -> CachedEncoder:
@@ -93,12 +95,24 @@ class CachedEmbeddings:
     def __post_init__(self):
         self._row = {text: i for i, text in enumerate(self.inputs)}
 
-    def lookup(self, inputs: Sequence[str], feature: str) -> np.ndarray:
+    def rows(self, inputs: Sequence[str], feature: str) -> List[int]:
         missing = [text for text in inputs if text not in self._row]
         if missing:
             raise KeyError(f"{len(missing)} of {len(inputs)} inputs of {feature!r} have no cached embedding, "
                            f"e.g. {missing[0][:100]!r}")
-        return self.embeddings[[self._row[text] for text in inputs]]
+        return [self._row[text] for text in inputs]
+
+    def lookup(self, inputs: Sequence[str], feature: str) -> np.ndarray:
+        return self.embeddings[self.rows(inputs, feature)]
+
+
+def tile_cells(cache: CachedEmbeddings, texts: Sequence[str], columns: List[str]) -> np.ndarray:
+    """(n_columns, n_rows, hidden): the cached TILE cells of these columns, for these serialized rows."""
+    cached = cache.meta["features"]
+    if missing := [col for col in columns if col not in cached]:
+        raise ValueError(f"The cached TILE embeddings have no {missing}, only {cached}")
+    rows = cache.embeddings[cache.rows(texts, feature="rows")]
+    return rows[:, [cached.index(col) for col in columns]].transpose(1, 0, 2)
 
 
 def input_values(x: DataFrame, encoder: CachedEncoder, col: str) -> List[str]:
@@ -119,7 +133,7 @@ def e5_passages(col: str, texts: Sequence[str]) -> List[str]:
     return [format_e5_passage(str(col), col_val=text) for text in texts]
 
 
-def write_embeddings(path: str, inputs: List[str], embeddings: np.ndarray, meta: dict):
+def write_embeddings(path: str, inputs: List[str], embeddings: np.ndarray, meta: dict, dtype=np.float32):
     """meta.json is written last, so its presence marks a complete directory."""
     os.makedirs(path, exist_ok=True)
     assert len(inputs) == len(embeddings) == len(set(inputs)), f"{len(inputs)} inputs for {len(embeddings)} embeddings"
@@ -127,7 +141,7 @@ def write_embeddings(path: str, inputs: List[str], embeddings: np.ndarray, meta:
     np.savez_compressed(join(path, EMBEDDINGS_NPZ), **{
         INPUTS_UTF8: np.frombuffer(b"".join(encoded), dtype=np.uint8),
         INPUTS_OFFSETS: np.cumsum([0] + [len(b) for b in encoded], dtype=np.int64),
-        EMBEDDINGS: np.asarray(embeddings, dtype=np.float32)})
+        EMBEDDINGS: np.asarray(embeddings, dtype=dtype)})
     with open(join(path, META_JSON), "w") as f:
         json.dump(meta, f, indent=2, default=str)
 
