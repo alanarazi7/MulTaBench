@@ -39,6 +39,8 @@ CachedEncoder = TextEncoder | ImageEncoder
 CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL, TextEncoder.E5_SMALL_TAR, ImageEncoder.DINO_SMALL_TAR,
                    TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE, TextEncoder.E5_LARGE_TAR, ImageEncoder.DINO_LARGE_TAR,
                    TextEncoder.TILE)
+# TILE's caches add up to about 54 GB, so they are built, fetched and prefetched only when asked for.
+DEFAULT_ENCODERS = tuple(e for e in CACHED_ENCODERS if e != TextEncoder.TILE)
 
 
 def parse_encoder(encoder: str) -> CachedEncoder:
@@ -111,8 +113,8 @@ def tile_cells(cache: CachedEmbeddings, texts: Sequence[str], columns: List[str]
     cached = cache.meta["features"]
     if missing := [col for col in columns if col not in cached]:
         raise ValueError(f"The cached TILE embeddings have no {missing}, only {cached}")
-    rows = cache.embeddings[cache.rows(texts, feature="rows")]
-    return rows[:, [cached.index(col) for col in columns]].transpose(1, 0, 2)
+    rows = cache.rows(texts, feature="rows")
+    return cache.embeddings[np.ix_(rows, [cached.index(col) for col in columns])].transpose(1, 0, 2)
 
 
 def input_values(x: DataFrame, encoder: CachedEncoder, col: str) -> List[str]:
@@ -156,12 +158,12 @@ def read_embeddings(path: str) -> CachedEmbeddings:
 
 
 def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID, size: Optional[Size] = None,
-                        fold: Optional[int] = None, data_dir: Optional[str] = None) -> str:
+                        fold: Optional[int] = None, data_dir: Optional[str] = None,
+                        files: Sequence[str] = (EMBEDDINGS_NPZ, META_JSON)) -> str:
     """The directory of the dataset's cached embeddings, the fold's for a tuned encoder; under data_dir if given."""
     if is_tuned(encoder) != (fold is not None):
         raise ValueError(f"{encoder} embeddings are cached {'per fold' if is_tuned(encoder) else 'once per dataset'}")
     path_in_repo = embeddings_dir(dataset_id, size=size, fold=fold)
-    files = [EMBEDDINGS_NPZ, META_JSON]
     repo_id = embeddings_repo_id(encoder)
     if data_dir is not None:
         return join(local_repo_dir(data_dir, repo_id, [f"{path_in_repo}/{f}" for f in files]), path_in_repo)
@@ -174,7 +176,7 @@ def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID,
     return path
 
 
-# Room for a run's text and image embeddings, up to a few hundred MB each.
+# Room for a run's text and image embeddings: a few hundred MB each, up to 5.6 GB for TILE's largest.
 @lru_cache(maxsize=2)
 def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID, size: Optional[Size] = None,
                       fold: Optional[int] = None, data_dir: Optional[str] = None) -> CachedEmbeddings:

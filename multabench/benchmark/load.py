@@ -24,7 +24,7 @@ from multabench.datasets.hub import DATA_PARQUET, IMAGES_DIR, extract_images, hf
 from multabench.datasets.revisions import revision
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
 from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TextEncoder
-from multabench.embeddings.hub import (CACHED_ENCODERS, EMBEDDINGS_NPZ, META_JSON, CachedEmbeddings, CachedEncoder,
+from multabench.embeddings.hub import (DEFAULT_ENCODERS, EMBEDDINGS_NPZ, META_JSON, CachedEmbeddings, CachedEncoder,
                                        download_embeddings, embeddings_dir, embeds_dataset, encoder_inputs,
                                        input_values, is_tuned, parse_encoder, read_embeddings, repo_name)
 from multabench.benchmark.utils.constants import METADATA_JSON
@@ -61,7 +61,7 @@ def download_dataset(dataset_id: MulTaBenchDatasetID, data_dir: Optional[str] = 
     return dir_path
 
 
-def data_dir_files(dataset: str | MulTaBenchDatasetID, encoders: Sequence[str | CachedEncoder] = CACHED_ENCODERS,
+def data_dir_files(dataset: str | MulTaBenchDatasetID, encoders: Sequence[str | CachedEncoder] = DEFAULT_ENCODERS,
                    size: Size = DEFAULT_SIZE, with_image_files: bool = True) -> List[str]:
     """The paths, relative to a data_dir, that the dataset's splits and its cached embeddings by each encoder read."""
     if isinstance(dataset, str):
