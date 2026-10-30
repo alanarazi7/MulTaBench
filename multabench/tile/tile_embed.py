@@ -23,13 +23,15 @@ def get_tile_llm(device: torch.device) -> Tuple[Any, Any]:
         llm = LLMS[DEFAULT_LLM]
         config = AutoConfig.from_pretrained(llm.repo_id, revision=LLAMA_3_1_8B_REVISION)
         config.num_hidden_layers = llm.layer
+        if getattr(config, "layer_types", None) is not None:
+            config.layer_types = config.layer_types[:llm.layer]
         model = AutoModel.from_pretrained(llm.repo_id, revision=LLAMA_3_1_8B_REVISION, config=config,
-                                          dtype=torch.bfloat16)
+                                          dtype=torch.bfloat16, device_map=device)
         model.norm = torch.nn.Identity()
         model.config.use_cache = False
         tokenizer = AutoTokenizer.from_pretrained(llm.repo_id, revision=LLAMA_3_1_8B_REVISION)
         tokenizer.pad_token = tokenizer.pad_token or tokenizer.eos_token
-        _TILE_LLM_CACHE[str(device)] = model.to(device).eval(), tokenizer
+        _TILE_LLM_CACHE[str(device)] = model.eval(), tokenizer
     return _TILE_LLM_CACHE[str(device)]
 
 
@@ -44,7 +46,7 @@ class TileRows:
         self.text_columns: List[str] = []
         self.texts: Dict[Hashable, str] = {}
         self.spans: Dict[Hashable, np.ndarray] = {}
-        self._index: Optional[Index] = None
+        self._texts: Optional[List[str]] = None
         self._cells: Optional[np.ndarray] = None
 
     def add(self, x: DataFrame):
@@ -61,19 +63,24 @@ class TileRows:
         self.spans.update(zip(x.index, spans))
 
     def embed(self, index: Index, col: str) -> np.ndarray:
-        """The column's cell embeddings for these rows; the rows' other text columns are pooled in the same pass."""
-        if self._index is None or not self._index.equals(index):
-            self._index, self._cells = index, self._pool(index)
+        """The column's cell embeddings for these rows; the rows' other text columns are pooled in the same pass, kept
+        for as long as the next column asks for the same rows' texts."""
+        texts = [self.texts[i] for i in index]
+        if texts != self._texts:
+            positions = [self.columns.index(col) for col in self.text_columns]
+            self._texts, self._cells = texts, self._pool(texts, np.stack([self.spans[i] for i in index])[:, positions])
         return self._cells[self.text_columns.index(col)].astype(np.float32)
 
     @embedding_step
-    def _pool(self, index: Index) -> np.ndarray:
+    def _pool(self, texts: List[str], spans: np.ndarray) -> np.ndarray:
         """(n_text_columns, n_rows, hidden), as TILE's embed_table pools them, for the text columns only."""
         from tile.embeddings import pool_cells
         model, tokenizer = get_tile_llm(self.device)
-        if torch.cuda.is_available():
-            # As embed_table: cuDNN's attention kernel fails on padded batches in some environments.
-            torch.backends.cuda.enable_cudnn_sdp(False)
-        positions = [self.columns.index(col) for col in self.text_columns]
-        spans = np.stack([self.spans[i] for i in index])[:, positions]
-        return pool_cells(model, tokenizer, [self.texts[i] for i in index], spans)
+        # As embed_table: cuDNN's attention kernel fails on padded batches in some environments. Restored after, as the
+        # switch is process-wide and the model's own attention would otherwise lose it.
+        cudnn_sdp = torch.backends.cuda.cudnn_sdp_enabled()
+        torch.backends.cuda.enable_cudnn_sdp(False)
+        try:
+            return pool_cells(model, tokenizer, texts, spans)
+        finally:
+            torch.backends.cuda.enable_cudnn_sdp(cudnn_sdp)

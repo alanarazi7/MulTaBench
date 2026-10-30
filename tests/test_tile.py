@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-from pandas import DataFrame
+from pandas import DataFrame, Index
 from tile import embeddings
 from tile.embeddings import serialize
 
@@ -42,6 +42,15 @@ def test_text_columns_share_one_pass_per_rows(pooled):
     assert np.array_equal(title.embed(x.iloc[2:])[:, 0], [len(texts[2])])
     notes.embed(x.iloc[2:])
     assert len(pooled) == 2
+
+
+def test_new_rows_under_seen_labels_are_embedded_again(pooled):
+    rows = TileRows(image_column=None, device="cpu")
+    rows.text_columns = ["title"]
+    rows.add(DataFrame({"title": ["a", "bb"]}))
+    first = rows.embed(Index([0, 1]), "title")
+    rows.add(DataFrame({"title": ["ccc", "dddd"]}))
+    assert not np.array_equal(rows.embed(Index([0, 1]), "title"), first) and len(pooled) == 2
 
 
 def test_tile_needs_the_rows():
