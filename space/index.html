@@ -513,7 +513,7 @@ async function load() {
   const get = async name => parseCSV(await (await fetch(`data/${name}.csv`)).text());
   const boards = {}, encodingBoards = {};
   (await get('leaderboards')).forEach(r => {
-    (boards[[r.tier, r.task, r.modality, r.encodings].join('|')] ||= []).push({ ...r, lo: r.elo_low, hi: r.elo_high, norm_error: r.normalized_error, champions: r.best_on });
+    (boards[[r.tier, r.task, r.modality].join('|')] ||= []).push({ ...r, lo: r.elo_low, hi: r.elo_high, norm_error: r.normalized_error, champions: r.best_on });
   });
   (await get('encodings')).forEach(r => {
     (encodingBoards[[r.tier, r.task, r.modality].join('|')] ||= []).push({ ...r, entry: r.encoding, lo: r.elo_low, hi: r.elo_high, champions: r.best_on });
@@ -523,8 +523,8 @@ async function load() {
   const res = await fetch('data/leaderboards.csv', { method: 'HEAD' });
   const updated = res.headers.get('last-modified') && new Date(res.headers.get('last-modified')).toISOString().slice(0, 10);
   const info = Object.fromEntries((await get('models')).map(r => [r.model, r]));
-  const entries = boards['all|all|all|all'].map(r => r.entry).sort();
-  const encodingOf = Object.fromEntries(boards['all|all|all|all'].map(r => [r.entry, r.encoding]));
+  const entries = boards['all|all|all'].map(r => r.entry).sort();
+  const encodingOf = Object.fromEntries(boards['all|all|all'].map(r => [r.entry, r.encoding]));
   return { boards, encodingBoards, per_dataset, cost, updated, info, encodingOf, meta: { entries } };
 }
 load().then(start).catch(err => {
@@ -704,7 +704,8 @@ const sel = { tier: restore('tiers_v2', TIERS.map(t => t[0]), ['core']), task: r
   modality: restore('mods', MODS.map(m => m[0])) };
 const FIELDS = Object.keys(sel);
 let encSel = restore('encodings', ENCS.map(e => e[0]));
-const encKey = () => keyOf(encSel, ENCS);
+// Each board rates every entry; the encodings picked only choose which of them are shown.
+const slice = board => board.filter(r => r.encoding === 'end-to-end' || encSel.includes(r.encoding));
 const keyOf = (picked, all) => picked.length === all.length ? 'all' : all.map(a => a[0]).filter(a => picked.includes(a)).join('+');
 const inFilter = d => FIELDS.every(f => sel[f].includes(dsInfo[d][f]));
 
@@ -814,7 +815,7 @@ function drawBoard(board, front) {
 
 const filterKey = () => keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS);
 function renderBoard() {
-  const board = D.boards[filterKey() + '|' + encKey()];
+  const board = slice(D.boards[filterKey()]);
   const names = Object.keys(dsInfo).filter(inFilter);
   const count = (field, key) => names.filter(d => dsInfo[d][field] === key).length;
   const line = (title, field, all) => `<span class="label">${title}</span> ` + all.filter(([k]) => count(field, k))
@@ -827,7 +828,7 @@ function renderBoard() {
   drawPareto(board, front);
 }
 
-const orderOf = () => D.boards['all|all|all|' + encKey()].map(r => r.entry);
+const orderOf = () => slice(D.boards['all|all|all']).map(r => r.entry);
 function render() {
   toggles(document.getElementById('tierTabs'), TIERS, 'tier', 'tiers');
   toggles(document.getElementById('taskTabs'), TASKS, 'task', 'tasks');

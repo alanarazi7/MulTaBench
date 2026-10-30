@@ -88,17 +88,16 @@ def _with_model_and_encoding(df: pd.DataFrame, runs: pd.DataFrame, at: int) -> p
 
 
 def leaderboards(runs: pd.DataFrame, bootstraps: int = 1000) -> pd.DataFrame:
-    """One Elo leaderboard per combination of tiers, tasks, modalities and encodings; end-to-end models are in each."""
+    """One Elo leaderboard per combination of tiers, tasks and modalities, with every entry; the Space shows a slice of
+    it for the encodings picked, so an entry's Elo doesn't depend on which others are shown."""
     boards = []
+    anchor = f"{ANCHOR} ({ENCODINGS['frozen']})"
     for keys, sub in _filters(runs):
-        for encodings in subsets(list(ENCODINGS)):
-            picked = sub[sub[ENCODING].isin(encodings + [END_TO_END])]
-            anchor = f"{ANCHOR} ({ENCODINGS[encodings[0]]})"
-            board = leaderboard(error_table(_by_entry(picked)), bootstraps=bootstraps, anchor=anchor)
-            board = _with_model_and_encoding(board, picked, at=0)
-            for i, (k, v) in enumerate({**keys, "encodings": _subset_key(encodings, list(ENCODINGS))}.items()):
-                board.insert(i, k, v)
-            boards.append(board)
+        board = leaderboard(error_table(_by_entry(sub)), bootstraps=bootstraps, anchor=anchor)
+        board = _with_model_and_encoding(board, sub, at=0)
+        for i, (k, v) in enumerate(keys.items()):
+            board.insert(i, k, v)
+        boards.append(board)
     return pd.concat(boards, ignore_index=True)
 
 

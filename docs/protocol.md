@@ -5,8 +5,9 @@
 Elo is computed with TabArena's own evaluation package, [bencheval](https://pypi.org/project/bencheval/),
 pinned in the `leaderboard` extra. Every fold is its own battle: on each of a dataset's 6 folds, each pair of models
 plays one battle, won by the lower test error on that fold (a tie counts half). The battles are fit as a Bradley–Terry
-model, with RandomForest (Frozen-S) anchored at 1000,
-or RandomForest (TAR-S) on a TAR-only board. The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
+model, with RandomForest (Frozen-S) anchored at 1000. Each board rates every entry at once; picking encodings on the
+Space only hides entries, so an entry's Elo doesn't change with what else is shown.
+The 95% intervals come from 1,000 bootstrap resamples of the datasets, each
 drawn with all 6 of its folds, so the intervals reflect how many datasets there are rather than how many folds. They
 are bootstrapped before anchoring, so each model's interval is its own, RandomForest's included, rather than relative
 to RandomForest. A model with no result on a fold has no battles there; nothing is imputed. Win rate, average rank, normalized
