@@ -22,6 +22,7 @@ from multabench.baselines.preprocessing.target import transform_preprocess_y, fi
 from multabench.benchmark.splits import Size
 from multabench.dino.constants import DEFAULT_IMAGE_ENCODER, ImageEncoder
 from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TextEncoder
+from multabench.tile.tile_embed import TileRows
 from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
 from multabench.datasets.objects import SupervisedTask
 from multabench.utils.warnings import silence_baselines_prints
@@ -71,6 +72,9 @@ class TabularModel:
         self.image_column = image_column
         self.text_encoder = text_encoder or DEFAULT_TEXT_ENCODER
         self.image_encoder = image_encoder or DEFAULT_IMAGE_ENCODER
+        # TILE embeds each text cell in the context of its row as loaded, before any preprocessing.
+        use_tile = self.USE_TEXT_EMBEDDINGS and self.text_encoder == TextEncoder.TILE
+        self.tile_rows = TileRows(image_column=image_column, device=device) if use_tile else None
         # A tuned encoder's cached embeddings are per fold.
         self.fold = fold
         self.size = size
@@ -91,6 +95,7 @@ class TabularModel:
         raise NotImplementedError("Initialize model method not implemented yet")
 
     def fit(self, x: DataFrame, y: Series):
+        self._add_tile_rows(x)
         x_train, y_train = x.copy(), y.copy()
         if self.USE_VAL_SPLIT:
             x_train, x_val, y_train, y_val = split_to_val(x=x, y=y, is_cls=self.is_cls)
@@ -114,7 +119,7 @@ class TabularModel:
         if self.USE_TEXT_EMBEDDINGS:
             self.text_transformers, text_embeddings = fit_text_encoders(
                 x=x_train, text_features=self.text_features, device=self.device, encoder=self.text_encoder, y=y_train,
-                is_cls=self.is_cls, dataset=self.dataset, size=self.size, fold=self.fold)
+                is_cls=self.is_cls, dataset=self.dataset, size=self.size, fold=self.fold, tile_rows=self.tile_rows)
             self._train_embeddings.update(text_embeddings)
             self.vprint(f"📝 Detected {len(self.text_transformers)} text features: {sorted(self.text_transformers)}")
         if self.USE_CATEGORY_DTYPE:
@@ -182,7 +187,12 @@ class TabularModel:
         # d_output already set above for fit_image_encoders
         return x, y
 
+    def _add_tile_rows(self, x: DataFrame):
+        if self.tile_rows is not None:
+            self.tile_rows.add(x)
+
     def predict(self, x: DataFrame) -> np.ndarray:
+        self._add_tile_rows(x)
         x, _ = self.transform_preprocessor(x=x, y=None)
         return self.predict_from_processed(x=x)
 

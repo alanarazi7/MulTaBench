@@ -15,6 +15,7 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TEXT_ENCODERS, TextEncoder
 from multabench.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
 from multabench.embeddings.hub import CACHED_ENCODERS, CachedEmbeddings, e5_passages
+from multabench.tile.tile_embed import TileRows
 from multabench.utils.timing import embedding_step
 
 
@@ -62,17 +63,36 @@ class TfidfColumnEncoder(ColumnEncoder):
         return embeddings
 
 
+class TileColumnEncoder(ColumnEncoder):
+    """A text column's cells as TILE embeds them, in the context of their whole row; standardized, then PCA."""
+    SUFFIX = "txt"
+
+    def __init__(self, col: str, rows: TileRows):
+        super().__init__(col)
+        self.rows = rows
+
+    def embed(self, x: DataFrame) -> np.ndarray:
+        return self.rows.embed(x.index, self.col)
+
+
 def fit_text_encoders(x: DataFrame, text_features: Set[str], device: torch.device,
                       encoder: TextEncoder = DEFAULT_TEXT_ENCODER, y: Optional[Series] = None, is_cls: bool = True,
                       dataset: Optional[MulTaBenchDatasetID] = None, size: Optional[Size] = None,
-                      fold: Optional[int] = None) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
+                      fold: Optional[int] = None,
+                      tile_rows: Optional[TileRows] = None) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
     """One encoder per text column, with the training rows' embeddings, read from the cache when the encoder has
-    one: the fold's, for a tuned encoder. Otherwise a tuned encoder is one E5 for all the columns, tuned on (x, y)."""
+    one: the fold's, for a tuned encoder. Otherwise a tuned encoder is one E5 for all the columns, tuned on (x, y).
+    TILE reads the rows the model saw, as loaded, from tile_rows."""
     columns = sorted(text_features)
     if not columns:
         return {}, {}
     if encoder == TextEncoder.TFIDF:
         return fit_column_encoders(x, [TfidfColumnEncoder(col, x[col]) for col in columns])
+    if encoder == TextEncoder.TILE:
+        if tile_rows is None:
+            raise ValueError("TILE embeds whole rows: pass the TileRows of the rows the model saw")
+        tile_rows.text_columns = columns
+        return fit_column_encoders(x, [TileColumnEncoder(col, tile_rows) for col in columns])
     spec = TEXT_ENCODERS[encoder]
     caches = column_caches(encoder, dataset, columns, size=size, fold=fold) if encoder in CACHED_ENCODERS else {}
     model, tokenizer = None, None
