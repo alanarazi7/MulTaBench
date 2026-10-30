@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from pandas import DataFrame
+from tile import embeddings
 from tile.embeddings import serialize
 
 from multabench.baselines.preprocessing.text_embeddings import TileColumnEncoder, fit_text_encoders
@@ -22,7 +23,7 @@ def pooled(monkeypatch):
         return cells.transpose(1, 0, 2)
 
     monkeypatch.setattr(tile_embed, "get_tile_llm", lambda device: (None, None))
-    monkeypatch.setattr(tile_embed, "pool_cells", fake_pool)
+    monkeypatch.setattr(embeddings, "pool_cells", fake_pool)
     return calls
 
 

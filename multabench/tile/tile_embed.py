@@ -6,8 +6,6 @@ from typing import Any, Dict, Hashable, List, Optional, Tuple
 import numpy as np
 import torch
 from pandas import DataFrame, Index
-from tile.embeddings import pool_cells, serialize
-from tile.llms import DEFAULT_LLM, LLMS
 
 from multabench.tile.constants import LLAMA_3_1_8B_REVISION
 from multabench.utils.timing import embedding_step
@@ -20,6 +18,7 @@ def get_tile_llm(device: torch.device) -> Tuple[Any, Any]:
     """TILE's default LLM cut at its layer, on the run's device, as tile.llms.load loads it from tile.llms.truncate's
     copy, but at a pinned revision and without the copy on disk; only the kept blocks' weights are read."""
     if str(device) not in _TILE_LLM_CACHE:
+        from tile.llms import DEFAULT_LLM, LLMS
         from transformers import AutoConfig, AutoModel, AutoTokenizer
         llm = LLMS[DEFAULT_LLM]
         config = AutoConfig.from_pretrained(llm.repo_id, revision=LLAMA_3_1_8B_REVISION)
@@ -50,6 +49,7 @@ class TileRows:
 
     def add(self, x: DataFrame):
         """Serializes the rows before any preprocessing, without the image column, whose file names carry no text."""
+        from tile.embeddings import serialize
         x = x.drop(columns=[self.image_column], errors="ignore")
         if not x.index.is_unique:
             raise ValueError("TILE finds a row's text by its index, which must be unique")
@@ -69,6 +69,7 @@ class TileRows:
     @embedding_step
     def _pool(self, index: Index) -> np.ndarray:
         """(n_text_columns, n_rows, hidden), as TILE's embed_table pools them, for the text columns only."""
+        from tile.embeddings import pool_cells
         model, tokenizer = get_tile_llm(self.device)
         if torch.cuda.is_available():
             # As embed_table: cuDNN's attention kernel fails on padded batches in some environments.
