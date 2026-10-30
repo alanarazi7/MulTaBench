@@ -29,7 +29,9 @@ runs are in `multabench/leaderboard/models_tar/`, with the same failures. The le
 as two entries, e.g. `LimiX-2 (Frozen-S)` and `LimiX-2 (TAR-S)`, and rates the encodings against each other.
 
 They also ran with the frozen large encoders, `e5-large` and `dino-large`; image datasets' text uses `e5-large` too.
-Those runs are in `multabench/leaderboard/models_large/`, as a third entry, e.g. `LimiX-2 (Frozen-L)`.
+Those runs are in `multabench/leaderboard/models_large/`, as a third entry, e.g. `LimiX-2 (Frozen-L)`, and with the
+large encoders fine-tuned, `e5-large-tar` and `dino-large-tar`, in `multabench/leaderboard/models_large_tar/`, as a
+fourth, e.g. `LimiX-2 (TAR-L)`; image datasets' text stays frozen `e5-large`.
 
 ## Metrics
 

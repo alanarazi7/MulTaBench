@@ -48,7 +48,6 @@ file as the PRs that complete them are merged.
 
 ## Later, not needed for the first release
 
-- Possibly the large encoders fine-tuned, `e5-large-tar` and `dino-large-tar`, as their own leaderboard entries.
 - `--size full` results.
 - A time limit per (model, dataset, fold), excluding encoder fine-tuning, with a result row with
   `"status": "timeout"`.
