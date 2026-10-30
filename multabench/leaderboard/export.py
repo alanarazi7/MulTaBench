@@ -7,8 +7,8 @@ import pandas as pd
 
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.info import Tier, dataset_info
-from multabench.leaderboard.elo import (ANCHOR, LARGE_RESULTS_DIR, RESULTS_DIR, TAR_RESULTS_DIR, error_table,
-                                        leaderboard, load_runs)
+from multabench.leaderboard.elo import (ANCHOR, LARGE_RESULTS_DIR, LARGE_TAR_RESULTS_DIR, RESULTS_DIR, TAR_RESULTS_DIR,
+                                        error_table, leaderboard, load_runs)
 from multabench.leaderboard.embedding_cost import EMBEDDING_COST_CSV, with_tar_encode_times
 from multabench.result_keys import ResultKey, RunStatus
 
@@ -18,10 +18,11 @@ TASKS = ["classification", "regression"]
 # The board knows two modalities: a dataset with images counts as image, whether or not it also has text.
 MODALITIES = [Modality.TEXT.value, Modality.IMAGE.value]
 ENCODING, ENTRY = "encoding", "entry"
-# How a model reads text and images: frozen, fine-tuned (TAR) or frozen large encoders, or end-to-end, reading raw text.
-ENCODINGS = {"frozen": "Frozen-S", "tar": "TAR-S", "large": "Frozen-L"}
+# How a model reads text and images: small or large encoders, frozen or fine-tuned (TAR), or end-to-end on raw text.
+ENCODINGS = {"frozen": "Frozen-S", "tar": "TAR-S", "large": "Frozen-L", "large-tar": "TAR-L"}
 # Each encoding's runs; the end-to-end models are among the frozen ones.
-ENCODING_DIRS = {"frozen": RESULTS_DIR, "tar": TAR_RESULTS_DIR, "large": LARGE_RESULTS_DIR}
+ENCODING_DIRS = {"frozen": RESULTS_DIR, "tar": TAR_RESULTS_DIR, "large": LARGE_RESULTS_DIR,
+                 "large-tar": LARGE_TAR_RESULTS_DIR}
 END_TO_END = "end-to-end"
 
 
@@ -87,17 +88,16 @@ def _with_model_and_encoding(df: pd.DataFrame, runs: pd.DataFrame, at: int) -> p
 
 
 def leaderboards(runs: pd.DataFrame, bootstraps: int = 1000) -> pd.DataFrame:
-    """One Elo leaderboard per combination of tiers, tasks, modalities and encodings; end-to-end models are in each."""
+    """One Elo leaderboard per combination of tiers, tasks and modalities, with every entry; the Space shows a slice of
+    it for the encodings picked, so an entry's Elo doesn't depend on which others are shown."""
     boards = []
+    anchor = f"{ANCHOR} ({ENCODINGS['frozen']})"
     for keys, sub in _filters(runs):
-        for encodings in subsets(list(ENCODINGS)):
-            picked = sub[sub[ENCODING].isin(encodings + [END_TO_END])]
-            anchor = f"{ANCHOR} ({ENCODINGS[encodings[0]]})"
-            board = leaderboard(error_table(_by_entry(picked)), bootstraps=bootstraps, anchor=anchor)
-            board = _with_model_and_encoding(board, picked, at=0)
-            for i, (k, v) in enumerate({**keys, "encodings": _subset_key(encodings, list(ENCODINGS))}.items()):
-                board.insert(i, k, v)
-            boards.append(board)
+        board = leaderboard(error_table(_by_entry(sub)), bootstraps=bootstraps, anchor=anchor)
+        board = _with_model_and_encoding(board, sub, at=0)
+        for i, (k, v) in enumerate(keys.items()):
+            board.insert(i, k, v)
+        boards.append(board)
     return pd.concat(boards, ignore_index=True)
 
 
@@ -175,5 +175,7 @@ if __name__ == "__main__":
     parser.add_argument('--results_dir', type=str, default=RESULTS_DIR)
     parser.add_argument('--tar_results_dir', type=str, default=TAR_RESULTS_DIR)
     parser.add_argument('--large_results_dir', type=str, default=LARGE_RESULTS_DIR)
+    parser.add_argument('--large_tar_results_dir', type=str, default=LARGE_TAR_RESULTS_DIR)
     args = parser.parse_args()
-    export(args.out_dir, {"frozen": args.results_dir, "tar": args.tar_results_dir, "large": args.large_results_dir})
+    export(args.out_dir, {"frozen": args.results_dir, "tar": args.tar_results_dir, "large": args.large_results_dir,
+                          "large-tar": args.large_tar_results_dir})

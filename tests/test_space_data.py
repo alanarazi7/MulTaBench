@@ -17,9 +17,9 @@ def runs():
 def test_the_space_leaderboards_follow_the_results(runs):
     shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "leaderboards.csv"))
     boards = leaderboards(runs, bootstraps=2)
-    assert len(boards.groupby(["tier", "task", "modality", "encodings"])) == 3 * 3 * 3 * (2 ** len(ENCODINGS) - 1)
+    assert len(boards.groupby(["tier", "task", "modality"])) == 3 * 3 * 3
     # Entries whose Elo ties can sort either way from one machine to another, so the boards are compared by entry.
-    key = ["tier", "task", "modality", "encodings", ENTRY]
+    key = ["tier", "task", "modality", ENTRY]
     shown, boards = shown.set_index(key).sort_index(), boards.set_index(key).sort_index()
     assert shown.index.equals(boards.index)
     for column in [ResultKey.MODEL, "encoding", "datasets"]:
@@ -72,4 +72,5 @@ def test_every_model_has_a_developer_logo_and_link(runs):
 
 def test_only_tar_entries_pay_fine_tuning(runs):
     finetune = cost(runs).set_index("encoding")["finetune_s_per_1k"]
-    assert (finetune.loc["tar"] > 0).all() and (finetune.drop("tar") == 0).all()
+    tar = ["tar", "large-tar"]
+    assert (finetune.loc[tar] > 0).all() and (finetune.drop(tar) == 0).all()

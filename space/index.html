@@ -12,7 +12,7 @@
 :root {
   --bg: #F3F5F2; --surface: #FFFFFF; --ink: #1C2228; --muted: #5C666F; --line: #D9DED7; --soft: #EBEEE9;
   --accent: #2C5C8A; --text-mod: #A4581B; --image-mod: #2D7653; --best: #2C5C8A; --warn: #A33A2A;
-  --frozen: #7E8A94; --tar: #2C5C8A; --large: #2F7F8C; --e2e: #8A5FA8;
+  --frozen: #7E8A94; --tar: #2C5C8A; --large: #2F7F8C; --large-tar: #B0466E; --e2e: #8A5FA8;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -21,14 +21,14 @@
   :root:not([data-theme="light"]) {
     --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
     --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --e2e: #C29BDF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
   --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --e2e: #C29BDF;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -82,7 +82,7 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
 .flag { color: var(--warn); }
 .chip { display: inline-block; font: 600 11.5px/1 var(--mono); letter-spacing: 0.03em; padding: 4px 8px; border-radius: 999px;
   color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface)); }
-.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .large { --c: var(--large); } .end-to-end { --c: var(--e2e); }
+.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .large { --c: var(--large); } .large-tar { --c: var(--large-tar); } .end-to-end { --c: var(--e2e); }
 b.enc { color: var(--c); }
 
 .selectors { border-bottom: 1px solid var(--line); }
@@ -107,7 +107,6 @@ b.enc { color: var(--c); }
 .encrow { flex-basis: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .encnote { max-width: 84ch; font-size: 16px; line-height: 1.6; margin: 1em 0; }
 .encnote ul { margin: 0.6em 0 0; padding-left: 1.2em; }
-#encodingText2 { font-size: 16px; line-height: 1.6; max-width: 84ch; }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
@@ -176,6 +175,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
           <li><b class="enc frozen">Frozen-S</b> uses the small encoders as they are.</li>
           <li><b class="enc tar">TAR-S</b> (Target-Aware Representations) first fine-tunes the small encoders on the training labels with default hyperparameters.</li>
           <li><b class="enc large">Frozen-L</b> uses the large encoders as they are.</li>
+          <li><b class="enc large-tar">TAR-L</b> fine-tunes the large encoders as TAR-S does the small ones.</li>
         </ul>
       </div>
     </div>
@@ -200,7 +200,6 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
-    <p id="encodingText2">🚧 <b>Under Construction:</b> More encoding methods coming soon!</p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
   </div>
@@ -512,7 +511,7 @@ async function load() {
   const get = async name => parseCSV(await (await fetch(`data/${name}.csv`)).text());
   const boards = {}, encodingBoards = {};
   (await get('leaderboards')).forEach(r => {
-    (boards[[r.tier, r.task, r.modality, r.encodings].join('|')] ||= []).push({ ...r, lo: r.elo_low, hi: r.elo_high, norm_error: r.normalized_error, champions: r.best_on });
+    (boards[[r.tier, r.task, r.modality].join('|')] ||= []).push({ ...r, lo: r.elo_low, hi: r.elo_high, norm_error: r.normalized_error, champions: r.best_on });
   });
   (await get('encodings')).forEach(r => {
     (encodingBoards[[r.tier, r.task, r.modality].join('|')] ||= []).push({ ...r, entry: r.encoding, lo: r.elo_low, hi: r.elo_high, champions: r.best_on });
@@ -522,8 +521,8 @@ async function load() {
   const res = await fetch('data/leaderboards.csv', { method: 'HEAD' });
   const updated = res.headers.get('last-modified') && new Date(res.headers.get('last-modified')).toISOString().slice(0, 10);
   const info = Object.fromEntries((await get('models')).map(r => [r.model, r]));
-  const entries = boards['all|all|all|all'].map(r => r.entry).sort();
-  const encodingOf = Object.fromEntries(boards['all|all|all|all'].map(r => [r.entry, r.encoding]));
+  const entries = boards['all|all|all'].map(r => r.entry).sort();
+  const encodingOf = Object.fromEntries(boards['all|all|all'].map(r => [r.entry, r.encoding]));
   return { boards, encodingBoards, per_dataset, cost, updated, info, encodingOf, meta: { entries } };
 }
 load().then(start).catch(err => {
@@ -532,20 +531,20 @@ load().then(start).catch(err => {
 function start(D) {
 
 const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
-const ENC_LABEL = { frozen: 'Frozen-S', tar: 'TAR-S', large: 'Frozen-L', 'end-to-end': 'E2E' };
-const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-tuned on each fold', large: 'Frozen large encoders', 'end-to-end': 'Reads raw text itself' };
+const ENC_LABEL = { frozen: 'Frozen-S', tar: 'TAR-S', large: 'Frozen-L', 'large-tar': 'TAR-L', 'end-to-end': 'E2E' };
+const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-tuned on each fold', large: 'Frozen large encoders', 'large-tar': 'Large encoders fine-tuned on each fold', 'end-to-end': 'Reads raw text itself' };
 const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
 // A short mark for the encoding, in place of the "(Frozen-S)" or "(TAR-S)" of an entry's name.
-const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'end-to-end': '🔚' };
+const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'large-tar': '🏹', 'end-to-end': '🔚' };
 const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
-const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L']];
+const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L'], ['large-tar', 'TAR-L']];
 const encoderCells = (e5, dino) => `<td class="model"><a href="https://huggingface.co/intfloat/${e5}-v2">${e5}</a></td>`
   + `<td class="model"><a href="https://huggingface.co/facebook/dinov3-vit${dino[0]}16-pretrain-lvd1689m">DINOv3-${dino[1]}</a></td>`;
 const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encoderCells('e5-small', ['s', 'small']),
-  large: encoderCells('e5-large', ['l', 'large']) };
+  large: encoderCells('e5-large', ['l', 'large']), 'large-tar': encoderCells('e5-large', ['l', 'large']) };
 // The encodings board names each encoding by its label.
 const ENC_KEY = Object.fromEntries(Object.entries(ENC_LABEL).map(([k, v]) => [v, k]));
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
@@ -572,7 +571,7 @@ function setTheme(t) {
 setTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
 // The multabench package version the board is built with.
-const LATEST = { version: 'v0.1.1', date: D.updated };
+const LATEST = { version: 'v0.1.2', date: D.updated };
 document.getElementById('version').innerHTML = `<span class="tag">${LATEST.version}</span>`;
 // Page tabs follow the URL hash, so each can be linked to; the filters only show where they apply.
 const TABS = [...document.querySelectorAll('#pageTabs a')].map(a => a.dataset.tab);
@@ -609,7 +608,7 @@ function drawEncTabs() {
     showNames = !showNames; store.set('pareto_names', showNames ? '1' : '0'); drawEncTabs(); render();
   } }, 'Show names');
   n.setAttribute('aria-pressed', showNames);
-  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L and 🔚 for E2E, as the points', onclick: () => {
+  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L, 🏹 for TAR-L and 🔚 for E2E, as the points', onclick: () => {
     withEmojis = !withEmojis; store.set('pareto_emojis', withEmojis ? '1' : '0'); drawEncTabs(); render();
   } }, 'With emojis');
   m.setAttribute('aria-pressed', withEmojis);
@@ -703,7 +702,8 @@ const sel = { tier: restore('tiers_v2', TIERS.map(t => t[0]), ['core']), task: r
   modality: restore('mods', MODS.map(m => m[0])) };
 const FIELDS = Object.keys(sel);
 let encSel = restore('encodings', ENCS.map(e => e[0]));
-const encKey = () => keyOf(encSel, ENCS);
+// Each board rates every entry; the encodings picked only choose which of them are shown.
+const slice = board => board.filter(r => r.encoding === 'end-to-end' || encSel.includes(r.encoding));
 const keyOf = (picked, all) => picked.length === all.length ? 'all' : all.map(a => a[0]).filter(a => picked.includes(a)).join('+');
 const inFilter = d => FIELDS.every(f => sel[f].includes(dsInfo[d][f]));
 
@@ -741,7 +741,7 @@ function encodingToggles() {
 function drawElo(board) {
   const groups = [];
   board.forEach(r => { let g = groups.find(g => g.model === r.model); if (!g) groups.push(g = { model: r.model, rows: [] }); g.rows.push(r); });
-  const ORDER = ['frozen', 'large', 'tar', 'end-to-end'];
+  const ORDER = ['frozen', 'large', 'tar', 'large-tar', 'end-to-end'];
   groups.forEach(g => g.rows.sort((a, b) => ORDER.indexOf(a.encoding) - ORDER.indexOf(b.encoding)));
   const W = 1080, H = 460, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
   const lo = Math.min(1000, ...board.map(r => r.lo)), hi = Math.max(...board.map(r => r.hi));
@@ -813,7 +813,7 @@ function drawBoard(board, front) {
 
 const filterKey = () => keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS);
 function renderBoard() {
-  const board = D.boards[filterKey() + '|' + encKey()];
+  const board = slice(D.boards[filterKey()]);
   const names = Object.keys(dsInfo).filter(inFilter);
   const count = (field, key) => names.filter(d => dsInfo[d][field] === key).length;
   const line = (title, field, all) => `<span class="label">${title}</span> ` + all.filter(([k]) => count(field, k))
@@ -826,7 +826,7 @@ function renderBoard() {
   drawPareto(board, front);
 }
 
-const orderOf = () => D.boards['all|all|all|' + encKey()].map(r => r.entry);
+const orderOf = () => slice(D.boards['all|all|all']).map(r => r.entry);
 function render() {
   toggles(document.getElementById('tierTabs'), TIERS, 'tier', 'tiers');
   toggles(document.getElementById('taskTabs'), TASKS, 'task', 'tasks');

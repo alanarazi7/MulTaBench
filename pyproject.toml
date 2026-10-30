@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "multabench"
-version = "0.1.1"
+version = "0.1.2"
 description = "Benchmarking multimodal tabular learning: tables whose columns include text or images"
 readme = "README.md"
 license = "MIT"
@@ -80,5 +80,5 @@ include = ["multabench*"]
 
 # The published runs, for load_published_results, and the pinned Hugging Face revisions.
 [tool.setuptools.package-data]
-"multabench.leaderboard" = ["models/*.csv", "models_tar/*.csv", "models_large/*.csv"]
+"multabench.leaderboard" = ["models/*.csv", "models_tar/*.csv", "models_large/*.csv", "models_large_tar/*.csv"]
 "multabench.datasets" = ["revisions.json"]

@@ -42,10 +42,12 @@ def test_every_dataset_has_every_fold_once(runs):
 
 
 def test_each_dataset_uses_the_encoders_of_its_columns(runs):
-    """Frozen, large, or -tar for the image column and a text-only dataset's text; image datasets' text stays frozen."""
+    """Small or large, frozen or -tar for the image column and a text-only dataset's text; image datasets' text stays
+    frozen."""
     name, df, encoding = runs
     embeds_text = MODELS[name].USE_TEXT_EMBEDDINGS
-    size, tar = ("large", "") if encoding == "large" else ("small", "-tar" if encoding == "tar" else "")
+    size = "large" if encoding.startswith("large") else "small"
+    tar = "-tar" if encoding.endswith("tar") else ""
     for dataset, encoders in df.groupby(ResultKey.DATASET)[[ResultKey.TEXT_ENCODER, ResultKey.IMAGE_ENCODER]]:
         modality = dataset_modality(MulTaBenchDatasetID[dataset])
         text_tar = tar if modality == Modality.TEXT else ""
