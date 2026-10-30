@@ -72,4 +72,5 @@ def test_every_model_has_a_developer_logo_and_link(runs):
 
 def test_only_tar_entries_pay_fine_tuning(runs):
     finetune = cost(runs).set_index("encoding")["finetune_s_per_1k"]
-    assert (finetune.loc["tar"] > 0).all() and (finetune.drop("tar") == 0).all()
+    tar = ["tar", "large-tar"]
+    assert (finetune.loc[tar] > 0).all() and (finetune.drop(tar) == 0).all()
