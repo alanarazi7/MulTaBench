@@ -10,8 +10,7 @@ from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENC
                                         run_local, sbatch_commands, select_datasets, venv_python, write_jobs_file,
                                         write_slurm_script)
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID
-from multabench.dino.constants import ImageEncoder
-from multabench.e5.constants import TextEncoder
+from multabench.encoders.constants import ImageEncoder, TextEncoder
 
 REPO_DIR = os.path.dirname(os.path.abspath(__file__))
 

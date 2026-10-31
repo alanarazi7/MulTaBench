@@ -1,35 +1,10 @@
 """Constants for E5 text encoders (BERT-based)."""
 
-from enum import StrEnum
-
 from multabench.finetune.train_args import LoraArgs
-from multabench.utils.encoders import Encoder
 
 E5_SMALL_V2 = "intfloat/e5-small-v2"
 E5_LARGE_V2 = "intfloat/e5-large-v2"
 
-TF_IDF = "tf-idf"  # skrub StringEncoder (TF-IDF + TruncatedSVD), CPU-only
-
-
-
-class TextEncoder(StrEnum):
-    TFIDF = "tfidf"
-    E5_SMALL = "e5-small"
-    E5_SMALL_TAR = "e5-small-tar"
-    E5_LARGE = "e5-large"
-    E5_LARGE_TAR = "e5-large-tar"
-
-
-DEFAULT_TEXT_ENCODER = TextEncoder.E5_SMALL
-
-
-TEXT_ENCODERS = {
-    TextEncoder.TFIDF: Encoder(encoder_name=TF_IDF, tune_encoder=False),
-    TextEncoder.E5_SMALL: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=False),
-    TextEncoder.E5_SMALL_TAR: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=True),
-    TextEncoder.E5_LARGE: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
-    TextEncoder.E5_LARGE_TAR: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=True),
-}
 
 E5_LORA = LoraArgs(learning_rate=1e-4, epochs=50)
 

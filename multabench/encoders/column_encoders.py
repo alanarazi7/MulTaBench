@@ -17,6 +17,10 @@ from multabench.embeddings.hub import CachedEmbeddings, CachedEncoder, cached_em
 PCA_COMPONENTS = 30
 
 
+def column_texts(values: Series) -> List[str]:
+    return values.astype(str).fillna("").tolist()
+
+
 class ColumnEncoder:
     SUFFIX: str
 

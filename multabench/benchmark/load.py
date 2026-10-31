@@ -23,7 +23,7 @@ from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, data
 from multabench.datasets.hub import DATA_PARQUET, IMAGES_DIR, extract_images, hf_repo_id, local_repo_dir
 from multabench.datasets.revisions import revision
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
-from multabench.e5.constants import DEFAULT_TEXT_ENCODER
+from multabench.encoders.constants import DEFAULT_TEXT_ENCODER
 from multabench.embeddings.hub import (CACHED_ENCODERS, EMBEDDINGS_NPZ, META_JSON, CachedEmbeddings, CachedEncoder,
                                        download_embeddings, embeddings_dir, embeds_dataset, encoder_inputs,
                                        input_values, is_tuned, parse_encoder, read_embeddings, repo_name)

@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, List, Optional, Tuple
 
 import numpy as np
 import torch
@@ -6,13 +6,11 @@ from PIL import Image
 from pandas import DataFrame, Series
 from transformers import AutoImageProcessor, AutoModel, DINOv3ViTImageProcessorFast, DINOv3ViTModel
 
-from multabench.baselines.preprocessing.column_encoders import ColumnEncoder, column_caches, fit_column_encoders
-from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.dino.constants import DEFAULT_IMAGE_ENCODER, IMAGE_ENCODERS, ImageEncoder
-from multabench.dino.dino_finetune import finetune_dino
-from multabench.dino.image_loading import load_images
-from multabench.benchmark.splits import Size
-from multabench.embeddings.hub import CACHED_ENCODERS, CachedEmbeddings
+from multabench.embeddings.hub import CachedEmbeddings
+from multabench.encoders.abstract_encoder import EmbeddingEncoder
+from multabench.encoders.column_encoders import ColumnEncoder
+from multabench.encoders.dino.dino_finetune import finetune_dino
+from multabench.encoders.dino.image_loading import load_images
 from multabench.utils.timing import embedding_step
 from multabench.utils.warnings import suppress_channel_dimension_warning
 
@@ -45,29 +43,23 @@ class DinoColumnEncoder(ColumnEncoder):
         return super().transform(embeddings).astype(np.float32)
 
 
-def fit_image_encoders(x: DataFrame, image_features: Set[str], device: torch.device, image_folder: Optional[str],
-                       encoder: ImageEncoder = DEFAULT_IMAGE_ENCODER, y: Optional[Series] = None, is_cls: bool = True,
-                       dataset: Optional[MulTaBenchDatasetID] = None, size: Optional[Size] = None,
-                       fold: Optional[int] = None) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
-    """One encoder per image column, with the training rows' embeddings, read from the cache when the encoder has
-    one: the fold's, for a tuned encoder. Otherwise a tuned encoder is DINO fine-tuned on (x, y) of the first one."""
-    columns = [c for c in x.columns if c in image_features]
-    if not columns:
-        return {}, {}
-    if image_folder is None:
-        raise ValueError(f"Image columns {columns} need an image_folder")
-    spec = IMAGE_ENCODERS[encoder]
-    caches = column_caches(encoder, dataset, columns, size=size, fold=fold) if encoder in CACHED_ENCODERS else {}
-    model, processor = None, None
-    if not set(caches).issuperset(columns):
-        if spec.tune_encoder:
-            model, processor, _ = finetune_dino(x[columns[0]], y, is_cls=is_cls, image_folder=image_folder,
-                                                device=device, model_name=spec.encoder_name)
-        else:
-            model, processor = get_image_encoder(model_name=spec.encoder_name)
-            model.to(device)
-    return fit_column_encoders(x, [DinoColumnEncoder(col, model, processor, image_folder, cache=caches.get(col))
-                                   for col in columns])
+class DinoEncoder(EmbeddingEncoder):
+    """DINO on each image column, vanilla or, for a tuned encoder, fine-tuned on (x, y) of the first one."""
+
+    def column_encoders(self, x: DataFrame, columns: List[str], y: Optional[Series],
+                        is_cls: bool) -> List[ColumnEncoder]:
+        if self.image_folder is None:
+            raise ValueError(f"Image columns {columns} need an image_folder")
+        caches = self.caches(columns)
+        model, processor = None, None
+        if not set(caches).issuperset(columns):
+            if self.spec.tune_encoder:
+                model, processor, _ = finetune_dino(x[columns[0]], y, is_cls=is_cls, image_folder=self.image_folder,
+                                                    device=self.device, model_name=self.spec.encoder_name)
+            else:
+                model, processor = get_image_encoder(model_name=self.spec.encoder_name)
+                model.to(self.device)
+        return [DinoColumnEncoder(col, model, processor, self.image_folder, cache=caches.get(col)) for col in columns]
 
 
 @embedding_step

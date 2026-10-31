@@ -2,20 +2,23 @@ import numpy as np
 import pytest
 from pandas import DataFrame
 
-from multabench.baselines.preprocessing import column_encoders, image_embeddings, text_embeddings
-from multabench.baselines.preprocessing.column_encoders import transform_columns
-from multabench.baselines.preprocessing.image_embeddings import fit_image_encoders
 from multabench.baselines.preprocessing.nulls import MISSING_VALUE
-from multabench.baselines.preprocessing.text_embeddings import E5ColumnEncoder, fit_text_encoders
 from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
-from multabench.dino.constants import DINOV3_LARGE, DINOV3_SMALL, IMAGE_ENCODERS, ImageEncoder
-from multabench.e5.constants import E5_SMALL_V2, TEXT_ENCODERS, TF_IDF, TextEncoder, format_e5_passage
 from multabench.embeddings import hub
 from multabench.embeddings.hub import (CACHED_ENCODERS, META_JSON, CachedEmbeddings, cached_encoder, download_embeddings,
                                        embeddings_dir, embeddings_repo_id, embeds_dataset, encoder_inputs, input_values, parse_encoder,
                                        read_embeddings, reads_cache, write_embeddings)
 from multabench.embeddings.jobs import EmbeddingJob, list_jobs, pending_jobs
+from multabench.encoders import column_encoders
+from multabench.encoders.column_encoders import transform_columns
+from multabench.encoders.constants import IMAGE_ENCODERS, ImageEncoder, TEXT_ENCODERS, TF_IDF, TextEncoder
+from multabench.encoders.dino import dino_encoder
+from multabench.encoders.dino.constants import DINOV3_LARGE, DINOV3_SMALL
+from multabench.encoders.e5 import e5_encoder
+from multabench.encoders.e5.constants import E5_SMALL_V2, format_e5_passage
+from multabench.encoders.e5.e5_encoder import E5ColumnEncoder
+from multabench.encoders.registry import ENCODER_CLASSES, make_encoder
 
 TEXT = MulTaBenchDatasetID.BIN_TEXT_FAKE_JOB_POSTING
 IMAGE_TEXT = MulTaBenchDatasetID.MUL_IMAGE_PETFINDER
@@ -25,6 +28,10 @@ def test_one_repo_per_encoder():
     assert embeddings_repo_id(TextEncoder.E5_SMALL) == "multabench/embeddings-e5-small"
     assert embeddings_repo_id(ImageEncoder.DINO_SMALL) == "multabench/embeddings-dino-small"
     assert embeddings_dir(TEXT) == TEXT.value
+
+
+def test_every_encoder_has_a_class():
+    assert set(ENCODER_CLASSES) == set(TextEncoder) | set(ImageEncoder)
 
 
 def test_tuned_encoders_are_cached_per_fold():
@@ -137,11 +144,12 @@ def test_text_features_look_their_texts_up_in_the_cache(monkeypatch):
     cache = CachedEmbeddings(inputs=encoder_inputs(TextEncoder.E5_SMALL, "title", distinct), embeddings=vectors,
                              meta={"features": ["title"]})
     monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset, size, fold: cache)
-    monkeypatch.setattr(text_embeddings, "get_vanilla_e5", lambda *args, **kwargs: pytest.fail("loaded E5 for a cached column"))
+    monkeypatch.setattr(e5_encoder, "get_vanilla_e5", lambda *a, **k: pytest.fail("loaded E5 for a cached column"))
     x = DataFrame({"title": texts})
     expected = vectors[[distinct.index(t) for t in texts]]
     train_idx, test_idx = rng.permutation(60)[:45], np.arange(60)[::4]
-    encoders, train_embeddings = fit_text_encoders(x.iloc[train_idx], text_features={"title"}, device="cpu", dataset=TEXT)
+    encoders, train_embeddings = make_encoder(TextEncoder.E5_SMALL, device="cpu", dataset=TEXT).fit(x.iloc[train_idx],
+                                                                                                    columns=["title"])
     np.testing.assert_array_equal(train_embeddings["title"], expected[train_idx])
     x_test = transform_columns(x.iloc[test_idx], encoders=encoders)
     np.testing.assert_allclose(x_test.to_numpy(), encoders["title"].transform(expected[test_idx]), rtol=1e-6)
@@ -156,12 +164,12 @@ def test_image_features_look_their_files_up_in_the_cache(monkeypatch):
     vectors = rng.normal(size=(len(distinct), 64)).astype(np.float32)
     cache = CachedEmbeddings(inputs=distinct, embeddings=vectors, meta={"features": ["photo"]})
     monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset, size, fold: cache)
-    monkeypatch.setattr(image_embeddings, "get_image_encoder", lambda *args, **kwargs: pytest.fail("loaded DINO for a cached column"))
+    monkeypatch.setattr(dino_encoder, "get_image_encoder", lambda *a, **k: pytest.fail("loaded DINO for cached images"))
     x = DataFrame({"photo": files})
     expected = vectors[[distinct.index(f) for f in files]]
     train_idx, test_idx = rng.permutation(60)[:45], np.arange(60)[::4]
-    encoders, train_embeddings = fit_image_encoders(x.iloc[train_idx], image_features={"photo"}, device="cpu",
-                                                    image_folder="unused", dataset=IMAGE_TEXT)
+    dino = make_encoder(ImageEncoder.DINO_SMALL, device="cpu", dataset=IMAGE_TEXT, image_folder="unused")
+    encoders, train_embeddings = dino.fit(x.iloc[train_idx], columns=["photo"])
     np.testing.assert_array_equal(train_embeddings["photo"], expected[train_idx])
     x_test = transform_columns(x.iloc[test_idx], encoders=encoders)
     np.testing.assert_allclose(x_test.to_numpy(), encoders["photo"].transform(expected[test_idx]), rtol=1e-5)
@@ -183,17 +191,17 @@ def test_a_tuned_run_reads_its_folds_embeddings(monkeypatch):
         return _tuned_cache(texts, ["title"])
 
     monkeypatch.setattr(column_encoders, "cached_embeddings", fold_cache)
-    monkeypatch.setattr(text_embeddings, "finetune_e5", lambda *args, **kwargs: pytest.fail("tuned a cached fold"))
-    encoders, _ = fit_text_encoders(DataFrame({"title": texts}), text_features={"title"}, device="cpu",
-                                    encoder=TextEncoder.E5_SMALL_TAR, dataset=TEXT, size=Size.TEN_K, fold=2)
+    monkeypatch.setattr(e5_encoder, "finetune_e5", lambda *args, **kwargs: pytest.fail("tuned a cached fold"))
+    e5 = make_encoder(TextEncoder.E5_SMALL_TAR, device="cpu", dataset=TEXT, size=Size.TEN_K, fold=2)
+    encoders, _ = e5.fit(DataFrame({"title": texts}), columns=["title"])
     assert asked == [(TextEncoder.E5_SMALL_TAR, TEXT, Size.TEN_K, 2)]
     assert transform_columns(DataFrame({"title": ["t3"]}), encoders=encoders).shape == (1, 30)
 
 
 def test_a_tuned_run_needs_its_fold():
     with pytest.raises(ValueError, match="per fold"):
-        fit_text_encoders(DataFrame({"title": ["a"] * 40}), text_features={"title"}, device="cpu",
-                          encoder=TextEncoder.E5_SMALL_TAR, dataset=TEXT)
+        make_encoder(TextEncoder.E5_SMALL_TAR, device="cpu", dataset=TEXT).fit(DataFrame({"title": ["a"] * 40}),
+                                                                               columns=["title"])
 
 
 def test_a_fold_tuned_on_other_columns_raises(monkeypatch):
@@ -201,8 +209,8 @@ def test_a_fold_tuned_on_other_columns_raises(monkeypatch):
     monkeypatch.setattr(column_encoders, "cached_embeddings",
                         lambda encoder, dataset, size, fold: _tuned_cache(texts, ["title", "body"]))
     with pytest.raises(ValueError, match="tuned on"):
-        fit_text_encoders(DataFrame({"title": texts}), text_features={"title"}, device="cpu",
-                          encoder=TextEncoder.E5_SMALL_TAR, dataset=TEXT, size=Size.TEN_K, fold=0)
+        e5 = make_encoder(TextEncoder.E5_SMALL_TAR, device="cpu", dataset=TEXT, size=Size.TEN_K, fold=0)
+        e5.fit(DataFrame({"title": texts}), columns=["title"])
 
 
 def test_embedding_jobs_write_a_jobs_file(tmp_path):

@@ -11,8 +11,7 @@ from multabench.benchmark import load
 from multabench.benchmark.load import data_dir_files, load_embeddings, load_split, load_target
 from multabench.benchmark.splits import SPLITS, Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.dino.constants import ImageEncoder
-from multabench.e5.constants import TextEncoder
+from multabench.encoders.constants import ImageEncoder, TextEncoder
 from multabench.embeddings import hub
 from multabench.embeddings.hub import embeddings_dir, encoder_inputs, input_values, repo_name, write_embeddings
 

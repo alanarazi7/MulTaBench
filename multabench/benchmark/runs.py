@@ -3,8 +3,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from multabench.benchmark.splits import Size
-from multabench.dino.constants import ImageEncoder
-from multabench.e5.constants import TextEncoder
+from multabench.encoders.constants import ImageEncoder, TextEncoder
 
 
 @dataclass(frozen=True)

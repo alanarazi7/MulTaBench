@@ -30,8 +30,8 @@ from multabench.baselines.benchmarks.evaluate import evaluate_on_dataset
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import DEFAULT_SIZE, SPLITS, Size
 from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modality
-from multabench.dino.constants import DEFAULT_IMAGE_ENCODER, IMAGE_ENCODERS, ImageEncoder
-from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TEXT_ENCODERS, TextEncoder
+from multabench.encoders.constants import (DEFAULT_IMAGE_ENCODER, DEFAULT_TEXT_ENCODER, IMAGE_ENCODERS, ImageEncoder,
+                                           TEXT_ENCODERS, TextEncoder)
 from multabench.embeddings.hub import reads_cache
 from multabench.result_keys import ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware
