@@ -69,7 +69,7 @@ class TabularModel:
         self.image_column = image_column
         self.text_encoder = text_encoder or DEFAULT_TEXT_ENCODER
         self.image_encoder = image_encoder or DEFAULT_IMAGE_ENCODER
-        context = dict(device=device, dataset=dataset, size=size, fold=fold)
+        context = dict(device=device, dataset=dataset, size=size, fold=fold, image_column=image_column)
         self.text_embedder = make_encoder(self.text_encoder, **context)
         self.image_embedder = make_encoder(self.image_encoder, image_folder=image_folder, **context)
         self.model_ = self.initialize_model()
@@ -89,6 +89,7 @@ class TabularModel:
         raise NotImplementedError("Initialize model method not implemented yet")
 
     def fit(self, x: DataFrame, y: Series):
+        self._see_rows(x)
         x_train, y_train = x.copy(), y.copy()
         if self.USE_VAL_SPLIT:
             x_train, x_val, y_train, y_val = split_to_val(x=x, y=y, is_cls=self.is_cls)
@@ -179,7 +180,13 @@ class TabularModel:
         # d_output already set above for the image encoder
         return x, y
 
+    def _see_rows(self, x: DataFrame):
+        if self.USE_TEXT_EMBEDDINGS:
+            self.text_embedder.see_rows(x)
+        self.image_embedder.see_rows(x)
+
     def predict(self, x: DataFrame) -> np.ndarray:
+        self._see_rows(x)
         x, _ = self.transform_preprocessor(x=x, y=None)
         return self.predict_from_processed(x=x)
 

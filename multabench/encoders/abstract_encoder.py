@@ -15,7 +15,8 @@ class EmbeddingEncoder:
     per column, with the training rows' embeddings, read from the cache when the encoder has one."""
 
     def __init__(self, name: CachedEncoder, device: torch.device, dataset: Optional[MulTaBenchDatasetID] = None,
-                 size: Optional[Size] = None, fold: Optional[int] = None, image_folder: Optional[str] = None):
+                 size: Optional[Size] = None, fold: Optional[int] = None, image_folder: Optional[str] = None,
+                 image_column: Optional[str] = None):
         self.name = name
         self.spec = encoder_spec(name)
         self.device = device
@@ -24,6 +25,10 @@ class EmbeddingEncoder:
         self.size = size
         self.fold = fold
         self.image_folder = image_folder
+        self.image_column = image_column
+
+    def see_rows(self, x: DataFrame):
+        """The rows a model fits or predicts on, as loaded; for encoders that read whole rows."""
 
     def fit(self, x: DataFrame, columns: List[str], y: Optional[Series] = None,
             is_cls: bool = True) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
