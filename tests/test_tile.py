@@ -62,8 +62,8 @@ def test_the_encoder_embeds_the_rows_it_saw(pooled):
     x = DataFrame({"title": ["a", "bb", "ccc"], "photo": ["1.jpg", "2.jpg", "3.jpg"]})
     tile = make_encoder(TextEncoder.TILE, device="cpu", image_column="photo")
     tile.see_rows(x)
-    _, train_embeddings = tile.fit(x, columns=["title"])
-    assert np.array_equal(train_embeddings["title"][:, 0], [len(t) for t in serialize(x[["title"]])[0]])
+    [title] = tile.column_encoders(x, columns=["title"], y=None, is_cls=True)
+    assert np.array_equal(title.embed(x)[:, 0], [len(t) for t in serialize(x[["title"]])[0]])
 
 
 def test_rows_need_a_unique_index():
