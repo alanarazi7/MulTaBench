@@ -14,7 +14,9 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      # The shared environment without the per-model extras, on CPU torch.
-      - run: pip install --extra-index-url https://download.pytorch.org/whl/cpu -e ".[bench,leaderboard,dev]"
+      # The shared environment without the per-model extras, on CPU torch, and TILE's package for its encoder's tests.
+      - run: >-
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu -e ".[bench,leaderboard,dev]"
+          -r requirements-tile.in
       # benchmark.py lives at the repo root, which python -m puts on the path.
       - run: python -m pytest -q
