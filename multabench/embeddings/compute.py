@@ -9,14 +9,15 @@ import torch
 from pandas import DataFrame, Series
 
 from multabench.baselines.preprocessing.feature_types import detect_feature_types, transform_feature_types
-from multabench.baselines.preprocessing.image_embeddings import get_image_encoder, image_urls_to_embeddings
 from multabench.benchmark.load import split_dataset
 from multabench.benchmark.splits import Size
 from multabench.datasets.objects import MultimodalDataset
-from multabench.dino.constants import DINO_LORA, ImageEncoder
-from multabench.dino.dino_finetune import finetune_dino
-from multabench.e5.constants import E5_LORA, TextEncoder
-from multabench.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
+from multabench.encoders.constants import ImageEncoder, TextEncoder
+from multabench.encoders.dino.constants import DINO_LORA
+from multabench.encoders.dino.dino_encoder import get_image_encoder, image_urls_to_embeddings
+from multabench.encoders.dino.dino_finetune import finetune_dino
+from multabench.encoders.e5.constants import E5_LORA
+from multabench.encoders.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
 from multabench.embeddings.hub import (CachedEncoder, encoder_inputs, encoder_spec, input_values, is_tuned,
                                        write_embeddings)
 from multabench.utils.hardware import EMBEDDING_HARDWARE, get_hardware_dict, hardware_mismatches

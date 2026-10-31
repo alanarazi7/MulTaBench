@@ -2,8 +2,7 @@ import pytest
 import torch
 
 from multabench.utils import hardware
-from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
-from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
+from multabench.encoders.constants import IMAGE_ENCODERS, ImageEncoder, TEXT_ENCODERS, TextEncoder
 from multabench.utils.hardware import (CPU_RUN_HARDWARE, EMBEDDING_HARDWARE, GPU_RUN_HARDWARE, Hardware, assert_hardware,
                                        hardware_mismatches, run_hardware)
 

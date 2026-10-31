@@ -23,9 +23,8 @@ from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.hub import HF_ORG, local_repo_dir
 from multabench.datasets.revisions import revision
-from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
-from multabench.e5.constants import TEXT_ENCODERS, TextEncoder, format_e5_passage
-from multabench.utils.encoders import Encoder
+from multabench.encoders.constants import Encoder, IMAGE_ENCODERS, ImageEncoder, TEXT_ENCODERS, TextEncoder
+from multabench.encoders.e5.constants import format_e5_passage
 
 EMBEDDINGS_NPZ = "embeddings.npz"
 META_JSON = "meta.json"

@@ -8,8 +8,7 @@ from multabench.benchmark.sweep import (DEFAULT_IMAGE_ENCODERS, DEFAULT_TEXT_ENC
                                         encoder_pairs, list_runs, pending_runs, prefetch, sbatch_commands,
                                         select_datasets, venv_python, write_jobs_file)
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
-from multabench.dino.constants import ImageEncoder
-from multabench.e5.constants import TextEncoder
+from multabench.encoders.constants import ImageEncoder, TextEncoder
 
 TEXT = MulTaBenchDatasetID.BIN_TEXT_FAKE_JOB_POSTING
 IMAGE_TEXT = MulTaBenchDatasetID.MUL_IMAGE_PETFINDER

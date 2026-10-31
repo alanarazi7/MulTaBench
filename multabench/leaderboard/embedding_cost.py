@@ -12,8 +12,7 @@ import pandas as pd
 
 from multabench.benchmark.splits import DEFAULT_SIZE, SPLITS
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
-from multabench.dino.constants import ImageEncoder
-from multabench.e5.constants import TextEncoder
+from multabench.encoders.constants import ImageEncoder, TextEncoder
 from multabench.embeddings.hub import CACHED_ENCODERS, META_JSON, download_embeddings, embeds_dataset, is_tuned
 
 EMBEDDING_COST_CSV = os.path.join(os.path.dirname(__file__), "embedding_cost.csv")

@@ -11,8 +11,6 @@ from multabench.baselines.preprocessing.dates import fit_date_encoders, transfor
 from multabench.baselines.preprocessing.feature_types import detect_feature_types, transform_feature_types
 from multabench.baselines.preprocessing.nulls import raise_if_null_target
 from multabench.baselines.preprocessing.validation import split_to_val
-from multabench.baselines.preprocessing.column_encoders import ColumnEncoder, transform_columns
-from multabench.baselines.preprocessing.image_embeddings import fit_image_encoders
 from multabench.baselines.training.metrics import calculate_metric
 from multabench.datasets.all_datasets import MulTaBenchDatasetID
 from multabench.baselines.preprocessing.categorical import (fit_categorical_encoders, fit_category_dtypes,
@@ -20,9 +18,9 @@ from multabench.baselines.preprocessing.categorical import (fit_categorical_enco
 from multabench.baselines.preprocessing.numerical import fit_numerical_median, transform_numerical_features
 from multabench.baselines.preprocessing.target import transform_preprocess_y, fit_preprocess_y
 from multabench.benchmark.splits import Size
-from multabench.dino.constants import DEFAULT_IMAGE_ENCODER, ImageEncoder
-from multabench.e5.constants import DEFAULT_TEXT_ENCODER, TextEncoder
-from multabench.baselines.preprocessing.text_embeddings import fit_text_encoders
+from multabench.encoders.column_encoders import ColumnEncoder, transform_columns
+from multabench.encoders.constants import DEFAULT_IMAGE_ENCODER, DEFAULT_TEXT_ENCODER, ImageEncoder, TextEncoder
+from multabench.encoders.registry import make_encoder
 from multabench.datasets.objects import SupervisedTask
 from multabench.utils.warnings import silence_baselines_prints
 
@@ -71,9 +69,9 @@ class TabularModel:
         self.image_column = image_column
         self.text_encoder = text_encoder or DEFAULT_TEXT_ENCODER
         self.image_encoder = image_encoder or DEFAULT_IMAGE_ENCODER
-        # A tuned encoder's cached embeddings are per fold.
-        self.fold = fold
-        self.size = size
+        context = dict(device=device, dataset=dataset, size=size, fold=fold)
+        self.text_embedder = make_encoder(self.text_encoder, **context)
+        self.image_embedder = make_encoder(self.image_encoder, image_folder=image_folder, **context)
         self.model_ = self.initialize_model()
         self.target_transformer: Optional[LabelEncoder] = None
         self.date_transformers: Dict[str, DatetimeEncoder] = {}
@@ -112,9 +110,8 @@ class TabularModel:
         if self.USE_CATEGORICAL_ENCODING:
             self.categorical_encoders = fit_categorical_encoders(x=x_train, categorical_features=self.categorical_features)
         if self.USE_TEXT_EMBEDDINGS:
-            self.text_transformers, text_embeddings = fit_text_encoders(
-                x=x_train, text_features=self.text_features, device=self.device, encoder=self.text_encoder, y=y_train,
-                is_cls=self.is_cls, dataset=self.dataset, size=self.size, fold=self.fold)
+            self.text_transformers, text_embeddings = self.text_embedder.fit(
+                x=x_train, columns=sorted(self.text_features), y=y_train, is_cls=self.is_cls)
             self._train_embeddings.update(text_embeddings)
             self.vprint(f"📝 Detected {len(self.text_transformers)} text features: {sorted(self.text_transformers)}")
         if self.USE_CATEGORY_DTYPE:
@@ -161,9 +158,9 @@ class TabularModel:
             self.d_output = len(set(y))
         else:
             self.d_output = 1
-        self.image_transformers, self._train_embeddings = fit_image_encoders(
-            x=x, image_features=feature_types.image_features, device=self.device, image_folder=self.image_folder,
-            encoder=self.image_encoder, y=y, is_cls=self.is_cls, dataset=self.dataset, size=self.size, fold=self.fold)
+        image_columns = [c for c in x.columns if c in feature_types.image_features]
+        self.image_transformers, self._train_embeddings = self.image_embedder.fit(
+            x=x, columns=image_columns, y=y, is_cls=self.is_cls)
         self.vprint(f"📷 Detected {len(self.image_transformers)} image features: {sorted(self.image_transformers)}")
         non_image_columns = [col for col in x.columns if col not in self.image_transformers]
         x = x[non_image_columns]
@@ -179,7 +176,7 @@ class TabularModel:
         # categorical columns at fit time (e.g. LightGBM) must resolve by name: [c for c in x.columns if c in self.categorical_features].
         self.categorical_indices = [i for i, c in enumerate(x.columns) if c in self.categorical_features]
         self.target_transformer = fit_preprocess_y(y=y, is_cls=self.is_cls)
-        # d_output already set above for fit_image_encoders
+        # d_output already set above for the image encoder
         return x, y
 
     def predict(self, x: DataFrame) -> np.ndarray:

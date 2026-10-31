@@ -9,8 +9,7 @@ from multabench.baselines.abstract_model import TabularModel
 from multabench.benchmark.load import load_multabench_dataset, split_dataset
 from multabench.benchmark.splits import DEFAULT_SIZE, Size
 from multabench.utils.hardware import get_hardware_dict
-from multabench.dino.constants import IMAGE_ENCODERS, ImageEncoder
-from multabench.e5.constants import TEXT_ENCODERS, TextEncoder
+from multabench.encoders.constants import IMAGE_ENCODERS, ImageEncoder, TEXT_ENCODERS, TextEncoder
 from multabench.utils.logging import get_current_commit_hash
 from multabench.result_keys import ResultKey
 from multabench.utils.profiling import PeakMemoryTracker

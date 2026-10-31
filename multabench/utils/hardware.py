@@ -6,10 +6,9 @@ from typing import Dict, Iterable, List, Optional
 import psutil
 import torch
 
-from multabench.e5.constants import TF_IDF
+from multabench.encoders.constants import Encoder, TF_IDF
 from multabench.result_keys import ResultKey
 from multabench.utils.devices import CPU_CORES
-from multabench.utils.encoders import Encoder
 
 
 @dataclass(frozen=True)

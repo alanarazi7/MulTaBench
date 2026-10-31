@@ -10,8 +10,8 @@ from PIL import Image
 from pandas import Series
 from transformers import AutoImageProcessor, AutoModel, DINOv3ViTModel
 
-from multabench.dino.constants import DINO_LORA, DINOV3_SMALL, LORA_IMAGE_TARGET_MODULES
-from multabench.dino.image_loading import load_images
+from multabench.encoders.dino.constants import DINOV3_SMALL, DINO_LORA, LORA_IMAGE_TARGET_MODULES
+from multabench.encoders.dino.image_loading import load_images
 from multabench.finetune.lora import TunableEncoder, finetune_with_lora, finetuning_split
 from multabench.finetune.train_args import LoraArgs
 from multabench.utils.warnings import suppress_channel_dimension_warning
