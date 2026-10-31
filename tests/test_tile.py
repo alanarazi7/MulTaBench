@@ -8,7 +8,7 @@ from tile.embeddings import serialize
 from multabench.encoders.constants import TextEncoder
 from multabench.encoders.registry import make_encoder
 from multabench.encoders.tile import tile_encoder
-from multabench.encoders.tile.tile_encoder import TileColumnEncoder, TileRows
+from multabench.encoders.tile.tile_encoder import MAX_CELL_CHARS, TileColumnEncoder, TileRows
 
 
 @pytest.fixture
@@ -69,3 +69,10 @@ def test_the_encoder_embeds_the_rows_it_saw(pooled):
 def test_rows_need_a_unique_index():
     with pytest.raises(ValueError, match="unique"):
         TileRows(image_column=None, device="cpu").add(DataFrame({"title": ["a", "b"]}, index=pd.Index([0, 0])))
+
+
+def test_long_values_are_cut():
+    rows = TileRows(image_column=None, device="cpu")
+    rows.add(DataFrame({"title": ["a" * (MAX_CELL_CHARS + 10), "b"], "price": [1.0, None]}))
+    assert rows.texts[0] == serialize(DataFrame({"title": ["a" * MAX_CELL_CHARS], "price": [1.0]}))[0][0]
+    assert rows.texts[1] == serialize(DataFrame({"title": ["b"], "price": [None]}))[0][0]

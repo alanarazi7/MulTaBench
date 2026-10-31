@@ -1,6 +1,7 @@
 """TILE's cell embeddings, from its package (https://github.com/soda-inria/tile): each row serialized as one text, "The
 <column> is <value>. ...", read by an LLM cut after one of its middle layers, and the hidden states of each cell's
 tokens mean-pooled. A cell's embedding sees the cells before it in the row, so it depends on the whole row."""
+import importlib.util
 from typing import Any, Dict, Hashable, List, Optional, Tuple
 
 import numpy as np
@@ -11,6 +12,9 @@ from multabench.encoders.abstract_encoder import EmbeddingEncoder
 from multabench.encoders.column_encoders import ColumnEncoder
 from multabench.encoders.tile.constants import LLAMA_3_1_8B_REVISION
 from multabench.utils.timing import embedding_step
+
+# Not in upstream TILE: a longer value is cut, as one Zomato row, ~138k tokens, would not fit on an H100.
+MAX_CELL_CHARS = 32_768
 
 _TILE_LLM_CACHE: Dict[str, Tuple[Any, Any]] = {}
 
@@ -60,6 +64,9 @@ class TileRows:
         if self.columns and self.columns != list(x.columns):
             raise ValueError(f"TILE saw columns {self.columns} before, now {list(x.columns)}")
         self.columns = list(x.columns)
+        x = x.copy()
+        for col in x.select_dtypes(include=["object", "string"]).columns:
+            x[col] = x[col].map(lambda v: v[:MAX_CELL_CHARS] if isinstance(v, str) else v)
         texts, spans = serialize(x)
         self.texts.update(zip(x.index, texts))
         self.spans.update(zip(x.index, spans))
@@ -105,6 +112,8 @@ class TileEncoder(EmbeddingEncoder):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if importlib.util.find_spec("tile") is None:
+            raise ImportError("--text_encoder tile needs TILE's package: pip install --no-deps -r requirements-tile.in")
         self.rows = TileRows(image_column=self.image_column, device=self.device)
 
     def see_rows(self, x: DataFrame):
