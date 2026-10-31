@@ -28,7 +28,8 @@ def embedding_cost() -> pd.DataFrame:
                 continue
             for fold in range(SPLITS) if is_tuned(encoder) else [None]:
                 split = dict(size=DEFAULT_SIZE, fold=fold) if fold is not None else {}
-                with open(os.path.join(download_embeddings(encoder, dataset, **split), META_JSON)) as f:
+                path = download_embeddings(encoder, dataset, **split, files=[META_JSON])
+                with open(os.path.join(path, META_JSON)) as f:
                     meta = json.load(f)
                 finetune = float(meta.get("finetune_seconds", 0.0)) / int(meta.get("n_train", 1)) * 1000
                 rows.append({"dataset": dataset.name, "encoder": str(encoder), "fold": fold,
