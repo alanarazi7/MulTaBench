@@ -24,10 +24,10 @@ read these embeddings rather than fine-tuning live, so a tuned encoder needs the
 training rows it was tuned on, so their embeddings fit the target better than the test rows' do, and the model
 fitted on them sees a cleaner signal than it gets at test time. This is kept as is, so all runs share it.
 
-TILE, `multabench/embeddings-tile`, is frozen and cached once per dataset too, but it embeds each text cell in the
-context of its row: the input is the whole row serialized as TILE serializes it, every column but the target and the
-image column, and its embedding is the row's text cells, one 4096-dimensional vector per text column in `meta.json`'s
-`features` order, stored in float16 to halve the cache. A run serializes its own rows as loaded and looks them up, so a
+The TILE interface, `multabench/embeddings-tile`, is frozen and cached once per dataset too, but it embeds each
+string cell in the context of its row: the input is the whole row serialized as TILE serializes it, every column but
+the target and the image column, and its embedding is the row's string cells, one 4096-dimensional vector per string
+column (text or category) in `meta.json`'s `features` order, stored in float16 to halve the cache. A run serializes its own rows as loaded and looks them up, so a
 row's cells are never paired with another row.
 
 `load_embeddings` returns the embeddings aligned with `load_split`'s rows:

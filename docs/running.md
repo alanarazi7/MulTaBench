@@ -47,14 +47,23 @@ and 3.5-Fast, stops before running and writes no JSON when it is unset, or when 
 other machines must be passed it, as they don't read your `.env`.
 `--help` lists the available models. `--text_encoder` picks how text columns are embedded: `tfidf`, frozen
 `e5-small` (the default) or `e5-large`, or `e5-small-tar` or `e5-large-tar`, E5 fine-tuned on the task with LoRA
-(target-aware), or `tile`, [TILE](https://github.com/soda-inria/tile): each row serialized as `The <column> is
-<value>. ...`, read by Llama-3.1-8B cut after 14 of its 32 layers, and each text cell's hidden states mean-pooled, so a
-cell's embedding sees the rest of its row. It calls TILE's own package, which is optional: install it in the venv that
-runs it with `pip install --no-deps -r requirements-tile.in`. It cuts each value to its first 32,768 characters (one
-Zomato row would otherwise not fit on a GPU). Runs read its cache (see [embeddings](embeddings.md)); only computing
-the cache needs the gated Llama licence accepted on the `HF_TOKEN` account.
+(target-aware).
 `--image_encoder` does the same for image columns: frozen `dino-small` (the default) or `dino-large`, or
 `dino-small-tar` or `dino-large-tar`. Each applies only to datasets with that kind of column.
+
+An interface wraps a model instead: it turns every column into the model's input itself, and the model then
+preprocesses that input as usual. [TILE](https://github.com/soda-inria/tile) wraps a model as `TILE-<model>`
+(`--model tile<model>`, e.g. `tilekumo`), on text datasets only. Each row is serialized as `The <column> is <value>.
+...`, read by Llama-3.1-8B cut after 14 of its 32 layers, and each string cell's hidden states mean-pooled, so a cell's
+embedding sees the rest of its row; every string column is embedded, the ones stored as categories too. TILE's
+`TILEFeatures` then builds the model's input: each string column's PCA, sized to fit the model's feature window, the
+numbers and dates, the out-of-fold target encoding of the string columns whose values repeat, and, for the models
+that take them, the low-cardinality ones as categories. Each wrapper in `multabench/interfaces/tile/models.py` names
+its model and, for a PFN, the window TILE selected for it; the others keep TILE's default, 30 components per string
+column. It calls TILE's own package, which is optional: install it in the venv that runs it, the model's own one
+included, with `pip install --no-deps -r requirements-tile.in`. It cuts each value to its first 32,768 characters (one
+Zomato row would otherwise not fit on a GPU). Runs read its cache (see [embeddings](embeddings.md)); only computing
+the cache needs the gated Llama licence accepted on the `HF_TOKEN` account.
 
 ## Sweeps
 
