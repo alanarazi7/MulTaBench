@@ -33,7 +33,7 @@ if __name__ == "__main__":
                                                  "the embeddings to Hugging Face. Jobs that already have their "
                                                  "embeddings are left out.")
     parser.add_argument('--encoders', type=csv_arg(list(CACHED_ENCODERS), cast=parse_encoder),
-                        default=list(DEFAULT_ENCODERS), help="default: all but tile, whose caches are about 54 GB")
+                        default=list(DEFAULT_ENCODERS), help="default: all but tile, whose caches are about 48 GB")
     parser.add_argument('--datasets', type=csv_arg([d.name for d in MulTaBenchDatasetID]), default=None,
                         help="dataset names; default: every dataset the encoder applies to")
     folds = [str(f) for f in range(SPLITS)]
