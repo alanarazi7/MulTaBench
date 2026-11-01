@@ -1,23 +1,33 @@
 """TILE's cell embeddings, from its package (https://github.com/soda-inria/tile): each row serialized as one text, "The
 <column> is <value>. ...", read by an LLM cut after one of its middle layers, and the hidden states of each cell's
 tokens mean-pooled. A cell's embedding sees the cells before it in the row, so it depends on the whole row."""
-import importlib.util
 from typing import Any, Dict, Hashable, List, Optional, Tuple
 
 import numpy as np
 import torch
-from pandas import DataFrame, Index, Series
+from pandas import DataFrame, Index
 
-from multabench.embeddings.hub import CachedEmbeddings, cached_embeddings, tile_cells
-from multabench.encoders.abstract_encoder import EmbeddingEncoder
-from multabench.encoders.column_encoders import ColumnEncoder
-from multabench.encoders.tile.constants import LLAMA_3_1_8B_REVISION
+from multabench.embeddings.hub import CachedEmbeddings, tile_cells
+from multabench.interfaces.tile.constants import LLAMA_3_1_8B_REVISION
 from multabench.utils.timing import embedding_step
 
 # Not in upstream TILE: a longer value is cut, as one Zomato row, ~138k tokens, would not fit on an H100.
 MAX_CELL_CHARS = 32_768
 
 _TILE_LLM_CACHE: Dict[str, Tuple[Any, Any]] = {}
+
+
+def tile_table(x: DataFrame, image_column: Optional[str]) -> DataFrame:
+    """The rows as TILE reads them: without the image column, whose file names carry no text, and with the columns
+    MulTaBench stores as categories as objects, so TILE takes them as strings like the text columns."""
+    x = x.drop(columns=[image_column], errors="ignore")
+    return x.astype({col: object for col in x.select_dtypes(include=["category", "string"]).columns})
+
+
+def tile_string_columns(x: DataFrame, image_column: Optional[str]) -> List[str]:
+    """The columns TILE embeds: every string column but the dates."""
+    from tile.features import string_columns
+    return string_columns(tile_table(x, image_column))
 
 
 @embedding_step
@@ -43,24 +53,22 @@ def get_tile_llm(device: torch.device) -> Tuple[Any, Any]:
 
 
 class TileRows:
-    """The rows a model has seen, serialized as loaded, by index, and their text cells' embeddings: read from the
-    dataset's cache if set, else one forward pass per row, shared by all its text columns."""
+    """The rows an interface has seen, serialized as loaded, by index, and their string cells' embeddings: read from
+    the dataset's cache if set, else one forward pass per row for all its string columns."""
 
     def __init__(self, image_column: Optional[str], device: torch.device):
         self.image_column = image_column
         self.device = device
         self.columns: List[str] = []
-        self.text_columns: List[str] = []
+        self.string_columns: List[str] = []
         self.texts: Dict[Hashable, str] = {}
         self.spans: Dict[Hashable, np.ndarray] = {}
         self.cache: Optional[CachedEmbeddings] = None
-        self._texts: Optional[List[str]] = None
-        self._cells: Optional[np.ndarray] = None
 
     def add(self, x: DataFrame):
-        """Serializes the rows before any preprocessing, without the image column, whose file names carry no text."""
+        """Serializes the rows before any preprocessing, as tile_table reads them."""
         from tile.embeddings import serialize
-        x = x.drop(columns=[self.image_column], errors="ignore")
+        x = tile_table(x, self.image_column)
         if not x.index.is_unique:
             raise ValueError("TILE finds a row's text by its index, which must be unique")
         if self.columns and self.columns != list(x.columns):
@@ -73,25 +81,17 @@ class TileRows:
         self.texts.update(zip(x.index, texts))
         self.spans.update(zip(x.index, spans))
 
-    def embed(self, index: Index, col: str) -> np.ndarray:
-        """The column's cell embeddings for these rows; the rows' other text columns are pooled in the same pass, kept
-        for as long as the next column asks for the same rows' texts."""
-        texts = [self.texts[i] for i in index]
-        if texts != self._texts:
-            self._texts, self._cells = texts, self.cells(index)
-        return self._cells[self.text_columns.index(col)].astype(np.float32)
-
     def cells(self, index: Index) -> np.ndarray:
-        """(n_text_columns, n_rows, hidden), float16."""
+        """(n_string_columns, n_rows, hidden), float16."""
         texts = [self.texts[i] for i in index]
         if self.cache is not None:
-            return tile_cells(self.cache, texts, self.text_columns)
-        positions = [self.columns.index(col) for col in self.text_columns]
+            return tile_cells(self.cache, texts, self.string_columns)
+        positions = [self.columns.index(col) for col in self.string_columns]
         return self._pool(texts, np.stack([self.spans[i] for i in index])[:, positions])
 
     @embedding_step
     def _pool(self, texts: List[str], spans: np.ndarray) -> np.ndarray:
-        """(n_text_columns, n_rows, hidden), as TILE's embed_table pools them, for the text columns only."""
+        """(n_string_columns, n_rows, hidden), as TILE's embed_table pools them, for the string columns only."""
         from tile.embeddings import pool_cells
         model, tokenizer = get_tile_llm(self.device)
         # As embed_table: cuDNN's attention kernel fails on padded batches in some environments. Restored after, as the
@@ -102,39 +102,3 @@ class TileRows:
             return pool_cells(model, tokenizer, texts, spans)
         finally:
             torch.backends.cuda.enable_cudnn_sdp(cudnn_sdp)
-
-
-class TileColumnEncoder(ColumnEncoder):
-    """A text column's cells as TILE embeds them, in the context of their whole row; standardized, then PCA."""
-    SUFFIX = "txt"
-
-    def __init__(self, col: str, rows: TileRows):
-        super().__init__(col)
-        self.rows = rows
-
-    def embed(self, x: DataFrame) -> np.ndarray:
-        return self.rows.embed(x.index, self.col)
-
-
-class TileEncoder(EmbeddingEncoder):
-    """TILE on the text columns: it reads the rows as loaded, which see_rows records at fit and predict, and their
-    cells from the dataset's cache."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if importlib.util.find_spec("tile") is None:
-            raise ImportError("--text_encoder tile needs TILE's package: pip install --no-deps -r requirements-tile.in")
-        self.rows = TileRows(image_column=self.image_column, device=self.device)
-
-    def see_rows(self, x: DataFrame):
-        self.rows.add(x)
-
-    def column_encoders(self, x: DataFrame, columns: List[str], y: Optional[Series],
-                        is_cls: bool) -> List[ColumnEncoder]:
-        if not self.rows.texts:
-            raise ValueError("TILE embeds whole rows: see_rows must be given the rows first")
-        self.rows.text_columns = columns
-        if self.dataset is not None:
-            self.rows.cache = cached_embeddings(self.name, self.dataset)
-            print(f"Reading the TILE embeddings of {columns} from the cache")
-        return [TileColumnEncoder(col, self.rows) for col in columns]
