@@ -2,8 +2,8 @@
 
 A frozen encoder has one cache per dataset; a tuned (-tar) one has one per fold, with the time fine-tuning took on the
 fold's training rows. The encoding time estimates what a run would pay to embed its rows live: the small frozen caches
-were computed on A100s, the tuned and large ones on H100s, and the image time includes reading the files. The board
-charges small frozen runs the tuned caches' time, see `with_tar_encode_times`.
+were computed on A100s, the tuned, large and TILE ones on H100s, and the image time includes reading the files. The
+board charges small frozen runs the tuned caches' time, see `with_tar_encode_times`.
 """
 import json
 import os
@@ -28,7 +28,8 @@ def embedding_cost() -> pd.DataFrame:
                 continue
             for fold in range(SPLITS) if is_tuned(encoder) else [None]:
                 split = dict(size=DEFAULT_SIZE, fold=fold) if fold is not None else {}
-                with open(os.path.join(download_embeddings(encoder, dataset, **split), META_JSON)) as f:
+                path = download_embeddings(encoder, dataset, **split, files=[META_JSON])
+                with open(os.path.join(path, META_JSON)) as f:
                     meta = json.load(f)
                 finetune = float(meta.get("finetune_seconds", 0.0)) / int(meta.get("n_train", 1)) * 1000
                 rows.append({"dataset": dataset.name, "encoder": str(encoder), "fold": fold,
