@@ -47,6 +47,7 @@
   "multabench/embeddings-e5-large-tar": "1c9eedbbca0199882776ff39b85f773f890ade2c",
   "multabench/embeddings-e5-small": "dc35df41058bd15d0b2cd576dc6874d995ddf670",
   "multabench/embeddings-e5-small-tar": "8d71e1f7e48d355af2af18bf2bab841d5c6119ae",
+  "multabench/embeddings-tile": "b407e385f5a4f7371a9ef18bb88afee848161c4c",
   "multabench/extended-img-cls-ham10000-lesion": "bbc8e59272e5e8bdfacb14583803ef46b4cf6731",
   "multabench/extended-img-cls-hearthstone-class": "1ebba1b261a9cac926bac998a82a443a110778c3",
   "multabench/extended-img-cls-minecraft": "8206309dff9e4f5e172ea960fbe15911dd2cbc91",

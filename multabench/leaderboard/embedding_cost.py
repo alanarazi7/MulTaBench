@@ -2,8 +2,8 @@
 
 A frozen encoder has one cache per dataset; a tuned (-tar) one has one per fold, with the time fine-tuning took on the
 fold's training rows. The encoding time estimates what a run would pay to embed its rows live: the small frozen caches
-were computed on A100s, the tuned and large ones on H100s, and the image time includes reading the files. The board
-charges small frozen runs the tuned caches' time, see `with_tar_encode_times`.
+were computed on A100s, the tuned, large and TILE ones on H100s, and the image time includes reading the files. The
+board charges small frozen runs the tuned caches' time, see `with_tar_encode_times`.
 """
 import json
 import os
