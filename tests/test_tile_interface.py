@@ -9,7 +9,7 @@ from multabench.datasets.objects import SupervisedTask
 from multabench.embeddings import compute
 from multabench.embeddings.hub import read_embeddings, tile_cells, write_embeddings
 from multabench.interfaces.tile import rows as tile_rows
-from multabench.interfaces.tile.models import TILE_MODELS, TileKumoTabular, TileLightGBM
+from multabench.interfaces.tile.models import TILE_MODELS, TileKumoTabular, TileRandomForest
 from multabench.interfaces.tile.rows import MAX_CELL_CHARS, TileRows, tile_string_columns, tile_table
 
 
@@ -120,14 +120,14 @@ def test_the_wrapped_model_gets_every_string_column_embedded_and_the_bypass_feat
 
 def test_tile_fits_the_real_model_on_its_input(pooled):
     x, y = table().drop(columns="photo"), Series(np.tile(["no", "yes"], 20), index=table().index)
-    tile = TileLightGBM(problem_type=SupervisedTask.BINARY, device="cpu")
+    tile = TileRandomForest(problem_type=SupervisedTask.BINARY, device="cpu")
     tile.fit(x.iloc[:30], y.iloc[:30])
     assert tile.tabular_model.text_features == set() and len(tile.predict(x.iloc[30:])) == 10
     assert set(tile.score_all_metrics(x.iloc[30:], y.iloc[30:])) >= {"test_score", "test_error"}
 
 
 def test_tile_runs_on_text_datasets_only(pooled):
-    tile = TileLightGBM(problem_type=SupervisedTask.BINARY, device="cpu", image_column="photo")
+    tile = TileRandomForest(problem_type=SupervisedTask.BINARY, device="cpu", image_column="photo")
     with pytest.raises(ValueError, match="text datasets"):
         tile.fit(table(), Series(np.tile([0, 1], 20), index=table().index))
 
