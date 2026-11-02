@@ -1,8 +1,7 @@
 """TILE as an interface (Lefebvre et al., 2026): a tabular model fitted on the input TILE's own TILEFeatures builds,
-every string column embedded in the context of its row and reduced into the model's feature window, next to the
-features that bypass the LLM."""
+every string column embedded in the context of its row and reduced by PCA, next to the features that bypass the LLM."""
 import importlib.util
-from typing import Dict, Optional, Type
+from typing import Dict, Type
 
 import numpy as np
 import pandas as pd
@@ -17,13 +16,11 @@ from multabench.interfaces.tile.rows import TileRows, tile_string_columns, tile_
 
 
 class TileInterface(TabularModel):
-    """TILE around TABULAR_MODEL, which gets TILEFeatures' input: each string column's PCA, the numbers and dates, the
-    target encoding of the string columns whose values repeat, out of fold on the training rows, and, if its learner
-    takes them, the low-cardinality ones as categories. TILE_LEARNER is its learner in tile.learners.LEARNERS, whose
-    feature window it takes; without one, TILE's default, 30 components per string column, meant for non-PFN models."""
+    """TILE around TABULAR_MODEL, which gets TILEFeatures' input with TILE's defaults for every model: 30 PCA components
+    per string column, the numbers and dates, and the target encoding of the string columns whose values repeat, out of
+    fold on the training rows."""
 
     TABULAR_MODEL: Type[TabularModel]
-    TILE_LEARNER: Optional[str] = None
     # It reads the raw rows, so it gets no text encoder; the model it wraps preprocesses TILE's input as usual.
     USE_TEXT_EMBEDDINGS = False
     USE_VAL_SPLIT = False
@@ -49,15 +46,13 @@ class TileInterface(TabularModel):
 
     def fit(self, x: DataFrame, y: Series):
         from tile.features import TILEFeatures
-        from tile.learners import LEARNERS, Learner
         if self.image_column:
             raise ValueError("TILE runs on text datasets only")
-        learner = LEARNERS[self.TILE_LEARNER] if self.TILE_LEARNER else Learner()
         self.rows.string_columns = tile_string_columns(x, self.image_column)
         if self.dataset is not None:
             self.rows.cache = cached_embeddings(Interface.TILE, self.dataset)
             print(f"Reading the TILE embeddings of {self.rows.string_columns} from the cache")
-        self.features = TILEFeatures(window=learner.window, native_categories=learner.native_categories)
+        self.features = TILEFeatures()
         table = self._see(x)
         task = "classification" if self.is_cls else "regression"
         z = self.features.fit_transform(table, y.to_numpy(), self._embeddings(table), task)

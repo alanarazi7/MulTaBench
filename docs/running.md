@@ -56,11 +56,9 @@ preprocesses that input as usual. [TILE](https://github.com/soda-inria/tile) wra
 (`--model tile<model>`, e.g. `tilekumo`), on text datasets only. Each row is serialized as `The <column> is <value>.
 ...`, read by Llama-3.1-8B cut after 14 of its 32 layers, and each string cell's hidden states mean-pooled, so a cell's
 embedding sees the rest of its row; every string column is embedded, the ones stored as categories too. TILE's
-`TILEFeatures` then builds the model's input: each string column's PCA, sized to fit the model's feature window, the
-numbers and dates, the out-of-fold target encoding of the string columns whose values repeat, and, for the models
-that take them, the low-cardinality ones as categories. Each wrapper in `multabench/interfaces/tile/models.py` names
-its model and, for a PFN, the window TILE selected for it; the others keep TILE's default, 30 components per string
-column. It calls TILE's own package, which is optional: install it in the venv that runs it, the model's own one
+`TILEFeatures` then builds the model's input with its defaults for every model: 30 PCA components per string column,
+the numbers and dates, and the out-of-fold target encoding of the string columns whose values repeat. Each wrapper in
+`multabench/interfaces/tile/models.py` names its model. It calls TILE's own package, which is optional: install it in the venv that runs it, the model's own one
 included, with `pip install --no-deps -r requirements-tile.in`. It cuts each value to its first 32,768 characters (one
 Zomato row would otherwise not fit on a GPU). Runs read its cache (see [embeddings](embeddings.md)); only computing
 the cache needs the gated Llama licence accepted on the `HF_TOKEN` account.

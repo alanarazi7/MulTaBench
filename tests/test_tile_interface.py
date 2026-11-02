@@ -113,18 +113,9 @@ def test_the_wrapped_model_gets_every_string_column_embedded_and_the_bypass_feat
     assert [c for c in train.columns if "_txt_pca_" in c] == ["title_txt_pca_0", "title_txt_pca_1", "city_txt_pca_0",
                                                               "city_txt_pca_1"]
     assert "city_te_0" in train.columns and "title_te_0" not in train.columns
-    categories = [c for c in train.columns if isinstance(train[c].dtype, pd.CategoricalDtype)]
-    assert categories == ["title", "city"] and train.drop(columns=categories).dtypes.eq(float).all()
+    assert "city" not in train.columns and train.dtypes.eq(float).all()
     assert list(test.columns) == list(train.columns) and list(test.index) == list(x.index[30:])
     assert len(pooled) == 2
-
-
-def test_a_model_without_a_tile_learner_gets_no_native_categories(pooled, monkeypatch):
-    x, y = table().drop(columns="photo"), Series(np.arange(40.0), index=table().index)
-    tile = wrap(TileLightGBM, monkeypatch, task=SupervisedTask.REGRESSION)
-    tile.fit(x, y)
-    [train] = tile.tabular_model.inputs
-    assert "city" not in train.columns and train.dtypes.eq(float).all()
 
 
 def test_tile_fits_the_real_model_on_its_input(pooled):
