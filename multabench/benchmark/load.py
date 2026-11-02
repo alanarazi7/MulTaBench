@@ -23,7 +23,8 @@ from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, data
 from multabench.datasets.hub import DATA_PARQUET, IMAGES_DIR, extract_images, hf_repo_id, local_repo_dir
 from multabench.datasets.revisions import revision
 from multabench.datasets.objects import DatasetSplit, MultimodalDataset, SupervisedTask
-from multabench.encoders.constants import DEFAULT_TEXT_ENCODER, TextEncoder
+from multabench.encoders.constants import DEFAULT_TEXT_ENCODER
+from multabench.interfaces.constants import Interface
 from multabench.embeddings.hub import (DEFAULT_ENCODERS, EMBEDDINGS_NPZ, META_JSON, CachedEmbeddings, CachedEncoder,
                                        download_embeddings, embeddings_dir, embeds_dataset, encoder_inputs,
                                        input_values, is_tuned, parse_encoder, read_embeddings, repo_name)
@@ -141,7 +142,7 @@ def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = 
     train_idx, test_idx = get_split(y.to_numpy(), is_cls=task_type != SupervisedTask.REGRESSION, split=fold, size=size)
     split = dict(size=size, fold=fold) if is_tuned(encoder) else {}
     cache = read_embeddings(download_embeddings(encoder, dataset, **split, data_dir=data_dir))
-    if encoder == TextEncoder.TILE:
+    if encoder == Interface.TILE:
         return SplitEmbeddings(**_lookup_tile(cache, dataset, train_idx, test_idx, data_dir=data_dir), meta=cache.meta)
     x = _load_columns(dataset, columns=cache.meta["features"], data_dir=data_dir)
     return SplitEmbeddings(train=_lookup(cache, x.iloc[train_idx], encoder), test=_lookup(cache, x.iloc[test_idx], encoder),
@@ -156,12 +157,12 @@ def _lookup(cache: CachedEmbeddings, x: pd.DataFrame, encoder: CachedEncoder) ->
 def _lookup_tile(cache: CachedEmbeddings, dataset: MulTaBenchDatasetID, train_idx: np.ndarray, test_idx: np.ndarray,
                  data_dir: Optional[str] = None) -> Dict[str, Dict[str, np.ndarray]]:
     """TILE's cache is keyed by the serialized row, so the lookup reads every column but the target."""
-    from multabench.encoders.tile.tile_encoder import TileRows
+    from multabench.interfaces.tile.rows import TileRows
     loaded = load_multabench_dataset(dataset, data_dir=data_dir, with_image_files=False)
     rows = TileRows(image_column=loaded.image_column, device="cpu")
     rows.add(loaded.x)
-    rows.text_columns, rows.cache = cache.meta["features"], cache
-    return {part: dict(zip(rows.text_columns, rows.cells(loaded.x.index[idx]).astype(np.float32)))
+    rows.string_columns, rows.cache = cache.meta["features"], cache
+    return {part: dict(zip(rows.string_columns, rows.cells(loaded.x.index[idx]).astype(np.float32)))
             for part, idx in (("train", train_idx), ("test", test_idx))}
 
 

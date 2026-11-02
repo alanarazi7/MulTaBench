@@ -89,7 +89,6 @@ class TabularModel:
         raise NotImplementedError("Initialize model method not implemented yet")
 
     def fit(self, x: DataFrame, y: Series):
-        self._see_rows(x)
         x_train, y_train = x.copy(), y.copy()
         if self.USE_VAL_SPLIT:
             x_train, x_val, y_train, y_val = split_to_val(x=x, y=y, is_cls=self.is_cls)
@@ -180,13 +179,7 @@ class TabularModel:
         # d_output already set above for the image encoder
         return x, y
 
-    def _see_rows(self, x: DataFrame):
-        if self.USE_TEXT_EMBEDDINGS:
-            self.text_embedder.see_rows(x)
-        self.image_embedder.see_rows(x)
-
     def predict(self, x: DataFrame) -> np.ndarray:
-        self._see_rows(x)
         x, _ = self.transform_preprocessor(x=x, y=None)
         return self.predict_from_processed(x=x)
 

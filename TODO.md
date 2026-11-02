@@ -10,6 +10,12 @@ file as the PRs that complete them are merged.
 
 ## Runs
 
+- [ ] TILE: rebuild `multabench/embeddings-tile` with every string column, the ones stored as categories too (it has
+      the text columns only), then run the `TILE-<model>` wrappers on the text datasets as their own leaderboard
+      entries (export, Elo, Space).
+- [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
+      no native categories), where the PFNs may do better with the feature window and categories its authors select.
+
 - [ ] Move `benchmark.py`, `sweep.py` and `collect_results.py` into the package, like
       `multabench.embeddings.embed`, so they run with `python -m` without a checkout.
 - [ ] Split `benchmark.py` into a few functions in `multabench/benchmark/` (argument parsing,

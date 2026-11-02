@@ -4,7 +4,6 @@ from typing import NamedTuple
 
 from multabench.encoders.dino.constants import DINOV3_LARGE, DINOV3_SMALL
 from multabench.encoders.e5.constants import E5_LARGE_V2, E5_SMALL_V2
-from multabench.encoders.tile.constants import LLAMA_3_1_8B
 
 TF_IDF = "tf-idf"  # skrub StringEncoder (TF-IDF + TruncatedSVD), CPU-only
 
@@ -20,7 +19,6 @@ class TextEncoder(StrEnum):
     E5_SMALL_TAR = "e5-small-tar"
     E5_LARGE = "e5-large"
     E5_LARGE_TAR = "e5-large-tar"
-    TILE = "tile"
 
 
 class ImageEncoder(StrEnum):
@@ -39,7 +37,6 @@ TEXT_ENCODERS = {
     TextEncoder.E5_SMALL_TAR: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=True),
     TextEncoder.E5_LARGE: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
     TextEncoder.E5_LARGE_TAR: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=True),
-    TextEncoder.TILE: Encoder(encoder_name=LLAMA_3_1_8B, tune_encoder=False),
 }
 
 IMAGE_ENCODERS = {

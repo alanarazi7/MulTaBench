@@ -27,9 +27,6 @@ class EmbeddingEncoder:
         self.image_folder = image_folder
         self.image_column = image_column
 
-    def see_rows(self, x: DataFrame):
-        """The rows a model fits or predicts on, as loaded; for encoders that read whole rows."""
-
     def fit(self, x: DataFrame, columns: List[str], y: Optional[Series] = None,
             is_cls: bool = True) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
         if not columns:

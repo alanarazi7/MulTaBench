@@ -5,8 +5,8 @@ tuned (-tar) encoder is fine-tuned on each fold's training rows alone, so it is 
 <dataset>/<size>/fold_<k>/, for that fold's train and test rows, with its LoRA adapter. Each directory has
 embeddings.npz, which maps every input, exactly as the encoder got it, to its embedding, and meta.json, with the timing
 and the hardware it ran on. A run looks its own inputs up, so a cached embedding is never paired with a different text
-or image, and a changed dataset raises instead. TILE embeds a text cell in the context of its row, so its input is the
-serialized row, and its embedding all the row's text cells, (features, hidden) in float16.
+or image, and a changed dataset raises instead. The TILE interface embeds a string cell in the context of its row, so
+its input is the serialized row, and its embedding all the row's string cells, (features, hidden) in float16.
 """
 import json
 import os
@@ -26,6 +26,7 @@ from multabench.datasets.hub import HF_ORG, local_repo_dir
 from multabench.datasets.revisions import revision
 from multabench.encoders.constants import Encoder, IMAGE_ENCODERS, ImageEncoder, TEXT_ENCODERS, TextEncoder
 from multabench.encoders.e5.constants import format_e5_passage
+from multabench.interfaces.constants import INTERFACES, Interface
 
 EMBEDDINGS_NPZ = "embeddings.npz"
 META_JSON = "meta.json"
@@ -34,12 +35,12 @@ INPUTS_UTF8 = "inputs_utf8"
 INPUTS_OFFSETS = "inputs_offsets"
 EMBEDDINGS = "embeddings"
 
-CachedEncoder = TextEncoder | ImageEncoder
+CachedEncoder = TextEncoder | ImageEncoder | Interface
 CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL, TextEncoder.E5_SMALL_TAR, ImageEncoder.DINO_SMALL_TAR,
                    TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE, TextEncoder.E5_LARGE_TAR, ImageEncoder.DINO_LARGE_TAR,
-                   TextEncoder.TILE)
+                   Interface.TILE)
 # TILE's caches add up to about 48 GB, so they are built, fetched and prefetched only when asked for.
-DEFAULT_ENCODERS = tuple(e for e in CACHED_ENCODERS if e != TextEncoder.TILE)
+DEFAULT_ENCODERS = tuple(e for e in CACHED_ENCODERS if e != Interface.TILE)
 
 
 def parse_encoder(encoder: str) -> CachedEncoder:
@@ -50,6 +51,8 @@ def parse_encoder(encoder: str) -> CachedEncoder:
 
 
 def encoder_spec(encoder: CachedEncoder) -> Encoder:
+    if isinstance(encoder, Interface):
+        return INTERFACES[encoder]
     return TEXT_ENCODERS[encoder] if isinstance(encoder, TextEncoder) else IMAGE_ENCODERS[encoder]
 
 
@@ -73,8 +76,11 @@ def cached_encoder(model_name: str, tuned: bool) -> Optional[CachedEncoder]:
 
 
 def embeds_dataset(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> bool:
-    """Whether the benchmark's runs use the encoder on the dataset; a tuned text encoder only runs on text datasets."""
+    """Whether the benchmark's runs use the encoder on the dataset; a tuned text encoder and an interface only run on
+    text datasets."""
     modality = dataset_modality(dataset_id)
+    if isinstance(encoder, Interface):
+        return modality == Modality.TEXT
     if isinstance(encoder, ImageEncoder):
         return modality.has_images
     return modality == Modality.TEXT if is_tuned(encoder) else modality.has_text
@@ -108,7 +114,7 @@ class CachedEmbeddings:
 
 
 def tile_cells(cache: CachedEmbeddings, texts: Sequence[str], columns: List[str]) -> np.ndarray:
-    """(n_columns, n_rows, hidden): the cached TILE cells of these columns, for these serialized rows."""
+    """(n_columns, n_rows, hidden): the cached TILE cells of these string columns, for these serialized rows."""
     cached = cache.meta["features"]
     if missing := [col for col in columns if col not in cached]:
         raise ValueError(f"The cached TILE embeddings have no {missing}, only {cached}")
