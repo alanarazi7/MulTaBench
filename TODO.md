@@ -10,6 +10,7 @@ file as the PRs that complete them are merged.
 
 ## Runs
 
+- [ ] EXAONE-Tabular has a fixed version: update it and rerun all its runs.
 - [ ] TILE: run the `TILE-<model>` wrappers on the text datasets as their own leaderboard entries (export, Elo, Space).
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
       no native categories), where the PFNs may do better with the feature window and categories its authors select.
