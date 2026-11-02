@@ -1,0 +1,2 @@
+model,dataset,text_encoder,image_encoder,size,fold,status,metric,test_score,test_error,train_time_per_1k_s,inference_time_per_1k_s,train_embedding_time_per_1k_s,inference_embedding_time_per_1k_s,n_train,n_test,gpu_type,cpu_name,cpu_cores,git,timestamp,error
+TabPFN-3.5,REG_TEXT_VANCOUVER_SALARIES,tile,,10k,0,ok,root_mean_squared_error,-11622.440117914884,11622.440117914884,1.1110130548477173,0.9598064422607422,0.0,0.0,10000,5000,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8,c26b7fe,2026-11-01 06:28:04,
