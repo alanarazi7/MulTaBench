@@ -39,7 +39,7 @@ CachedEncoder = TextEncoder | ImageEncoder | Interface
 CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL, TextEncoder.E5_SMALL_TAR, ImageEncoder.DINO_SMALL_TAR,
                    TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE, TextEncoder.E5_LARGE_TAR, ImageEncoder.DINO_LARGE_TAR,
                    Interface.TILE)
-# TILE's caches add up to about 48 GB, so they are built, fetched and prefetched only when asked for.
+# TILE's caches add up to about 66 GB, so they are built, fetched and prefetched only when asked for.
 DEFAULT_ENCODERS = tuple(e for e in CACHED_ENCODERS if e != Interface.TILE)
 
 
@@ -181,7 +181,7 @@ def download_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID,
     return path
 
 
-# Room for a run's text and image embeddings: a few hundred MB each, up to 5.6 GB for TILE's largest.
+# Room for a run's text and image embeddings: a few hundred MB each, up to 12 GB for TILE's largest.
 @lru_cache(maxsize=2)
 def cached_embeddings(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID, size: Optional[Size] = None,
                       fold: Optional[int] = None, data_dir: Optional[str] = None) -> CachedEmbeddings:
