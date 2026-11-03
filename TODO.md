@@ -10,6 +10,8 @@ file as the PRs that complete them are merged.
 
 ## Runs
 
+- [ ] TILE: release the dataset's cache (up to 12 GB, read whole by `cached_embeddings`) once TILEFeatures is fit and
+      read it again to predict, so the model fits without it in RAM; then rerun the Melbourne Airbnb runs it unblocks.
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
       no native categories), where the PFNs may do better with the feature window and categories its authors select.
 

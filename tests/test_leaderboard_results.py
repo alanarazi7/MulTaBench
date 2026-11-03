@@ -17,8 +17,9 @@ from multabench.utils.hardware import CPU_RUN_HARDWARE, GPU_RUN_HARDWARE
 PATHS = [p for d in ENCODING_DIRS.values() for p in sorted(glob.glob(os.path.join(d, "*.csv")))]
 MODELS = {model.MODEL_NAME: model for model in BASELINES}
 TASK_METRICS = {"BIN": "roc_auc", "MUL": "log_loss", "REG": "root_mean_squared_error"}
-# The runs a model can't do on the leaderboard's hardware, by model and dataset: out of GPU memory.
-EXPECTED_FAILURES = {(f"TILE-Kumo-Tabular{size}", "MUL_TEXT_SPOTIFY_GENRES") for size in ["", "-M"]}
+# The runs a model can't do on the leaderboard's hardware, by model and dataset: out of GPU memory, or of RAM.
+EXPECTED_FAILURES = {(f"TILE-Kumo-Tabular{size}", "MUL_TEXT_SPOTIFY_GENRES") for size in ["", "-M"]} | {
+    (f"TILE-{model}", "MUL_TEXT_MELBOURNE_AIRBNB") for model in ["TabICLv2", "Xiaomi-TabLDM", "LimiX-2"]}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
@@ -36,13 +37,16 @@ def test_a_file_holds_one_known_model_with_the_result_columns(runs):
 
 
 def test_every_dataset_has_every_fold_once(runs):
-    _, df, encoding = runs
+    """Every fold, but those of an expected failure, which a run killed for its memory leaves without a result."""
+    name, df, encoding = runs
     assert set(df[ResultKey.SIZE]) == {"10k"}
     assert not df.duplicated(RUN_KEY).any()
     text_only = encoding in TEXT_ONLY_ENCODINGS
     datasets = [d for d in MulTaBenchDatasetID if not text_only or dataset_modality(d) == Modality.TEXT]
     expected = {(d.name, f) for d in datasets for f in range(SPLITS)}
-    assert set(zip(df[ResultKey.DATASET], df[ResultKey.FOLD])) == expected
+    found = set(zip(df[ResultKey.DATASET], df[ResultKey.FOLD]))
+    assert found <= expected
+    assert {(name, dataset) for dataset, _ in expected - found} <= EXPECTED_FAILURES
 
 
 def test_each_dataset_uses_the_encoders_of_its_columns(runs):
