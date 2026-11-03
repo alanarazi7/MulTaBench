@@ -73,6 +73,12 @@ def ram_limit_gb() -> float:
     return byte_to_gb(min([psutil.virtual_memory().total] + _cgroup_memory_limits()))
 
 
+def available_ram_mb() -> float:
+    """The RAM this process may still take: the machine's free RAM, or less if a cgroup limit is closer."""
+    used = psutil.Process().memory_info().rss
+    return min([psutil.virtual_memory().available] + [limit - used for limit in _cgroup_memory_limits()]) / 1024 ** 2
+
+
 def _cgroup_memory_limits(proc_cgroup: str = "/proc/self/cgroup", cgroup_root: str = "/sys/fs/cgroup") -> List[int]:
     try:
         with open(proc_cgroup) as f:
