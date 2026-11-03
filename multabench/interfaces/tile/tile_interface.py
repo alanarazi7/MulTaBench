@@ -10,7 +10,7 @@ from pandas import DataFrame, Series
 
 from multabench.baselines.abstract_model import TabularModel
 from multabench.datasets.objects import SupervisedTask
-from multabench.embeddings.hub import cached_embeddings
+from multabench.embeddings.hub import download_embeddings, read_embeddings
 from multabench.interfaces.constants import Interface
 from multabench.interfaces.tile.rows import TileRows, tile_string_columns, tile_table
 
@@ -50,7 +50,6 @@ class TileInterface(TabularModel):
             raise ValueError("TILE runs on text datasets only")
         self.rows.string_columns = tile_string_columns(x, self.image_column)
         if self.dataset is not None:
-            self.rows.cache = cached_embeddings(Interface.TILE, self.dataset)
             print(f"Reading the TILE embeddings of {self.rows.string_columns} from the cache")
         self.features = TILEFeatures()
         table = self._see(x)
@@ -73,7 +72,11 @@ class TileInterface(TabularModel):
         return tile_table(x, self.image_column)
 
     def _embeddings(self, table: DataFrame) -> Dict[str, np.ndarray]:
+        # The dataset's cache, up to 12 GB, is read for these rows only, so the model fits and predicts without it.
+        if self.dataset is not None:
+            self.rows.cache = read_embeddings(download_embeddings(Interface.TILE, self.dataset))
         cells = self.rows.cells(table.index)
+        self.rows.cache = None
         return {col: block.astype(np.float32) for col, block in zip(self.rows.string_columns, cells)}
 
     def _frame(self, z: np.ndarray, table: DataFrame) -> DataFrame:
