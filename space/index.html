@@ -110,6 +110,8 @@ b.enc { color: var(--c); }
 #intro { font-size: 17px; line-height: 1.6; max-width: 84ch; }
 .filters .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
+.tabs button.na { text-decoration: line-through; opacity: .55; }
+.tabs .tilenote { font-size: 12.5px; color: var(--muted); }
 .links { display: flex; flex-wrap: wrap; gap: 6px 24px; }
 .links a, .encnote a { color: var(--accent); white-space: nowrap; text-decoration: none; font-weight: 500; }
 .links a:hover, .encnote a:hover { text-decoration: underline; }
@@ -176,7 +178,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
           <li><b class="enc tar">TAR-S</b> (Target-Aware Representations) first fine-tunes the small encoders on the training labels with default hyperparameters.</li>
           <li><b class="enc large">Frozen-L</b> uses the large encoders as they are.</li>
           <li><b class="enc large-tar">TAR-L</b> fine-tunes the large encoders as TAR-S does the small ones.</li>
-          <li><b class="enc tile">TILE</b> (<a href="https://github.com/soda-inria/tile">Lefebvre et al., 2026</a>) instead embeds each string cell in the context of its row with Llama-3.1-8B, cut after 14 of its 32 layers, and gives the model its own features with its defaults; it runs on the text datasets only, so its entries show when Modality is Text.</li>
+          <li><b class="enc tile">TILE</b> 📝 (<a href="https://github.com/soda-inria/tile">Lefebvre et al., 2026</a>) embeds each string cell in the context of its row with Llama-3.1-8B (14 of its 32 layers), on text datasets only. We run it with TILE's defaults for every model, untuned, which may understate it.</li>
         </ul>
       </div>
     </div>
@@ -542,7 +544,7 @@ const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">$
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
-const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L'], ['large-tar', 'TAR-L'], ['tile', 'TILE']];
+const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L'], ['large-tar', 'TAR-L'], ['tile', 'TILE 📝']];
 const encoderCells = (e5, dino) => `<td class="model"><a href="https://huggingface.co/intfloat/${e5}-v2">${e5}</a></td>`
   + `<td class="model"><a href="https://huggingface.co/facebook/dinov3-vit${dino[0]}16-pretrain-lvd1689m">DINOv3-${dino[1]}</a></td>`;
 const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encoderCells('e5-small', ['s', 'small']),
@@ -728,16 +730,26 @@ function toggles(container, items, field, storeKey) {
 // Encodings combine: from All a click keeps just that one, else it toggles; none or every one is All again.
 function encodingToggles() {
   const box = document.getElementById('encodingTabs'), all = ENCS.map(e => e[0]), isAll = encSel.length === all.length;
-  const count = keys => D.meta.entries.filter(m => keys.includes(D.encodingOf[m])).length;
+  // TILE runs on text datasets only: elsewhere it is crossed out, and picking it switches Modality to Text.
+  const textOnly = sel.modality.length === 1 && sel.modality[0] === 'text';
+  const shown = m => textOnly || D.encodingOf[m] !== 'tile';
+  const count = keys => D.meta.entries.filter(m => keys.includes(D.encodingOf[m]) && shown(m)).length;
   const pick = keys => { encSel = keys.length ? all.filter(k => keys.includes(k)) : all; store.set('encodings', JSON.stringify(encSel)); render(); };
-  box.querySelectorAll('button').forEach(b => b.remove());
+  box.querySelectorAll('button, .tilenote').forEach(b => b.remove());
   [['all', 'All'], ...ENCS].forEach(([key, label]) => {
-    const keys = key === 'all' ? all : [key];
-    const b = el('button', { type: 'button' }, `${label}<span class="n">${count(keys)}</span>`);
+    const keys = key === 'all' ? all : [key], na = key === 'tile' && !textOnly;
+    const b = el('button', { type: 'button' }, `${label}<span class="n">${na ? '✕' : count(keys)}</span>`);
+    if (na) { b.classList.add('na'); b.title = 'Text datasets only: picking it switches Modality to Text'; }
     b.setAttribute('aria-pressed', key === 'all' ? isAll : !isAll && encSel.includes(key));
-    b.onclick = () => pick(key === 'all' || isAll ? keys : encSel.includes(key) ? encSel.filter(k => k !== key) : [...encSel, key]);
+    b.onclick = () => {
+      if (na) { sel.modality = ['text']; store.set('mods', JSON.stringify(sel.modality)); }
+      const on = encSel.includes(key) && !na;
+      pick(key === 'all' || isAll ? keys : on ? encSel.filter(k => k !== key) : [...new Set([...encSel, key])]);
+    };
     box.appendChild(b);
   });
+  const note = el('span', { className: 'tilenote' }, 'TILE 📝 shows with Modality Text only');
+  if (encSel.includes('tile') && !textOnly) box.appendChild(note);
 }
 
 // A banded column per model, its encodings side by side within it.
