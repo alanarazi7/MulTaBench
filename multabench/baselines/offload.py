@@ -8,6 +8,18 @@ from multabench.utils.hardware import available_ram_mb
 
 
 def offload_within_ram_limit(inference_manager: type) -> Dict[str, str]:
-    """Makes the InferenceManager class size CPU RAM by the limit; returns the disk to fall back on, as model kwargs."""
-    inference_manager.get_available_cpu_memory = lambda self: available_ram_mb()
+    """Sends the tensor to disk where the engine picks CPU RAM but the tensor alone exceeds what the job has left, a run
+    that would be killed; every other decision is the engine's own. Returns the disk to offload to, as model kwargs."""
+    if not hasattr(inference_manager, "resolve_without_ram_limit"):
+        inference_manager.resolve_without_ram_limit = inference_manager._resolve_offload_mode
+        inference_manager._resolve_offload_mode = _resolve_within_ram_limit
     return {"disk_offload_dir": tempfile.gettempdir()}
+
+
+def _resolve_within_ram_limit(self, output_mb: float, gpu_free_mb: float, cpu_free_mb: float, disk_free_mb: float):
+    mode, reason = self.resolve_without_ram_limit(output_mb, gpu_free_mb, cpu_free_mb, disk_free_mb)
+    left_mb = available_ram_mb()
+    if mode.name == "CPU" and output_mb > left_mb:
+        detail = f"{output_mb:.0f}MB > {left_mb:.0f}MB left in the job's RAM -> disk"
+        return type(mode).DISK, type(reason)("job_ram_limit", detail)
+    return mode, reason
