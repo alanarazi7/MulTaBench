@@ -22,6 +22,8 @@ RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models")
 TAR_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tar")
 LARGE_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_large")
 LARGE_TAR_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_large_tar")
+# Runs of the TILE interface around each model, on the text datasets.
+TILE_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tile")
 ANCHOR = "RandomForest"
 INIT = 1000
 

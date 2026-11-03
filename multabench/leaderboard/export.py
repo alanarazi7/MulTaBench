@@ -8,7 +8,7 @@ import pandas as pd
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.info import Tier, dataset_info
 from multabench.leaderboard.elo import (ANCHOR, LARGE_RESULTS_DIR, LARGE_TAR_RESULTS_DIR, RESULTS_DIR, TAR_RESULTS_DIR,
-                                        error_table, leaderboard, load_runs)
+                                        TILE_RESULTS_DIR, error_table, leaderboard, load_runs)
 from multabench.leaderboard.embedding_cost import EMBEDDING_COST_CSV, with_tar_encode_times
 from multabench.result_keys import ResultKey, RunStatus
 
@@ -18,12 +18,16 @@ TASKS = ["classification", "regression"]
 # The board knows two modalities: a dataset with images counts as image, whether or not it also has text.
 MODALITIES = [Modality.TEXT.value, Modality.IMAGE.value]
 ENCODING, ENTRY = "encoding", "entry"
-# How a model reads text and images: small or large encoders, frozen or fine-tuned (TAR), or end-to-end on raw text.
-ENCODINGS = {"frozen": "Frozen-S", "tar": "TAR-S", "large": "Frozen-L", "large-tar": "TAR-L"}
+# How a model reads text and images: small or large encoders, frozen or fine-tuned (TAR), TILE's row-aware embeddings,
+# or end-to-end on raw text.
+ENCODINGS = {"frozen": "Frozen-S", "tar": "TAR-S", "large": "Frozen-L", "large-tar": "TAR-L", "tile": "TILE"}
 # Each encoding's runs; the end-to-end models are among the frozen ones.
 ENCODING_DIRS = {"frozen": RESULTS_DIR, "tar": TAR_RESULTS_DIR, "large": LARGE_RESULTS_DIR,
-                 "large-tar": LARGE_TAR_RESULTS_DIR}
+                 "large-tar": LARGE_TAR_RESULTS_DIR, "tile": TILE_RESULTS_DIR}
 END_TO_END = "end-to-end"
+TILE, TILE_PREFIX = "tile", "TILE-"
+# TILE runs on the text datasets only, so it is rated only where the board shows no image datasets.
+TEXT_ONLY_ENCODINGS = [TILE]
 
 
 def dataset_tier(dataset: str) -> str:
@@ -52,6 +56,8 @@ def entries(runs_by_encoding: dict[str, pd.DataFrame]) -> pd.DataFrame:
     frozen = runs[runs[ENCODING] == "frozen"]
     raw_text = frozen.groupby(ResultKey.MODEL)[ResultKey.TEXT_ENCODER].transform(lambda e: e.isna().all())
     runs.loc[raw_text[raw_text].index, ENCODING] = END_TO_END
+    tile = runs[ENCODING] == TILE
+    runs.loc[tile, ResultKey.MODEL] = runs.loc[tile, ResultKey.MODEL].str.removeprefix(TILE_PREFIX)
     names = zip(runs[ResultKey.MODEL], runs[ENCODING])
     runs[ENTRY] = [m if e == END_TO_END else f"{m} ({ENCODINGS[e]})" for m, e in names]
     return runs
@@ -69,6 +75,8 @@ def _filters(runs: pd.DataFrame):
     modality = datasets.map(board_modality)
     for tiers, tasks, modalities in itertools.product(subsets(TIERS), subsets(TASKS), subsets(MODALITIES)):
         keep = tier.isin(tiers) & task.isin(tasks) & modality.isin(modalities)
+        if modalities != [Modality.TEXT.value]:
+            keep &= ~runs[ENCODING].isin(TEXT_ONLY_ENCODINGS)
         keys = {"tier": _subset_key(tiers, TIERS), "task": _subset_key(tasks, TASKS),
                 "modality": _subset_key(modalities, MODALITIES)}
         yield keys, runs[keep]
@@ -109,7 +117,9 @@ def encoding_leaderboards(runs: pd.DataFrame, bootstraps: int = 1000) -> pd.Data
     boards = []
     for keys, sub in _filters(ok):
         table = sub.groupby([ResultKey.DATASET, ResultKey.MODEL, ResultKey.FOLD, ENCODING])[ResultKey.TEST_ERROR].mean()
-        table = table.unstack(ENCODING).rename(columns=ENCODINGS).dropna()
+        table = table.unstack(ENCODING)
+        # A pair needs every encoding but TILE, which lacks the folds its model can't run.
+        table = table.dropna(subset=table.columns.difference(TEXT_ONLY_ENCODINGS)).rename(columns=ENCODINGS)
         pairs = table.index.droplevel(ResultKey.FOLD).unique()
         level = table.index.get_level_values
         table.index = pd.MultiIndex.from_arrays([level(0) + "|" + level(1), level(2)])
@@ -140,6 +150,7 @@ def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd
     run's encoders took to fine-tune per 1K training rows; and the mean time its encoders would take to embed 1K rows
     live, estimated from the caches' own encoding time, the tuned caches' for both encodings."""
     ok = _by_entry(runs[runs[ResultKey.STATUS] == RunStatus.OK])
+    ok[ResultKey.TEXT_ENCODER] = ok[ResultKey.TEXT_ENCODER].mask(ok[ENCODING] == TILE, TILE)
     caches = with_tar_encode_times(pd.read_csv(embedding_cost_csv)).astype({"fold": "Int64"}).fillna({"fold": -1})
     caches = caches.set_index(["dataset", "encoder", "fold"])
 
@@ -176,6 +187,7 @@ if __name__ == "__main__":
     parser.add_argument('--tar_results_dir', type=str, default=TAR_RESULTS_DIR)
     parser.add_argument('--large_results_dir', type=str, default=LARGE_RESULTS_DIR)
     parser.add_argument('--large_tar_results_dir', type=str, default=LARGE_TAR_RESULTS_DIR)
+    parser.add_argument('--tile_results_dir', type=str, default=TILE_RESULTS_DIR)
     args = parser.parse_args()
     export(args.out_dir, {"frozen": args.results_dir, "tar": args.tar_results_dir, "large": args.large_results_dir,
-                          "large-tar": args.large_tar_results_dir})
+                          "large-tar": args.large_tar_results_dir, "tile": args.tile_results_dir})

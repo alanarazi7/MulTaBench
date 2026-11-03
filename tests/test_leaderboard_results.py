@@ -10,13 +10,15 @@ from multabench.benchmark.collect import RESULT_COLUMNS
 from multabench.benchmark.splits import SPLITS
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.leaderboard.elo import RESULTS_DIR
-from multabench.leaderboard.export import ENCODING_DIRS
+from multabench.leaderboard.export import ENCODING_DIRS, TEXT_ONLY_ENCODINGS
 from multabench.result_keys import RUN_KEY, ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, GPU_RUN_HARDWARE
 
 PATHS = [p for d in ENCODING_DIRS.values() for p in sorted(glob.glob(os.path.join(d, "*.csv")))]
 MODELS = {model.MODEL_NAME: model for model in BASELINES}
 TASK_METRICS = {"BIN": "roc_auc", "MUL": "log_loss", "REG": "root_mean_squared_error"}
+# The runs a model can't do on the leaderboard's hardware, by model and dataset: out of GPU memory.
+EXPECTED_FAILURES = {(f"TILE-Kumo-Tabular{size}", "MUL_TEXT_SPOTIFY_GENRES") for size in ["", "-M"]}
 
 
 @pytest.fixture(scope="module", params=PATHS, ids=[os.path.relpath(p, os.path.dirname(RESULTS_DIR)) for p in PATHS])
@@ -34,10 +36,12 @@ def test_a_file_holds_one_known_model_with_the_result_columns(runs):
 
 
 def test_every_dataset_has_every_fold_once(runs):
-    _, df, _ = runs
+    _, df, encoding = runs
     assert set(df[ResultKey.SIZE]) == {"10k"}
     assert not df.duplicated(RUN_KEY).any()
-    expected = {(d.name, f) for d in MulTaBenchDatasetID for f in range(SPLITS)}
+    text_only = encoding in TEXT_ONLY_ENCODINGS
+    datasets = [d for d in MulTaBenchDatasetID if not text_only or dataset_modality(d) == Modality.TEXT]
+    expected = {(d.name, f) for d in datasets for f in range(SPLITS)}
     assert set(zip(df[ResultKey.DATASET], df[ResultKey.FOLD])) == expected
 
 
@@ -66,9 +70,10 @@ def test_successful_runs_score_with_the_task_metric(runs):
     assert np.allclose(ok[ResultKey.TEST_SCORE], optimum - ok[ResultKey.TEST_ERROR])
 
 
-def test_every_run_succeeded(runs):
+def test_every_run_succeeded_but_the_expected_failures(runs):
     _, df, _ = runs
-    assert (df[ResultKey.STATUS] == RunStatus.OK).all()
+    failed = df[df[ResultKey.STATUS] != RunStatus.OK]
+    assert set(zip(failed[ResultKey.MODEL], failed[ResultKey.DATASET])) <= EXPECTED_FAILURES
 
 
 def test_runs_used_their_hardware(runs):

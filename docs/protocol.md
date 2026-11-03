@@ -34,6 +34,12 @@ Those runs are in `multabench/leaderboard/models_large/`, as a third entry, e.g.
 large encoders fine-tuned, `e5-large-tar` and `dino-large-tar`, in `multabench/leaderboard/models_large_tar/`, as a
 fourth, e.g. `LimiX-2 (TAR-L)`; image datasets' text stays frozen `e5-large`.
 
+On the text datasets, every model also ran wrapped by the TILE interface (see [running](running.md)), which builds
+the model's input from each string cell embedded in the context of its row. Those runs are in
+`multabench/leaderboard/models_tile/`, as a fifth entry, e.g. `LimiX-2 (TILE)`, rated only on boards that show no image
+datasets. TILE-Kumo-Tabular and TILE-Kumo-Tabular-M run out of GPU memory on Spotify Genres: with its 114 classes,
+TILE's target encoding gives them 447 features.
+
 ## Metrics
 
 Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized
