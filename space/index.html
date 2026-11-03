@@ -178,7 +178,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
           <li><b class="enc tar">TAR-S</b> (Target-Aware Representations) first fine-tunes the small encoders on the training labels with default hyperparameters.</li>
           <li><b class="enc large">Frozen-L</b> uses the large encoders as they are.</li>
           <li><b class="enc large-tar">TAR-L</b> fine-tunes the large encoders as TAR-S does the small ones.</li>
-          <li><b class="enc tile">TILE</b> 📝 (<a href="https://github.com/soda-inria/tile">Lefebvre et al., 2026</a>) embeds each string cell in the context of its row with Llama-3.1-8B (14 of its 32 layers), on text datasets only. We run it with TILE's defaults for every model, untuned, which may understate it.</li>
+          <li><b class="enc tile">TILE</b> 📝 (<a href="https://github.com/soda-inria/tile">Lefebvre et al., 2026</a>) embeds each string cell in the context of its row with Llama-3.1-8B, on text datasets only. We run it with TILE's defaults for every model, untuned, so its performance is likely underestimated.</li>
         </ul>
       </div>
     </div>
@@ -203,6 +203,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
+    <p class="muted" id="encTileNote" hidden>TILE 📝 runs on text datasets only, so it shows here with Modality Text only.</p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
   </div>
@@ -549,7 +550,7 @@ const encoderCells = (e5, dino) => `<td class="model"><a href="https://huggingfa
   + `<td class="model"><a href="https://huggingface.co/facebook/dinov3-vit${dino[0]}16-pretrain-lvd1689m">DINOv3-${dino[1]}</a></td>`;
 const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encoderCells('e5-small', ['s', 'small']),
   large: encoderCells('e5-large', ['l', 'large']), 'large-tar': encoderCells('e5-large', ['l', 'large']),
-  tile: '<td class="model"><a href="https://huggingface.co/meta-llama/Llama-3.1-8B">Llama-3.1-8B</a> (14 layers)</td><td>—</td>' };
+  tile: '<td class="model"><a href="https://huggingface.co/meta-llama/Llama-3.1-8B">Llama-3.1-8B</a></td><td>—</td>' };
 // The encodings board names each encoding by its label.
 const ENC_KEY = Object.fromEntries(Object.entries(ENC_LABEL).map(([k, v]) => [v, k]));
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
@@ -872,6 +873,7 @@ function renderCost() {
 function renderEncodings(filterKey) {
   const board = D.encodingBoards[filterKey];
   const t = document.getElementById('encodingTable');
+  document.getElementById('encTileNote').hidden = board.some(r => ENC_KEY[r.encoding] === 'tile');
   t.innerHTML = `<thead><tr><th></th><th>Encoding</th><th>Text encoder</th><th>Image encoder</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num" title="Share of the battles these encoders win">Win rate</th></tr></thead>`;
   const tb = el('tbody');
   board.forEach((r, i) => {
