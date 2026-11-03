@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from multabench.leaderboard.export import (ENCODINGS, ENTRY, SPACE_DATA_DIR, cost, encoding_leaderboards, leaderboards,
-                                           load_entries, per_dataset)
+from multabench.leaderboard.export import (ENCODINGS, ENTRY, SPACE_DATA_DIR, TEXT_ONLY_ENCODINGS, TILE, cost,
+                                           encoding_leaderboards, leaderboards, load_entries, per_dataset)
 from multabench.result_keys import ResultKey
 
 
@@ -39,7 +39,10 @@ def test_the_space_encoding_boards_follow_the_results(runs):
 def test_each_model_reading_embeddings_has_an_entry_per_encoding(runs):
     encodings = runs.groupby(ResultKey.MODEL)["encoding"].unique().map(sorted)
     assert set(encodings[["ConTextTab", "TabSTAR-v1.1"]].map(tuple)) == {("end-to-end",)}
-    assert set(encodings.drop(["ConTextTab", "TabSTAR-v1.1"]).map(tuple)) == {tuple(sorted(ENCODINGS))}
+    encodings = encodings.drop(["ConTextTab", "TabSTAR-v1.1"])
+    # TILE-EXAONE-Tabular is not run.
+    assert set(encodings.drop("EXAONE-Tabular").map(tuple)) == {tuple(sorted(ENCODINGS))}
+    assert encodings["EXAONE-Tabular"] == sorted(set(ENCODINGS) - {TILE})
 
 
 def test_the_space_per_dataset_results_follow_the_results(runs):
@@ -59,7 +62,7 @@ def test_raw_text_models_pay_no_text_encoding(runs):
     encode = cost(runs).set_index(ENTRY)
     assert (encode.loc[["ConTextTab", "TabSTAR-v1.1"], "text_encode_s_per_1k"] == 0).all()
     assert (encode.drop(["ConTextTab", "TabSTAR-v1.1"])["text_encode_s_per_1k"] > 0).all()
-    assert (encode["image_encode_s_per_1k"] > 0).all()
+    assert (encode[~encode["encoding"].isin(TEXT_ONLY_ENCODINGS)]["image_encode_s_per_1k"] > 0).all()
 
 
 def test_every_model_has_a_developer_logo_and_link(runs):
