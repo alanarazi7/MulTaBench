@@ -71,3 +71,13 @@ def test_cgroup_v1_memory_controller(tmp_path):
     (step / "memory.limit_in_bytes").write_text(str(16 * 1024 ** 3))
     (tmp_path / "proc").write_text("12:cpuset:/slurm/job_1/step_0\n4:memory:/slurm/job_1/step_0\n")
     assert hardware._cgroup_memory_limits(str(tmp_path / "proc"), str(tmp_path / "cgroup")) == [16 * 1024 ** 3]
+
+
+def test_available_ram_is_capped_by_the_job_limit_less_what_the_process_holds(monkeypatch):
+    gb = 1024 ** 3
+    monkeypatch.setattr(hardware.psutil, "virtual_memory", lambda: type("Memory", (), {"available": 200 * gb}))
+    monkeypatch.setattr(hardware.psutil.Process, "memory_info", lambda self: type("Info", (), {"rss": 8 * gb}))
+    monkeypatch.setattr(hardware, "_cgroup_memory_limits", lambda: [32 * gb])
+    assert hardware.available_ram_mb() == 24 * 1024
+    monkeypatch.setattr(hardware, "_cgroup_memory_limits", lambda: [])
+    assert hardware.available_ram_mb() == 200 * 1024

@@ -1,6 +1,7 @@
 from pandas import DataFrame, Series
 
 from multabench.baselines.abstract_model import TabularModel
+from multabench.baselines.offload import offload_within_ram_limit
 
 
 class TabICLv2(TabularModel):
@@ -15,8 +16,9 @@ class TabICLv2(TabularModel):
 
     def initialize_model(self):
         from tabicl import TabICLClassifier, TabICLRegressor
+        from tabicl.model.inference import InferenceManager
         cls = TabICLClassifier if self.is_cls else TabICLRegressor
-        return cls(device=str(self.device))
+        return cls(device=str(self.device), **offload_within_ram_limit(InferenceManager))
 
     def fit_model(self, x_train: DataFrame, y_train: Series, x_val: DataFrame, y_val: Series):
         self.model_.fit(x_train, y_train)
