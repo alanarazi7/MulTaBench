@@ -24,6 +24,8 @@ LARGE_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_large")
 LARGE_TAR_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_large_tar")
 # Runs of the TILE interface around each model, on the text datasets.
 TILE_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tile")
+# Runs with each text column embedded by TF-IDF, on the text datasets.
+TFIDF_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tfidf")
 ANCHOR = "RandomForest"
 INIT = 1000
 

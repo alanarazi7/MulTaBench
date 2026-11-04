@@ -10,7 +10,7 @@ from multabench.benchmark.collect import RESULT_COLUMNS
 from multabench.benchmark.splits import SPLITS
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.leaderboard.elo import RESULTS_DIR
-from multabench.leaderboard.export import ENCODING_DIRS, TEXT_ONLY_ENCODINGS
+from multabench.leaderboard.export import ENCODING_DIRS, TEXT_ONLY_ENCODINGS, TFIDF
 from multabench.result_keys import RUN_KEY, ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, GPU_RUN_HARDWARE
 
@@ -50,8 +50,8 @@ def test_every_dataset_has_every_fold_once(runs):
 
 
 def test_each_dataset_uses_the_encoders_of_its_columns(runs):
-    """Small or large, frozen or -tar for the image column and a text-only dataset's text; image datasets' text stays
-    frozen."""
+    """Small or large, frozen or -tar for the image column and a text-only dataset's text, or TF-IDF; image datasets'
+    text stays frozen."""
     name, df, encoding = runs
     embeds_text = MODELS[name].USE_TEXT_EMBEDDINGS
     size = "large" if encoding.startswith("large") else "small"
@@ -60,6 +60,7 @@ def test_each_dataset_uses_the_encoders_of_its_columns(runs):
         modality = dataset_modality(MulTaBenchDatasetID[dataset])
         text_tar = tar if modality == Modality.TEXT else ""
         text = f"e5-{size}{text_tar}" if modality.has_text and embeds_text else None
+        text = "tfidf" if encoding == TFIDF and text else text
         image = f"dino-{size}{tar}" if modality.has_images else None
         assert set(encoders[ResultKey.TEXT_ENCODER].replace({np.nan: None})) == {text}, dataset
         assert set(encoders[ResultKey.IMAGE_ENCODER].replace({np.nan: None})) == {image}, dataset
