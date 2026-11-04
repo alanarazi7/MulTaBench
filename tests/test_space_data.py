@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from multabench.leaderboard.export import (ENCODINGS, ENTRY, SPACE_DATA_DIR, TEXT_ONLY_ENCODINGS, TILE, cost,
+from multabench.leaderboard.export import (ENCODINGS, ENTRY, SPACE_DATA_DIR, TEXT_ONLY_ENCODINGS, cost,
                                            encoding_leaderboards, leaderboards, load_entries, per_dataset)
 from multabench.result_keys import ResultKey
 
@@ -40,9 +40,7 @@ def test_each_model_reading_embeddings_has_an_entry_per_encoding(runs):
     encodings = runs.groupby(ResultKey.MODEL)["encoding"].unique().map(sorted)
     assert set(encodings[["ConTextTab", "TabSTAR-v1.1"]].map(tuple)) == {("end-to-end",)}
     encodings = encodings.drop(["ConTextTab", "TabSTAR-v1.1"])
-    # TILE-EXAONE-Tabular is not run.
-    assert set(encodings.drop("EXAONE-Tabular").map(tuple)) == {tuple(sorted(ENCODINGS))}
-    assert encodings["EXAONE-Tabular"] == sorted(set(ENCODINGS) - {TILE})
+    assert set(encodings.map(tuple)) == {tuple(sorted(ENCODINGS))}
 
 
 def test_the_space_per_dataset_results_follow_the_results(runs):
