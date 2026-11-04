@@ -90,6 +90,11 @@ the same `--sbatch`, so sweep the runs that need a GPU apart from those that don
 commands; with `--official`, a sweep that mixes them stops. Relaunching a sweep runs only what is still missing, and
 with `--rerun_failed` also the runs whose result is an error, e.g. after a Hugging Face rate limit.
 
+The jobs file lists the runs model by model, in the order of `--models`. For a GPU sweep, list the cheapest models
+first, so most models have results early and a sweep stopped to save budget has skipped only the costliest: Mitra-v2
+(`mitra2`) takes about 25 minutes a run on an H100, TabDPT (`dpt`), TabFM (`tabfm`) and LimiX-2 (`limix2`) about 2 to 4,
+and the other GPU models under a minute, so put those four last.
+
 ## Hardware
 
 Every leaderboard run must use the same hardware, so their times compare: one NVIDIA H100 (80 GB), an Intel Xeon
