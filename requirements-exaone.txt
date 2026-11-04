@@ -2,18 +2,10 @@
 #    uv pip compile pyproject.toml requirements-exaone.in --extra bench --extra dev -o requirements-exaone.txt --python-version 3.11 --python-platform x86_64-unknown-linux-gnu
 accelerate==1.12.0
     # via peft
-altair==5.5.0
-    # via streamlit
-attrs==25.4.0
-    # via
-    #   jsonschema
-    #   referencing
 autogluon-common==1.5.0
     # via autogluon-core
 autogluon-core==1.5.0
     # via multabench (pyproject.toml)
-blinker==1.9.0
-    # via streamlit
 boto3==1.42.86
     # via
     #   autogluon-common
@@ -22,14 +14,10 @@ botocore==1.42.86
     # via
     #   boto3
     #   s3transfer
-cachetools==6.2.2
-    # via streamlit
 certifi==2025.11.12
     # via requests
 charset-normalizer==3.4.4
     # via requests
-click==8.2.1
-    # via streamlit
 cloudpickle==3.1.2
     # via skrub
 contourpy==1.3.3
@@ -42,7 +30,7 @@ cuda-toolkit==13.0.3.0
     # via torch
 cycler==0.12.1
     # via matplotlib
-exaonetabular @ git+https://github.com/LGAI-Research/EXAONE-Tabular.git@8638e07d09fad154249bd75ba4786181491f7025
+exaonetabular @ git+https://github.com/LGAI-Research/EXAONE-Tabular.git@d149d0f0441053f0cf6b2b45f4b2067a81619cf9
     # via -r requirements-exaone.in
 filelock==3.25.2
     # via
@@ -55,10 +43,6 @@ fsspec==2025.3.0
     # via
     #   huggingface-hub
     #   torch
-gitdb==4.0.12
-    # via gitpython
-gitpython==3.1.45
-    # via streamlit
 hf-xet==1.2.0
     # via huggingface-hub
 huggingface-hub==0.36.0
@@ -75,8 +59,6 @@ iniconfig==2.3.0
     # via pytest
 jinja2==3.1.6
     # via
-    #   altair
-    #   pydeck
     #   skrub
     #   torch
 jmespath==1.1.0
@@ -88,23 +70,16 @@ joblib==1.5.2
     #   autogluon-common
     #   scikit-learn
     #   skrub
-jsonschema==4.23.0
-    # via altair
-jsonschema-specifications==2025.9.1
-    # via jsonschema
 kiwisolver==1.4.9
     # via matplotlib
 markupsafe==3.0.3
     # via jinja2
 matplotlib==3.10.7
     # via
-    #   multabench (pyproject.toml)
     #   autogluon-core
     #   skrub
 mpmath==1.3.0
     # via sympy
-narwhals==2.12.0
-    # via altair
 networkx==3.6
     # via
     #   autogluon-core
@@ -120,11 +95,9 @@ numpy==2.3.5
     #   matplotlib
     #   pandas
     #   peft
-    #   pydeck
     #   scikit-learn
     #   scipy
     #   skrub
-    #   streamlit
     #   torchvision
     #   transformers
 nvidia-cublas==13.1.1.3
@@ -173,12 +146,10 @@ nvidia-nvtx==13.0.85
 packaging==25.0
     # via
     #   accelerate
-    #   altair
     #   huggingface-hub
     #   matplotlib
     #   peft
     #   pytest
-    #   streamlit
     #   transformers
 pandas==2.3.3
     # via
@@ -186,19 +157,15 @@ pandas==2.3.3
     #   autogluon-common
     #   autogluon-core
     #   skrub
-    #   streamlit
 peft==0.18.0
     # via multabench (pyproject.toml)
 pillow==11.3.0
     # via
     #   multabench (pyproject.toml)
     #   matplotlib
-    #   streamlit
     #   torchvision
 pluggy==1.6.0
     # via pytest
-protobuf==6.33.1
-    # via streamlit
 psutil==7.0.0
     # via
     #   multabench (pyproject.toml)
@@ -209,9 +176,6 @@ pyarrow==20.0.0
     # via
     #   multabench (pyproject.toml)
     #   autogluon-common
-    #   streamlit
-pydeck==0.9.1
-    # via streamlit
 pydot==4.0.1
     # via skrub
 pygments==2.19.2
@@ -238,10 +202,6 @@ pyyaml==6.0.3
     #   huggingface-hub
     #   peft
     #   transformers
-referencing==0.37.0
-    # via
-    #   jsonschema
-    #   jsonschema-specifications
 regex==2025.11.3
     # via transformers
 requests==2.32.5
@@ -250,12 +210,7 @@ requests==2.32.5
     #   autogluon-core
     #   huggingface-hub
     #   skrub
-    #   streamlit
     #   transformers
-rpds-py==0.29.0
-    # via
-    #   jsonschema
-    #   referencing
 s3transfer==0.16.0
     # via boto3
 safetensors==0.7.0
@@ -283,20 +238,12 @@ six==1.17.0
     # via python-dateutil
 skrub==0.10.1
     # via multabench (pyproject.toml)
-smmap==5.0.2
-    # via gitdb
-streamlit==1.51.0
-    # via multabench (pyproject.toml)
 sympy==1.14.0
     # via torch
-tenacity==9.1.2
-    # via streamlit
 threadpoolctl==3.6.0
     # via scikit-learn
 tokenizers==0.22.1
     # via transformers
-toml==0.10.2
-    # via streamlit
 torch==2.14.1
     # via
     #   -r requirements-exaone.in
@@ -307,8 +254,6 @@ torch==2.14.1
     #   torchvision
 torchvision==0.29.1
     # via multabench (pyproject.toml)
-tornado==6.5.2
-    # via streamlit
 tqdm==4.67.1
     # via
     #   autogluon-common
@@ -324,10 +269,7 @@ triton==3.8.0
     # via torch
 typing-extensions==4.15.0
     # via
-    #   altair
     #   huggingface-hub
-    #   referencing
-    #   streamlit
     #   torch
 tzdata==2025.2
     # via pandas
@@ -335,5 +277,3 @@ urllib3==2.5.0
     # via
     #   botocore
     #   requests
-watchdog==6.0.0
-    # via streamlit
