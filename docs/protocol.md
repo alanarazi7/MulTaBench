@@ -34,9 +34,14 @@ Those runs are in `multabench/leaderboard/models_large/`, as a third entry, e.g.
 large encoders fine-tuned, `e5-large-tar` and `dino-large-tar`, in `multabench/leaderboard/models_large_tar/`, as a
 fourth, e.g. `LimiX-2 (TAR-L)`; image datasets' text stays frozen `e5-large`.
 
+On the text datasets, every model that embeds text also ran with `--text_encoder tfidf`: skrub's `StringEncoder`, TF-IDF
+reduced to 30 dimensions with SVD, fitted on each fold's training rows. Those runs are in
+`multabench/leaderboard/models_tfidf/`, as a fifth entry, e.g. `LimiX-2 (TF-IDF)`, rated only on boards that show no
+image datasets.
+
 On the text datasets, every model also ran wrapped by the TILE interface (see [running](running.md)), which builds
 the model's input from each string cell embedded in the context of its row. Those runs are in
-`multabench/leaderboard/models_tile/`, as a fifth entry, e.g. `LimiX-2 (TILE)`, rated only on boards that show no image
+`multabench/leaderboard/models_tile/`, as a sixth entry, e.g. `LimiX-2 (TILE)`, rated only on boards that show no image
 datasets. Five entries are rated on 39 of the 40 text datasets (see the TODO):
 TILE-Kumo-Tabular and TILE-Kumo-Tabular-M run out of GPU memory in fit on Spotify Genres, whose 114 classes give 447
 features with TILE's target encoding; TILE-TabICLv2, TILE-Xiaomi-TabLDM and TILE-LimiX-2 run out of the 32 GB of RAM in

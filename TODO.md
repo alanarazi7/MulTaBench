@@ -13,6 +13,8 @@ file as the PRs that complete them are merged.
 - [ ] TILE: run the 30 missing runs. On Melbourne Airbnb, TabICLv2's and TabLDM's column embeddings of 8 ensemble
       members at once take 47 GB, past the RAM even offloaded to disk (#281); fewer members at once would keep them on
       the GPU. Profile LimiX-2 there, and Kumo's GPU memory in fit on Spotify Genres.
+- [ ] TF-IDF: rerun Mitra-v2 on OSHA Injury, folds 0-4, which the HF Hub's rate limit failed; its Elo skips
+      those 5 folds until then.
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
       no native categories), where the PFNs may do better with the feature window and categories its authors select.
 
@@ -22,9 +24,6 @@ file as the PRs that complete them are merged.
       encoder resolution, running and writing the result), leaving the script a thin entry point.
 - [ ] `sweep.py` takes one `--sbatch`, so a sweep mixing CPU and GPU runs has to be split in two by
       hand. Group its runs by `run_hardware` and take a second set of sbatch arguments for CPU runs.
-- [ ] TF-IDF runs, deferred: the first release uses one text preprocessing per model, e5-small. Run
-      the models that embed text with `--text_encoders tfidf` as their own leaderboard entries;
-      until then, sweeps pass `--text_encoders e5-small`, since the default also lists TF-IDF.
 - [ ] AutoGluon multimodal, the last end-to-end model, which takes the raw table without our preprocessing; the paper
       covered it.
 - [ ] ConTextTab reads dates natively, but the shared preprocessing expands them first. Add a
