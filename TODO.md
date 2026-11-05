@@ -13,6 +13,8 @@ file as the PRs that complete them are merged.
 - [ ] TILE: run the 30 missing runs. On Melbourne Airbnb, TabICLv2's and TabLDM's column embeddings of 8 ensemble
       members at once take 47 GB, past the RAM even offloaded to disk (#281); fewer members at once would keep them on
       the GPU. Profile LimiX-2 there, and Kumo's GPU memory in fit on Spotify Genres.
+- [ ] TF-IDF: rerun Mitra-v2 on OSHA Injury, folds 0-4, which the HF Hub's rate limit failed; its Elo skips
+      those 5 folds until then.
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
       no native categories), where the PFNs may do better with the feature window and categories its authors select.
 
