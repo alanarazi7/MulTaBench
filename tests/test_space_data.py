@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from multabench.leaderboard.export import (ENCODINGS, ENTRY, SPACE_DATA_DIR, TEXT_ONLY_ENCODINGS, cost,
+from multabench.leaderboard.export import (ENCODINGS, ENTRY, SPACE_DATA_DIR, cost,
                                            encoding_leaderboards, leaderboards, load_entries, per_dataset)
 from multabench.result_keys import ResultKey
 
@@ -49,18 +49,26 @@ def test_the_space_per_dataset_results_follow_the_results(runs):
 
 
 def test_the_space_cost_follows_the_results(runs):
-    shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "cost.csv")).set_index(ENTRY)
-    computed = cost(runs).set_index(ENTRY).loc[shown.index]
+    key = ["tier", "task", "modality", ENTRY]
+    shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "cost.csv")).set_index(key).sort_index()
+    computed = cost(runs).set_index(key).sort_index()
+    assert len(computed.groupby(["tier", "task", "modality"])) == 3 * 3 * 3
+    assert shown.index.equals(computed.index)
     for column in ["train_s_per_1k", "inference_s_per_1k", "finetune_s_per_1k", "text_encode_s_per_1k",
                    "image_encode_s_per_1k"]:
         assert np.allclose(shown[column], computed[column], atol=1e-3)
 
 
 def test_raw_text_models_pay_no_text_encoding(runs):
-    encode = cost(runs).set_index(ENTRY)
+    encode = cost(runs).query("tier == 'all' and task == 'all' and modality == 'all'").set_index(ENTRY)
     assert (encode.loc[["ConTextTab", "TabSTAR-v1.1"], "text_encode_s_per_1k"] == 0).all()
     assert (encode.drop(["ConTextTab", "TabSTAR-v1.1"])["text_encode_s_per_1k"] > 0).all()
-    assert (encode[~encode["encoding"].isin(TEXT_ONLY_ENCODINGS)]["image_encode_s_per_1k"] > 0).all()
+    assert (encode["image_encode_s_per_1k"] > 0).all()
+
+
+def test_the_text_boards_pay_no_image_encoding(runs):
+    encode = cost(runs)
+    assert (encode[encode["modality"] == "text"]["image_encode_s_per_1k"] == 0).all()
 
 
 def test_every_model_has_a_developer_logo_and_link(runs):

@@ -146,9 +146,9 @@ def per_dataset(runs: pd.DataFrame) -> pd.DataFrame:
 
 
 def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd.DataFrame:
-    """Median train and predict time per 1K rows, which leave out reading the cached embeddings; the mean time a TAR
-    run's encoders took to fine-tune per 1K training rows; and the mean time its encoders would take to embed 1K rows
-    live, estimated from the caches' own encoding time, the tuned caches' for both encodings."""
+    """Per board, over its datasets: median train and predict time per 1K rows, which leave out reading the cached
+    embeddings; the mean time a TAR run's encoders took to fine-tune per 1K training rows; and the mean time its
+    encoders would take to embed 1K rows live, from the caches' own encoding time, the tuned caches' for both."""
     ok = _by_entry(runs[runs[ResultKey.STATUS] == RunStatus.OK])
     ok[ResultKey.TEXT_ENCODER] = ok[ResultKey.TEXT_ENCODER].mask(ok[ENCODING] == TILE, TILE)
     caches = with_tar_encode_times(pd.read_csv(embedding_cost_csv)).astype({"fold": "Int64"}).fillna({"fold": -1})
@@ -163,12 +163,18 @@ def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd
                    image_encode=per_run(ResultKey.IMAGE_ENCODER, "encode_s_per_1k"),
                    finetune=per_run(ResultKey.TEXT_ENCODER, "finetune_s_per_1k")
                    + per_run(ResultKey.IMAGE_ENCODER, "finetune_s_per_1k"))
-    df = ok.groupby(ResultKey.MODEL).agg(
-        train_s_per_1k=(ResultKey.TRAIN_TIME_PER_1K, "median"),
-        inference_s_per_1k=(ResultKey.INFERENCE_TIME_PER_1K, "median"), finetune_s_per_1k=("finetune", "mean"),
-        text_encode_s_per_1k=("text_encode", "mean"), image_encode_s_per_1k=("image_encode", "mean"),
-        gpu=(ResultKey.GPU_TYPE, "first"), cpu=(ResultKey.CPU_NAME, "first")).reset_index()
-    return _with_model_and_encoding(df.sort_values("train_s_per_1k", ignore_index=True), runs, at=0)
+    boards = []
+    for keys, sub in _filters(ok):
+        board = sub.groupby(ResultKey.MODEL).agg(
+            train_s_per_1k=(ResultKey.TRAIN_TIME_PER_1K, "median"),
+            inference_s_per_1k=(ResultKey.INFERENCE_TIME_PER_1K, "median"), finetune_s_per_1k=("finetune", "mean"),
+            text_encode_s_per_1k=("text_encode", "mean"), image_encode_s_per_1k=("image_encode", "mean"),
+            gpu=(ResultKey.GPU_TYPE, "first"), cpu=(ResultKey.CPU_NAME, "first")).reset_index()
+        board = _with_model_and_encoding(board.sort_values("train_s_per_1k", ignore_index=True), runs, at=0)
+        for i, (k, v) in enumerate(keys.items()):
+            board.insert(i, k, v)
+        boards.append(board)
+    return pd.concat(boards, ignore_index=True)
 
 
 def export(out_dir: str, dirs: dict[str, str] = ENCODING_DIRS, bootstraps: int = 1000):
