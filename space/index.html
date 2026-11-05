@@ -220,7 +220,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <section>
     <h2>Cost</h2>
-    <p class="muted">Median time per 1,000 rows, as a ballpark: models run on different hardware, so their times are not directly comparable, and some encoders were timed on different GPUs, which we plan to fix. Most of the cost is encoding the text and images, which could be optimized.</p>
+    <p class="muted">Median time per 1,000 rows on the datasets of the filters above, as a ballpark: models run on different hardware, so their times are not directly comparable, and some encoders were timed on different GPUs, which we plan to fix. Most of the cost is encoding the text and images, which could be optimized.</p>
     <div class="panel scroll"><table id="costTable"></table></div>
   </section>
   </div>
@@ -521,7 +521,8 @@ async function load() {
     (encodingBoards[[r.tier, r.task, r.modality].join('|')] ||= []).push({ ...r, entry: r.encoding, lo: r.elo_low, hi: r.elo_high, champions: r.best_on });
   });
   const per_dataset = (await get('per_dataset')).map(r => ({ ...r, task_type: r.dataset.slice(0, 3) }));
-  const cost = await get('cost');
+  const cost = {};
+  (await get('cost')).forEach(r => { (cost[[r.tier, r.task, r.modality].join('|')] ||= []).push(r); });
   const res = await fetch('data/leaderboards.csv', { method: 'HEAD' });
   const updated = res.headers.get('last-modified') && new Date(res.headers.get('last-modified')).toISOString().slice(0, 10);
   const info = Object.fromEntries((await get('models')).map(r => [r.model, r]));
@@ -601,8 +602,8 @@ let withEnc = store.get('enc_time') === '1';
 const encodeOf = r => withEnc ? 2 * (r.text_encode_s_per_1k + r.image_encode_s_per_1k) : 0;
 let timeOf = {};
 // TAR's fine-tuning is part of training, so it always counts; encoding the rows is optional, as for frozen encoders.
-const computeTime = () => { timeOf = Object.fromEntries(D.cost.map(r => [r.entry, r.train_s_per_1k + r.finetune_s_per_1k + r.inference_s_per_1k + encodeOf(r)])); };
-computeTime();
+// Each board has its own costs, over its datasets only, so a text board charges no image encoding.
+const computeTime = () => { timeOf = Object.fromEntries(D.cost[filterKey()].map(r => [r.entry, r.train_s_per_1k + r.finetune_s_per_1k + r.inference_s_per_1k + encodeOf(r)])); };
 let showNames = store.get('pareto_names') !== '0', withEmojis = store.get('pareto_emojis') !== '0';
 function drawEncTabs() {
   const box = document.getElementById('encTabs');
@@ -849,6 +850,7 @@ function render() {
   toggles(document.getElementById('taskTabs'), TASKS, 'task', 'tasks');
   toggles(document.getElementById('modTabs'), MODS, 'modality', 'mods');
   encodingToggles();
+  computeTime();
   renderEncodings(filterKey());
   renderBoard();
   renderCost();
@@ -857,7 +859,7 @@ render();
 
 function renderCost() {
   const order = orderOf();
-  const rows = D.cost.filter(r => order.includes(r.entry)).sort((a, b) => order.indexOf(a.entry) - order.indexOf(b.entry));
+  const rows = D.cost[filterKey()].filter(r => order.includes(r.entry)).sort((a, b) => order.indexOf(a.entry) - order.indexOf(b.entry));
   const maxT = Math.max(...rows.map(r => timeOf[r.entry]));
   const what = 'Train + finetune' + (withEnc ? ' + encode' : '') + ' + predict';
   const t = document.getElementById('costTable');
