@@ -5,6 +5,7 @@ import re
 from typing import Any, List
 
 import numpy as np
+import torch
 from pandas import DataFrame, Series
 
 from multabench.embeddings.hub import CachedEmbeddings
@@ -38,4 +39,13 @@ def load_case(x_train: DataFrame, y_train: Series) -> Any:
 
 @embedding_step
 def embed_case_rows(case: Any, x: DataFrame) -> np.ndarray:
-    return case.embed(x)
+    """CASE's embed, its batch halved when out of GPU memory, as the context's KV cache is copied once per batch row."""
+    while True:
+        try:
+            return case.embed(x)
+        except torch.OutOfMemoryError:
+            if case.batch_size == 1:
+                raise
+            case.batch_size //= 2
+            torch.cuda.empty_cache()
+            print(f"Out of GPU memory: retrying with batch size {case.batch_size}")
