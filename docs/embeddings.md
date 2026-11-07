@@ -30,6 +30,11 @@ the target and the image column, and its embedding is the row's string cells, on
 column (text or category) in `meta.json`'s `features` order, stored in float16 to halve the cache. A run serializes its own rows as loaded and looks them up, so a
 row's cells are never paired with another row.
 
+The CASE interface, `multabench/embeddings-case`, embeds whole rows after a context of the fold's training rows, so it
+is cached per fold, like the tuned encoders, under `<dataset>/<size>/fold_<k>/`, for the fold's train and test rows.
+The input is the row's cells as CASE reads them, every column but the target, joined by tabs, and its embedding the
+3840-dimensional hidden state, in float16. The cache keeps the raw embeddings, so a run fits its own PCA on them.
+
 `load_embeddings` returns the embeddings aligned with `load_split`'s rows:
 
 ```python

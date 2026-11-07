@@ -39,6 +39,7 @@
   "multabench/core-text-reg-vancouver-salaries": "5d23a36a52d46397edaa10ec1e8ce434175b1ac7",
   "multabench/core-text-reg-video-games-sales": "e96c33cb9b9e49b4fb66bcf782069fd3e46337cf",
   "multabench/core-text-reg-zomato-restaurants": "4b4ea5160a56768d607a7a4cf2253ff78fe865a1",
+  "multabench/embeddings-case": "70d0600979a9cd2500da9b4fe0cee16c4694831d",
   "multabench/embeddings-dino-large": "8a2cc27644842182bdcc3f1ac39393711d9ba3c6",
   "multabench/embeddings-dino-large-tar": "51e5ad61dca6d5df1e6e6d3d3b96999e36758526",
   "multabench/embeddings-dino-small": "625869bfb06531eda5d38ec766cd9a4f4662993b",
