@@ -63,6 +63,15 @@ included, with `pip install --no-deps -r requirements-tile.in`. It cuts each val
 Zomato row would otherwise not fit on a GPU). Runs read its cache (see [embeddings](embeddings.md)); only computing
 the cache needs the gated Llama licence accepted on the `HF_TOKEN` account.
 
+[CASE](https://github.com/SAP-samples/case) wraps a model as `CASE-<model>` (`--model case<model>`, e.g. `casekumo`),
+on text datasets only, with `CaseTransformer`'s defaults. Its LLM, `SAP/CASE` (Gemma-3-12B), reads up to 128 sampled
+training rows and their targets as context, within 16,000 tokens, then embeds each row, every column with each cell cut
+to 50 tokens, as its last token's hidden state. The model gets its usual input, text embedded by the run's
+`--text_encoder` as in its own runs, and 32 PCA components of these row embeddings, fitted on the training rows, as
+`CaseTransformer` appends them to the original columns. Runs read its cache, per fold (see
+[embeddings](embeddings.md)), in the model's own venv; only computing the cache needs CASE's package, in its own venv
+(`requirements-case.in`), and its gated licence (research only) accepted on the `HF_TOKEN` account.
+
 ## Sweeps
 
 `sweep.py` runs `benchmark.py` over models × datasets × encoders × folds. It writes the runs that

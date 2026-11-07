@@ -144,6 +144,11 @@ def load_embeddings(dataset: str | MulTaBenchDatasetID, fold: int, size: Size = 
     cache = read_embeddings(download_embeddings(encoder, dataset, **split, data_dir=data_dir))
     if encoder == Interface.TILE:
         return SplitEmbeddings(**_lookup_tile(cache, dataset, train_idx, test_idx, data_dir=data_dir), meta=cache.meta)
+    if encoder == Interface.CASE:
+        from multabench.interfaces.case.rows import case_rows
+        x = _load_columns(dataset, columns=cache.meta["features"], data_dir=data_dir)
+        return SplitEmbeddings(train={"rows": case_rows(cache, x.iloc[train_idx])},
+                               test={"rows": case_rows(cache, x.iloc[test_idx])}, meta=cache.meta)
     x = _load_columns(dataset, columns=cache.meta["features"], data_dir=data_dir)
     return SplitEmbeddings(train=_lookup(cache, x.iloc[train_idx], encoder), test=_lookup(cache, x.iloc[test_idx], encoder),
                            meta=cache.meta)

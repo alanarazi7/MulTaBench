@@ -33,6 +33,7 @@ from multabench.datasets.all_datasets import MulTaBenchDatasetID, dataset_modali
 from multabench.encoders.constants import (DEFAULT_IMAGE_ENCODER, DEFAULT_TEXT_ENCODER, IMAGE_ENCODERS, ImageEncoder,
                                            TEXT_ENCODERS, TextEncoder)
 from multabench.embeddings.hub import reads_cache
+from multabench.interfaces.case.models import CASE_MODELS
 from multabench.interfaces.tile.models import TILE_MODELS
 from multabench.result_keys import ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, assert_hardware, run_hardware
@@ -50,7 +51,7 @@ BASELINES = [TabSTARv1p1,
              Causilo, TabFM,
              TabDPT13, XiaomiTabLDM, EXAONETabular,
              MitraV2, LimiX2,
-             *TILE_MODELS]
+             *TILE_MODELS, *CASE_MODELS]
 
 SHORT2MODELS = {model.SHORT_NAME: model for model in BASELINES}
 
