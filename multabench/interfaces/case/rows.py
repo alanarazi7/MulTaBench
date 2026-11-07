@@ -47,5 +47,7 @@ def embed_case_rows(case: Any, x: DataFrame) -> np.ndarray:
             if case.batch_size == 1:
                 raise
             case.batch_size //= 2
+            # cuDNN's attention crashed on the retry after running out of memory (CUDNN_BACKEND_API_FAILED).
+            torch.backends.cuda.enable_cudnn_sdp(False)
             torch.cuda.empty_cache()
             print(f"Out of GPU memory: retrying with batch size {case.batch_size}")
