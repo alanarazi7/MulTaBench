@@ -104,6 +104,9 @@ b.enc { color: var(--c); }
 .filters .hint { flex-basis: 100%; max-width: none; font-size: 13px; color: var(--muted); }
 .filters[hidden], .filters .group[hidden] { display: none; }
 .filters .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.plottabs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 8px; }
+.plottabs .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.plottabs .label:not(:first-child) { margin-left: 12px; }
 .encrow { flex-basis: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .encnote { max-width: 84ch; font-size: 16px; line-height: 1.6; margin: 1em 0; }
 .encnote ul { margin: 0.6em 0 0; padding-left: 1.2em; }
@@ -202,6 +205,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
       <div class="group tabs" id="groupTabs" role="group" aria-label="Rows"></div>
     </div>
     <p class="muted" id="boardNote"></p>
+    <div class="group tabs plottabs" id="plotTabs" role="group" aria-label="Plot"></div>
     <div class="panel scroll chart wide" id="eloChart"></div>
     <div class="panel scroll"><table id="boardTable"></table></div>
     <details class="panel missing" id="missing">
@@ -837,6 +841,25 @@ function drawElo(board) {
 
 // Grouped, a model's entries sit together, ranked by its best one; on by default. The 95% CIs are off by default.
 let byModel = store.get('group_by_model') !== '0', showCI = store.get('show_ci') === '1';
+// The Elo plot keeps all models and encoders, or only those with an entry on the Pareto front; all by default.
+const plotOnly = { model: store.get('plot_models') === 'pareto', encoding: store.get('plot_encoders') === 'pareto' };
+const plotRows = (board, front) => {
+  const onFront = k => new Set(board.filter(r => front.has(r.entry)).map(r => r[k]));
+  const keep = Object.fromEntries(Object.keys(plotOnly).map(k => [k, onFront(k)]));
+  return board.filter(r => Object.keys(plotOnly).every(k => !plotOnly[k] || keep[k].has(r[k])));
+};
+function drawPlotTabs() {
+  const seg = (title, k, key) => [el('span', { className: 'label' }, title), ...['All', 'Pareto'].map(v => {
+    const b = el('button', { type: 'button', title: v === 'All' ? `Every ${title.toLowerCase().slice(0, -1)} in the plot`
+      : `Only the ${title.toLowerCase()} with an entry on the Pareto front`, onclick: () => {
+      plotOnly[k] = v === 'Pareto'; store.set(key, plotOnly[k] ? 'pareto' : 'all'); drawPlotTabs(); render();
+    } }, v);
+    b.setAttribute('aria-pressed', plotOnly[k] === (v === 'Pareto'));
+    return b;
+  })];
+  document.getElementById('plotTabs').replaceChildren(...seg('Models', 'model', 'plot_models'), ...seg('Encoders', 'encoding', 'plot_encoders'));
+}
+drawPlotTabs();
 function drawGroupTabs() {
   const b = el('button', { type: 'button', title: "Each model's entries together, ranked by its best one", onclick: () => {
     byModel = !byModel; store.set('group_by_model', byModel ? '1' : '0'); drawGroupTabs(); render();
@@ -884,7 +907,7 @@ function renderBoard() {
   document.getElementById('boardNote').innerHTML = [`<b>${names.length} datasets</b>` + (names.length < 10 ? ' (few, so wide intervals)' : ''),
     line('Datasets', 'tier', TIERS), line('Task', 'task', TASKS), line('Modality', 'modality', MODS)].join('<br>');
   const front = paretoFront(board);
-  drawElo(board);
+  drawElo(plotRows(board, front));
   drawBoard(board, front);
   drawPareto(board, front);
   drawMissing();
