@@ -188,7 +188,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
           <li><b class="enc large-tar">TAR-L</b> fine-tunes the large encoders as TAR-S does the small ones.</li>
           <li><b class="enc tfidf">TF-IDF</b> 🔤 embeds each text column with TF-IDF, reduced to 30 dimensions with SVD (<a href="https://skrub-data.org/stable/reference/generated/skrub.StringEncoder.html">skrub's StringEncoder</a>), fitted on each fold's training rows, on text datasets only.</li>
           <li><b class="enc tile">TILE</b> 📝 (<a href="https://github.com/soda-inria/tile">Lefebvre et al., 2026</a>) embeds each string cell in the context of its row with Llama-3.1-8B, on text datasets only. We run it with TILE's defaults for every model, untuned, so its performance is likely underestimated.</li>
-          <li><b class="enc case">CASE</b> 🧩 (<a href="https://github.com/SAP-samples/case">Schindler et al., 2026</a>) embeds each row with SAP's <a href="https://huggingface.co/SAP/CASE">CASE</a> (Gemma-3-12B), given 128 training rows and their targets as context, and appends 32 PCA components of these embeddings to the model's Frozen-S input, on text datasets only. We run it with CASE's defaults for every model.</li>
+          <li><b class="enc case">CASE</b> 💼 (<a href="https://github.com/SAP-samples/case">Schindler et al., 2026</a>) embeds each row with SAP's <a href="https://huggingface.co/SAP/CASE">CASE</a> (Gemma-3-12B), given 128 training rows and their targets as context, and appends 32 PCA components of these embeddings to the model's Frozen-S input, on text datasets only. We run it with CASE's defaults for every model.</li>
         </ul>
       </div>
     </div>
@@ -218,7 +218,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
-    <p class="muted" id="encTileNote" hidden>TF-IDF 🔤, TILE 📝 and CASE 🧩 run on text datasets only, so they show here with Modality Text only.</p>
+    <p class="muted" id="encTileNote" hidden>TF-IDF 🔤, TILE 📝 and CASE 💼 run on text datasets only, so they show here with Modality Text only.</p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
   </div>
@@ -557,12 +557,12 @@ const ENC_LABEL = { frozen: 'Frozen-S', tar: 'TAR-S', large: 'Frozen-L', 'large-
 const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-tuned on each fold', large: 'Frozen large encoders', 'large-tar': 'Large encoders fine-tuned on each fold', tfidf: 'TF-IDF and SVD fitted on each fold, on text datasets', tile: 'Each string cell embedded in the context of its row, on text datasets', case: 'Each row embedded with training rows as context, on text datasets', 'end-to-end': 'Reads raw text itself' };
 const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
 // A short mark for the encoding, in place of the "(Frozen-S)" or "(TAR-S)" of an entry's name.
-const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'large-tar': '🏹', tfidf: '🔤', tile: '🧱', case: '🧩', 'end-to-end': '🔚' };
+const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'large-tar': '🏹', tfidf: '🔤', tile: '🧱', case: '💼', 'end-to-end': '🔚' };
 const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
-const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L'], ['large-tar', 'TAR-L'], ['tfidf', 'TF-IDF 🔤'], ['tile', 'TILE 📝'], ['case', 'CASE 🧩']];
+const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L'], ['large-tar', 'TAR-L'], ['tfidf', 'TF-IDF 🔤'], ['tile', 'TILE 📝'], ['case', 'CASE 💼']];
 // The encodings run on text datasets only.
 const TEXT_ONLY = ['tfidf', 'tile', 'case'];
 const encoderCells = (e5, dino) => `<td class="model"><a href="https://huggingface.co/intfloat/${e5}-v2">${e5}</a></td>`
@@ -635,7 +635,7 @@ function drawEncTabs() {
     showNames = !showNames; store.set('pareto_names', showNames ? '1' : '0'); drawEncTabs(); render();
   } }, 'Show names');
   n.setAttribute('aria-pressed', showNames);
-  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L, 🏹 for TAR-L, 🔤 for TF-IDF, 🧱 for TILE, 🧩 for CASE and 🔚 for E2E, as the points', onclick: () => {
+  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L, 🏹 for TAR-L, 🔤 for TF-IDF, 🧱 for TILE, 💼 for CASE and 🔚 for E2E, as the points', onclick: () => {
     withEmojis = !withEmojis; store.set('pareto_emojis', withEmojis ? '1' : '0'); drawEncTabs(); render();
   } }, 'With emojis');
   m.setAttribute('aria-pressed', withEmojis);
@@ -798,7 +798,7 @@ function drawElo(board) {
   const ORDER = ['frozen', 'large', 'tar', 'large-tar', 'tfidf', 'tile', 'case', 'end-to-end'];
   groups.forEach(g => g.rows.sort((a, b) => ORDER.indexOf(a.encoding) - ORDER.indexOf(b.encoding)));
   const W = 1080, H = 460, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
-  const lo = Math.min(1000, ...board.map(r => r.lo)), hi = Math.max(...board.map(r => r.hi));
+  const lo = Math.min(1000, ...board.map(r => showCI ? r.lo : r.elo)), hi = Math.max(...board.map(r => showCI ? r.hi : r.elo));
   const step = hi - lo > 1200 ? 400 : 200;
   const min = Math.floor((lo - 50) / step) * step, max = Math.ceil((hi + 50) / step) * step;
   const y = v => top + (max - v) / (max - min) * (H - top - bottom);
@@ -821,7 +821,7 @@ function drawElo(board) {
     g.rows.forEach((r, j) => {
       const c = encColor(r.encoding);
       const tip = `<title>${r.entry}: Elo ${fmt(r.elo)} (${fmt(r.lo)}–${fmt(r.hi)})</title>`;
-      if (r.hi > r.lo) s += `<line x1="${xs[j]}" x2="${xs[j]}" y1="${y(r.hi)}" y2="${y(r.lo)}" stroke="${c}" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/>`;
+      if (showCI && r.hi > r.lo) s += `<line x1="${xs[j]}" x2="${xs[j]}" y1="${y(r.hi)}" y2="${y(r.lo)}" stroke="${c}" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/>`;
       s += `<circle cx="${xs[j]}" cy="${y(r.elo)}" r="4" fill="${c}">${tip}</circle>`;
     });
     s += `<text class="lbl" text-anchor="end" transform="translate(${cx + 4} ${H - bottom + 16}) rotate(-40)">${g.model}</text>`;
@@ -830,14 +830,18 @@ function drawElo(board) {
   document.getElementById('eloChart').innerHTML = `<div style="padding:8px 8px 0">${s}</div>`;
 }
 
-// Grouped, a model's entries sit together, ranked by its best one; on by default.
-let byModel = store.get('group_by_model') !== '0';
+// Grouped, a model's entries sit together, ranked by its best one; on by default. The 95% CIs are off by default.
+let byModel = store.get('group_by_model') !== '0', showCI = store.get('show_ci') === '1';
 function drawGroupTabs() {
   const b = el('button', { type: 'button', title: "Each model's entries together, ranked by its best one", onclick: () => {
     byModel = !byModel; store.set('group_by_model', byModel ? '1' : '0'); drawGroupTabs(); render();
   } }, 'Group by model');
   b.setAttribute('aria-pressed', byModel);
-  document.getElementById('groupTabs').replaceChildren(b);
+  const c = el('button', { type: 'button', title: 'The 95% confidence intervals of the Elo, from bootstrapping the datasets', onclick: () => {
+    showCI = !showCI; store.set('show_ci', showCI ? '1' : '0'); drawGroupTabs(); render();
+  } }, 'Show CI');
+  c.setAttribute('aria-pressed', showCI);
+  document.getElementById('groupTabs').replaceChildren(b, c);
 }
 drawGroupTabs();
 
@@ -849,7 +853,7 @@ function drawBoard(board, front) {
   const models = Object.keys(first);
   const rows = byModel ? [...board].sort((a, b) => first[a.model] - first[b.model]) : board;
   const maxN = Math.max(...board.map(r => r.datasets));
-  t.innerHTML = `<thead><tr><th></th><th class="pf" title="No other entry is both faster and stronger">Pareto Frontier</th><th>Encoding</th><th>Model</th><th class="num">Elo</th><th class="num">95% CI</th><th class="num" title="Share of its battles the entry wins">Win rate</th></tr></thead>`;
+  t.innerHTML = `<thead><tr><th></th><th class="pf" title="No other entry is both faster and stronger">Pareto Frontier</th><th>Encoding</th><th>Model</th><th class="num">Elo</th>${showCI ? '<th class="num">95% CI</th>' : ''}<th class="num" title="Share of its battles the entry wins">Win rate</th></tr></thead>`;
   const tb = el('tbody');
   rows.forEach((r, i) => {
     const ci = `<span class="ci">+${fmt(r.hi - r.elo)} / −${fmt(r.elo - r.lo)}</span>`;
@@ -860,7 +864,7 @@ function drawBoard(board, front) {
     const model = lead ? `<td class="model${span > 1 ? ' grouped' : ''}" rowspan="${span}">${modelName(r.model)}${n}</td>` : '';
     const end = byModel && (i === rows.length - 1 || rows[i + 1].model !== r.model);
     const cls = [front.has(r.entry) ? 'front' : '', end ? 'groupEnd' : ''].filter(Boolean).join(' ');
-    tb.appendChild(el('tr', { className: cls }, `<td class="rank">${rank}</td><td class="pf">${star}</td>${encodingCell(r.encoding)}${model}<td class="num"><b>${fmt(r.elo)}</b></td><td class="num">${ci}</td><td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
+    tb.appendChild(el('tr', { className: cls }, `<td class="rank">${rank}</td><td class="pf">${star}</td>${encodingCell(r.encoding)}${model}<td class="num"><b>${fmt(r.elo)}</b></td>${showCI ? `<td class="num">${ci}</td>` : ''}<td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
   });
   t.appendChild(tb);
 }
