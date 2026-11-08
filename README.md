@@ -58,7 +58,8 @@ result = score(split.task_type, y_true=split.y_test, y_pred=predictions)
 result.test_error
 ```
 
-`load_published_results()` returns every leaderboard run.
+`load_published_results()` returns every leaderboard run, of every encoding, with its `encoding` and its `entry`,
+e.g. `LimiX-2 (TILE)`.
 
 The loaders download from the Hugging Face Hub at pinned revisions. To read a local copy instead, e.g. offline or from
 a read-only mount, pass `data_dir`, holding one folder per Hub repo named without the org, with images extracted:
