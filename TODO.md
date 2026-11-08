@@ -36,8 +36,8 @@ file as the PRs that complete them are merged.
 
 - [ ] Improvability as a secondary column.
 - [ ] Improve the Pareto plot and the cost reporting, as the Elo plot now joins each encoder's dots across the models.
-- [ ] Two choices for the Elo plot, both "All" by default: models All or Pareto (those with an entry on the Pareto
-      front), and encoders All or Pareto, giving four views from all entries down to the Pareto front's only.
+- [ ] Two choices for the Elo plot, both "All" by default: models All or Pareto, and encoders All or Pareto, where
+      Pareto keeps those with an entry on the Pareto front.
 - [ ] Once NVIDIA publishes a technical report for Kumo-Tabular, link and cite it in place of its Hugging Face blog
       post: its three models' link in `space/data/models.csv` and its BibTeX on the Cite & Data tab.
 - [ ] Update the Space from `master` with a GitHub Action: rerun `multabench.leaderboard.export` and upload
