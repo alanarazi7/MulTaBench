@@ -1205,8 +1205,8 @@ extended,classification,text,RealMLP (TAR-L),RealMLP,large-tar,7.3542,0.1308,892
 extended,classification,text,RealMLP (TILE),RealMLP,tile,9.0378,0.5684,0.0,6.5443,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,TabFM (TILE),TabFM,tile,9.1538,35.8293,0.0,6.5443,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,59.6506,6.5985,0.0,0.0,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,classification,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,170.7775,7.0707,0.0,0.9678,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,171.2983,6.7067,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,classification,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,171.4919,7.0246,0.0,0.9303,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,171.9035,6.9471,0.0,1.4646,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,Mitra-v2 (TAR-S),Mitra-v2,tar,172.0666,6.9129,194.5001,1.4646,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,172.1479,7.0491,892.472,7.1606,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -1905,8 +1905,8 @@ extended,all,text,RealMLP (TAR-L),RealMLP,large-tar,7.0543,0.1081,736.6289,5.185
 extended,all,text,TabFM (TILE),TabFM,tile,7.2439,26.7141,0.0,5.1204,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,RealMLP (TILE),RealMLP,tile,8.4229,0.4987,0.0,5.1204,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,34.2637,3.4504,0.0,0.0,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,all,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,157.1615,5.2861,0.0,0.6941,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,160.6621,5.2718,0.0,1.0666,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,all,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,160.7146,5.2339,0.0,0.6868,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,Mitra-v2 (Frozen-L),Mitra-v2,large,160.9939,5.0606,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,161.5342,5.2869,736.6289,5.1859,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,Mitra-v2 (TAR-S),Mitra-v2,tar,162.5996,5.2056,185.0499,1.0666,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -2255,11 +2255,11 @@ all,classification,text,RealMLP (Frozen-L),RealMLP,large,6.5649,0.0733,0.0,5.438
 all,classification,text,RealMLP (TAR-L),RealMLP,large-tar,6.6507,0.0728,651.2231,5.4515,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,RealMLP (TILE),RealMLP,tile,7.906,0.4048,0.0,4.6045,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,36.4219,4.3013,0.0,0.0,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,classification,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,152.5051,5.5555,0.0,0.6785,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,154.6801,5.3668,651.2231,5.4515,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,154.7062,5.2513,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,154.9189,5.3211,0.0,1.1132,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,Mitra-v2 (TAR-S),Mitra-v2,tar,155.1275,5.3147,147.5421,1.1132,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,classification,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,155.5567,5.3334,0.0,0.6718,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,Mitra-v2 (TILE),Mitra-v2,tile,156.7917,7.0881,0.0,4.6045,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,image,ConTextTab,ConTextTab,end-to-end,0.1005,1.7306,0.0,0.0,17.5806,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,image,RandomForest (Frozen-S),RandomForest,frozen,0.187,0.0289,0.0,0.4467,17.5806,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
@@ -2955,11 +2955,11 @@ all,all,text,RealMLP (Frozen-L),RealMLP,large,6.5084,0.0786,0.0,4.4733,0.0,NVIDI
 all,all,text,RealMLP (TAR-L),RealMLP,large-tar,6.6417,0.0757,680.0231,4.5081,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,RealMLP (TILE),RealMLP,tile,7.7553,0.3676,0.0,5.5925,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,TabSTAR-v1.1,TabSTAR-v1.1,end-to-end,29.6147,2.974,0.0,0.0,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,all,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,143.5815,5.0936,0.0,0.7875,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,Mitra-v2 (Frozen-L),Mitra-v2,large,147.9528,4.9174,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,148.2449,5.1028,0.0,0.9978,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,Mitra-v2 (TAR-S),Mitra-v2,tar,148.2604,5.0594,164.9782,0.9978,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,148.3062,5.085,680.0231,4.5081,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,all,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,148.36,5.0658,0.0,0.7819,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,Mitra-v2 (TILE),Mitra-v2,tile,181.9759,6.9331,0.0,5.5925,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,image,ConTextTab,ConTextTab,end-to-end,0.0903,3.0873,0.0,0.0,13.439,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,image,LightGBM (TAR-S),LightGBM,tar,0.1903,0.0184,38.0726,0.4688,13.439,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
