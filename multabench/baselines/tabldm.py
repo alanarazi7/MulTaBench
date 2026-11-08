@@ -1,7 +1,7 @@
 from pandas import DataFrame, Series
 
 from multabench.baselines.abstract_model import TabularModel
-from multabench.baselines.offload import offload_within_ram_limit
+from multabench.baselines.offload import offload_within_ram_limit, one_member_above_10m_cells
 from multabench.constants import SEED
 from multabench.utils.devices import CPU_CORES
 
@@ -36,5 +36,5 @@ class XiaomiTabLDM(TabularModel):
         model_cls, defaults = (TabLDMClassifier, CLASSIFIER_DEFAULTS) if self.is_cls else (TabLDMRegressor, {})
         self.model_ = model_cls(device=str(self.device), n_jobs=CPU_CORES, random_state=SEED, enhance_candidates=False,
                                 model_path=hf_hub_download(HF_REPO, checkpoint, revision=REVISION), **defaults,
-                                **offload_within_ram_limit(InferenceManager))
+                                **offload_within_ram_limit(InferenceManager), **one_member_above_10m_cells(x_train))
         self.model_.fit(x_train, y_train)

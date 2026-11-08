@@ -10,9 +10,9 @@ file as the PRs that complete them are merged.
 
 ## Runs
 
-- [ ] TILE: run the 30 missing runs. On Melbourne Airbnb, TabICLv2's and TabLDM's column embeddings of 8 ensemble
-      members at once take 47 GB, past the RAM even offloaded to disk (#281); fewer members at once would keep them on
-      the GPU. Profile LimiX-2 there, and Kumo's GPU memory in fit on Spotify Genres.
+- [ ] TILE: run the 30 missing runs. On Melbourne Airbnb, rerun TabICLv2 and TabLDM, which now run one ensemble
+      member at a time above 10M cells, and profile LimiX-2. On Spotify Genres, Kumo keeps ~10 GiB per member on the
+      GPU in fit.
 - [ ] CASE: add CASE-Mitra-v2, still running, and profile Kumo-Tabular's GPU memory in fit on Spotify Genres.
       Ablations later: its authors suggest more than 32 PCA components, and its 50-token cell cut and 16,000-token
       context may hurt the long-text datasets.

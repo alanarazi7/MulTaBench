@@ -4,7 +4,11 @@ so a run with many features can fill the limit and be killed, with no error or r
 import tempfile
 from typing import Dict
 
+from pandas import DataFrame
+
 from multabench.utils.hardware import available_ram_mb
+
+ONE_MEMBER_CELLS = 10_000_000
 
 
 def offload_within_ram_limit(inference_manager: type) -> Dict[str, str]:
@@ -23,3 +27,8 @@ def _resolve_within_ram_limit(self, output_mb: float, gpu_free_mb: float, cpu_fr
         detail = f"{output_mb:.0f}MB > {left_mb:.0f}MB left in the job's RAM -> disk"
         return type(mode).DISK, type(reason)("job_ram_limit", detail)
     return mode, reason
+
+
+def one_member_above_10m_cells(x_train: DataFrame) -> Dict[str, int]:
+    """One ensemble member per forward pass above 10M training cells, as TabLDM's "auto" does, not changing results."""
+    return {"batch_size": 1} if x_train.size > ONE_MEMBER_CELLS else {}

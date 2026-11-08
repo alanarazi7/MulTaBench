@@ -1,7 +1,7 @@
 from pandas import DataFrame, Series
 
 from multabench.baselines.abstract_model import TabularModel
-from multabench.baselines.offload import offload_within_ram_limit
+from multabench.baselines.offload import offload_within_ram_limit, one_member_above_10m_cells
 
 
 class TabICLv2(TabularModel):
@@ -21,4 +21,5 @@ class TabICLv2(TabularModel):
         return cls(device=str(self.device), **offload_within_ram_limit(InferenceManager))
 
     def fit_model(self, x_train: DataFrame, y_train: Series, x_val: DataFrame, y_val: Series):
+        self.model_.set_params(**one_member_above_10m_cells(x_train))
         self.model_.fit(x_train, y_train)
