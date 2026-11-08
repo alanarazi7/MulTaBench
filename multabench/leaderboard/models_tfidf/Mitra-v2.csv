@@ -29,36 +29,11 @@ Mitra-v2,BIN_TEXT_KICKSTARTER_FUNDING,tfidf,,10k,2,ok,roc_auc,0.7291335105095361
 Mitra-v2,BIN_TEXT_KICKSTARTER_FUNDING,tfidf,,10k,3,ok,roc_auc,0.7401338129157625,0.2598661870842375,195.4921320361769,3.2531921646994304,0.3815538482987904,0.14335868140042293,10000.0,5000.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,bc9e871,2026-11-05 05:07:05,
 Mitra-v2,BIN_TEXT_KICKSTARTER_FUNDING,tfidf,,10k,4,ok,roc_auc,0.7318454174419965,0.2681545825580035,200.83945257672238,3.3846423685929037,0.37123420229982,0.13619107600243296,10000.0,5000.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,bc9e871,2026-11-05 05:08:09,
 Mitra-v2,BIN_TEXT_KICKSTARTER_FUNDING,tfidf,,10k,5,ok,roc_auc,0.7288120659348584,0.27118793406514163,197.97224664927052,3.2835976182206648,0.4020225501008099,0.1416752280012588,10000.0,5000.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,bc9e871,2026-11-05 05:07:46,
-Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,0,error,,,,,,,,,,,,,bc9e871,2026-11-05 09:33:28,"HfHubHTTPError: (Request ID: Root=1-6aec4d68-5105b0c550c0975b4c9da160;528dba30-4091-4330-9f50-c1a9d60143a3)
-
-429 Too Many Requests: you have reached your 'api' rate limit.
-Retry after 88 seconds (0/500 requests remaining in current 300s window).
-Url: https://huggingface.co/api/datasets/multabench/extended-text-cls-osha-injury/tree/9ccd5cef4f31764ecb7e550bf03a011279d2e226?recursive=true&expand=false.
-We had to rate limit your IP (34.89.106.8). To continue using our service, create a HF account or login to your existing account, and make sure you pass a HF_TOKEN if you're using the API."
-Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,1,error,,,,,,,,,,,,,bc9e871,2026-11-05 09:33:48,"HfHubHTTPError: (Request ID: Root=1-6aec4d7b-314192637507903a788da641;2e6faae3-d63e-4383-8084-776bd1946ec8)
-
-429 Too Many Requests: you have reached your 'api' rate limit.
-Retry after 69 seconds (0/500 requests remaining in current 300s window).
-Url: https://huggingface.co/api/datasets/multabench/extended-text-cls-osha-injury/tree/9ccd5cef4f31764ecb7e550bf03a011279d2e226?recursive=true&expand=false.
-We had to rate limit your IP (34.89.106.8). To continue using our service, create a HF account or login to your existing account, and make sure you pass a HF_TOKEN if you're using the API."
-Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,2,error,,,,,,,,,,,,,bc9e871,2026-11-05 09:34:06,"HfHubHTTPError: (Request ID: Root=1-6aec4d8e-14dc014b6d47fa7a6b86ba8d;6a34f52d-8e2f-4776-b284-a16f0b74ae1f)
-
-429 Too Many Requests: you have reached your 'api' rate limit.
-Retry after 50 seconds (0/500 requests remaining in current 300s window).
-Url: https://huggingface.co/api/datasets/multabench/extended-text-cls-osha-injury/tree/9ccd5cef4f31764ecb7e550bf03a011279d2e226?recursive=true&expand=false.
-We had to rate limit your IP (34.89.106.8). To continue using our service, create a HF account or login to your existing account, and make sure you pass a HF_TOKEN if you're using the API."
-Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,3,error,,,,,,,,,,,,,bc9e871,2026-11-05 09:34:26,"HfHubHTTPError: (Request ID: Root=1-6aec4da2-4c7c9f266751317c14a71d74;ddb88923-7d1d-4ac7-9d33-6d7b7fb6b965)
-
-429 Too Many Requests: you have reached your 'api' rate limit.
-Retry after 30 seconds (0/500 requests remaining in current 300s window).
-Url: https://huggingface.co/api/datasets/multabench/extended-text-cls-osha-injury/tree/9ccd5cef4f31764ecb7e550bf03a011279d2e226?recursive=true&expand=false.
-We had to rate limit your IP (34.89.106.8). To continue using our service, create a HF account or login to your existing account, and make sure you pass a HF_TOKEN if you're using the API."
-Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,4,error,,,,,,,,,,,,,bc9e871,2026-11-05 09:34:45,"HfHubHTTPError: (Request ID: Root=1-6aec4db5-5a6ce426136e6b5676c0fee3;1af33ce5-a89c-4d0e-a35c-02792c7be163)
-
-429 Too Many Requests: you have reached your 'api' rate limit.
-Retry after 11 seconds (0/500 requests remaining in current 300s window).
-Url: https://huggingface.co/api/datasets/multabench/extended-text-cls-osha-injury/tree/9ccd5cef4f31764ecb7e550bf03a011279d2e226?recursive=true&expand=false.
-We had to rate limit your IP (34.89.106.8). To continue using our service, create a HF account or login to your existing account, and make sure you pass a HF_TOKEN if you're using the API."
+Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,0,ok,roc_auc,0.613573654855643,0.38642634514435703,171.47790691957218,3.601333773284011,0.6473595354379333,0.26409663490106045,3231.0,1616.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,3bc47aa,2026-11-08 17:33:06,
+Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,1,ok,roc_auc,0.6167601706036745,0.3832398293963255,174.48541481023003,3.343881293614032,0.62271733519029,0.26697605383660206,3231.0,1616.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,3bc47aa,2026-11-08 17:42:47,
+Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,2,ok,roc_auc,0.6267401048992416,0.3732598951007584,171.55826608593313,3.227679276408316,0.6349596454208128,0.2644067975232095,3232.0,1615.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,3bc47aa,2026-11-08 17:52:19,
+Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,3,ok,roc_auc,0.588397309711286,0.411602690288714,172.63881140675906,3.259065282418193,0.6680868950789077,0.30935473824235876,3231.0,1616.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,3bc47aa,2026-11-08 18:01:54,
+Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,4,ok,roc_auc,0.6160843175853018,0.3839156824146982,179.80338512475674,3.594439385691734,0.6162395202721698,0.280665121905632,3231.0,1616.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,3bc47aa,2026-11-08 18:11:52,
 Mitra-v2,BIN_TEXT_OSHA_INJURY,tfidf,,10k,5,ok,roc_auc,0.6265971501058194,0.3734028498941806,163.89187667690035,3.6169041860057543,0.6164519025396027,0.29492864706290417,3232.0,1615.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,bc9e871,2026-11-05 09:44:03,
 Mitra-v2,MUL_TEXT_AMERICAN_EAGLE_PRICES,tfidf,,10k,0,ok,log_loss,-0.08572110533714294,0.08572110533714294,157.16154119413113,4.8259374278393805,0.8879017647006548,0.3839288098010002,10000.0,5000.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,bc9e871,2026-11-05 10:45:51,
 Mitra-v2,MUL_TEXT_AMERICAN_EAGLE_PRICES,tfidf,,10k,1,ok,log_loss,-0.10766147822141647,0.10766147822141647,157.27998076219083,4.712854845872789,0.7892654583978583,0.35658394540223526,10000.0,5000.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz,8.0,bc9e871,2026-11-05 10:46:42,

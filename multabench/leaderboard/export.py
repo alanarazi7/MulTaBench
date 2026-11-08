@@ -42,7 +42,6 @@ MISSING_REASONS = {
     **{(TILE, f"Kumo-Tabular{size}", "MUL_TEXT_SPOTIFY_GENRES"): "Out of GPU memory in fit" for size in ["", "-M"]},
     **{(TILE, model, "MUL_TEXT_MELBOURNE_AIRBNB"): "Out of RAM in predict"
        for model in ["TabICLv2", "Xiaomi-TabLDM", "LimiX-2"]},
-    (TFIDF, "Mitra-v2", "BIN_TEXT_OSHA_INJURY"): "Rate-limited by the Hugging Face Hub, to rerun",
     (CASE, "Kumo-Tabular", "MUL_TEXT_SPOTIFY_GENRES"): "Out of GPU memory in fit",
 }
 

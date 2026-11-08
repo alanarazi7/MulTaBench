@@ -1340,7 +1340,7 @@ BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,l
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,roc_auc,0.387295,0.016293,0.612705,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,roc_auc,0.387747,0.014164,0.612253,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (TAR-S),Mitra-v2,tar,roc_auc,0.392535,0.018116,0.607465,6,3232.0
-BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,roc_auc,0.373403,,0.626597,1,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (TF-IDF),Mitra-v2,tfidf,roc_auc,0.385308,0.014041,0.614692,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (TILE),Mitra-v2,tile,roc_auc,0.376599,0.019664,0.623401,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,RandomForest (CASE),RandomForest,case,roc_auc,0.400848,0.014512,0.599152,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,RandomForest (Frozen-L),RandomForest,large,roc_auc,0.41949,0.007022,0.58051,6,3232.0
