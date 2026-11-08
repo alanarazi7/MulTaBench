@@ -12,7 +12,7 @@ TARGET = "__target__"
 
 class KumoEstimator:
     """Kumo Tabular on pandas, as TabArena and NVIDIA's adapter run it: fit caches the context, predict reads each
-    query row from it under float16 autocast."""
+    query row from it under float16 autocast; where the caches outgrow the GPU, predict runs the context too."""
 
     def __init__(self, task: str, size: str, num_estimators: int, n_classes: int, device: torch.device):
         self.task = task
@@ -35,21 +35,35 @@ class KumoEstimator:
                                                 device=self.device)
         rows, cols = x_context.shape[-2:]
         # NVIDIA's adapter fits one ensemble member at a time above these sizes, to bound GPU memory.
-        batch_size = 1 if rows > 2_000 or rows * cols >= 50_000 else self.num_estimators
-        generator = torch.Generator(self.device).manual_seed(SEED)
-        # sdm copies each estimator's fitted cache to pinned CPU memory, up to 56 GB on Hearthstone, past the 32 GB of
-        # RAM; Cache._apply_tensor does only that copy in fit, so skipping it keeps the caches on the GPU, where predict
-        # reads them anyway.
-        with torch.inference_mode(), self._inference(), patch.object(Cache, "_apply_tensor", lambda c, fn: c):
-            self.model.fit(x=x_context, y=y_context, num_estimators=self.num_estimators,
-                           estimator_batch_size=batch_size, generator=generator)
+        self.batch_size = 1 if rows > 2_000 or rows * cols >= 50_000 else self.num_estimators
+        self.context = None
+        try:
+            # sdm copies each estimator's fitted cache to pinned CPU memory, up to 56 GB on Hearthstone, past the 32 GB
+            # of RAM; Cache._apply_tensor does only that copy in fit, so skipping it keeps the caches on the GPU, where
+            # predict reads them anyway.
+            with torch.inference_mode(), self._inference(), patch.object(Cache, "_apply_tensor", lambda c, fn: c):
+                self.model.fit(x=x_context, y=y_context, num_estimators=self.num_estimators,
+                               estimator_batch_size=self.batch_size, generator=self._generator())
+        except torch.OutOfMemoryError:
+            # The caches outgrow the GPU where ECOC splits many classes (~10 GiB per estimator on Spotify Genres' 114);
+            # predict then runs the context with the query, in the same estimator batches, to the same predictions.
+            self.context = (x_context, y_context)
+        if self.context is not None:
+            self.model.clear()
+            torch.cuda.empty_cache()
         return self
+
+    def _generator(self) -> torch.Generator:
+        return torch.Generator(self.device).manual_seed(SEED)
 
     def _forward(self, x: DataFrame):
         import sdm
         x_query = sdm.TableTensor.from_pandas(df=x, stypes=self.stypes, device=self.device)
         with torch.inference_mode(), self._inference():
-            return self.model.predict(x_query)
+            if self.context is None:
+                return self.model.predict(x_query)
+            return self.model(*self.context, x_query, num_estimators=self.num_estimators,
+                              estimator_batch_size=self.batch_size, generator=self._generator())
 
     def predict(self, x: DataFrame) -> np.ndarray:
         """The mean of the predicted quantiles."""
