@@ -10,9 +10,8 @@ file as the PRs that complete them are merged.
 
 ## Runs
 
-- [ ] TILE: run the 18 missing runs. LimiX-2 on Melbourne Airbnb ran past 3 hours on one fold, to profile. On Spotify
-      Genres, Kumo keeps ~10 GiB per member on the GPU in fit.
-- [ ] CASE: profile Kumo-Tabular's GPU memory in fit on Spotify Genres. Ablations later: its authors suggest more than
+- [ ] TILE: run LimiX-2 on Melbourne Airbnb, 6 runs, which ran past 3 hours on one fold; to profile.
+- [ ] CASE: ablations: its authors suggest more than
       32 PCA components, and its 50-token cell cut and 16,000-token context may hurt the long-text datasets.
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
       no native categories), where the PFNs may do better with the feature window and categories its authors select.
