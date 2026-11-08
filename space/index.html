@@ -820,8 +820,8 @@ function drawElo(board) {
     lx += 26 + ENC_LABEL[e].length * 7 + 18;
   });
   const xOf = (g, i, j) => left + (i + 0.5) * slot + (j - (g.rows.length - 1) / 2) * Math.min(12, slot * 0.7 / g.rows.length);
-  // Each encoding's dots joined across the models, so its line reads against the others.
-  ORDER.forEach(e => {
+  // Each encoding's dots joined across the models, so its line reads against the others; not with Pareto models only.
+  if (!plotOnly.model) ORDER.forEach(e => {
     const pts = groups.flatMap((g, i) => g.rows.flatMap((r, j) => r.encoding === e ? [`${xOf(g, i, j)},${y(r.elo)}`] : []));
     if (pts.length > 1) s += `<polyline points="${pts.join(' ')}" fill="none" stroke="${encColor(e)}" stroke-width="1.5" stroke-opacity=".6"/>`;
   });
