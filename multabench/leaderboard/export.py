@@ -40,8 +40,7 @@ NOT_RUN = "Not run yet"
 # Why an entry has no result on a dataset, by encoding, model and dataset; an entry with no result at all is not run yet.
 MISSING_REASONS = {
     **{(TILE, f"Kumo-Tabular{size}", "MUL_TEXT_SPOTIFY_GENRES"): "Out of GPU memory in fit" for size in ["", "-M"]},
-    **{(TILE, model, "MUL_TEXT_MELBOURNE_AIRBNB"): "Out of RAM in predict"
-       for model in ["TabICLv2", "Xiaomi-TabLDM", "LimiX-2"]},
+    (TILE, "LimiX-2", "MUL_TEXT_MELBOURNE_AIRBNB"): "Out of RAM in predict",
     (CASE, "Kumo-Tabular", "MUL_TEXT_SPOTIFY_GENRES"): "Out of GPU memory in fit",
 }
 
