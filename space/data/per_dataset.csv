@@ -3939,6 +3939,7 @@ MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabICLv2 (Frozen-S),TabIC
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabICLv2 (TAR-L),TabICLv2,large-tar,log_loss,1.47135,0.023251,-1.47135,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabICLv2 (TAR-S),TabICLv2,tar,log_loss,1.477602,0.013819,-1.477602,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabICLv2 (TF-IDF),TabICLv2,tfidf,log_loss,1.453852,0.012032,-1.453852,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabICLv2 (TILE),TabICLv2,tile,log_loss,1.525765,0.018805,-1.525765,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabM (CASE),TabM,case,log_loss,1.519474,0.020849,-1.519474,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabM (Frozen-L),TabM,large,log_loss,1.531011,0.029918,-1.531011,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,TabM (Frozen-S),TabM,frozen,log_loss,1.540943,0.039201,-1.540943,6,10000.0
@@ -3995,6 +3996,7 @@ MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Xiaomi-TabLDM (Frozen-S),
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Xiaomi-TabLDM (TAR-L),Xiaomi-TabLDM,large-tar,log_loss,1.482648,0.021445,-1.482648,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Xiaomi-TabLDM (TAR-S),Xiaomi-TabLDM,tar,log_loss,1.491819,0.014863,-1.491819,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Xiaomi-TabLDM (TF-IDF),Xiaomi-TabLDM,tfidf,log_loss,1.468544,0.013841,-1.468544,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Xiaomi-TabLDM (TILE),Xiaomi-TabLDM,tile,log_loss,1.557001,0.011481,-1.557001,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,CatBoost (CASE),CatBoost,case,log_loss,0.603605,0.007185,-0.603605,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,CatBoost (Frozen-L),CatBoost,large,log_loss,0.620531,0.003559,-0.620531,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,CatBoost (Frozen-S),CatBoost,frozen,log_loss,0.632055,0.001945,-0.632055,6,10000.0
