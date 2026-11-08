@@ -5,6 +5,7 @@ import os
 from collections import Counter
 
 import pandas as pd
+from joblib import Parallel, delayed
 
 from multabench.benchmark.splits import SPLITS
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
@@ -117,42 +118,50 @@ def _with_model_and_encoding(df: pd.DataFrame, runs: pd.DataFrame, at: int) -> p
     return df
 
 
-def leaderboards(runs: pd.DataFrame, bootstraps: int = 1000) -> pd.DataFrame:
+def _with_keys(board: pd.DataFrame, keys: dict[str, str]) -> pd.DataFrame:
+    for i, (k, v) in enumerate(keys.items()):
+        board.insert(i, k, v)
+    return board
+
+
+def _in_parallel(board, filters, bootstraps: int, n_jobs: int) -> pd.DataFrame:
+    """The boards of every filter, computed in parallel processes, as they are independent."""
+    boards = Parallel(n_jobs=n_jobs)(delayed(board)(sub, bootstraps) for _, sub in filters)
+    return pd.concat([_with_keys(b, keys) for b, (keys, _) in zip(boards, filters)], ignore_index=True)
+
+
+def _entry_board(sub: pd.DataFrame, bootstraps: int) -> pd.DataFrame:
+    board = leaderboard(error_table(_by_entry(sub)), bootstraps=bootstraps, anchor=f"{ANCHOR} ({ENCODINGS['frozen']})")
+    return _with_model_and_encoding(board, sub, at=0)
+
+
+def leaderboards(runs: pd.DataFrame, bootstraps: int = 1000, n_jobs: int = -1) -> pd.DataFrame:
     """One Elo leaderboard per combination of tiers, tasks and modalities, with every entry; the Space shows a slice of
     it for the encodings picked, so an entry's Elo doesn't depend on which others are shown."""
-    boards = []
-    anchor = f"{ANCHOR} ({ENCODINGS['frozen']})"
-    for keys, sub in _filters(runs):
-        board = leaderboard(error_table(_by_entry(sub)), bootstraps=bootstraps, anchor=anchor)
-        board = _with_model_and_encoding(board, sub, at=0)
-        for i, (k, v) in enumerate(keys.items()):
-            board.insert(i, k, v)
-        boards.append(board)
-    return pd.concat(boards, ignore_index=True)
+    return _in_parallel(_entry_board, list(_filters(runs)), bootstraps, n_jobs)
 
 
-def encoding_leaderboards(runs: pd.DataFrame, bootstraps: int = 1000) -> pd.DataFrame:
+def _encoding_board(sub: pd.DataFrame, bootstraps: int) -> pd.DataFrame:
+    table = sub.groupby([ResultKey.DATASET, ResultKey.MODEL, ResultKey.FOLD, ENCODING])[ResultKey.TEST_ERROR].mean()
+    table = table.unstack(ENCODING)
+    # A pair needs every encoding but the text-only ones, which lack the image datasets and some folds or models.
+    table = table.dropna(subset=table.columns.difference(TEXT_ONLY_ENCODINGS)).rename(columns=ENCODINGS)
+    pairs = table.index.droplevel(ResultKey.FOLD).unique()
+    level = table.index.get_level_values
+    table.index = pd.MultiIndex.from_arrays([level(0) + "|" + level(1), level(2)])
+    board = leaderboard(table, bootstraps=bootstraps, anchor=ENCODINGS["frozen"])
+    board = board.rename(columns={ResultKey.MODEL: ENCODING}).drop(columns=["avg_rank", "normalized_error"])
+    board["datasets"] = pairs.get_level_values(0).nunique()
+    board.insert(board.columns.get_loc("datasets") + 1, "models", pairs.get_level_values(1).nunique())
+    return board
+
+
+def encoding_leaderboards(runs: pd.DataFrame, bootstraps: int = 1000, n_jobs: int = -1) -> pd.DataFrame:
     """Elo of the encodings themselves: each battle is one model's two runs on a dataset fold, end-to-end models aside.
 
     Bootstrapping draws dataset-model pairs, so the intervals are narrower than if they drew datasets."""
     ok = runs[(runs[ResultKey.STATUS] == RunStatus.OK) & (runs[ENCODING] != END_TO_END)]
-    boards = []
-    for keys, sub in _filters(ok):
-        table = sub.groupby([ResultKey.DATASET, ResultKey.MODEL, ResultKey.FOLD, ENCODING])[ResultKey.TEST_ERROR].mean()
-        table = table.unstack(ENCODING)
-        # A pair needs every encoding but the text-only ones, which lack the image datasets and some folds or models.
-        table = table.dropna(subset=table.columns.difference(TEXT_ONLY_ENCODINGS)).rename(columns=ENCODINGS)
-        pairs = table.index.droplevel(ResultKey.FOLD).unique()
-        level = table.index.get_level_values
-        table.index = pd.MultiIndex.from_arrays([level(0) + "|" + level(1), level(2)])
-        board = leaderboard(table, bootstraps=bootstraps, anchor=ENCODINGS["frozen"])
-        board = board.rename(columns={ResultKey.MODEL: ENCODING}).drop(columns=["avg_rank", "normalized_error"])
-        board["datasets"] = pairs.get_level_values(0).nunique()
-        board.insert(board.columns.get_loc("datasets") + 1, "models", pairs.get_level_values(1).nunique())
-        for i, (k, v) in enumerate(keys.items()):
-            board.insert(i, k, v)
-        boards.append(board)
-    return pd.concat(boards, ignore_index=True)
+    return _in_parallel(_encoding_board, list(_filters(ok)), bootstraps, n_jobs)
 
 
 def per_dataset(runs: pd.DataFrame) -> pd.DataFrame:
@@ -227,11 +236,11 @@ def missing(runs: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def export(out_dir: str, dirs: dict[str, str] = ENCODING_DIRS, bootstraps: int = 1000):
+def export(out_dir: str, dirs: dict[str, str] = ENCODING_DIRS, bootstraps: int = 1000, n_jobs: int = -1):
     os.makedirs(out_dir, exist_ok=True)
     runs = load_entries(dirs)
-    leaderboards(runs, bootstraps).round(4).to_csv(os.path.join(out_dir, "leaderboards.csv"), index=False)
-    encoding_leaderboards(runs, bootstraps).round(4).to_csv(os.path.join(out_dir, "encodings.csv"), index=False)
+    leaderboards(runs, bootstraps, n_jobs).round(4).to_csv(os.path.join(out_dir, "leaderboards.csv"), index=False)
+    encoding_leaderboards(runs, bootstraps, n_jobs).round(4).to_csv(os.path.join(out_dir, "encodings.csv"), index=False)
     per_dataset(runs).round(6).to_csv(os.path.join(out_dir, "per_dataset.csv"), index=False)
     cost(runs).round(4).to_csv(os.path.join(out_dir, "cost.csv"), index=False)
     missing(runs).to_csv(os.path.join(out_dir, "missing.csv"), index=False)
@@ -247,7 +256,8 @@ if __name__ == "__main__":
     parser.add_argument('--tfidf_results_dir', type=str, default=TFIDF_RESULTS_DIR)
     parser.add_argument('--tile_results_dir', type=str, default=TILE_RESULTS_DIR)
     parser.add_argument('--case_results_dir', type=str, default=CASE_RESULTS_DIR)
+    parser.add_argument('--n_jobs', type=int, default=-1, help="processes computing the boards; -1 for every CPU")
     args = parser.parse_args()
     export(args.out_dir, {"frozen": args.results_dir, "tar": args.tar_results_dir, "large": args.large_results_dir,
                           "large-tar": args.large_tar_results_dir, "tfidf": args.tfidf_results_dir,
-                          "tile": args.tile_results_dir, "case": args.case_results_dir})
+                          "tile": args.tile_results_dir, "case": args.case_results_dir}, n_jobs=args.n_jobs)
