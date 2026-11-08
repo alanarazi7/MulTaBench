@@ -526,6 +526,7 @@ BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,LimiX-2 (TAR-L),LimiX-2,
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,roc_auc,0.005382,0.000264,0.994618,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,roc_auc,0.005089,0.000575,0.994911,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,LimiX-2 (TILE),LimiX-2,tile,roc_auc,0.004698,0.000486,0.995302,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,roc_auc,0.005758,0.000591,0.994242,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,roc_auc,0.005695,0.00061,0.994305,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,roc_auc,0.005689,0.00063,0.994311,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,roc_auc,0.00631,0.000366,0.99369,6,10000.0
@@ -688,6 +689,7 @@ BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,LimiX-2 (TAR-L),LimiX-2,large
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,roc_auc,0.051502,0.00676,0.948498,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,roc_auc,0.04719,0.006744,0.95281,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,roc_auc,0.022723,0.004614,0.977277,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,roc_auc,0.026476,0.004661,0.973524,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,roc_auc,0.036475,0.004791,0.963525,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,roc_auc,0.038727,0.004449,0.961273,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,roc_auc,0.050515,0.011912,0.949485,6,8484.0
@@ -850,6 +852,7 @@ BIN_TEXT_IMDB_GENRE,extended,classification,text,LimiX-2 (TAR-L),LimiX-2,large-t
 BIN_TEXT_IMDB_GENRE,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,roc_auc,0.12966,0.013905,0.87034,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,roc_auc,0.133517,0.024888,0.866483,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,LimiX-2 (TILE),LimiX-2,tile,roc_auc,0.077403,0.010186,0.922597,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,roc_auc,0.063021,0.009683,0.936979,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,roc_auc,0.111384,0.009693,0.888616,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,roc_auc,0.135672,0.017778,0.864328,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,roc_auc,0.114516,0.013762,0.885484,6,534.0
@@ -1012,6 +1015,7 @@ BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,LimiX-2 (TAR-L),LimiX-2,large-
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,roc_auc,0.057755,0.005078,0.942245,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,roc_auc,0.288736,0.008047,0.711264,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,roc_auc,0.145144,0.00725,0.854856,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,roc_auc,0.12609,0.005729,0.87391,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,roc_auc,0.134092,0.007013,0.865908,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,roc_auc,0.148134,0.004422,0.851866,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,roc_auc,0.059618,0.006647,0.940382,6,10000.0
@@ -1174,6 +1178,7 @@ BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,LimiX-2 (TAR-L),LimiX-2,la
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,roc_auc,0.237797,0.007479,0.762203,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,roc_auc,0.273116,0.006811,0.726884,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,roc_auc,0.169899,0.004131,0.830101,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,roc_auc,0.176033,0.007737,0.823967,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,roc_auc,0.226533,0.006762,0.773467,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,roc_auc,0.236425,0.003994,0.763575,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,roc_auc,0.219054,0.006097,0.780946,6,10000.0
@@ -1336,6 +1341,7 @@ BIN_TEXT_OSHA_INJURY,extended,classification,text,LimiX-2 (TAR-L),LimiX-2,large-
 BIN_TEXT_OSHA_INJURY,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,roc_auc,0.381719,0.015341,0.618281,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,roc_auc,0.373114,0.015253,0.626886,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,LimiX-2 (TILE),LimiX-2,tile,roc_auc,0.368614,0.02085,0.631386,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,roc_auc,0.366562,0.017428,0.633438,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,roc_auc,0.391598,0.017851,0.608402,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,roc_auc,0.387295,0.016293,0.612705,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,roc_auc,0.387747,0.014164,0.612253,6,3232.0
@@ -2908,6 +2914,7 @@ MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,LimiX-2 (TAR-L),Limi
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,0.080677,0.010492,-0.080677,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,0.080291,0.009705,-0.080291,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,0.086801,0.00965,-0.086801,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,0.089993,0.007724,-0.089993,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,0.089671,0.00737,-0.089671,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,0.090572,0.007561,-0.090572,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,0.092363,0.007443,-0.092363,6,10000.0
@@ -3070,6 +3077,7 @@ MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,LimiX-2 (TAR-L),LimiX-2,la
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,0.809479,0.01566,-0.809479,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,0.811823,0.011951,-0.811823,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,0.800474,0.010906,-0.800474,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,0.801808,0.010028,-0.801808,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,0.815963,0.01035,-0.815963,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,0.816651,0.009207,-0.816651,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,0.816696,0.012368,-0.816696,6,2645.0
@@ -3232,6 +3240,7 @@ MUL_TEXT_BOX_OFFICE,extended,classification,text,LimiX-2 (TAR-L),LimiX-2,large-t
 MUL_TEXT_BOX_OFFICE,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,0.879491,0.022096,-0.879491,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,0.883023,0.022309,-0.883023,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,0.781809,0.017495,-0.781809,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,0.839193,0.017739,-0.839193,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,0.87337,0.019962,-0.87337,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,0.882137,0.020099,-0.882137,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,0.87294,0.021865,-0.87294,6,4939.0
@@ -3394,6 +3403,7 @@ MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,LimiX-2 (TAR-L),LimiX-2
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,0.5205,0.004526,-0.5205,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,0.51897,0.003309,-0.51897,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,0.52978,0.005078,-0.52978,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,0.517906,0.004184,-0.517906,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,0.517245,0.004198,-0.517245,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,0.518253,0.00437,-0.518253,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,0.517097,0.003111,-0.517097,6,10000.0
@@ -3556,6 +3566,7 @@ MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,LimiX-2 (TAR-L),LimiX-2,
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,1.126539,0.014083,-1.126539,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,1.133635,0.010796,-1.133635,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,1.06508,0.009743,-1.06508,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,1.119061,0.013905,-1.119061,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,1.140618,0.007428,-1.140618,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,1.145011,0.009986,-1.145011,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,1.133334,0.009456,-1.133334,6,10000.0
@@ -3718,6 +3729,7 @@ MUL_TEXT_KOREAN_DRAMA,extended,classification,text,LimiX-2 (TAR-L),LimiX-2,large
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,1.908057,0.042599,-1.908057,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,1.8964,0.021717,-1.8964,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,1.809122,0.022417,-1.809122,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,1.832854,0.010068,-1.832854,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,1.887202,0.015371,-1.887202,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,1.896868,0.016088,-1.896868,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,1.895483,0.014357,-1.895483,6,1098.0
@@ -3879,6 +3891,7 @@ MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,LimiX-2 (Frozen-S),LimiX-
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,LimiX-2 (TAR-L),LimiX-2,large-tar,log_loss,1.388227,0.019561,-1.388227,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,1.395699,0.017729,-1.395699,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,1.377512,0.011268,-1.377512,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,1.442296,0.004844,-1.442296,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,1.442312,0.007111,-1.442312,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,1.446599,0.003378,-1.446599,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,1.470335,0.017475,-1.470335,6,10000.0
@@ -4039,6 +4052,7 @@ MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,LimiX-2 (TAR-L),LimiX-2,l
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,0.567198,0.00638,-0.567198,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,0.567557,0.005039,-0.567557,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,0.541377,0.005302,-0.541377,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,0.57079,0.002472,-0.57079,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,0.574099,0.00273,-0.574099,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,0.592907,0.00628,-0.592907,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,0.553491,0.009,-0.553491,6,10000.0
@@ -4201,6 +4215,7 @@ MUL_TEXT_NEWS_CHANNEL,extended,classification,text,LimiX-2 (TAR-L),LimiX-2,large
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,1.153297,0.00529,-1.153297,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,1.181988,0.005354,-1.181988,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,1.158482,0.006232,-1.158482,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,1.133637,0.005957,-1.133637,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,1.147523,0.003829,-1.147523,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,1.154989,0.00495,-1.154989,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,1.141862,0.003597,-1.141862,6,10000.0
@@ -4363,6 +4378,7 @@ MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,LimiX-2 (TAR-L),LimiX-2,larg
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,0.352665,0.012417,-0.352665,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,0.409716,0.01782,-0.409716,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,0.378441,0.013994,-0.378441,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,0.338054,0.012985,-0.338054,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,0.347164,0.008924,-0.347164,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,0.361707,0.008781,-0.361707,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,0.337396,0.009602,-0.337396,6,3394.0
@@ -4522,6 +4538,7 @@ MUL_TEXT_SPOTIFY_GENRES,core,classification,text,LimiX-2 (TAR-L),LimiX-2,large-t
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,1.316537,0.017193,-1.316537,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,1.489833,0.014302,-1.489833,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,1.218051,0.026113,-1.218051,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,1.114951,0.018196,-1.114951,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,1.453256,0.026191,-1.453256,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,1.541859,0.019449,-1.541859,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,1.424354,0.027643,-1.424354,6,10000.0
@@ -4684,6 +4701,7 @@ MUL_TEXT_US_ACCIDENTS,core,classification,text,LimiX-2 (TAR-L),LimiX-2,large-tar
 MUL_TEXT_US_ACCIDENTS,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,0.150629,0.008295,-0.150629,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,0.163044,0.009034,-0.163044,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,1.025131,0.186743,-1.025131,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,0.157078,0.006896,-0.157078,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,0.16414,0.008923,-0.16414,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,0.161585,0.007047,-0.161585,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,0.149203,0.008798,-0.149203,6,10000.0
@@ -4846,6 +4864,7 @@ MUL_TEXT_WINE_REVIEW,core,classification,text,LimiX-2 (TAR-L),LimiX-2,large-tar,
 MUL_TEXT_WINE_REVIEW,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,0.692358,0.012097,-0.692358,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,0.935945,0.020407,-0.935945,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,1.037953,0.014612,-1.037953,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,0.617295,0.012468,-0.617295,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,0.768191,0.013155,-0.768191,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,0.813897,0.014568,-0.813897,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,0.691161,0.008047,-0.691161,6,10000.0
@@ -5008,6 +5027,7 @@ MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,LimiX-2 (TAR-L),LimiX-2,
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,LimiX-2 (TAR-S),LimiX-2,tar,log_loss,0.639949,0.007332,-0.639949,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,log_loss,0.726581,0.004778,-0.726581,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,LimiX-2 (TILE),LimiX-2,tile,log_loss,0.617925,0.005629,-0.617925,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Mitra-v2 (CASE),Mitra-v2,case,log_loss,0.616533,0.010367,-0.616533,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Mitra-v2 (Frozen-L),Mitra-v2,large,log_loss,0.625415,0.00884,-0.625415,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,log_loss,0.654001,0.005278,-0.654001,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,log_loss,0.615454,0.009524,-0.615454,6,10000.0
@@ -7050,6 +7070,7 @@ REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,large-t
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,50.402268,6.117175,-50.402268,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,49.502673,5.441446,-49.502673,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,49.177639,5.053733,-49.177639,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,49.109011,5.279331,-49.109011,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,50.017194,4.924791,-50.017194,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,50.452137,5.460641,-50.452137,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,50.560827,5.140527,-50.560827,6,2546.0
@@ -7212,6 +7233,7 @@ REG_TEXT_ANIME_PLANET,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,large-tar
 REG_TEXT_ANIME_PLANET,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,0.405392,0.007027,-0.405392,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,0.402282,0.006912,-0.402282,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.38404,0.00349,-0.38404,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.390292,0.006408,-0.390292,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,0.403387,0.006034,-0.403387,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,0.405262,0.005753,-0.405262,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,0.405554,0.00765,-0.405554,6,9594.0
@@ -7374,6 +7396,7 @@ REG_TEXT_BABIES_PRICES,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-tar,ro
 REG_TEXT_BABIES_PRICES,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,14.902286,3.80759,-14.902286,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,15.589589,3.532657,-15.589589,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,15.493693,3.743924,-15.493693,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,13.891577,3.475381,-13.891577,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,15.502976,3.49662,-15.502976,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,15.257838,3.401082,-15.257838,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,15.051058,3.535748,-15.051058,6,3390.0
@@ -7536,6 +7559,7 @@ REG_TEXT_BOOK_PRICE,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-tar,root_
 REG_TEXT_BOOK_PRICE,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,0.213859,0.00651,-0.213859,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,0.211021,0.006475,-0.211021,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.219931,0.028054,-0.219931,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.188585,0.00679,-0.188585,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,0.204358,0.006218,-0.204358,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,0.210028,0.007772,-0.210028,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,0.204898,0.006139,-0.204898,6,3326.0
@@ -7698,6 +7722,7 @@ REG_TEXT_BOOK_READABILITY,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-tar
 REG_TEXT_BOOK_READABILITY,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,0.778044,0.016809,-0.778044,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,0.783632,0.015853,-0.783632,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.781217,0.019058,-0.781217,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.788902,0.024944,-0.788902,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,0.780136,0.021699,-0.780136,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,0.787181,0.022946,-0.787181,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,0.761707,0.021737,-0.761707,6,3150.0
@@ -7860,6 +7885,7 @@ REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,0.403548,0.008732,-0.403548,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,0.407493,0.008506,-0.407493,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.450673,0.007143,-0.450673,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.418991,0.009573,-0.418991,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,0.413109,0.010448,-0.413109,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,0.412675,0.012544,-0.412675,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,0.414332,0.010971,-0.414332,6,1197.0
@@ -8022,6 +8048,7 @@ REG_TEXT_FIFA22_WAGES,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,large-tar
 REG_TEXT_FIFA22_WAGES,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,8631.882109,353.486456,-8631.882109,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,8640.685749,355.896403,-8640.685749,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,8625.422408,358.513648,-8625.422408,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,8735.322964,284.770808,-8735.322964,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,8594.396993,305.479944,-8594.396993,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,8610.602889,295.631906,-8610.602889,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,8629.763482,298.481432,-8629.763482,6,10000.0
@@ -8184,6 +8211,7 @@ REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,0.538445,0.009397,-0.538445,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,0.551429,0.016812,-0.551429,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.507348,0.013017,-0.507348,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.466186,0.012208,-0.466186,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,0.542659,0.013366,-0.542659,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,0.549823,0.015002,-0.549823,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,0.538428,0.01104,-0.538428,6,10000.0
@@ -8346,6 +8374,7 @@ REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,2694.883355,402.387564,-2694.883355,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,2680.395149,353.180939,-2680.395149,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,2695.876447,383.221193,-2695.876447,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,3096.174766,560.486941,-3096.174766,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,3153.371231,519.908254,-3153.371231,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,3114.378295,510.006738,-3114.378295,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,3070.782266,524.239913,-3070.782266,6,6152.0
@@ -8508,6 +8537,7 @@ REG_TEXT_RAMEN_RATINGS,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,large-ta
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,0.932043,0.034231,-0.932043,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,0.929101,0.029272,-0.929101,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.963166,0.027537,-0.963166,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.92061,0.029555,-0.92061,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,0.927281,0.025156,-0.927281,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,0.931201,0.024012,-0.931201,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,0.929045,0.024245,-0.929045,6,2737.0
@@ -8670,6 +8700,7 @@ REG_TEXT_ROTTEN_TOMATOES,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-tar,
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,0.727344,0.017785,-0.727344,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,0.769543,0.011056,-0.769543,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.611146,0.019268,-0.611146,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.688284,0.015486,-0.688284,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,0.794746,0.012586,-0.794746,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,0.830036,0.020198,-0.830036,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,0.789164,0.02173,-0.789164,6,4772.0
@@ -8832,6 +8863,7 @@ REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-tar
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,17.522215,1.134072,-17.522215,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,17.624356,1.052777,-17.624356,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,15.078684,1.041688,-15.078684,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,18.121457,1.438935,-18.121457,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,18.680312,1.306371,-18.680312,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,19.05795,1.458789,-19.05795,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,18.950803,1.732487,-18.950803,6,10000.0
@@ -8994,6 +9026,7 @@ REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,larg
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,757308.367437,99597.676763,-757308.367437,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,731085.259629,113584.793883,-731085.259629,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,710976.505435,102183.781918,-710976.505435,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,681033.453871,99222.987354,-681033.453871,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,811546.394347,109299.690865,-811546.394347,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,803525.371747,107949.280169,-803525.371747,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,788980.174454,113700.872344,-788980.174454,6,10000.0
@@ -9156,6 +9189,7 @@ REG_TEXT_USED_CAR_SAUDI,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,large-t
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,21144.658196,2187.4452,-21144.658196,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,21267.630165,2786.353109,-21267.630165,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,21033.917555,2455.022297,-21033.917555,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,20448.308661,2909.651228,-20448.308661,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,22362.79965,2206.932352,-22362.79965,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,22369.504647,1990.315424,-22369.504647,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,22371.359618,1861.547933,-22371.359618,6,5357.0
@@ -9318,6 +9352,7 @@ REG_TEXT_VANCOUVER_SALARIES,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-t
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,10886.179937,586.238481,-10886.179937,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,11162.767686,574.586474,-11162.767686,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,11829.928502,528.09058,-11829.928502,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,11387.360662,546.557737,-11387.360662,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,11590.728388,667.075267,-11590.728388,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,11453.681592,521.240656,-11453.681592,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,11377.826078,624.592626,-11377.826078,6,10000.0
@@ -9480,6 +9515,7 @@ REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-ta
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,1.084449,0.205566,-1.084449,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,1.168136,0.249228,-1.168136,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.90403,0.209554,-0.90403,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.788733,0.179741,-0.788733,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,1.093456,0.256019,-1.093456,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,1.086341,0.243097,-1.086341,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,1.04692,0.191228,-1.04692,6,10000.0
@@ -9642,6 +9678,7 @@ REG_TEXT_WIKILIQ_PRICES,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,large-t
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,695.329329,107.414484,-695.329329,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,764.693232,89.086296,-764.693232,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,729.159646,140.624719,-729.159646,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,686.511617,127.110837,-686.511617,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,690.906072,127.634646,-690.906072,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,687.342216,138.555165,-687.342216,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,713.250779,124.935199,-713.250779,6,8380.0
@@ -9804,6 +9841,7 @@ REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,lar
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,275.004654,60.297083,-275.004654,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,250.674721,78.502802,-250.674721,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,251.030138,87.767917,-251.030138,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,198.307752,49.978055,-198.307752,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,255.199296,87.952545,-255.199296,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,255.239255,85.960622,-255.239255,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,256.83453,85.510572,-256.83453,6,1498.0
@@ -9966,6 +10004,7 @@ REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,LimiX-2 (TAR-L),LimiX-2,larg
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,0.085925,0.002151,-0.085925,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,0.086024,0.0025,-0.086024,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.091793,0.004288,-0.091793,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.089447,0.002075,-0.089447,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,0.088553,0.00211,-0.088553,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,0.088714,0.001959,-0.088714,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,0.08943,0.001875,-0.08943,6,5767.0
@@ -10128,6 +10167,7 @@ REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,LimiX-2 (TAR-L),LimiX-2,large-t
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,LimiX-2 (TAR-S),LimiX-2,tar,root_mean_squared_error,0.143841,0.004166,-0.143841,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,LimiX-2 (TF-IDF),LimiX-2,tfidf,root_mean_squared_error,0.140434,0.003941,-0.140434,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,LimiX-2 (TILE),LimiX-2,tile,root_mean_squared_error,0.1654,0.03885,-0.1654,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Mitra-v2 (CASE),Mitra-v2,case,root_mean_squared_error,0.148793,0.004406,-0.148793,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Mitra-v2 (Frozen-L),Mitra-v2,large,root_mean_squared_error,0.147549,0.003671,-0.147549,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Mitra-v2 (Frozen-S),Mitra-v2,frozen,root_mean_squared_error,0.149808,0.005306,-0.149808,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Mitra-v2 (TAR-L),Mitra-v2,large-tar,root_mean_squared_error,0.15855,0.007449,-0.15855,6,10000.0

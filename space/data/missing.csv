@@ -3,6 +3,5 @@ Kumo-Tabular (TILE),Kumo-Tabular,tile,MUL_TEXT_SPOTIFY_GENRES,core,classificatio
 Kumo-Tabular (CASE),Kumo-Tabular,case,MUL_TEXT_SPOTIFY_GENRES,core,classification,text,6,Out of GPU memory in fit
 Kumo-Tabular-M (TILE),Kumo-Tabular-M,tile,MUL_TEXT_SPOTIFY_GENRES,core,classification,text,6,Out of GPU memory in fit
 LimiX-2 (TILE),LimiX-2,tile,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,6,Out of RAM in predict
-Mitra-v2 (CASE),Mitra-v2,case,,,,,240,Not run yet
 TabICLv2 (TILE),TabICLv2,tile,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,6,Out of RAM in predict
 Xiaomi-TabLDM (TILE),Xiaomi-TabLDM,tile,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,6,Out of RAM in predict
