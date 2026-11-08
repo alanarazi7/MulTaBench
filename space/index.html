@@ -562,7 +562,7 @@ const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-t
 const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
 // A short mark for the encoding, in place of the "(Frozen-S)" or "(TAR-S)" of an entry's name.
 const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'large-tar': '🏹', tfidf: '🔤', tile: '🧱', case: '💼', 'end-to-end': '🔚' };
-const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
+const encodingCell = (e, extra = '') => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span>${extra}</td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
@@ -889,10 +889,10 @@ function drawBoard(board, front) {
     const star = front.has(r.entry) ? '<span class="star" title="On the Pareto front of Elo and run time">★</span>' : '';
     const lead = !byModel || first[r.model] === board.indexOf(r), span = byModel ? size[r.model] : 1;
     const rank = byModel ? (lead ? models.indexOf(r.model) + 1 : '') : i + 1;
-    const model = lead ? `<td class="model${span > 1 ? ' grouped' : ''}" rowspan="${span}">${modelName(r.model)}${n}</td>` : '';
+    const model = lead ? `<td class="model${span > 1 ? ' grouped' : ''}" rowspan="${span}">${modelName(r.model)}</td>` : '';
     const end = byModel && (i === rows.length - 1 || rows[i + 1].model !== r.model);
     const cls = [front.has(r.entry) ? 'front' : '', end ? 'groupEnd' : ''].filter(Boolean).join(' ');
-    tb.appendChild(el('tr', { className: cls }, `<td class="rank">${rank}</td><td class="pf">${star}</td>${encodingCell(r.encoding)}${model}<td class="num"><b>${fmt(r.elo)}</b></td>${showCI ? `<td class="num">${ci}</td>` : ''}<td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
+    tb.appendChild(el('tr', { className: cls }, `<td class="rank">${rank}</td><td class="pf">${star}</td>${encodingCell(r.encoding, n)}${model}<td class="num"><b>${fmt(r.elo)}</b></td>${showCI ? `<td class="num">${ci}</td>` : ''}<td class="num">${fmt(r.win_rate * 100, 1)}%</td>`));
   });
   t.appendChild(tb);
 }
