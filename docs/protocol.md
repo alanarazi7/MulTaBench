@@ -47,6 +47,15 @@ TILE-Kumo-Tabular and TILE-Kumo-Tabular-M run out of GPU memory in fit on Spotif
 features with TILE's target encoding; TILE-TabICLv2, TILE-Xiaomi-TabLDM and TILE-LimiX-2 run out of the 32 GB of RAM in
 predict on Melbourne Airbnb, whose 41 string columns give 1,646 features.
 
+On the text datasets, every model also ran wrapped by the CASE interface (see [running](running.md)), which appends
+32 PCA components of each row embedded with sampled training rows as context to the model's `e5-small` input. Those runs
+are in `multabench/leaderboard/models_case/`, as a seventh entry, e.g. `LimiX-2 (CASE)`, rated only on boards that show
+no image datasets. CASE-Mitra-v2 and CASE-EXAONE-Tabular are still running, and CASE-Kumo-Tabular is rated on 39 of the
+40 text datasets: it runs out of GPU memory in fit on Spotify Genres, as TILE-Kumo-Tabular does.
+
+`MISSING_REASONS` in `multabench/leaderboard/export.py` says why each entry lacks a result on a dataset; the Space lists
+these runs, and the entries not run yet, under the board.
+
 ## Metrics
 
 Test error is lower-is-better: 1 − ROC AUC for binary tasks, log loss for multiclass, RMSE for regression. Normalized

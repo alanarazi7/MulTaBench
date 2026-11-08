@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from multabench.leaderboard.export import (ENCODINGS, ENTRY, SPACE_DATA_DIR, cost,
-                                           encoding_leaderboards, leaderboards, load_entries, per_dataset)
+from multabench.leaderboard.export import (ENCODINGS, ENTRY, NOT_RUN, SPACE_DATA_DIR, cost, encoding_leaderboards,
+                                           leaderboards, load_entries, missing, per_dataset)
 from multabench.result_keys import ResultKey
 
 
@@ -40,12 +40,19 @@ def test_each_model_reading_embeddings_has_an_entry_per_encoding(runs):
     encodings = runs.groupby(ResultKey.MODEL)["encoding"].unique().map(sorted)
     assert set(encodings[["ConTextTab", "TabSTAR-v1.1"]].map(tuple)) == {("end-to-end",)}
     encodings = encodings.drop(["ConTextTab", "TabSTAR-v1.1"])
-    assert set(encodings.map(tuple)) == {tuple(sorted(ENCODINGS))}
+    not_run = missing(runs).query("reason == @NOT_RUN").groupby(ResultKey.MODEL)["encoding"].unique()
+    for model, found in encodings.items():
+        assert sorted([*found, *not_run.get(model, [])]) == sorted(ENCODINGS), model
 
 
 def test_the_space_per_dataset_results_follow_the_results(runs):
     shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "per_dataset.csv"))
     assert np.allclose(shown[ResultKey.TEST_ERROR], per_dataset(runs)[ResultKey.TEST_ERROR], rtol=1e-5, atol=1e-6)
+
+
+def test_the_space_missing_runs_follow_the_results(runs):
+    shown = pd.read_csv(os.path.join(SPACE_DATA_DIR, "missing.csv"))
+    assert shown.fillna("").equals(missing(runs).fillna(""))
 
 
 def test_the_space_cost_follows_the_results(runs):

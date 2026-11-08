@@ -2,13 +2,16 @@
 import argparse
 import itertools
 import os
+from collections import Counter
 
 import pandas as pd
 
+from multabench.benchmark.splits import SPLITS
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.info import Tier, dataset_info
-from multabench.leaderboard.elo import (ANCHOR, LARGE_RESULTS_DIR, LARGE_TAR_RESULTS_DIR, RESULTS_DIR, TAR_RESULTS_DIR,
-                                        TFIDF_RESULTS_DIR, TILE_RESULTS_DIR, error_table, leaderboard, load_runs)
+from multabench.leaderboard.elo import (ANCHOR, CASE_RESULTS_DIR, LARGE_RESULTS_DIR, LARGE_TAR_RESULTS_DIR, RESULTS_DIR,
+                                        TAR_RESULTS_DIR, TFIDF_RESULTS_DIR, TILE_RESULTS_DIR, error_table, leaderboard,
+                                        load_runs)
 from multabench.leaderboard.embedding_cost import EMBEDDING_COST_CSV, with_tar_encode_times
 from multabench.result_keys import ResultKey, RunStatus
 
@@ -18,17 +21,29 @@ TASKS = ["classification", "regression"]
 # The board knows two modalities: a dataset with images counts as image, whether or not it also has text.
 MODALITIES = [Modality.TEXT.value, Modality.IMAGE.value]
 ENCODING, ENTRY = "encoding", "entry"
-# How a model reads text and images: small or large encoders, frozen or fine-tuned (TAR), TF-IDF, TILE's row-aware
-# embeddings, or end-to-end on raw text.
+# How a model reads text and images: small or large encoders, frozen or fine-tuned (TAR), TF-IDF, TILE's or CASE's
+# row-aware embeddings, or end-to-end on raw text.
 ENCODINGS = {"frozen": "Frozen-S", "tar": "TAR-S", "large": "Frozen-L", "large-tar": "TAR-L", "tfidf": "TF-IDF",
-             "tile": "TILE"}
+             "tile": "TILE", "case": "CASE"}
 # Each encoding's runs; the end-to-end models are among the frozen ones.
 ENCODING_DIRS = {"frozen": RESULTS_DIR, "tar": TAR_RESULTS_DIR, "large": LARGE_RESULTS_DIR,
-                 "large-tar": LARGE_TAR_RESULTS_DIR, "tfidf": TFIDF_RESULTS_DIR, "tile": TILE_RESULTS_DIR}
+                 "large-tar": LARGE_TAR_RESULTS_DIR, "tfidf": TFIDF_RESULTS_DIR, "tile": TILE_RESULTS_DIR,
+                 "case": CASE_RESULTS_DIR}
 END_TO_END = "end-to-end"
-TFIDF, TILE, TILE_PREFIX = "tfidf", "tile", "TILE-"
-# TF-IDF and TILE run on the text datasets only, so they are rated only where the board shows no image datasets.
-TEXT_ONLY_ENCODINGS = [TFIDF, TILE]
+TFIDF, TILE, CASE = "tfidf", "tile", "case"
+# An interface's runs name the model it wraps after its prefix.
+PREFIXES = {TILE: "TILE-", CASE: "CASE-"}
+# TF-IDF, TILE and CASE run on the text datasets only, so they are rated only where the board shows no image datasets.
+TEXT_ONLY_ENCODINGS = [TFIDF, TILE, CASE]
+NOT_RUN = "Not run yet"
+# Why an entry has no result on a dataset, by encoding, model and dataset; an entry with no result at all is not run yet.
+MISSING_REASONS = {
+    **{(TILE, f"Kumo-Tabular{size}", "MUL_TEXT_SPOTIFY_GENRES"): "Out of GPU memory in fit" for size in ["", "-M"]},
+    **{(TILE, model, "MUL_TEXT_MELBOURNE_AIRBNB"): "Out of RAM in predict"
+       for model in ["TabICLv2", "Xiaomi-TabLDM", "LimiX-2"]},
+    (TFIDF, "Mitra-v2", "BIN_TEXT_OSHA_INJURY"): "Rate-limited by the Hugging Face Hub, to rerun",
+    (CASE, "Kumo-Tabular", "MUL_TEXT_SPOTIFY_GENRES"): "Out of GPU memory in fit",
+}
 
 
 def dataset_tier(dataset: str) -> str:
@@ -57,11 +72,17 @@ def entries(runs_by_encoding: dict[str, pd.DataFrame]) -> pd.DataFrame:
     frozen = runs[runs[ENCODING] == "frozen"]
     raw_text = frozen.groupby(ResultKey.MODEL)[ResultKey.TEXT_ENCODER].transform(lambda e: e.isna().all())
     runs.loc[raw_text[raw_text].index, ENCODING] = END_TO_END
-    tile = runs[ENCODING] == TILE
-    runs.loc[tile, ResultKey.MODEL] = runs.loc[tile, ResultKey.MODEL].str.removeprefix(TILE_PREFIX)
+    for encoding, prefix in PREFIXES.items():
+        wrapped = runs[ENCODING] == encoding
+        runs.loc[wrapped, ResultKey.MODEL] = runs.loc[wrapped, ResultKey.MODEL].str.removeprefix(prefix)
     names = zip(runs[ResultKey.MODEL], runs[ENCODING])
     runs[ENTRY] = [m if e == END_TO_END else f"{m} ({ENCODINGS[e]})" for m, e in names]
     return runs
+
+
+def encoding_datasets(encoding: str) -> list[str]:
+    return [d.name for d in MulTaBenchDatasetID
+            if encoding not in TEXT_ONLY_ENCODINGS or dataset_modality(d) == Modality.TEXT]
 
 
 def board_modality(dataset: str) -> str:
@@ -119,7 +140,7 @@ def encoding_leaderboards(runs: pd.DataFrame, bootstraps: int = 1000) -> pd.Data
     for keys, sub in _filters(ok):
         table = sub.groupby([ResultKey.DATASET, ResultKey.MODEL, ResultKey.FOLD, ENCODING])[ResultKey.TEST_ERROR].mean()
         table = table.unstack(ENCODING)
-        # A pair needs every encoding but the text-only ones, which lack the image datasets and TILE some folds.
+        # A pair needs every encoding but the text-only ones, which lack the image datasets and some folds or models.
         table = table.dropna(subset=table.columns.difference(TEXT_ONLY_ENCODINGS)).rename(columns=ENCODINGS)
         pairs = table.index.droplevel(ResultKey.FOLD).unique()
         level = table.index.get_level_values
@@ -150,7 +171,7 @@ def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd
     """Per board, over its datasets: median train and predict time per 1K rows, which leave out reading the cached
     embeddings; the mean time a TAR run's encoders took to fine-tune per 1K training rows; and the mean time its
     encoders would take to embed 1K rows live, from the caches' own encoding time, the tuned caches' for both; TF-IDF,
-    fitted in the run, from the run's own."""
+    fitted in the run, from the run's own; CASE adds its per-fold cache's to the model's own text encoder's."""
     ok = _by_entry(runs[runs[ResultKey.STATUS] == RunStatus.OK])
     ok[ResultKey.TEXT_ENCODER] = ok[ResultKey.TEXT_ENCODER].mask(ok[ENCODING] == TILE, TILE)
     tfidf_encode = (ok[ResultKey.TRAIN_EMBEDDING_TIME_PER_1K] * ok[ResultKey.N_TRAIN]
@@ -165,6 +186,9 @@ def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd
         return pd.Series([caches[field].get(k, 0.0) for k in keys], index=ok.index)
 
     text_encode = per_run(ResultKey.TEXT_ENCODER, "encode_s_per_1k").mask(ok[ENCODING] == TFIDF, tfidf_encode)
+    case_keys = zip(ok[ResultKey.DATASET], [CASE] * len(ok), ok[ResultKey.FOLD])
+    case_encode = pd.Series([caches["encode_s_per_1k"].get(k, 0.0) for k in case_keys], index=ok.index)
+    text_encode += case_encode.where(ok[ENCODING] == CASE, 0.0)
     ok = ok.assign(text_encode=text_encode,
                    image_encode=per_run(ResultKey.IMAGE_ENCODER, "encode_s_per_1k"),
                    finetune=per_run(ResultKey.TEXT_ENCODER, "finetune_s_per_1k")
@@ -183,6 +207,26 @@ def cost(runs: pd.DataFrame, embedding_cost_csv: str = EMBEDDING_COST_CSV) -> pd
     return pd.concat(boards, ignore_index=True)
 
 
+def missing(runs: pd.DataFrame) -> pd.DataFrame:
+    """The folds each entry of a model that embeds has no result on, per dataset with why, or in one row if none."""
+    embedded = runs[runs[ENCODING] != END_TO_END]
+    ok = embedded[embedded[ResultKey.STATUS] == RunStatus.OK]
+    done = set(zip(ok[ResultKey.MODEL], ok[ENCODING], ok[ResultKey.DATASET], ok[ResultKey.FOLD]))
+    rows = []
+    for model, encoding in itertools.product(sorted(embedded[ResultKey.MODEL].unique()), ENCODINGS):
+        datasets = encoding_datasets(encoding)
+        lacking = Counter(d for d in datasets for f in range(SPLITS) if (model, encoding, d, f) not in done)
+        if lacking.total() == len(datasets) * SPLITS:
+            rows.append((model, encoding, None, lacking.total(), NOT_RUN))
+        else:
+            rows += [(model, encoding, d, n, MISSING_REASONS[encoding, model, d]) for d, n in sorted(lacking.items())]
+    df = pd.DataFrame(rows, columns=[ResultKey.MODEL, ENCODING, ResultKey.DATASET, "folds", "reason"])
+    df.insert(0, ENTRY, [f"{m} ({ENCODINGS[e]})" for m, e in zip(df[ResultKey.MODEL], df[ENCODING])])
+    for name, of in [("tier", dataset_tier), ("task", dataset_task), ("modality", board_modality)]:
+        df.insert(df.columns.get_loc("folds"), name, df[ResultKey.DATASET].map(of, na_action="ignore"))
+    return df
+
+
 def export(out_dir: str, dirs: dict[str, str] = ENCODING_DIRS, bootstraps: int = 1000):
     os.makedirs(out_dir, exist_ok=True)
     runs = load_entries(dirs)
@@ -190,6 +234,7 @@ def export(out_dir: str, dirs: dict[str, str] = ENCODING_DIRS, bootstraps: int =
     encoding_leaderboards(runs, bootstraps).round(4).to_csv(os.path.join(out_dir, "encodings.csv"), index=False)
     per_dataset(runs).round(6).to_csv(os.path.join(out_dir, "per_dataset.csv"), index=False)
     cost(runs).round(4).to_csv(os.path.join(out_dir, "cost.csv"), index=False)
+    missing(runs).to_csv(os.path.join(out_dir, "missing.csv"), index=False)
 
 
 if __name__ == "__main__":
@@ -201,7 +246,8 @@ if __name__ == "__main__":
     parser.add_argument('--large_tar_results_dir', type=str, default=LARGE_TAR_RESULTS_DIR)
     parser.add_argument('--tfidf_results_dir', type=str, default=TFIDF_RESULTS_DIR)
     parser.add_argument('--tile_results_dir', type=str, default=TILE_RESULTS_DIR)
+    parser.add_argument('--case_results_dir', type=str, default=CASE_RESULTS_DIR)
     args = parser.parse_args()
     export(args.out_dir, {"frozen": args.results_dir, "tar": args.tar_results_dir, "large": args.large_results_dir,
                           "large-tar": args.large_tar_results_dir, "tfidf": args.tfidf_results_dir,
-                          "tile": args.tile_results_dir})
+                          "tile": args.tile_results_dir, "case": args.case_results_dir})

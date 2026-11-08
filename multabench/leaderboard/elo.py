@@ -26,6 +26,8 @@ LARGE_TAR_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_large_ta
 TILE_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tile")
 # Runs with each text column embedded by TF-IDF, on the text datasets.
 TFIDF_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tfidf")
+# Runs of the CASE interface around each model, on the text datasets.
+CASE_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_case")
 ANCHOR = "RandomForest"
 INIT = 1000
 
