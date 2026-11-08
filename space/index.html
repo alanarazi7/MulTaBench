@@ -12,7 +12,7 @@
 :root {
   --bg: #F3F5F2; --surface: #FFFFFF; --ink: #1C2228; --muted: #5C666F; --line: #D9DED7; --soft: #EBEEE9;
   --accent: #2C5C8A; --text-mod: #A4581B; --image-mod: #2D7653; --best: #2C5C8A; --warn: #A33A2A;
-  --frozen: #7E8A94; --tar: #2C5C8A; --large: #2F7F8C; --large-tar: #B0466E; --tfidf: #4F7A3A; --tile: #8C6D1F; --e2e: #8A5FA8;
+  --frozen: #7E8A94; --tar: #2C5C8A; --large: #2F7F8C; --large-tar: #B0466E; --tfidf: #4F7A3A; --tile: #8C6D1F; --case: #5560B0; --e2e: #8A5FA8;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -21,14 +21,14 @@
   :root:not([data-theme="light"]) {
     --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
     --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --tfidf: #9CC97F; --tile: #D9B45C; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --tfidf: #9CC97F; --tile: #D9B45C; --case: #9AA3E6; --e2e: #C29BDF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
   --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --tfidf: #9CC97F; --tile: #D9B45C; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --tfidf: #9CC97F; --tile: #D9B45C; --case: #9AA3E6; --e2e: #C29BDF;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -82,7 +82,7 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
 .flag { color: var(--warn); }
 .chip { display: inline-block; font: 600 11.5px/1 var(--mono); letter-spacing: 0.03em; padding: 4px 8px; border-radius: 999px;
   color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface)); }
-.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .large { --c: var(--large); } .large-tar { --c: var(--large-tar); } .tfidf { --c: var(--tfidf); } .tile { --c: var(--tile); } .end-to-end { --c: var(--e2e); }
+.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .large { --c: var(--large); } .large-tar { --c: var(--large-tar); } .tfidf { --c: var(--tfidf); } .tile { --c: var(--tile); } .case { --c: var(--case); } .end-to-end { --c: var(--e2e); }
 b.enc { color: var(--c); }
 
 .selectors { border-bottom: 1px solid var(--line); }
@@ -112,6 +112,9 @@ b.enc { color: var(--c); }
 .tabs button .n { font-family: var(--mono); opacity: .6; margin-left: 4px; }
 .tabs button.na { text-decoration: line-through; opacity: .55; }
 .tabs .tilenote { font-size: 12.5px; color: var(--muted); }
+details.missing summary { cursor: pointer; padding: 12px 16px; font-weight: 600; }
+details.missing summary .n { font: 500 12.5px var(--mono); color: var(--warn); margin-left: 6px; }
+details.missing > p { padding: 0 16px 12px; font-size: 13.5px; }
 .links { display: flex; flex-wrap: wrap; gap: 6px 24px; }
 .links a, .encnote a { color: var(--accent); white-space: nowrap; text-decoration: none; font-weight: 500; }
 .links a:hover, .encnote a:hover { text-decoration: underline; }
@@ -185,6 +188,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
           <li><b class="enc large-tar">TAR-L</b> fine-tunes the large encoders as TAR-S does the small ones.</li>
           <li><b class="enc tfidf">TF-IDF</b> 🔤 embeds each text column with TF-IDF, reduced to 30 dimensions with SVD (<a href="https://skrub-data.org/stable/reference/generated/skrub.StringEncoder.html">skrub's StringEncoder</a>), fitted on each fold's training rows, on text datasets only.</li>
           <li><b class="enc tile">TILE</b> 📝 (<a href="https://github.com/soda-inria/tile">Lefebvre et al., 2026</a>) embeds each string cell in the context of its row with Llama-3.1-8B, on text datasets only. We run it with TILE's defaults for every model, untuned, so its performance is likely underestimated.</li>
+          <li><b class="enc case">CASE</b> 🧩 (<a href="https://github.com/SAP-samples/case">Schindler et al., 2026</a>) embeds each row with SAP's <a href="https://huggingface.co/SAP/CASE">CASE</a> (Gemma-3-12B), given 128 training rows and their targets as context, and appends 32 PCA components of these embeddings to the model's Frozen-S input, on text datasets only. We run it with CASE's defaults for every model.</li>
         </ul>
       </div>
     </div>
@@ -200,6 +204,11 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <p class="muted" id="boardNote"></p>
     <div class="panel scroll chart wide" id="eloChart"></div>
     <div class="panel scroll"><table id="boardTable"></table></div>
+    <details class="panel missing" id="missing">
+      <summary>Missing runs<span class="n" id="missingCount"></span></summary>
+      <p class="muted">Runs with no result on the board's datasets, for the encoders picked. An entry's Elo leaves them out, without imputing them, and an entry not run yet is not on the board.</p>
+      <div class="scroll"><table id="missingTable"></table></div>
+    </details>
   </section>
   <section class="cta">
     <h2>Have a model or an encoding method that should be on the board?</h2>
@@ -209,7 +218,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
-    <p class="muted" id="encTileNote" hidden>TF-IDF 🔤 and TILE 📝 run on text datasets only, so they show here with Modality Text only.</p>
+    <p class="muted" id="encTileNote" hidden>TF-IDF 🔤, TILE 📝 and CASE 🧩 run on text datasets only, so they show here with Modality Text only.</p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
   </div>
@@ -532,10 +541,11 @@ async function load() {
   const res = await fetch('data/leaderboards.csv', { method: 'HEAD' });
   const updated = res.headers.get('last-modified') && new Date(res.headers.get('last-modified')).toISOString().slice(0, 10);
   const info = Object.fromEntries((await get('models')).map(r => [r.model, r]));
-  // TF-IDF's and TILE's entries are only on the text boards.
+  const missing = await get('missing');
+  // The text-only encodings' entries are only on the text boards.
   const encodingOf = Object.fromEntries(Object.values(boards).flat().map(r => [r.entry, r.encoding]));
   const entries = Object.keys(encodingOf).sort();
-  return { boards, encodingBoards, per_dataset, cost, updated, info, encodingOf, meta: { entries } };
+  return { boards, encodingBoards, per_dataset, cost, missing, updated, info, encodingOf, meta: { entries } };
 }
 load().then(start).catch(err => {
   document.querySelector('.wrap').insertAdjacentHTML('afterbegin', `<p class="flag">Could not load the leaderboard data: ${err.message}</p>`);
@@ -543,24 +553,25 @@ load().then(start).catch(err => {
 function start(D) {
 
 const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
-const ENC_LABEL = { frozen: 'Frozen-S', tar: 'TAR-S', large: 'Frozen-L', 'large-tar': 'TAR-L', tfidf: 'TF-IDF', tile: 'TILE', 'end-to-end': 'E2E' };
-const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-tuned on each fold', large: 'Frozen large encoders', 'large-tar': 'Large encoders fine-tuned on each fold', tfidf: 'TF-IDF and SVD fitted on each fold, on text datasets', tile: 'Each string cell embedded in the context of its row, on text datasets', 'end-to-end': 'Reads raw text itself' };
+const ENC_LABEL = { frozen: 'Frozen-S', tar: 'TAR-S', large: 'Frozen-L', 'large-tar': 'TAR-L', tfidf: 'TF-IDF', tile: 'TILE', case: 'CASE', 'end-to-end': 'E2E' };
+const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-tuned on each fold', large: 'Frozen large encoders', 'large-tar': 'Large encoders fine-tuned on each fold', tfidf: 'TF-IDF and SVD fitted on each fold, on text datasets', tile: 'Each string cell embedded in the context of its row, on text datasets', case: 'Each row embedded with training rows as context, on text datasets', 'end-to-end': 'Reads raw text itself' };
 const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
 // A short mark for the encoding, in place of the "(Frozen-S)" or "(TAR-S)" of an entry's name.
-const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'large-tar': '🏹', tfidf: '🔤', tile: '🧱', 'end-to-end': '🔚' };
+const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'large-tar': '🏹', tfidf: '🔤', tile: '🧱', case: '🧩', 'end-to-end': '🔚' };
 const encodingCell = e => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span></td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
-const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L'], ['large-tar', 'TAR-L'], ['tfidf', 'TF-IDF 🔤'], ['tile', 'TILE 📝']];
+const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L'], ['large-tar', 'TAR-L'], ['tfidf', 'TF-IDF 🔤'], ['tile', 'TILE 📝'], ['case', 'CASE 🧩']];
 // The encodings run on text datasets only.
-const TEXT_ONLY = ['tfidf', 'tile'];
+const TEXT_ONLY = ['tfidf', 'tile', 'case'];
 const encoderCells = (e5, dino) => `<td class="model"><a href="https://huggingface.co/intfloat/${e5}-v2">${e5}</a></td>`
   + `<td class="model"><a href="https://huggingface.co/facebook/dinov3-vit${dino[0]}16-pretrain-lvd1689m">DINOv3-${dino[1]}</a></td>`;
 const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encoderCells('e5-small', ['s', 'small']),
   large: encoderCells('e5-large', ['l', 'large']), 'large-tar': encoderCells('e5-large', ['l', 'large']),
   tfidf: '<td class="model"><a href="https://skrub-data.org/stable/reference/generated/skrub.StringEncoder.html">TF-IDF + SVD</a></td><td>—</td>',
-  tile: '<td class="model"><a href="https://huggingface.co/meta-llama/Llama-3.1-8B">Llama-3.1-8B</a></td><td>—</td>' };
+  tile: '<td class="model"><a href="https://huggingface.co/meta-llama/Llama-3.1-8B">Llama-3.1-8B</a></td><td>—</td>',
+  case: '<td class="model"><a href="https://huggingface.co/SAP/CASE">CASE</a> + e5-small</td><td>—</td>' };
 // The encodings board names each encoding by its label.
 const ENC_KEY = Object.fromEntries(Object.entries(ENC_LABEL).map(([k, v]) => [v, k]));
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
@@ -624,7 +635,7 @@ function drawEncTabs() {
     showNames = !showNames; store.set('pareto_names', showNames ? '1' : '0'); drawEncTabs(); render();
   } }, 'Show names');
   n.setAttribute('aria-pressed', showNames);
-  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L, 🏹 for TAR-L, 🔤 for TF-IDF, 🧱 for TILE and 🔚 for E2E, as the points', onclick: () => {
+  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L, 🏹 for TAR-L, 🔤 for TF-IDF, 🧱 for TILE, 🧩 for CASE and 🔚 for E2E, as the points', onclick: () => {
     withEmojis = !withEmojis; store.set('pareto_emojis', withEmojis ? '1' : '0'); drawEncTabs(); render();
   } }, 'With emojis');
   m.setAttribute('aria-pressed', withEmojis);
@@ -757,7 +768,7 @@ function toggles(container, items, field, storeKey) {
 // Encodings combine: from All a click keeps just that one, else it toggles; none or every one is All again.
 function encodingToggles() {
   const box = document.getElementById('encodingTabs'), all = ENCS.map(e => e[0]), isAll = encSel.length === all.length;
-  // TF-IDF and TILE run on text datasets only: elsewhere they are crossed out, and picking one switches Modality to Text.
+  // The text-only encodings are crossed out elsewhere, and picking one switches Modality to Text.
   const textOnly = sel.modality.length === 1 && sel.modality[0] === 'text';
   const shown = m => textOnly || !TEXT_ONLY.includes(D.encodingOf[m]);
   const count = keys => D.meta.entries.filter(m => keys.includes(D.encodingOf[m]) && shown(m)).length;
@@ -784,7 +795,7 @@ function encodingToggles() {
 function drawElo(board) {
   const groups = [];
   board.forEach(r => { let g = groups.find(g => g.model === r.model); if (!g) groups.push(g = { model: r.model, rows: [] }); g.rows.push(r); });
-  const ORDER = ['frozen', 'large', 'tar', 'large-tar', 'tfidf', 'tile', 'end-to-end'];
+  const ORDER = ['frozen', 'large', 'tar', 'large-tar', 'tfidf', 'tile', 'case', 'end-to-end'];
   groups.forEach(g => g.rows.sort((a, b) => ORDER.indexOf(a.encoding) - ORDER.indexOf(b.encoding)));
   const W = 1080, H = 460, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
   const lo = Math.min(1000, ...board.map(r => r.lo)), hi = Math.max(...board.map(r => r.hi));
@@ -867,9 +878,25 @@ function renderBoard() {
   drawElo(board);
   drawBoard(board, front);
   drawPareto(board, front);
+  drawMissing();
 }
 
-// The overall board's order, then the TF-IDF and TILE entries the text board adds.
+// The missing runs of the encodings picked, on the filtered datasets; text-only ones only where the board is text only.
+function drawMissing() {
+  const textOnly = sel.modality.length === 1 && sel.modality[0] === 'text';
+  const rows = D.missing.filter(r => encSel.includes(r.encoding) && (textOnly || !TEXT_ONLY.includes(r.encoding))
+    && (r.dataset == null || inFilter(r.dataset)));
+  const runs = rows.reduce((n, r) => n + r.folds, 0);
+  document.getElementById('missing').hidden = !rows.length;
+  document.getElementById('missingCount').textContent = `${runs} runs, ${new Set(rows.map(r => r.entry)).size} entries`;
+  const t = document.getElementById('missingTable');
+  t.innerHTML = '<thead><tr><th>Encoding</th><th>Model</th><th>Dataset</th><th class="num" title="Folds without a result, 6 per dataset">Runs</th><th>Why</th></tr></thead>';
+  const tb = el('tbody');
+  rows.forEach(r => tb.appendChild(el('tr', {}, `${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}</td><td>${r.dataset ?? 'All'}</td><td class="num">${r.folds}</td><td>${r.reason}</td>`)));
+  t.appendChild(tb);
+}
+
+// The overall board's order, then the text-only entries the text board adds.
 const orderOf = () => slice([...D.boards['all|all|all'], ...D.boards['all|all|text'].filter(r => TEXT_ONLY.includes(r.encoding))]).map(r => r.entry);
 function render() {
   toggles(document.getElementById('tierTabs'), TIERS, 'tier', 'tiers');

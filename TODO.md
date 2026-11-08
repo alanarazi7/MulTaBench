@@ -15,9 +15,9 @@ file as the PRs that complete them are merged.
       the GPU. Profile LimiX-2 there, and Kumo's GPU memory in fit on Spotify Genres.
 - [ ] TF-IDF: rerun Mitra-v2 on OSHA Injury, folds 0-4, which the HF Hub's rate limit failed; its Elo skips
       those 5 folds until then.
-- [ ] CASE: run the `CASE-<model>` wrappers with `e5-small` and add their leaderboard entry, with CASE's defaults.
-      Ablations later: its authors suggest more than 32 PCA components, and its 50-token cell cut and 16,000-token
-      context may hurt the long-text datasets.
+- [ ] CASE: add CASE-Mitra-v2 and CASE-EXAONE-Tabular, still running, and profile Kumo-Tabular's GPU memory in fit
+      on Spotify Genres. Ablations later: its authors suggest more than 32 PCA components, and its 50-token cell cut and
+      16,000-token context may hurt the long-text datasets.
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
       no native categories), where the PFNs may do better with the feature window and categories its authors select.
 
