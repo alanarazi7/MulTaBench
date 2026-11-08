@@ -78,7 +78,7 @@ Paper = "https://arxiv.org/abs/2605.10616"
 [tool.setuptools.packages.find]
 include = ["multabench*"]
 
-# The published runs, for load_published_results, and the pinned Hugging Face revisions.
+# The published runs of every encoding, for load_published_results, and the pinned Hugging Face revisions.
 [tool.setuptools.package-data]
 "multabench.leaderboard" = ["models/*.csv", "models_tar/*.csv", "models_large/*.csv", "models_large_tar/*.csv",
                            "models_tile/*.csv", "models_tfidf/*.csv", "models_case/*.csv"]
