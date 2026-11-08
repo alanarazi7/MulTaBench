@@ -571,7 +571,7 @@ const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encode
   large: encoderCells('e5-large', ['l', 'large']), 'large-tar': encoderCells('e5-large', ['l', 'large']),
   tfidf: '<td class="model"><a href="https://skrub-data.org/stable/reference/generated/skrub.StringEncoder.html">TF-IDF + SVD</a></td><td>—</td>',
   tile: '<td class="model"><a href="https://huggingface.co/meta-llama/Llama-3.1-8B">Llama-3.1-8B</a></td><td>—</td>',
-  case: '<td class="model"><a href="https://huggingface.co/SAP/CASE">CASE</a> + e5-small</td><td>—</td>' };
+  case: '<td class="model"><a href="https://huggingface.co/SAP/CASE">Gemma-3-12B-CASE</a> + <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a></td><td>—</td>' };
 // The encodings board names each encoding by its label.
 const ENC_KEY = Object.fromEntries(Object.entries(ENC_LABEL).map(([k, v]) => [v, k]));
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
