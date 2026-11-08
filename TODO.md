@@ -35,6 +35,7 @@ file as the PRs that complete them are merged.
 ## Leaderboard
 
 - [ ] Improvability as a secondary column.
+- [ ] Improve the Pareto plot and the cost reporting, as the Elo plot now joins each encoder's dots across the models.
 - [ ] Once NVIDIA publishes a technical report for Kumo-Tabular, link and cite it in place of its Hugging Face blog
       post: its three models' link in `space/data/models.csv` and its BibTeX on the Cite & Data tab.
 - [ ] Update the Space from `master` with a GitHub Action: rerun `multabench.leaderboard.export` and upload
