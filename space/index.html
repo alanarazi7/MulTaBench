@@ -815,9 +815,14 @@ function drawElo(board) {
     s += `<circle cx="${lx + 6}" cy="16" r="5" fill="${encColor(e)}"/><text x="${lx + 16}" y="20">${ENC_LABEL[e]}</text>`;
     lx += 26 + ENC_LABEL[e].length * 7 + 18;
   });
+  const xOf = (g, i, j) => left + (i + 0.5) * slot + (j - (g.rows.length - 1) / 2) * Math.min(12, slot * 0.7 / g.rows.length);
+  // Each encoding's dots joined across the models, so its line reads against the others.
+  ORDER.forEach(e => {
+    const pts = groups.flatMap((g, i) => g.rows.flatMap((r, j) => r.encoding === e ? [`${xOf(g, i, j)},${y(r.elo)}`] : []));
+    if (pts.length > 1) s += `<polyline points="${pts.join(' ')}" fill="none" stroke="${encColor(e)}" stroke-width="1.5" stroke-opacity=".6"/>`;
+  });
   groups.forEach((g, i) => {
-    const cx = left + (i + 0.5) * slot, gap = Math.min(12, slot * 0.7 / g.rows.length);
-    const xs = g.rows.map((r, j) => cx + (j - (g.rows.length - 1) / 2) * gap);
+    const cx = left + (i + 0.5) * slot, xs = g.rows.map((r, j) => xOf(g, i, j));
     g.rows.forEach((r, j) => {
       const c = encColor(r.encoding);
       const tip = `<title>${r.entry}: Elo ${fmt(r.elo)} (${fmt(r.lo)}–${fmt(r.hi)})</title>`;
