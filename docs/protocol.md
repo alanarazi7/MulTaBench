@@ -42,16 +42,15 @@ image datasets.
 On the text datasets, every model also ran wrapped by the TILE interface (see [running](running.md)), which builds
 the model's input from each string cell embedded in the context of its row. Those runs are in
 `multabench/leaderboard/models_tile/`, as a sixth entry, e.g. `LimiX-2 (TILE)`, rated only on boards that show no image
-datasets. Five entries are rated on 39 of the 40 text datasets (see the TODO):
-TILE-Kumo-Tabular and TILE-Kumo-Tabular-M run out of GPU memory in fit on Spotify Genres, whose 114 classes give 447
-features with TILE's target encoding; TILE-TabICLv2, TILE-Xiaomi-TabLDM and TILE-LimiX-2 run out of the 32 GB of RAM in
-predict on Melbourne Airbnb, whose 41 string columns give 1,646 features.
+datasets. TILE-LimiX-2 is rated on 39 of the 40 text datasets (see the TODO): it runs out of the 32 GB of RAM in
+predict on Melbourne Airbnb, whose 41 string columns give 1,646 features. There, TabICLv2 and Xiaomi-TabLDM run one
+ensemble member at a time. On Spotify Genres, whose 114 classes give 447 features with TILE's target encoding,
+Kumo-Tabular's fit caches outgrow the GPU, so it predicts without them, to the same predictions.
 
 On the text datasets, every model also ran wrapped by the CASE interface (see [running](running.md)), which appends
 32 PCA components of each row embedded with sampled training rows as context to the model's `e5-small` input. Those runs
 are in `multabench/leaderboard/models_case/`, as a seventh entry, e.g. `LimiX-2 (CASE)`, rated only on boards that show
-no image datasets. CASE-Kumo-Tabular is rated on 39 of the 40 text datasets: it runs out of GPU memory in fit on
-Spotify Genres, as TILE-Kumo-Tabular does.
+no image datasets.
 
 `MISSING_REASONS` in `multabench/leaderboard/export.py` says why each entry lacks a result on a dataset; the Space lists
 these runs, and the entries not run yet, under the board.
