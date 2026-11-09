@@ -42,10 +42,13 @@ image datasets.
 On the text datasets, every model also ran wrapped by the TILE interface (see [running](running.md)), which builds
 the model's input from each string cell embedded in the context of its row. Those runs are in
 `multabench/leaderboard/models_tile/`, as a sixth entry, e.g. `LimiX-2 (TILE)`, rated only on boards that show no image
-datasets. TILE-LimiX-2 is rated on 39 of the 40 text datasets (see the TODO): it runs out of the 32 GB of RAM in
-predict on Melbourne Airbnb, whose 41 string columns give 1,646 features. There, TabICLv2 and Xiaomi-TabLDM run one
-ensemble member at a time. On Spotify Genres, whose 114 classes give 447 features with TILE's target encoding,
-Kumo-Tabular's fit caches outgrow the GPU, so it predicts without them, to the same predictions.
+datasets. TILE-LimiX-2 is rated on 39 of the 40 text datasets (see the TODO): on Melbourne Airbnb, whose 41 string
+columns give 1,646 features, it runs out of the H100's 80 GB in predict. LimiX-2 passes the whole 10K-row training
+context through the model again with every batch of test rows, and that context alone nearly fills the GPU, so its own
+fallback halves the batch from 5,000 test rows down to 9 within the first of its 32 ensemble members, still out of
+memory. There, TabICLv2 and Xiaomi-TabLDM run one ensemble member at a time. On Spotify Genres, whose 114 classes give
+447 features with TILE's target encoding, Kumo-Tabular's fit caches outgrow the GPU, so it predicts without them, to the
+same predictions.
 
 On the text datasets, every model also ran wrapped by the CASE interface (see [running](running.md)), which appends
 32 PCA components of each row embedded with sampled training rows as context to the model's `e5-small` input. Those runs

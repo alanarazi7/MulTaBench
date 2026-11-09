@@ -39,7 +39,7 @@ TEXT_ONLY_ENCODINGS = [TFIDF, TILE, CASE]
 NOT_RUN = "Not run yet"
 # Why an entry has no result on a dataset, by encoding, model and dataset; an entry with no result at all is not run yet.
 MISSING_REASONS = {
-    (TILE, "LimiX-2", "MUL_TEXT_MELBOURNE_AIRBNB"): "Out of RAM in predict",
+    (TILE, "LimiX-2", "MUL_TEXT_MELBOURNE_AIRBNB"): "Out of GPU memory in predict",
 }
 
 
