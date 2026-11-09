@@ -1,2 +1,2 @@
 entry,model,encoding,dataset,tier,task,modality,folds,reason
-LimiX-2 (TILE),LimiX-2,tile,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,6,Out of RAM in predict
+LimiX-2 (TILE),LimiX-2,tile,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,6,Out of GPU memory in predict

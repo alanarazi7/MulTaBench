@@ -10,7 +10,10 @@ file as the PRs that complete them are merged.
 
 ## Runs
 
-- [ ] TILE: run LimiX-2 on Melbourne Airbnb, 6 runs, which ran past 3 hours on one fold; to profile.
+- [ ] TILE: LimiX-2 on Melbourne Airbnb, 6 runs, flagged missing. Its 10K × 1,646 training context nearly fills the
+      H100, and LimiX-2 recomputes it for every test batch, which goes out of memory down to 9 rows in the first of 32
+      members. Leads: compute the training context once per member and reuse it for every test batch, upstream or
+      in the wrapper, or a GPU with more memory, which the official runs' hardware rules out.
 - [ ] CASE: ablations: its authors suggest more than
       32 PCA components, and its 50-token cell cut and 16,000-token context may hurt the long-text datasets.
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
