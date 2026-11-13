@@ -28,6 +28,7 @@ class ImageEncoder(StrEnum):
     DINO_SMALL_TAR = "dino-small-tar"
     DINO_LARGE = "dino-large"
     DINO_LARGE_TAR = "dino-large-tar"
+    DINO_SMALL_LIGHTTAR = "dino-small-lighttar"
 
 
 DEFAULT_TEXT_ENCODER = TextEncoder.E5_SMALL
@@ -51,4 +52,7 @@ IMAGE_ENCODERS = {
     ImageEncoder.DINO_SMALL_TAR: Encoder(encoder_name=DINOV3_SMALL, tune_encoder=True),
     ImageEncoder.DINO_LARGE: Encoder(encoder_name=DINOV3_LARGE, tune_encoder=False),
     ImageEncoder.DINO_LARGE_TAR: Encoder(encoder_name=DINOV3_LARGE, tune_encoder=True),
+    ImageEncoder.DINO_SMALL_LIGHTTAR: Encoder(encoder_name=DINOV3_SMALL, tune_encoder=False),
 }
+# DINO's frozen cache has its last layer after the final norm, so LightTAR's image cache has both of its layers.
+LIGHTTAR_IMAGE_ENCODERS = (ImageEncoder.DINO_SMALL_LIGHTTAR,)

@@ -12,7 +12,7 @@ from multabench.baselines.preprocessing.feature_types import detect_feature_type
 from multabench.benchmark.load import split_dataset
 from multabench.benchmark.splits import Size
 from multabench.datasets.objects import MultimodalDataset
-from multabench.encoders.constants import LIGHTTAR_LAST_LAYER, ImageEncoder, TextEncoder
+from multabench.encoders.constants import LIGHTTAR_IMAGE_ENCODERS, LIGHTTAR_LAST_LAYER, ImageEncoder, TextEncoder
 from multabench.encoders.dino.constants import DINO_LORA
 from multabench.encoders.dino.dino_encoder import get_image_encoder, image_urls_to_embeddings
 from multabench.encoders.dino.dino_finetune import finetune_dino
@@ -113,7 +113,7 @@ def _finetune(encoder: CachedEncoder, x_train: DataFrame, y_train: Series, featu
 
 def _encode(x: DataFrame, image_folder: str, encoder: CachedEncoder, features: List[str], model: Any, processor: Any,
             device: torch.device) -> Tuple[List[str], np.ndarray, Dict[str, float]]:
-    """Each feature's distinct values embedded once, keyed by the input the encoder got; LightTAR's E5 middle layer."""
+    """Each feature's distinct values embedded once, keyed by the input the encoder got; LightTAR's layers."""
     inputs, embeddings, seconds = [], [], {}
     for col in features:
         values = list(dict.fromkeys(input_values(x, encoder, col)))
@@ -125,8 +125,9 @@ def _encode(x: DataFrame, image_folder: str, encoder: CachedEncoder, features: L
             embedded = encode_texts_with_e5(texts=values, col_name=str(col), model=model, tokenizer=processor,
                                             device=device)
         elif isinstance(encoder, ImageEncoder):
+            layers = [-1, middle_layer(model.config.num_hidden_layers)] if encoder in LIGHTTAR_IMAGE_ENCODERS else None
             embedded = _embed_images_in_chunks(Series(values), image_folder=image_folder, model=model,
-                                               processor=processor)
+                                               processor=processor, layers=layers)
         else:
             raise TypeError(f"Unknown encoder {encoder!r}")
         seconds[col] = pop_embedding_seconds()
@@ -158,9 +159,11 @@ def _encode_case_rows(x: DataFrame, case: Any) -> Tuple[List[str], np.ndarray, D
     return keys.tolist(), embeddings, seconds
 
 
-def _embed_images_in_chunks(urls: Series, image_folder: str, model: Any, processor: Any) -> np.ndarray:
+def _embed_images_in_chunks(urls: Series, image_folder: str, model: Any, processor: Any,
+                            layers: Optional[List[int]] = None) -> np.ndarray:
     chunks = []
     for start in range(0, len(urls), IMAGE_CHUNK_ROWS):
         chunk = urls.iloc[start:start + IMAGE_CHUNK_ROWS]
-        chunks.append(image_urls_to_embeddings(s=chunk, image_folder=image_folder, processor=processor, model=model))
+        chunks.append(image_urls_to_embeddings(s=chunk, image_folder=image_folder, processor=processor, model=model,
+                                               layers=layers))
     return np.concatenate(chunks)

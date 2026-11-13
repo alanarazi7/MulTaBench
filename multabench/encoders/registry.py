@@ -6,7 +6,7 @@ from multabench.encoders.abstract_encoder import EmbeddingEncoder
 from multabench.encoders.constants import ImageEncoder, TextEncoder
 from multabench.encoders.dino.dino_encoder import DinoEncoder
 from multabench.encoders.e5.e5_encoder import E5Encoder
-from multabench.encoders.lighttar_encoder import LightTAREncoder
+from multabench.encoders.lighttar_encoder import LightTAREncoder, LightTARImageEncoder
 from multabench.encoders.tfidf import TfidfEncoder
 
 ENCODER_CLASSES: Dict[CachedEncoder, Type[EmbeddingEncoder]] = {
@@ -21,6 +21,7 @@ ENCODER_CLASSES: Dict[CachedEncoder, Type[EmbeddingEncoder]] = {
     ImageEncoder.DINO_SMALL_TAR: DinoEncoder,
     ImageEncoder.DINO_LARGE: DinoEncoder,
     ImageEncoder.DINO_LARGE_TAR: DinoEncoder,
+    ImageEncoder.DINO_SMALL_LIGHTTAR: LightTARImageEncoder,
 }
 
 
