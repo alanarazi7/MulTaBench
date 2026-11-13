@@ -59,7 +59,8 @@ def test_encoders_follow_the_benchmark_runs(dataset_id):
     assert embeds_dataset(ImageEncoder.DINO_LARGE, dataset_id) == modality.has_images
     assert embeds_dataset(TextEncoder.E5_LARGE_TAR, dataset_id) == (modality == Modality.TEXT)
     assert embeds_dataset(ImageEncoder.DINO_LARGE_TAR, dataset_id) == modality.has_images
-    assert embeds_dataset(ImageEncoder.DINO_SMALL_LIGHTTAR, dataset_id) == modality.has_images
+    for encoder in (ImageEncoder.DINO_SMALL_LIGHTTAR, ImageEncoder.DINO_LARGE_LIGHTTAR):
+        assert embeds_dataset(encoder, dataset_id) == modality.has_images
     for encoder in (TextEncoder.E5_SMALL_LIGHTTAR, TextEncoder.E5_LARGE_LIGHTTAR):
         assert embeds_dataset(encoder, dataset_id) == (modality == Modality.TEXT)
 
@@ -110,7 +111,7 @@ def test_tuned_jobs_cover_each_fold(tmp_path):
     assert jobs[1].command(python="python", output_dir="out") == (
         "python -m multabench.embeddings.embed --encoder dino-small-tar --dataset_name MUL_IMAGE_PETFINDER --size 10k "
         "--fold 4 --output_dir out")
-    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6 + 1 + 1 + 6 + 1
+    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6 + 1 + 1 + 6 + 1 + 1
 
 
 def test_cached_encoder():
