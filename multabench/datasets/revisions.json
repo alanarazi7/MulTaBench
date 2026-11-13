@@ -47,6 +47,7 @@
   "multabench/embeddings-e5-large": "94abcebbf5f0d0f751af86ec84e8d491b24ebaa8",
   "multabench/embeddings-e5-large-tar": "1c9eedbbca0199882776ff39b85f773f890ade2c",
   "multabench/embeddings-e5-small": "dc35df41058bd15d0b2cd576dc6874d995ddf670",
+  "multabench/embeddings-e5-small-lighttar": "1a2b5a1acac46c2c5bbd2bca83c447c820519c21",
   "multabench/embeddings-e5-small-tar": "8d71e1f7e48d355af2af18bf2bab841d5c6119ae",
   "multabench/embeddings-tile": "bb5c7dba99e531825f2609d8858b41a4a8577623",
   "multabench/extended-img-cls-ham10000-lesion": "bbc8e59272e5e8bdfacb14583803ef46b4cf6731",
