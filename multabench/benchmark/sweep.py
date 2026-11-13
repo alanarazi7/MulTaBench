@@ -21,7 +21,8 @@ DEFAULT_IMAGE_ENCODERS = [ImageEncoder.DINO_SMALL, ImageEncoder.DINO_SMALL_TAR]
 IMAGE_TEXT_TEXT_ENCODERS = {ImageEncoder.DINO_SMALL: TextEncoder.E5_SMALL,
                             ImageEncoder.DINO_SMALL_TAR: TextEncoder.E5_SMALL,
                             ImageEncoder.DINO_LARGE: TextEncoder.E5_LARGE,
-                            ImageEncoder.DINO_LARGE_TAR: TextEncoder.E5_LARGE}
+                            ImageEncoder.DINO_LARGE_TAR: TextEncoder.E5_LARGE,
+                            ImageEncoder.DINO_SMALL_LIGHTTAR: TextEncoder.E5_SMALL}
 
 
 def select_datasets(names: Optional[List[str]], modalities: Optional[List[Modality]]) -> List[MulTaBenchDatasetID]:

@@ -29,6 +29,9 @@ e5-large's 24 and the sixth of e5-small's 12. The frozen E5 cache already has th
 `multabench/embeddings-e5-small-lighttar`, has only the middle one, keyed and pooled as E5's, and a run reads both;
 e5-large's is not cached yet, so `e5-large-lighttar` embeds live. LightTAR projects each column on the training rows and their target to its
 default 30 PCA and 5 supervised features. Like `e5-small-tar`, it runs on the text datasets only.
+`dino-small-lighttar` does the same with DINO's CLS token on the image datasets. The frozen DINO cache has the last
+layer after DINO's final norm, while LightTAR reads it before, so `multabench/embeddings-dino-small-lighttar` has both
+the last and the middle layer, the sixth of 12. Like `dino-small-tar`, its runs embed the text columns with frozen E5.
 
 The TILE interface, `multabench/embeddings-tile`, is frozen and cached once per dataset too, but it embeds each
 string cell in the context of its row: the input is the whole row serialized as TILE serializes it, every column but

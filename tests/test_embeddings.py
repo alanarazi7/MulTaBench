@@ -59,6 +59,7 @@ def test_encoders_follow_the_benchmark_runs(dataset_id):
     assert embeds_dataset(ImageEncoder.DINO_LARGE, dataset_id) == modality.has_images
     assert embeds_dataset(TextEncoder.E5_LARGE_TAR, dataset_id) == (modality == Modality.TEXT)
     assert embeds_dataset(ImageEncoder.DINO_LARGE_TAR, dataset_id) == modality.has_images
+    assert embeds_dataset(ImageEncoder.DINO_SMALL_LIGHTTAR, dataset_id) == modality.has_images
     for encoder in (TextEncoder.E5_SMALL_LIGHTTAR, TextEncoder.E5_LARGE_LIGHTTAR):
         assert embeds_dataset(encoder, dataset_id) == (modality == Modality.TEXT)
 
@@ -109,7 +110,7 @@ def test_tuned_jobs_cover_each_fold(tmp_path):
     assert jobs[1].command(python="python", output_dir="out") == (
         "python -m multabench.embeddings.embed --encoder dino-small-tar --dataset_name MUL_IMAGE_PETFINDER --size 10k "
         "--fold 4 --output_dir out")
-    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6 + 1 + 1 + 6
+    assert len(list_jobs(encoders=list(CACHED_ENCODERS), datasets=[IMAGE_TEXT])) == 1 + 1 + 6 + 1 + 1 + 6 + 1
 
 
 def test_cached_encoder():
@@ -197,6 +198,24 @@ def test_image_features_look_their_files_up_in_the_cache(monkeypatch):
     np.testing.assert_array_equal(train_embeddings["photo"], expected[train_idx])
     x_test = transform_columns(x.iloc[test_idx], encoders=encoders)
     np.testing.assert_allclose(x_test.to_numpy(), encoders["photo"].transform(expected[test_idx]), rtol=1e-5)
+
+
+def test_lighttar_reads_both_dino_layers_from_its_cache(monkeypatch):
+    rng = np.random.default_rng(0)
+    files = [f"images/{i % 40}.jpg" for i in range(60)]
+    distinct = sorted(set(files))
+    layers = rng.normal(size=(len(distinct), 2, 32)).astype(np.float32)
+    cache = CachedEmbeddings(inputs=distinct, embeddings=layers, meta={"features": ["photo"]})
+    monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset, size, fold: cache)
+    monkeypatch.setattr(lighttar_encoder, "get_image_encoder", lambda *a, **k: pytest.fail("loaded DINO, cached"))
+    x, y = DataFrame({"photo": files}), Series(rng.normal(size=60))
+    encoders, train_embeddings = make_encoder(ImageEncoder.DINO_SMALL_LIGHTTAR, device="cpu", dataset=IMAGE_TEXT,
+                                              image_folder="unused").fit(x, columns=["photo"], y=y, is_cls=False)
+    np.testing.assert_array_equal(train_embeddings["photo"], layers[[distinct.index(f) for f in files]])
+    expected = LightTARProjection(task="regression").fit(train_embeddings["photo"], y.to_numpy())
+    x_test = transform_columns(x, encoders=encoders)
+    assert list(x_test.columns) == [f"photo_img_lighttar_{i}" for i in range(35)]
+    np.testing.assert_allclose(x_test.to_numpy(), expected.transform(train_embeddings["photo"]), rtol=1e-5)
 
 
 def _tuned_cache(texts, columns):

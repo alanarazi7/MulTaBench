@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Tuple
+from typing import Any, List, Optional, Sequence, Tuple
 
 import numpy as np
 import torch
@@ -83,9 +83,10 @@ def image_urls_to_embeddings(
     image_folder: str,
     processor: DINOv3ViTImageProcessorFast,
     model: DINOv3ViTModel,
+    layers: Optional[Sequence[int]] = None,
 ) -> np.ndarray:
     images = load_images(s=s, image_folder=image_folder)
-    embeddings = encode_images_in_batches(images=images, processor=processor, model=model)
+    embeddings = encode_images_in_batches(images=images, processor=processor, model=model, layers=layers)
     return embeddings
 
 
@@ -94,18 +95,23 @@ def encode_images_in_batches(
     images: List[Image.Image],
     processor: DINOv3ViTImageProcessorFast,
     model: DINOv3ViTModel,
+    layers: Optional[Sequence[int]] = None,
 ) -> np.ndarray:
+    """The CLS token of the final, normed state, or (images, layers, hidden) of these hidden states' CLS tokens."""
     embeddings = []
     for i in range(0, len(images), IMAGE_BATCH_SIZE):
         batch_images = images[i:i + IMAGE_BATCH_SIZE]
         with suppress_channel_dimension_warning():
             inputs = processor(images=batch_images, return_tensors="pt").to(model.device)
         with torch.no_grad():
-            outputs = model(**inputs)
-        last_hidden = outputs["last_hidden_state"] if isinstance(outputs, dict) else outputs.last_hidden_state
-        batch_embeddings = last_hidden[:, 0, :].cpu().numpy()
-        embeddings.append(batch_embeddings)
+            outputs = model(**inputs, output_hidden_states=layers is not None)
+        if layers is None:
+            last_hidden = outputs["last_hidden_state"] if isinstance(outputs, dict) else outputs.last_hidden_state
+            batch_embeddings = last_hidden[:, 0, :]
+        else:
+            batch_embeddings = torch.stack([outputs.hidden_states[layer][:, 0, :] for layer in layers], dim=1)
+        embeddings.append(batch_embeddings.float().cpu().numpy())
     embeddings = np.concatenate(embeddings, axis=0)
-    d_model = model.config.hidden_size
-    assert embeddings.shape == (len(images), d_model), f"Expected ({len(images)}, {d_model}), got {embeddings.shape}"
+    shape = (len(images), *([len(layers)] if layers is not None else []), model.config.hidden_size)
+    assert embeddings.shape == shape, f"Expected {shape}, got {embeddings.shape}"
     return embeddings

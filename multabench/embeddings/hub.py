@@ -8,7 +8,8 @@ and the hardware it ran on. A run looks its own inputs up, so a cached embedding
 or image, and a changed dataset raises instead. The TILE interface embeds a string cell in the context of its row, so
 its input is the serialized row, and its embedding all the row's string cells, (features, hidden) in float16. The CASE
 interface embeds whole rows after a context of the fold's training rows, so it is cached per fold, keyed by the row's
-cells, in float16. LightTAR's cache has only E5's middle layer, as its frozen E5's cache already has the last.
+cells, in float16. LightTAR's text cache has only E5's middle layer, as its frozen E5's cache already has the last;
+its image cache has DINO's last and middle layers' CLS tokens, (inputs, 2, hidden), before DINO's final norm.
 """
 import json
 import os
@@ -41,7 +42,7 @@ EMBEDDINGS = "embeddings"
 CachedEncoder = TextEncoder | ImageEncoder | Interface
 CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL, TextEncoder.E5_SMALL_TAR, ImageEncoder.DINO_SMALL_TAR,
                    TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE, TextEncoder.E5_LARGE_TAR, ImageEncoder.DINO_LARGE_TAR,
-                   TextEncoder.E5_SMALL_LIGHTTAR, Interface.TILE, Interface.CASE)
+                   TextEncoder.E5_SMALL_LIGHTTAR, ImageEncoder.DINO_SMALL_LIGHTTAR, Interface.TILE, Interface.CASE)
 # TILE's caches add up to about 66 GB, so they are built, fetched and prefetched only when asked for, as are CASE's,
 # which are built in its own venv.
 DEFAULT_ENCODERS = tuple(e for e in CACHED_ENCODERS if e not in (Interface.TILE, Interface.CASE))
