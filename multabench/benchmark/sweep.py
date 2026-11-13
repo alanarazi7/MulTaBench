@@ -10,7 +10,7 @@ from multabench.benchmark.load import download_dataset
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
-from multabench.encoders.constants import ImageEncoder, TextEncoder
+from multabench.encoders.constants import LIGHTTAR_LAST_LAYER, ImageEncoder, TextEncoder
 from multabench.embeddings.hub import CACHED_ENCODERS, download_embeddings, is_tuned
 from multabench.result_keys import ResultKey, RunStatus
 
@@ -84,7 +84,8 @@ def prefetch(runs: List[Run]):
     for dataset in sorted({run.dataset for run in runs}):
         download_dataset(MulTaBenchDatasetID[dataset])
     caches = {(encoder, run.dataset, *((run.size, run.fold) if is_tuned(encoder) else (None, None)))
-              for run in runs for encoder in (run.text_encoder, run.image_encoder) if encoder in CACHED_ENCODERS}
+              for run in runs for encoder in (run.text_encoder, LIGHTTAR_LAST_LAYER.get(run.text_encoder),
+                                              run.image_encoder) if encoder in CACHED_ENCODERS}
     for encoder, dataset, size, fold in sorted(caches, key=str):
         download_embeddings(encoder, MulTaBenchDatasetID[dataset], size=size, fold=fold)
 

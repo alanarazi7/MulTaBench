@@ -94,6 +94,8 @@ jsonschema-specifications==2025.9.1
     # via jsonschema
 kiwisolver==1.4.9
     # via matplotlib
+lighttar==0.1.0
+    # via multabench (pyproject.toml)
 markupsafe==3.0.3
     # via jinja2
 matplotlib==3.10.7
@@ -111,6 +113,7 @@ networkx==3.6
     #   torch
 numpy==2.3.5
     # via
+    #   lighttar
     #   multabench (pyproject.toml)
     #   accelerate
     #   autogluon-common
@@ -182,6 +185,7 @@ packaging==25.0
     #   transformers
 pandas==2.3.3
     # via
+    #   lighttar
     #   multabench (pyproject.toml)
     #   autogluon-common
     #   autogluon-core
@@ -268,6 +272,7 @@ safetensors==0.8.0
     #   transformers
 scikit-learn==1.6.1
     # via
+    #   lighttar
     #   multabench (pyproject.toml)
     #   autogluon-core
     #   causilo

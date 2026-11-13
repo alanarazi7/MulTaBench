@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
-from pandas import DataFrame
+from lighttar import LightTARProjection
+from pandas import DataFrame, Series
 
 from multabench.baselines.preprocessing.nulls import MISSING_VALUE
 from multabench.benchmark.splits import Size
@@ -10,7 +11,7 @@ from multabench.embeddings.hub import (CACHED_ENCODERS, META_JSON, CachedEmbeddi
                                        embeddings_dir, embeddings_repo_id, embeds_dataset, encoder_inputs, input_values, parse_encoder,
                                        read_embeddings, reads_cache, write_embeddings)
 from multabench.embeddings.jobs import EmbeddingJob, list_jobs, pending_jobs
-from multabench.encoders import column_encoders
+from multabench.encoders import column_encoders, lighttar_encoder
 from multabench.encoders.column_encoders import transform_columns
 from multabench.encoders.constants import IMAGE_ENCODERS, ImageEncoder, TEXT_ENCODERS, TF_IDF, TextEncoder
 from multabench.encoders.dino import dino_encoder
@@ -58,6 +59,8 @@ def test_encoders_follow_the_benchmark_runs(dataset_id):
     assert embeds_dataset(ImageEncoder.DINO_LARGE, dataset_id) == modality.has_images
     assert embeds_dataset(TextEncoder.E5_LARGE_TAR, dataset_id) == (modality == Modality.TEXT)
     assert embeds_dataset(ImageEncoder.DINO_LARGE_TAR, dataset_id) == modality.has_images
+    for encoder in (TextEncoder.E5_SMALL_LIGHTTAR, TextEncoder.E5_LARGE_LIGHTTAR):
+        assert embeds_dataset(encoder, dataset_id) == (modality == Modality.TEXT)
 
 
 def test_round_trip_and_lookup(tmp_path):
@@ -155,6 +158,27 @@ def test_text_features_look_their_texts_up_in_the_cache(monkeypatch):
     np.testing.assert_allclose(x_test.to_numpy(), encoders["title"].transform(expected[test_idx]), rtol=1e-6)
     with pytest.raises(KeyError, match="no cached embedding"):
         transform_columns(DataFrame({"title": ["a text the cache never saw"]}), encoders=encoders)
+
+
+def test_lighttar_reads_the_last_layer_from_e5_and_the_middle_from_its_own_cache(monkeypatch):
+    rng = np.random.default_rng(0)
+    texts = [f"t{i % 40}" for i in range(60)]
+    distinct = sorted(set(texts))
+    keys = encoder_inputs(TextEncoder.E5_SMALL, "title", distinct)
+    last, middle = rng.normal(size=(2, len(distinct), 32)).astype(np.float32)
+    caches = {encoder: CachedEmbeddings(inputs=keys, embeddings=vectors, meta={"features": ["title"]})
+              for encoder, vectors in ((TextEncoder.E5_SMALL, last), (TextEncoder.E5_SMALL_LIGHTTAR, middle))}
+    monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset, size, fold: caches[encoder])
+    monkeypatch.setattr(lighttar_encoder, "get_vanilla_e5", lambda *a, **k: pytest.fail("loaded E5 for cached columns"))
+    x, y = DataFrame({"title": texts}), Series(rng.integers(0, 2, size=60))
+    encoders, train_embeddings = make_encoder(TextEncoder.E5_SMALL_LIGHTTAR, device="cpu", dataset=TEXT).fit(
+        x, columns=["title"], y=y, is_cls=True)
+    rows = [distinct.index(t) for t in texts]
+    np.testing.assert_array_equal(train_embeddings["title"], np.stack([last[rows], middle[rows]], axis=1))
+    expected = LightTARProjection(task="classification").fit(train_embeddings["title"], y.to_numpy())
+    x_test = transform_columns(x, encoders=encoders)
+    assert list(x_test.columns) == [f"title_txt_lighttar_{i}" for i in range(35)]
+    np.testing.assert_allclose(x_test.to_numpy(), expected.transform(train_embeddings["title"]), rtol=1e-5)
 
 
 def test_image_features_look_their_files_up_in_the_cache(monkeypatch):

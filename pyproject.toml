@@ -37,6 +37,7 @@ dependencies = [
 [project.optional-dependencies]
 bench = [
     "autogluon.core",
+    "lighttar == 0.1.0",
     "nvidia-ml-py",
     "peft",
     "pillow",

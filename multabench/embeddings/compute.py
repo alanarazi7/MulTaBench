@@ -12,12 +12,13 @@ from multabench.baselines.preprocessing.feature_types import detect_feature_type
 from multabench.benchmark.load import split_dataset
 from multabench.benchmark.splits import Size
 from multabench.datasets.objects import MultimodalDataset
-from multabench.encoders.constants import ImageEncoder, TextEncoder
+from multabench.encoders.constants import LIGHTTAR_LAST_LAYER, ImageEncoder, TextEncoder
 from multabench.encoders.dino.constants import DINO_LORA
 from multabench.encoders.dino.dino_encoder import get_image_encoder, image_urls_to_embeddings
 from multabench.encoders.dino.dino_finetune import finetune_dino
 from multabench.encoders.e5.constants import E5_LORA
 from multabench.encoders.e5.e5_finetune import encode_texts_with_e5, finetune_e5, get_vanilla_e5
+from multabench.encoders.lighttar_encoder import middle_layer
 from multabench.embeddings.hub import (CachedEncoder, encoder_inputs, encoder_spec, input_values, is_tuned,
                                        write_embeddings)
 from multabench.interfaces.case.rows import case_row_keys, embed_case_rows, load_case
@@ -112,11 +113,15 @@ def _finetune(encoder: CachedEncoder, x_train: DataFrame, y_train: Series, featu
 
 def _encode(x: DataFrame, image_folder: str, encoder: CachedEncoder, features: List[str], model: Any, processor: Any,
             device: torch.device) -> Tuple[List[str], np.ndarray, Dict[str, float]]:
-    """Each feature's distinct values embedded once, keyed by the input the encoder got."""
+    """Each feature's distinct values embedded once, keyed by the input the encoder got; LightTAR's E5 middle layer."""
     inputs, embeddings, seconds = [], [], {}
     for col in features:
         values = list(dict.fromkeys(input_values(x, encoder, col)))
-        if isinstance(encoder, TextEncoder):
+        if encoder in LIGHTTAR_LAST_LAYER:
+            layer = middle_layer(model.config.num_hidden_layers)
+            embedded = encode_texts_with_e5(texts=values, col_name=str(col), model=model, tokenizer=processor,
+                                            device=device, layers=[layer])[:, 0]
+        elif isinstance(encoder, TextEncoder):
             embedded = encode_texts_with_e5(texts=values, col_name=str(col), model=model, tokenizer=processor,
                                             device=device)
         elif isinstance(encoder, ImageEncoder):

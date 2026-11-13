@@ -124,6 +124,8 @@ kiwisolver==1.5.1
     # via matplotlib
 lightgbm==4.7.0
     # via tabpfn
+lighttar==0.1.0
+    # via multabench (pyproject.toml)
 limix @ git+https://github.com/limix-ldm-ai/LimiX.git@774aa3e1a994cbe38f33758e3d663e9951855554
     # via -r requirements-limix2.in
 llvmlite==0.50.0
@@ -154,6 +156,7 @@ numba==0.68.0
     # via kditransform
 numpy==2.5.4
     # via
+    #   lighttar
     #   multabench (pyproject.toml)
     #   accelerate
     #   autogluon-common
@@ -235,6 +238,7 @@ packaging==26.3
     #   transformers
 pandas==2.3.3
     # via
+    #   lighttar
     #   multabench (pyproject.toml)
     #   autogluon-common
     #   autogluon-core
@@ -344,6 +348,7 @@ safetensors==0.8.0
     #   transformers
 scikit-learn==1.9.1
     # via
+    #   lighttar
     #   multabench (pyproject.toml)
     #   autogluon-common
     #   autogluon-core
