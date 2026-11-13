@@ -19,6 +19,8 @@ class TextEncoder(StrEnum):
     E5_SMALL_TAR = "e5-small-tar"
     E5_LARGE = "e5-large"
     E5_LARGE_TAR = "e5-large-tar"
+    E5_SMALL_LIGHTTAR = "e5-small-lighttar"
+    E5_LARGE_LIGHTTAR = "e5-large-lighttar"
 
 
 class ImageEncoder(StrEnum):
@@ -37,7 +39,12 @@ TEXT_ENCODERS = {
     TextEncoder.E5_SMALL_TAR: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=True),
     TextEncoder.E5_LARGE: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
     TextEncoder.E5_LARGE_TAR: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=True),
+    TextEncoder.E5_SMALL_LIGHTTAR: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=False),
+    TextEncoder.E5_LARGE_LIGHTTAR: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
 }
+# LightTAR reads the last layer from its frozen encoder's cache; its own cache has only the middle layer.
+LIGHTTAR_LAST_LAYER = {TextEncoder.E5_SMALL_LIGHTTAR: TextEncoder.E5_SMALL,
+                       TextEncoder.E5_LARGE_LIGHTTAR: TextEncoder.E5_LARGE}
 
 IMAGE_ENCODERS = {
     ImageEncoder.DINO_SMALL: Encoder(encoder_name=DINOV3_SMALL, tune_encoder=False),

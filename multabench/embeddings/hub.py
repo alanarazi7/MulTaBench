@@ -8,7 +8,7 @@ and the hardware it ran on. A run looks its own inputs up, so a cached embedding
 or image, and a changed dataset raises instead. The TILE interface embeds a string cell in the context of its row, so
 its input is the serialized row, and its embedding all the row's string cells, (features, hidden) in float16. The CASE
 interface embeds whole rows after a context of the fold's training rows, so it is cached per fold, keyed by the row's
-cells, in float16.
+cells, in float16. LightTAR's cache has only E5's middle layer, as its frozen E5's cache already has the last.
 """
 import json
 import os
@@ -26,7 +26,8 @@ from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.hub import HF_ORG, local_repo_dir
 from multabench.datasets.revisions import revision
-from multabench.encoders.constants import Encoder, IMAGE_ENCODERS, ImageEncoder, TEXT_ENCODERS, TextEncoder
+from multabench.encoders.constants import (Encoder, IMAGE_ENCODERS, ImageEncoder, LIGHTTAR_LAST_LAYER, TEXT_ENCODERS,
+                                          TextEncoder)
 from multabench.encoders.e5.constants import format_e5_passage
 from multabench.interfaces.constants import INTERFACES, Interface
 
@@ -40,7 +41,7 @@ EMBEDDINGS = "embeddings"
 CachedEncoder = TextEncoder | ImageEncoder | Interface
 CACHED_ENCODERS = (TextEncoder.E5_SMALL, ImageEncoder.DINO_SMALL, TextEncoder.E5_SMALL_TAR, ImageEncoder.DINO_SMALL_TAR,
                    TextEncoder.E5_LARGE, ImageEncoder.DINO_LARGE, TextEncoder.E5_LARGE_TAR, ImageEncoder.DINO_LARGE_TAR,
-                   Interface.TILE, Interface.CASE)
+                   TextEncoder.E5_SMALL_LIGHTTAR, Interface.TILE, Interface.CASE)
 # TILE's caches add up to about 66 GB, so they are built, fetched and prefetched only when asked for, as are CASE's,
 # which are built in its own venv.
 DEFAULT_ENCODERS = tuple(e for e in CACHED_ENCODERS if e not in (Interface.TILE, Interface.CASE))
@@ -79,10 +80,10 @@ def cached_encoder(model_name: str, tuned: bool) -> Optional[CachedEncoder]:
 
 
 def embeds_dataset(encoder: CachedEncoder, dataset_id: MulTaBenchDatasetID) -> bool:
-    """Whether the benchmark's runs use the encoder on the dataset; a tuned text encoder and an interface only run on
-    text datasets."""
+    """Whether the benchmark's runs use the encoder on the dataset; a tuned text encoder, LightTAR and an interface only
+    run on text datasets."""
     modality = dataset_modality(dataset_id)
-    if isinstance(encoder, Interface):
+    if isinstance(encoder, Interface) or encoder in LIGHTTAR_LAST_LAYER:
         return modality == Modality.TEXT
     if isinstance(encoder, ImageEncoder):
         return modality.has_images

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 import numpy as np
 import torch
@@ -59,8 +59,9 @@ def encode_texts_with_e5(
     device: Union[torch.device, str],
     batch_size: int = 32,
     max_length: int = 512,
+    layers: Optional[Sequence[int]] = None,
 ) -> np.ndarray:
-    """Encode texts with a tuned or vanilla E5 model. Uses passage: col_name: col_val format when col_name is provided, else passage: text. Returns (N, D_E5)."""
+    """Encode texts with a tuned or vanilla E5 model. Uses passage: col_name: col_val format when col_name is provided, else passage: text. Returns (N, D_E5), or with layers, (N, len(layers), D_E5) from those hidden states."""
     model.to(device)
     model.eval()
     prefixed = [format_e5_passage(col_name, col_val=text) for text in texts]
@@ -77,14 +78,18 @@ def encode_texts_with_e5(
         input_ids = out["input_ids"].to(device)
         attention_mask = out["attention_mask"].to(device)
         with torch.no_grad():
-            outputs = model(input_ids=input_ids, attention_mask=attention_mask)
-        last_hidden = outputs["last_hidden_state"] if isinstance(outputs, dict) else outputs.last_hidden_state
-        if last_hidden.size(1) == 1:
-            pooled = torch.nn.functional.normalize(last_hidden.squeeze(1), p=2, dim=1)
-        else:
-            pooled = _mean_pool_l2(last_hidden, attention_mask)
+            outputs = model(input_ids=input_ids, attention_mask=attention_mask, output_hidden_states=layers is not None)
+        hidden = [outputs["last_hidden_state"]] if layers is None else [outputs["hidden_states"][j] for j in layers]
+        pooled = torch.stack([_pool_l2(h, attention_mask) for h in hidden], dim=1)
         embeddings_list.append(pooled.cpu().numpy())
-    return np.concatenate(embeddings_list, axis=0).astype(np.float32)
+    embeddings = np.concatenate(embeddings_list, axis=0).astype(np.float32)
+    return embeddings[:, 0] if layers is None else embeddings
+
+
+def _pool_l2(hidden: torch.Tensor, attention_mask: torch.Tensor) -> torch.Tensor:
+    if hidden.size(1) == 1:
+        return torch.nn.functional.normalize(hidden.squeeze(1), p=2, dim=1)
+    return _mean_pool_l2(hidden, attention_mask)
 
 
 def finetune_e5(x: DataFrame, y: Series, text_features: List[str], is_cls: bool, device: Union[torch.device, str],

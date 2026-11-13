@@ -24,6 +24,12 @@ read these embeddings rather than fine-tuning live, so a tuned encoder needs the
 training rows it was tuned on, so their embeddings fit the target better than the test rows' do, and the model
 fitted on them sees a cleaner signal than it gets at test time. This is kept as is, so all runs share it.
 
+LightTAR, `e5-small-lighttar` and `e5-large-lighttar`, runs on frozen E5's last and middle layers, the twelfth of
+e5-large's 24 and the sixth of e5-small's 12. The frozen E5 cache already has the last layer, so LightTAR's own,
+`multabench/embeddings-e5-small-lighttar`, has only the middle one, keyed and pooled as E5's, and a run reads both;
+e5-large's is not cached yet, so `e5-large-lighttar` embeds live. LightTAR projects each column on the training rows and their target to its
+default 30 PCA and 5 supervised features. Like `e5-small-tar`, it runs on the text datasets only.
+
 The TILE interface, `multabench/embeddings-tile`, is frozen and cached once per dataset too, but it embeds each
 string cell in the context of its row: the input is the whole row serialized as TILE serializes it, every column but
 the target and the image column, and its embedding is the row's string cells, one 4096-dimensional vector per string

@@ -14,6 +14,9 @@ file as the PRs that complete them are merged.
       H100, and LimiX-2 recomputes it for every test batch, which goes out of memory down to 9 rows in the first of 32
       members. Leads: compute the training context once per member and reuse it for every test batch, upstream or
       in the wrapper, or a GPU with more memory, which the official runs' hardware rules out.
+- [ ] LightTAR: cache E5's middle layers and run every model that embeds text with `e5-small-lighttar`, then
+      `e5-large-lighttar`, on the text datasets.
+- [ ] LightTAR on the image-tabular datasets: the same last and middle layer projection on the frozen image encoder.
 - [ ] CASE: ablations: its authors suggest more than
       32 PCA components, and its 50-token cell cut and 16,000-token context may hurt the long-text datasets.
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,

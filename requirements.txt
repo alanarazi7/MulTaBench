@@ -239,6 +239,8 @@ lightning-utilities==0.15.2
     #   lightning
     #   pytorch-lightning
     #   torchmetrics
+lighttar==0.1.0
+    # via multabench (pyproject.toml)
 markdown==3.10.2
     # via
     #   model-index
@@ -288,6 +290,7 @@ nltk==3.9.4
     # via autogluon-multimodal
 numpy==2.3.5
     # via
+    #   lighttar
     #   multabench (pyproject.toml)
     #   accelerate
     #   autogluon-common
@@ -433,6 +436,7 @@ packaging==25.0
     #   transformers
 pandas==2.3.3
     # via
+    #   lighttar
     #   multabench (pyproject.toml)
     #   autogluon-common
     #   autogluon-core
@@ -656,6 +660,7 @@ scikit-image==0.25.2
     # via autogluon-multimodal
 scikit-learn==1.6.1
     # via
+    #   lighttar
     #   multabench (pyproject.toml)
     #   autogluon-core
     #   autogluon-features
