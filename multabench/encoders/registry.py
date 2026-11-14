@@ -22,6 +22,7 @@ ENCODER_CLASSES: Dict[CachedEncoder, Type[EmbeddingEncoder]] = {
     ImageEncoder.DINO_LARGE: DinoEncoder,
     ImageEncoder.DINO_LARGE_TAR: DinoEncoder,
     ImageEncoder.DINO_SMALL_LIGHTTAR: LightTARImageEncoder,
+    ImageEncoder.DINO_LARGE_LIGHTTAR: LightTARImageEncoder,
 }
 
 
