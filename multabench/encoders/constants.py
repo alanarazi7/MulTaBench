@@ -66,7 +66,7 @@ IMAGE_ENCODERS = {
 }
 # DINO's frozen cache has its last layer after the final norm, so LightTAR's image cache has both of its layers.
 LIGHTTAR_IMAGE_ENCODERS = (ImageEncoder.DINO_SMALL_LIGHTTAR, ImageEncoder.DINO_LARGE_LIGHTTAR)
-# Gated LightTAR reads plain LightTAR's caches.
+# Gated LightTAR, a temporary experiment, reads plain LightTAR's caches.
 LIGHTTAR_GATED = {TextEncoder.E5_SMALL_LIGHTTAR_GATED: TextEncoder.E5_SMALL_LIGHTTAR,
                   TextEncoder.E5_LARGE_LIGHTTAR_GATED: TextEncoder.E5_LARGE_LIGHTTAR,
                   ImageEncoder.DINO_SMALL_LIGHTTAR_GATED: ImageEncoder.DINO_SMALL_LIGHTTAR,

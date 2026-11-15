@@ -17,7 +17,8 @@ file as the PRs that complete them are merged.
 - [ ] LightTAR: cache E5's middle layers and run every model that embeds text with `e5-small-lighttar`, then
       `e5-large-lighttar`, on the text datasets.
 - [ ] LightTAR on the image-tabular datasets: cache `dino-small-lighttar` and run every model with it.
-- [ ] Gated LightTAR: run every model with `e5-small-lighttar-gated` and `dino-small-lighttar-gated`, then large.
+- [ ] Gated LightTAR (a temporary experiment): run every model with `e5-small-lighttar-gated` and
+      `dino-small-lighttar-gated`, then large.
 - [ ] CASE: ablations: its authors suggest more than
       32 PCA components, and its 50-token cell cut and 16,000-token context may hurt the long-text datasets.
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
