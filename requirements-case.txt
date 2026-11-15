@@ -93,6 +93,8 @@ joblib==1.6.0
     #   skrub
 kiwisolver==1.5.1
     # via matplotlib
+lightgbm==4.7.0
+    # via lighttar
 lighttar==0.1.0
     # via multabench (pyproject.toml)
 markdown-it-py==4.2.0

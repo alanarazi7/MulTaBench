@@ -17,12 +17,16 @@ ENCODER_CLASSES: Dict[CachedEncoder, Type[EmbeddingEncoder]] = {
     TextEncoder.E5_LARGE_TAR: E5Encoder,
     TextEncoder.E5_SMALL_LIGHTTAR: LightTAREncoder,
     TextEncoder.E5_LARGE_LIGHTTAR: LightTAREncoder,
+    TextEncoder.E5_SMALL_LIGHTTAR_GATED: LightTAREncoder,
+    TextEncoder.E5_LARGE_LIGHTTAR_GATED: LightTAREncoder,
     ImageEncoder.DINO_SMALL: DinoEncoder,
     ImageEncoder.DINO_SMALL_TAR: DinoEncoder,
     ImageEncoder.DINO_LARGE: DinoEncoder,
     ImageEncoder.DINO_LARGE_TAR: DinoEncoder,
     ImageEncoder.DINO_SMALL_LIGHTTAR: LightTARImageEncoder,
     ImageEncoder.DINO_LARGE_LIGHTTAR: LightTARImageEncoder,
+    ImageEncoder.DINO_SMALL_LIGHTTAR_GATED: LightTARImageEncoder,
+    ImageEncoder.DINO_LARGE_LIGHTTAR_GATED: LightTARImageEncoder,
 }
 
 

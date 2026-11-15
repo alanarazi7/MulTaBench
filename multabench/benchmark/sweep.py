@@ -10,7 +10,7 @@ from multabench.benchmark.load import download_dataset
 from multabench.benchmark.runs import Run
 from multabench.benchmark.splits import Size
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
-from multabench.encoders.constants import LIGHTTAR_LAST_LAYER, ImageEncoder, TextEncoder
+from multabench.encoders.constants import LIGHTTAR_GATED, LIGHTTAR_LAST_LAYER, ImageEncoder, TextEncoder
 from multabench.embeddings.hub import CACHED_ENCODERS, download_embeddings, is_tuned
 from multabench.result_keys import ResultKey, RunStatus
 
@@ -23,7 +23,9 @@ IMAGE_TEXT_TEXT_ENCODERS = {ImageEncoder.DINO_SMALL: TextEncoder.E5_SMALL,
                             ImageEncoder.DINO_LARGE: TextEncoder.E5_LARGE,
                             ImageEncoder.DINO_LARGE_TAR: TextEncoder.E5_LARGE,
                             ImageEncoder.DINO_SMALL_LIGHTTAR: TextEncoder.E5_SMALL,
-                            ImageEncoder.DINO_LARGE_LIGHTTAR: TextEncoder.E5_LARGE}
+                            ImageEncoder.DINO_LARGE_LIGHTTAR: TextEncoder.E5_LARGE,
+                            ImageEncoder.DINO_SMALL_LIGHTTAR_GATED: TextEncoder.E5_SMALL,
+                            ImageEncoder.DINO_LARGE_LIGHTTAR_GATED: TextEncoder.E5_LARGE}
 
 
 def select_datasets(names: Optional[List[str]], modalities: Optional[List[Modality]]) -> List[MulTaBenchDatasetID]:
@@ -86,10 +88,15 @@ def prefetch(runs: List[Run]):
     for dataset in sorted({run.dataset for run in runs}):
         download_dataset(MulTaBenchDatasetID[dataset])
     caches = {(encoder, run.dataset, *((run.size, run.fold) if is_tuned(encoder) else (None, None)))
-              for run in runs for encoder in (run.text_encoder, LIGHTTAR_LAST_LAYER.get(run.text_encoder),
-                                              run.image_encoder) if encoder in CACHED_ENCODERS}
+              for run in runs for encoder in run_caches(run) if encoder in CACHED_ENCODERS}
     for encoder, dataset, size, fold in sorted(caches, key=str):
         download_embeddings(encoder, MulTaBenchDatasetID[dataset], size=size, fold=fold)
+
+
+def run_caches(run: Run) -> Tuple:
+    """The caches a run reads: its encoders', LightTAR's frozen last layer, and gated LightTAR's plain caches."""
+    text, image = (LIGHTTAR_GATED.get(e, e) for e in (run.text_encoder, run.image_encoder))
+    return text, LIGHTTAR_LAST_LAYER.get(text), image
 
 
 def venv_python(repo_dir: str, env: str) -> str:
