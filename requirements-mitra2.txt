@@ -182,6 +182,8 @@ kiwisolver==1.5.1
     # via matplotlib
 liac-arff==2.5.0
     # via openml
+lightgbm==4.7.0
+    # via lighttar
 lighttar==0.1.0
     # via multabench (pyproject.toml)
 loguru==0.7.3

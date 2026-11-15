@@ -21,6 +21,8 @@ class TextEncoder(StrEnum):
     E5_LARGE_TAR = "e5-large-tar"
     E5_SMALL_LIGHTTAR = "e5-small-lighttar"
     E5_LARGE_LIGHTTAR = "e5-large-lighttar"
+    E5_SMALL_LIGHTTAR_GATED = "e5-small-lighttar-gated"
+    E5_LARGE_LIGHTTAR_GATED = "e5-large-lighttar-gated"
 
 
 class ImageEncoder(StrEnum):
@@ -30,6 +32,8 @@ class ImageEncoder(StrEnum):
     DINO_LARGE_TAR = "dino-large-tar"
     DINO_SMALL_LIGHTTAR = "dino-small-lighttar"
     DINO_LARGE_LIGHTTAR = "dino-large-lighttar"
+    DINO_SMALL_LIGHTTAR_GATED = "dino-small-lighttar-gated"
+    DINO_LARGE_LIGHTTAR_GATED = "dino-large-lighttar-gated"
 
 
 DEFAULT_TEXT_ENCODER = TextEncoder.E5_SMALL
@@ -43,6 +47,8 @@ TEXT_ENCODERS = {
     TextEncoder.E5_LARGE_TAR: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=True),
     TextEncoder.E5_SMALL_LIGHTTAR: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=False),
     TextEncoder.E5_LARGE_LIGHTTAR: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
+    TextEncoder.E5_SMALL_LIGHTTAR_GATED: Encoder(encoder_name=E5_SMALL_V2, tune_encoder=False),
+    TextEncoder.E5_LARGE_LIGHTTAR_GATED: Encoder(encoder_name=E5_LARGE_V2, tune_encoder=False),
 }
 # LightTAR reads the last layer from its frozen encoder's cache; its own cache has only the middle layer.
 LIGHTTAR_LAST_LAYER = {TextEncoder.E5_SMALL_LIGHTTAR: TextEncoder.E5_SMALL,
@@ -55,6 +61,13 @@ IMAGE_ENCODERS = {
     ImageEncoder.DINO_LARGE_TAR: Encoder(encoder_name=DINOV3_LARGE, tune_encoder=True),
     ImageEncoder.DINO_SMALL_LIGHTTAR: Encoder(encoder_name=DINOV3_SMALL, tune_encoder=False),
     ImageEncoder.DINO_LARGE_LIGHTTAR: Encoder(encoder_name=DINOV3_LARGE, tune_encoder=False),
+    ImageEncoder.DINO_SMALL_LIGHTTAR_GATED: Encoder(encoder_name=DINOV3_SMALL, tune_encoder=False),
+    ImageEncoder.DINO_LARGE_LIGHTTAR_GATED: Encoder(encoder_name=DINOV3_LARGE, tune_encoder=False),
 }
 # DINO's frozen cache has its last layer after the final norm, so LightTAR's image cache has both of its layers.
 LIGHTTAR_IMAGE_ENCODERS = (ImageEncoder.DINO_SMALL_LIGHTTAR, ImageEncoder.DINO_LARGE_LIGHTTAR)
+# Gated LightTAR, a temporary experiment, reads plain LightTAR's caches.
+LIGHTTAR_GATED = {TextEncoder.E5_SMALL_LIGHTTAR_GATED: TextEncoder.E5_SMALL_LIGHTTAR,
+                  TextEncoder.E5_LARGE_LIGHTTAR_GATED: TextEncoder.E5_LARGE_LIGHTTAR,
+                  ImageEncoder.DINO_SMALL_LIGHTTAR_GATED: ImageEncoder.DINO_SMALL_LIGHTTAR,
+                  ImageEncoder.DINO_LARGE_LIGHTTAR_GATED: ImageEncoder.DINO_LARGE_LIGHTTAR}
