@@ -114,6 +114,7 @@ class LightTARTableEncoder(EmbeddingEncoder):
         gate = RunTaskGatedLightTAR(columns=columns, encoder=None, n_jobs=len(os.sched_getaffinity(0)))
         gate.is_cls = is_cls
         gate.fit(x, np.asarray(y), layer_states=states)
+        print(f"🚪 Gated LightTAR chose {gate.gate_decision_}: {gate.gate_wins_}/{gate.gate_n_valid_} folds for LightTAR")
         for encoder in encoders:
             encoder.projection, encoder.kind = gate.models_[encoder.col], gate.gate_decision_
         return {encoder.col: encoder for encoder in encoders}, states
