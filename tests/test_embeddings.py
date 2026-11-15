@@ -206,7 +206,7 @@ def test_gated_lighttar_reads_the_plain_caches_and_matches_lighttars_gate(monkey
 
 def test_gated_lighttar_keeps_the_runs_task():
     x, y = DataFrame({"title": ["a", "b"] * 20}), np.arange(40) % 3
-    states = {"title": np.random.default_rng(0).normal(size=(40, 2, 8))}
+    states = {"title": np.random.default_rng(0).normal(size=(40, 2, 32))}
     gate = lighttar_encoder.RunTaskGatedLightTAR(columns=["title"], encoder=None)
     gate.is_cls = False
     assert not gate.fit(x, y, layer_states=states).is_classification_
