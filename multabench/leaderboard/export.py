@@ -34,9 +34,8 @@ END_TO_END = "end-to-end"
 TFIDF, TILE, CASE, LIGHTTAR = "tfidf", "tile", "case", "lighttar"
 # An interface's runs name the model it wraps after its prefix.
 PREFIXES = {TILE: "TILE-", CASE: "CASE-"}
-# TF-IDF, TILE, CASE and, until its image runs are in, LightTAR-S run on the text datasets only, so they are rated
-# only where the board shows no image datasets.
-TEXT_ONLY_ENCODINGS = [TFIDF, TILE, CASE, LIGHTTAR]
+# TF-IDF, TILE and CASE run on the text datasets only, so they are rated only where the board shows no image datasets.
+TEXT_ONLY_ENCODINGS = [TFIDF, TILE, CASE]
 NOT_RUN = "Not run yet"
 # Why an entry has no result on a dataset, by encoding, model and dataset; an entry with no result at all is not run yet.
 MISSING_REASONS = {

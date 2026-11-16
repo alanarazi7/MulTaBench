@@ -55,12 +55,12 @@ On the text datasets, every model also ran wrapped by the CASE interface (see [r
 are in `multabench/leaderboard/models_case/`, as a seventh entry, e.g. `LimiX-2 (CASE)`, rated only on boards that show
 no image datasets.
 
-On the text datasets, every model that embeds text also ran with `--text_encoder e5-small-lighttar`:
-[LightTAR](https://arxiv.org/abs/2611.17600)'s closed-form projection of frozen e5-small's last and middle layers,
+Every model that embeds text or images also ran with `--text_encoder e5-small-lighttar` on the text datasets and
+`--image_encoder dino-small-lighttar` on the image ones, whose text stays frozen `e5-small`, as with TAR-S:
+[LightTAR](https://arxiv.org/abs/2611.17600)'s closed-form projection of the frozen encoder's last and middle layers,
 fitted on each fold's training rows and their target, to 30 PCA and 5 supervised dimensions per column (see
 [embeddings](embeddings.md)). Those runs are in `multabench/leaderboard/models_lighttar/`, as an eighth entry, e.g.
-`LimiX-2 (LightTAR-S)`, rated only on boards that show no image datasets until its image runs are in. LightTAR-S TabM
-lacks one fold of Melbourne Airbnb, where its input holds a NaN.
+`LimiX-2 (LightTAR-S)`. LightTAR-S TabM lacks one fold of Melbourne Airbnb, where its input holds a NaN.
 
 `MISSING_REASONS` in `multabench/leaderboard/export.py` says why each entry lacks a result on a dataset; the Space lists
 these runs, and the entries not run yet, under the board.

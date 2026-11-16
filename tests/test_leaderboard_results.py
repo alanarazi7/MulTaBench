@@ -51,18 +51,17 @@ def test_every_dataset_has_every_fold_once(runs):
 
 
 def test_each_dataset_uses_the_encoders_of_its_columns(runs):
-    """Small or large, frozen or -tar for the image column and a text-only dataset's text, or TF-IDF or LightTAR;
+    """Small or large, frozen, -tar or -lighttar for the image column and a text-only dataset's text, or TF-IDF;
     image datasets' text stays frozen."""
     name, df, encoding = runs
     embeds_text = MODELS[name].USE_TEXT_EMBEDDINGS
     size = "large" if encoding.startswith("large") else "small"
-    tar = "-tar" if encoding.endswith("tar") else ""
+    tar = "-lighttar" if encoding == LIGHTTAR else "-tar" if encoding.endswith("tar") else ""
     for dataset, encoders in df.groupby(ResultKey.DATASET)[[ResultKey.TEXT_ENCODER, ResultKey.IMAGE_ENCODER]]:
         modality = dataset_modality(MulTaBenchDatasetID[dataset])
         text_tar = tar if modality == Modality.TEXT else ""
         text = f"e5-{size}{text_tar}" if modality.has_text and embeds_text else None
         text = "tfidf" if encoding == TFIDF and text else text
-        text = "e5-small-lighttar" if encoding == LIGHTTAR and text else text
         image = f"dino-{size}{tar}" if modality.has_images else None
         assert set(encoders[ResultKey.TEXT_ENCODER].replace({np.nan: None})) == {text}, dataset
         assert set(encoders[ResultKey.IMAGE_ENCODER].replace({np.nan: None})) == {image}, dataset
