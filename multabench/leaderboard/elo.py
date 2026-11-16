@@ -28,6 +28,8 @@ TILE_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tile")
 TFIDF_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tfidf")
 # Runs of the CASE interface around each model, on the text datasets.
 CASE_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_case")
+# Runs with each text column projected by LightTAR from frozen e5-small, on the text datasets for now.
+LIGHTTAR_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_lighttar")
 ANCHOR = "RandomForest"
 INIT = 1000
 

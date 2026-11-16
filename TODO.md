@@ -14,9 +14,13 @@ file as the PRs that complete them are merged.
       H100, and LimiX-2 recomputes it for every test batch, which goes out of memory down to 9 rows in the first of 32
       members. Leads: compute the training context once per member and reuse it for every test batch, upstream or
       in the wrapper, or a GPU with more memory, which the official runs' hardware rules out.
-- [ ] LightTAR: cache E5's middle layers and run every model that embeds text with `e5-small-lighttar`, then
-      `e5-large-lighttar`, on the text datasets.
-- [ ] LightTAR on the image-tabular datasets: cache `dino-small-lighttar` and run every model with it.
+- [ ] LightTAR-S on the image-tabular datasets: rerun the 266 `dino-small-lighttar` runs that failed on Hugging Face
+      rate limits (264) or left no result (2), then add the image runs to `models_lighttar/` and drop `lighttar` from
+      `TEXT_ONLY_ENCODINGS`.
+- [ ] LightTAR-L: run every model with `e5-large-lighttar` on the text datasets and `dino-large-lighttar` on the
+      image-tabular ones; the caches are in (#312).
+- [ ] LightTAR-S: TabM on Melbourne Airbnb, fold 1, flagged missing: `ValueError: Input contains NaN`. Find which
+      LightTAR feature is NaN there and rerun it.
 - [ ] CASE: ablations: its authors suggest more than
       32 PCA components, and its 50-token cell cut and 16,000-token context may hurt the long-text datasets.
 - [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
