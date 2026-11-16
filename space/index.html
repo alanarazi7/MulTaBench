@@ -192,7 +192,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
           <li><b class="enc tfidf">TF-IDF</b> 🔤 embeds each text column with TF-IDF, reduced to 30 dimensions with SVD (<a href="https://skrub-data.org/stable/reference/generated/skrub.StringEncoder.html">skrub's StringEncoder</a>), fitted on each fold's training rows, on text datasets only.</li>
           <li><b class="enc tile">TILE</b> 📝 (<a href="https://github.com/soda-inria/tile">Lefebvre et al., 2026</a>) embeds each string cell in the context of its row with Llama-3.1-8B, on text datasets only. We run it with TILE's defaults for every model, untuned, so its performance is likely underestimated.</li>
           <li><b class="enc case">CASE</b> 💼 (<a href="https://github.com/SAP-samples/case">Schindler et al., 2026</a>) embeds each row with SAP's <a href="https://huggingface.co/SAP/CASE">CASE</a> (Gemma-3-12B), given 128 training rows and their targets as context, and appends 32 PCA components of these embeddings to the model's Frozen-S input, on text datasets only. We run it with CASE's defaults for every model.</li>
-          <li><b class="enc lighttar">LightTAR-S</b> 🪶 (<a href="https://github.com/eilamshapira/LightTAR">LightTAR</a>) projects each text column's last and middle layers of frozen e5-small, in closed form on each fold's training rows and their target, to 30 PCA and 5 supervised dimensions, in place of Frozen-S's 30 PCA. It runs on text datasets only for now; its image runs are in progress.</li>
+          <li><b class="enc lighttar">LightTAR-S</b> 🪶 (<a href="https://arxiv.org/abs/2611.17600">Shapira et al., 2026</a>) projects each text column's last and middle layers of frozen e5-small, in closed form on each fold's training rows and their target, to 30 PCA and 5 supervised dimensions, in place of Frozen-S's 30 PCA. It runs on text datasets only for now; its image runs are in progress.</li>
         </ul>
       </div>
     </div>
@@ -499,6 +499,16 @@ python -m multabench.leaderboard.results multabench_results.csv</pre></div>
   archivePrefix={arXiv},
   primaryClass={cs.CV},
   url={https://arxiv.org/abs/2508.10104},
+}
+
+@misc{shapira2026lighttar,
+  title={LightTAR: Light and Fast Target-Aware Representations for Multimodal Tabular Learning},
+  author={Eilam Shapira and Alan Arazi and Shoham Grunblat and Roi Reichart},
+  year={2026},
+  eprint={2611.17600},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2611.17600},
 }</pre></div>
   </section>
   </div>

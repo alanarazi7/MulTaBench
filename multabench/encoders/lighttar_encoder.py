@@ -1,5 +1,5 @@
-"""LightTAR (https://github.com/eilamshapira/LightTAR) on frozen E5 or DINO: each column's last and middle layers
-projected, on the training rows and their target, to LightTAR's default 30 PCA and 5 supervised features."""
+"""LightTAR (Shapira et al., 2026, https://arxiv.org/abs/2611.17600) on frozen E5 or DINO: each column's last and
+middle layers projected, on the training rows and their target, to its default 30 PCA and 5 supervised features."""
 from typing import List, Optional, Tuple
 
 import numpy as np

@@ -24,8 +24,9 @@ read these embeddings rather than fine-tuning live, so a tuned encoder needs the
 training rows it was tuned on, so their embeddings fit the target better than the test rows' do, and the model
 fitted on them sees a cleaner signal than it gets at test time. This is kept as is, so all runs share it.
 
-LightTAR, `e5-small-lighttar` and `e5-large-lighttar`, runs on frozen E5's last and middle layers, the twelfth of
-e5-large's 24 and the sixth of e5-small's 12. The frozen E5 cache already has the last layer, so LightTAR's own,
+[LightTAR](https://arxiv.org/abs/2611.17600) ([code](https://github.com/eilamshapira/LightTAR)), `e5-small-lighttar`
+and `e5-large-lighttar`, runs on frozen E5's last and middle layers, the twelfth of e5-large's 24 and the sixth of
+e5-small's 12. The frozen E5 cache already has the last layer, so LightTAR's own,
 `multabench/embeddings-e5-<size>-lighttar`, has only the middle one, keyed and pooled as E5's, and a run reads both.
 LightTAR projects each column on the training rows and their target to its
 default 30 PCA and 5 supervised features. Like `e5-small-tar`, it runs on the text datasets only.
