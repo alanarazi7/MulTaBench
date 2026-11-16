@@ -33,10 +33,6 @@ default 30 PCA and 5 supervised features. Like `e5-small-tar`, it runs on the te
 layer after DINO's final norm, while LightTAR reads it before, so `multabench/embeddings-dino-small-lighttar` has both
 the last and the middle layer, the sixth of 12; `dino-large-lighttar`'s, the twelfth of 24. Like `dino-small-tar`, their
 runs embed the text columns with frozen E5 of the same size.
-Gated LightTAR, a temporary experiment next to plain LightTAR, `e5-<size>-lighttar-gated` and
-`dino-<size>-lighttar-gated`, reads the same caches and fits LightTAR's `GatedLightTAR` on the training rows: a small
-LightGBM, on inner folds and with the other columns, votes once per table between LightTAR and frozen PCA-30 of the
-last layer for all the embedded columns.
 
 The TILE interface, `multabench/embeddings-tile`, is frozen and cached once per dataset too, but it embeds each
 string cell in the context of its row: the input is the whole row serialized as TILE serializes it, every column but

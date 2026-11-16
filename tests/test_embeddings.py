@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from lighttar import GatedLightTAR, LightTARProjection
+from lighttar import LightTARProjection
 from pandas import DataFrame, Series
 
 from multabench.baselines.preprocessing.nulls import MISSING_VALUE
@@ -181,35 +181,6 @@ def test_lighttar_reads_the_last_layer_from_e5_and_the_middle_from_its_own_cache
     x_test = transform_columns(x, encoders=encoders)
     assert list(x_test.columns) == [f"title_txt_lighttar_{i}" for i in range(35)]
     np.testing.assert_allclose(x_test.to_numpy(), expected.transform(train_embeddings["title"]), rtol=1e-5)
-
-
-def test_gated_lighttar_reads_the_plain_caches_and_matches_lighttars_gate(monkeypatch):
-    rng = np.random.default_rng(0)
-    texts = [f"t{i % 40}" for i in range(80)]
-    distinct = sorted(set(texts))
-    keys = encoder_inputs(TextEncoder.E5_SMALL, "title", distinct)
-    last, middle = rng.normal(size=(2, len(distinct), 32)).astype(np.float32)
-    caches = {encoder: CachedEmbeddings(inputs=keys, embeddings=vectors, meta={"features": ["title"]})
-              for encoder, vectors in ((TextEncoder.E5_SMALL, last), (TextEncoder.E5_SMALL_LIGHTTAR, middle))}
-    monkeypatch.setattr(column_encoders, "cached_embeddings", lambda encoder, dataset, size, fold: caches[encoder])
-    monkeypatch.setattr(lighttar_encoder, "get_vanilla_e5", lambda *a, **k: pytest.fail("loaded E5 for cached columns"))
-    x, y = DataFrame({"title": texts, "n": rng.normal(size=80)}), Series(rng.integers(0, 2, size=80))
-    encoders, train_embeddings = make_encoder(TextEncoder.E5_SMALL_LIGHTTAR_GATED, device="cpu", dataset=TEXT).fit(
-        x, columns=["title"], y=y, is_cls=True)
-    gate = GatedLightTAR(columns=["title"], encoder=None).fit(x, y.to_numpy(), layer_states=train_embeddings)
-    expected = gate.transform(x, layer_states=train_embeddings).drop(columns=["n"])
-    x_test = transform_columns(x, encoders=encoders)
-    names = [f"title_txt_{gate.gate_decision_}_{i}" for i in range(expected.shape[1])]
-    assert list(x_test.columns) == ["n"] + names
-    np.testing.assert_allclose(x_test[names].to_numpy(), expected.to_numpy(), rtol=1e-5)
-
-
-def test_gated_lighttar_keeps_the_runs_task():
-    x, y = DataFrame({"title": ["a", "b"] * 20}), np.arange(40) % 3
-    states = {"title": np.random.default_rng(0).normal(size=(40, 2, 32))}
-    gate = lighttar_encoder.RunTaskGatedLightTAR(columns=["title"], encoder=None)
-    gate.is_cls = False
-    assert not gate.fit(x, y, layer_states=states).is_classification_
 
 
 def test_image_features_look_their_files_up_in_the_cache(monkeypatch):

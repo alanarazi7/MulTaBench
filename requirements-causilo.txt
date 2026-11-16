@@ -94,8 +94,6 @@ jsonschema-specifications==2025.9.1
     # via jsonschema
 kiwisolver==1.4.9
     # via matplotlib
-lightgbm==4.7.0
-    # via lighttar
 lighttar==0.1.0
     # via multabench (pyproject.toml)
 markupsafe==3.0.3
