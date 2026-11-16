@@ -1,18 +1,16 @@
 """LightTAR (https://github.com/eilamshapira/LightTAR) on frozen E5 or DINO: each column's last and middle layers
-projected, on the training rows and their target, to LightTAR's default 30 PCA and 5 supervised features. Gated
-LightTAR lets an inner-fold LightGBM vote choose, once per table, between that and frozen PCA-30 of the last layer."""
-import os
-from typing import Dict, List, Optional, Tuple
+projected, on the training rows and their target, to LightTAR's default 30 PCA and 5 supervised features."""
+from typing import List, Optional, Tuple
 
 import numpy as np
-from lighttar import GatedLightTAR, LightTAR, LightTARProjection
+from lighttar import LightTARProjection
 from lighttar.encoder import resolve_layers
 from pandas import DataFrame, Series
 
 from multabench.embeddings.hub import CachedEmbeddings
 from multabench.encoders.abstract_encoder import EmbeddingEncoder
-from multabench.encoders.column_encoders import ColumnEncoder, column_caches, column_texts
-from multabench.encoders.constants import LIGHTTAR_GATED, LIGHTTAR_LAST_LAYER
+from multabench.encoders.column_encoders import column_caches, column_texts
+from multabench.encoders.constants import LIGHTTAR_LAST_LAYER
 from multabench.encoders.dino.dino_encoder import DinoColumnEncoder, get_image_encoder, image_urls_to_embeddings
 from multabench.encoders.e5.e5_encoder import E5ColumnEncoder
 from multabench.encoders.e5.e5_finetune import encode_texts_with_e5, get_vanilla_e5
@@ -27,7 +25,6 @@ class LightTARProjected:
     """A column encoder whose (rows, [last, middle], dim) embeddings LightTAR projects; needs y and is_cls."""
     y: Series
     is_cls: bool
-    kind = "lighttar"
 
     def fit(self, embeddings: np.ndarray):
         task = "classification" if self.is_cls else "regression"
@@ -39,8 +36,7 @@ class LightTARProjected:
 
     @property
     def features(self) -> List[str]:
-        width = self.projection.n_components_ if self.kind == "frozen" else self.projection.components_.shape[1]
-        return [f"{self.col}_{self.SUFFIX}_{self.kind}_{i}" for i in range(width)]
+        return [f"{self.col}_{self.SUFFIX}_lighttar_{i}" for i in range(self.projection.components_.shape[1])]
 
 
 class LightTARColumnEncoder(LightTARProjected, E5ColumnEncoder):
@@ -80,52 +76,12 @@ class LightTARImageColumnEncoder(LightTARProjected, DinoColumnEncoder):
         return super().transform(embeddings).astype(np.float32)
 
 
-class RunTask(LightTAR):
-    """LightTAR on the run's task, is_cls, rather than one guessed from y."""
-    is_cls: bool
-
-    def _setup(self, X, y):
-        df, y = super()._setup(X, y)
-        self.is_classification_ = self.is_cls
-        return df, y
-
-
-class RunTaskGatedLightTAR(GatedLightTAR, RunTask):
-    pass
-
-
-class LightTARTableEncoder(EmbeddingEncoder):
-    """Plain LightTAR fits each column alone; the gated one fits lighttar's GatedLightTAR on the whole table, whose
-    vote picks LightTAR or frozen PCA-30 for all the columns, from the plain one's caches."""
-
-    @property
-    def cache_name(self):
-        return LIGHTTAR_GATED.get(self.name, self.name)
-
-    def caches(self, columns: List[str]) -> Dict[str, CachedEmbeddings]:
-        return column_caches(self.cache_name, self.dataset, columns)
-
-    def fit(self, x: DataFrame, columns: List[str], y: Optional[Series] = None,
-            is_cls: bool = True) -> Tuple[Dict[str, ColumnEncoder], Dict[str, np.ndarray]]:
-        if self.name not in LIGHTTAR_GATED or not columns:
-            return super().fit(x, columns, y=y, is_cls=is_cls)
-        encoders = self.column_encoders(x, columns, y=y, is_cls=is_cls)
-        states = {encoder.col: encoder.embed(x) for encoder in encoders}
-        gate = RunTaskGatedLightTAR(columns=columns, encoder=None, n_jobs=len(os.sched_getaffinity(0)))
-        gate.is_cls = is_cls
-        gate.fit(x, np.asarray(y), layer_states=states)
-        print(f"🚪 Gate chose {gate.gate_decision_}; LightTAR won {gate.gate_wins_}/{gate.gate_n_valid_} folds")
-        for encoder in encoders:
-            encoder.projection, encoder.kind = gate.models_[encoder.col], gate.gate_decision_
-        return {encoder.col: encoder for encoder in encoders}, states
-
-
-class LightTAREncoder(LightTARTableEncoder):
+class LightTAREncoder(EmbeddingEncoder):
     """LightTAR on the text columns, with the last layer from the frozen E5's cache and the middle from its own."""
 
     def column_encoders(self, x: DataFrame, columns: List[str], y: Optional[Series],
                         is_cls: bool) -> List[LightTARColumnEncoder]:
-        last = column_caches(LIGHTTAR_LAST_LAYER[self.cache_name], self.dataset, columns)
+        last = column_caches(LIGHTTAR_LAST_LAYER[self.name], self.dataset, columns)
         middle = self.caches(columns)
         model, tokenizer = None, None
         if not (set(last) & set(middle)).issuperset(columns):
@@ -135,7 +91,7 @@ class LightTAREncoder(LightTARTableEncoder):
                 for col in columns]
 
 
-class LightTARImageEncoder(LightTARTableEncoder):
+class LightTARImageEncoder(EmbeddingEncoder):
     """LightTAR on the image columns, with both of DINO's layers from its own cache."""
 
     def column_encoders(self, x: DataFrame, columns: List[str], y: Optional[Series],
