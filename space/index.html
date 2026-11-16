@@ -12,7 +12,7 @@
 :root {
   --bg: #F3F5F2; --surface: #FFFFFF; --ink: #1C2228; --muted: #5C666F; --line: #D9DED7; --soft: #EBEEE9;
   --accent: #2C5C8A; --text-mod: #A4581B; --image-mod: #2D7653; --best: #2C5C8A; --warn: #A33A2A;
-  --frozen: #7E8A94; --tar: #2C5C8A; --large: #2F7F8C; --large-tar: #B0466E; --tfidf: #4F7A3A; --tile: #8C6D1F; --case: #5560B0; --lighttar: #B85C2C; --e2e: #8A5FA8;
+  --frozen: #7E8A94; --tar: #2C5C8A; --large: #2F7F8C; --large-tar: #B0466E; --tfidf: #4F7A3A; --tile: #8C6D1F; --case: #5560B0; --lighttar: #B85C2C; --large-lighttar: #7F3F1D; --e2e: #8A5FA8;
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -21,14 +21,14 @@
   :root:not([data-theme="light"]) {
     --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
     --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --tfidf: #9CC97F; --tile: #D9B45C; --case: #9AA3E6; --lighttar: #EB9A6E; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --tfidf: #9CC97F; --tile: #D9B45C; --case: #9AA3E6; --lighttar: #EB9A6E; --large-lighttar: #F6C7A4; --e2e: #C29BDF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111519; --surface: #181E24; --ink: #E4E9E3; --muted: #97A1A9; --line: #2B333A; --soft: #20272E;
   --accent: #84B3E0; --text-mod: #E39B5C; --image-mod: #6FC79D; --best: #5E97CF; --warn: #E07A68;
-    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --tfidf: #9CC97F; --tile: #D9B45C; --case: #9AA3E6; --lighttar: #EB9A6E; --e2e: #C29BDF;
+    --frozen: #8F9BA5; --tar: #84B3E0; --large: #74C2CE; --large-tar: #E68AAE; --tfidf: #9CC97F; --tile: #D9B45C; --case: #9AA3E6; --lighttar: #EB9A6E; --large-lighttar: #F6C7A4; --e2e: #C29BDF;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -82,7 +82,7 @@ select { font: 13px var(--body); color: var(--ink); background: var(--surface); 
 .flag { color: var(--warn); }
 .chip { display: inline-block; font: 600 11.5px/1 var(--mono); letter-spacing: 0.03em; padding: 4px 8px; border-radius: 999px;
   color: var(--c); background: color-mix(in oklab, var(--c) 14%, var(--surface)); }
-.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .large { --c: var(--large); } .large-tar { --c: var(--large-tar); } .tfidf { --c: var(--tfidf); } .tile { --c: var(--tile); } .case { --c: var(--case); } .lighttar { --c: var(--lighttar); } .end-to-end { --c: var(--e2e); }
+.frozen { --c: var(--frozen); } .tar { --c: var(--tar); } .large { --c: var(--large); } .large-tar { --c: var(--large-tar); } .tfidf { --c: var(--tfidf); } .tile { --c: var(--tile); } .case { --c: var(--case); } .lighttar { --c: var(--lighttar); } .large-lighttar { --c: var(--large-lighttar); } .end-to-end { --c: var(--e2e); }
 b.enc { color: var(--c); }
 
 .selectors { border-bottom: 1px solid var(--line); }
@@ -193,6 +193,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
           <li><b class="enc tile">TILE</b> 📝 (<a href="https://github.com/soda-inria/tile">Lefebvre et al., 2026</a>) embeds each string cell in the context of its row with Llama-3.1-8B, on text datasets only. We run it with TILE's defaults for every model, untuned, so its performance is likely underestimated.</li>
           <li><b class="enc case">CASE</b> 💼 (<a href="https://github.com/SAP-samples/case">Schindler et al., 2026</a>) embeds each row with SAP's <a href="https://huggingface.co/SAP/CASE">CASE</a> (Gemma-3-12B), given 128 training rows and their targets as context, and appends 32 PCA components of these embeddings to the model's Frozen-S input, on text datasets only. We run it with CASE's defaults for every model.</li>
           <li><b class="enc lighttar">LightTAR-S</b> 🪶 (<a href="https://arxiv.org/abs/2611.17600">Shapira et al., 2026</a>) projects each column's last and middle layers of frozen e5-small (text) or DINOv3-small (images), in closed form on each fold's training rows and their target, to 30 PCA and 5 supervised dimensions, in place of Frozen-S's 30 PCA. As with TAR-S, the text of image datasets stays frozen.</li>
+          <li><b class="enc large-lighttar">LightTAR-L</b> 🪁 does the same with frozen e5-large's last and twelfth layers, in place of Frozen-L's 30 PCA. It runs on text datasets only for now; its image runs, with DINOv3-large, are to come.</li>
         </ul>
       </div>
     </div>
@@ -223,7 +224,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 
   <div class="tabpanel" id="tab-encodings" role="tabpanel">
   <section>
-    <p class="muted" id="encTileNote" hidden>TF-IDF 🔤, TILE 📝 and CASE 💼 run on text datasets only, so they show here with Modality Text only.</p>
+    <p class="muted" id="encTileNote" hidden>TF-IDF 🔤, TILE 📝, CASE 💼 and LightTAR-L 🪁 run on text datasets only, so they show here with Modality Text only.</p>
     <div class="panel scroll narrow"><table id="encodingTable"></table></div>
   </section>
   </div>
@@ -568,18 +569,18 @@ load().then(start).catch(err => {
 function start(D) {
 
 const modelName = m => { const i = D.info[m]; return i ? `<img class="mlogo" src="assets/logos/${i.logo}" alt="" title="${i.developer}"><a href="${i.link}" title="${i.developer}: paper or report">${m}</a>` : m; };
-const ENC_LABEL = { frozen: 'Frozen-S', tar: 'TAR-S', large: 'Frozen-L', 'large-tar': 'TAR-L', tfidf: 'TF-IDF', tile: 'TILE', case: 'CASE', lighttar: 'LightTAR-S', 'end-to-end': 'E2E' };
-const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-tuned on each fold', large: 'Frozen large encoders', 'large-tar': 'Large encoders fine-tuned on each fold', tfidf: 'TF-IDF and SVD fitted on each fold, on text datasets', tile: 'Each string cell embedded in the context of its row, on text datasets', case: 'Each row embedded with training rows as context, on text datasets', lighttar: 'Frozen small layers projected with the training target', 'end-to-end': 'Reads raw text itself' };
+const ENC_LABEL = { frozen: 'Frozen-S', tar: 'TAR-S', large: 'Frozen-L', 'large-tar': 'TAR-L', tfidf: 'TF-IDF', tile: 'TILE', case: 'CASE', lighttar: 'LightTAR-S', 'large-lighttar': 'LightTAR-L', 'end-to-end': 'E2E' };
+const ENC_TITLE = { frozen: 'Frozen small encoders', tar: 'Small encoders fine-tuned on each fold', large: 'Frozen large encoders', 'large-tar': 'Large encoders fine-tuned on each fold', tfidf: 'TF-IDF and SVD fitted on each fold, on text datasets', tile: 'Each string cell embedded in the context of its row, on text datasets', case: 'Each row embedded with training rows as context, on text datasets', lighttar: 'Frozen small layers projected with the training target', 'large-lighttar': 'Frozen large layers projected with the training target, on text datasets', 'end-to-end': 'Reads raw text itself' };
 const encColor = e => `var(--${e === 'end-to-end' ? 'e2e' : e})`;
 // A short mark for the encoding, in place of the "(Frozen-S)" or "(TAR-S)" of an entry's name.
-const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'large-tar': '🏹', tfidf: '🔤', tile: '🧱', case: '💼', lighttar: '🪶', 'end-to-end': '🔚' };
+const ENC_MARK = { frozen: '❄️', tar: '🎯', large: '🧊', 'large-tar': '🏹', tfidf: '🔤', tile: '🧱', case: '💼', lighttar: '🪶', 'large-lighttar': '🪁', 'end-to-end': '🔚' };
 const encodingCell = (e, extra = '') => `<td><span class="chip ${e}" title="${ENC_TITLE[e]}">${ENC_LABEL[e]}</span>${extra}</td>`;
 const TIERS = [['core', 'Core'], ['extended', 'Extended']];
 const TASKS = [['classification', 'Classification'], ['regression', 'Regression']];
 const MODS = [['text', 'Text'], ['image', 'Image']];
-const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L'], ['large-tar', 'TAR-L'], ['tfidf', 'TF-IDF 🔤'], ['tile', 'TILE 📝'], ['case', 'CASE 💼'], ['lighttar', 'LightTAR-S 🪶']];
+const ENCS = [['frozen', 'Frozen-S'], ['tar', 'TAR-S'], ['large', 'Frozen-L'], ['large-tar', 'TAR-L'], ['tfidf', 'TF-IDF 🔤'], ['tile', 'TILE 📝'], ['case', 'CASE 💼'], ['lighttar', 'LightTAR-S 🪶'], ['large-lighttar', 'LightTAR-L 🪁']];
 // The encodings run on text datasets only.
-const TEXT_ONLY = ['tfidf', 'tile', 'case'];
+const TEXT_ONLY = ['tfidf', 'tile', 'case', 'large-lighttar'];
 const encoderCells = (e5, dino) => `<td class="model"><a href="https://huggingface.co/intfloat/${e5}-v2">${e5}</a></td>`
   + `<td class="model"><a href="https://huggingface.co/facebook/dinov3-vit${dino[0]}16-pretrain-lvd1689m">DINOv3-${dino[1]}</a></td>`;
 const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encoderCells('e5-small', ['s', 'small']),
@@ -588,7 +589,8 @@ const ENCODERS = { frozen: encoderCells('e5-small', ['s', 'small']), tar: encode
   tile: '<td class="model"><a href="https://huggingface.co/meta-llama/Llama-3.1-8B">Llama-3.1-8B</a></td><td>—</td>',
   case: '<td class="model"><a href="https://huggingface.co/SAP/CASE">Gemma-3-12B-CASE</a> + <a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a></td><td>—</td>',
   lighttar: '<td class="model"><a href="https://huggingface.co/intfloat/e5-small-v2">e5-small</a> + <a href="https://github.com/eilamshapira/LightTAR">LightTAR</a></td>'
-    + '<td class="model"><a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a> + <a href="https://github.com/eilamshapira/LightTAR">LightTAR</a></td>' };
+    + '<td class="model"><a href="https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m">DINOv3-small</a> + <a href="https://github.com/eilamshapira/LightTAR">LightTAR</a></td>',
+  'large-lighttar': '<td class="model"><a href="https://huggingface.co/intfloat/e5-large-v2">e5-large</a> + <a href="https://github.com/eilamshapira/LightTAR">LightTAR</a></td><td>—</td>' };
 // The encodings board names each encoding by its label.
 const ENC_KEY = Object.fromEntries(Object.entries(ENC_LABEL).map(([k, v]) => [v, k]));
 const taskOf = d => d.startsWith('REG_') ? 'regression' : 'classification';
@@ -647,7 +649,7 @@ function drawEncTabs() {
     showNames = !showNames; store.set('pareto_names', showNames ? '1' : '0'); drawEncTabs(); render();
   } }, 'Show names');
   n.setAttribute('aria-pressed', showNames);
-  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L, 🏹 for TAR-L, 🔤 for TF-IDF, 🧱 for TILE, 💼 for CASE, 🪶 for LightTAR-S and 🔚 for E2E, as the points', onclick: () => {
+  const m = el('button', { type: 'button', title: '❄️ for Frozen-S, 🎯 for TAR-S, 🧊 for Frozen-L, 🏹 for TAR-L, 🔤 for TF-IDF, 🧱 for TILE, 💼 for CASE, 🪶 for LightTAR-S, 🪁 for LightTAR-L and 🔚 for E2E, as the points', onclick: () => {
     withEmojis = !withEmojis; store.set('pareto_emojis', withEmojis ? '1' : '0'); drawEncTabs(); render();
   } }, 'With emojis');
   m.setAttribute('aria-pressed', withEmojis);
@@ -807,7 +809,7 @@ function encodingToggles() {
 function drawElo(board) {
   const groups = [];
   board.forEach(r => { let g = groups.find(g => g.model === r.model); if (!g) groups.push(g = { model: r.model, rows: [] }); g.rows.push(r); });
-  const ORDER = ['frozen', 'large', 'tar', 'large-tar', 'tfidf', 'tile', 'case', 'lighttar', 'end-to-end'];
+  const ORDER = ['frozen', 'large', 'tar', 'large-tar', 'tfidf', 'tile', 'case', 'lighttar', 'large-lighttar', 'end-to-end'];
   groups.forEach(g => g.rows.sort((a, b) => ORDER.indexOf(a.encoding) - ORDER.indexOf(b.encoding)));
   const W = 1080, H = 460, left = 56, right = 16, top = 40, bottom = 116, slot = (W - left - right) / groups.length;
   const lo = Math.min(1000, ...board.map(r => showCI ? r.lo : r.elo)), hi = Math.max(...board.map(r => showCI ? r.hi : r.elo));

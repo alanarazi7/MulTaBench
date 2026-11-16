@@ -10,7 +10,7 @@ from multabench.benchmark.collect import RESULT_COLUMNS
 from multabench.benchmark.splits import SPLITS
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.leaderboard.elo import RESULTS_DIR
-from multabench.leaderboard.export import (ENCODING_DIRS, LIGHTTAR, MISSING_REASONS, PREFIXES, TFIDF,
+from multabench.leaderboard.export import (ENCODING_DIRS, LARGE_LIGHTTAR, LIGHTTAR, MISSING_REASONS, PREFIXES, TFIDF,
                                            encoding_datasets)
 from multabench.result_keys import RUN_KEY, ResultKey, RunStatus
 from multabench.utils.hardware import CPU_RUN_HARDWARE, GPU_RUN_HARDWARE
@@ -56,7 +56,7 @@ def test_each_dataset_uses_the_encoders_of_its_columns(runs):
     name, df, encoding = runs
     embeds_text = MODELS[name].USE_TEXT_EMBEDDINGS
     size = "large" if encoding.startswith("large") else "small"
-    tar = "-lighttar" if encoding == LIGHTTAR else "-tar" if encoding.endswith("tar") else ""
+    tar = "-lighttar" if encoding in (LIGHTTAR, LARGE_LIGHTTAR) else "-tar" if encoding.endswith("tar") else ""
     for dataset, encoders in df.groupby(ResultKey.DATASET)[[ResultKey.TEXT_ENCODER, ResultKey.IMAGE_ENCODER]]:
         modality = dataset_modality(MulTaBenchDatasetID[dataset])
         text_tar = tar if modality == Modality.TEXT else ""

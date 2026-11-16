@@ -30,6 +30,8 @@ TFIDF_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_tfidf")
 CASE_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_case")
 # Runs with each text or image column projected by LightTAR from frozen e5-small or DINOv3-small.
 LIGHTTAR_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_lighttar")
+# Runs with each text column projected by LightTAR from frozen e5-large, on the text datasets for now.
+LARGE_LIGHTTAR_RESULTS_DIR = os.path.join(os.path.dirname(__file__), "models_large_lighttar")
 ANCHOR = "RandomForest"
 INIT = 1000
 
