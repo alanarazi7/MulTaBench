@@ -62,6 +62,11 @@ fitted on each fold's training rows and their target, to 30 PCA and 5 supervised
 [embeddings](embeddings.md)). Those runs are in `multabench/leaderboard/models_lighttar/`, as an eighth entry, e.g.
 `LimiX-2 (LightTAR-S)`. LightTAR-S TabM lacks one fold of Melbourne Airbnb, where its input holds a NaN.
 
+On the text datasets, the same models also ran with `--text_encoder e5-large-lighttar`, LightTAR on frozen e5-large.
+Those runs are in `multabench/leaderboard/models_large_lighttar/`, as a ninth entry, e.g. `LimiX-2 (LightTAR-L)`, rated
+only on boards that show no image datasets until its `dino-large-lighttar` runs are in. 16 of its 5,520 runs are not
+in yet, flagged under the board.
+
 `MISSING_REASONS` in `multabench/leaderboard/export.py` says why each entry lacks a result on a dataset; the Space lists
 these runs, and the entries not run yet, under the board.
 

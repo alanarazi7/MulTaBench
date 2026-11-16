@@ -14,8 +14,10 @@ file as the PRs that complete them are merged.
       H100, and LimiX-2 recomputes it for every test batch, which goes out of memory down to 9 rows in the first of 32
       members. Leads: compute the training context once per member and reuse it for every test batch, upstream or
       in the wrapper, or a GPU with more memory, which the official runs' hardware rules out.
-- [ ] LightTAR-L: run every model with `e5-large-lighttar` on the text datasets and `dino-large-lighttar` on the
-      image-tabular ones; the caches are in (#312).
+- [ ] LightTAR-L on the text datasets: rerun the 5 runs that failed on Hugging Face downloads (Causilo 3,
+      Kumo-Tabular-M, TabM), add the 10 still running (TabDPT-1.3 3, Xiaomi-TabLDM 7) and drop their `MISSING_REASONS`.
+- [ ] LightTAR-L on the image-tabular datasets: run every model with `dino-large-lighttar`, add the runs to
+      `models_large_lighttar/` and drop `large-lighttar` from `TEXT_ONLY_ENCODINGS`.
 - [ ] LightTAR-S: TabM on Melbourne Airbnb, fold 1, flagged missing: `ValueError: Input contains NaN`. Find which
       LightTAR feature is NaN there and rerun it.
 - [ ] CASE: ablations: its authors suggest more than
