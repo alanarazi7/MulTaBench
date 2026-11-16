@@ -10,9 +10,9 @@ from joblib import Parallel, delayed
 from multabench.benchmark.splits import SPLITS
 from multabench.datasets.all_datasets import Modality, MulTaBenchDatasetID, dataset_modality
 from multabench.datasets.info import Tier, dataset_info
-from multabench.leaderboard.elo import (ANCHOR, CASE_RESULTS_DIR, LARGE_RESULTS_DIR, LARGE_TAR_RESULTS_DIR, RESULTS_DIR,
-                                        TAR_RESULTS_DIR, TFIDF_RESULTS_DIR, TILE_RESULTS_DIR, error_table, leaderboard,
-                                        load_runs)
+from multabench.leaderboard.elo import (ANCHOR, CASE_RESULTS_DIR, LARGE_RESULTS_DIR, LARGE_TAR_RESULTS_DIR,
+                                        LIGHTTAR_RESULTS_DIR, RESULTS_DIR, TAR_RESULTS_DIR, TFIDF_RESULTS_DIR,
+                                        TILE_RESULTS_DIR, error_table, leaderboard, load_runs)
 from multabench.leaderboard.embedding_cost import EMBEDDING_COST_CSV, with_tar_encode_times
 from multabench.result_keys import ResultKey, RunStatus
 
@@ -23,23 +23,25 @@ TASKS = ["classification", "regression"]
 MODALITIES = [Modality.TEXT.value, Modality.IMAGE.value]
 ENCODING, ENTRY = "encoding", "entry"
 # How a model reads text and images: small or large encoders, frozen or fine-tuned (TAR), TF-IDF, TILE's or CASE's
-# row-aware embeddings, or end-to-end on raw text.
+# row-aware embeddings, LightTAR's projection of frozen layers, or end-to-end on raw text.
 ENCODINGS = {"frozen": "Frozen-S", "tar": "TAR-S", "large": "Frozen-L", "large-tar": "TAR-L", "tfidf": "TF-IDF",
-             "tile": "TILE", "case": "CASE"}
+             "tile": "TILE", "case": "CASE", "lighttar": "LightTAR-S"}
 # Each encoding's runs; the end-to-end models are among the frozen ones.
 ENCODING_DIRS = {"frozen": RESULTS_DIR, "tar": TAR_RESULTS_DIR, "large": LARGE_RESULTS_DIR,
                  "large-tar": LARGE_TAR_RESULTS_DIR, "tfidf": TFIDF_RESULTS_DIR, "tile": TILE_RESULTS_DIR,
-                 "case": CASE_RESULTS_DIR}
+                 "case": CASE_RESULTS_DIR, "lighttar": LIGHTTAR_RESULTS_DIR}
 END_TO_END = "end-to-end"
-TFIDF, TILE, CASE = "tfidf", "tile", "case"
+TFIDF, TILE, CASE, LIGHTTAR = "tfidf", "tile", "case", "lighttar"
 # An interface's runs name the model it wraps after its prefix.
 PREFIXES = {TILE: "TILE-", CASE: "CASE-"}
-# TF-IDF, TILE and CASE run on the text datasets only, so they are rated only where the board shows no image datasets.
-TEXT_ONLY_ENCODINGS = [TFIDF, TILE, CASE]
+# TF-IDF, TILE, CASE and, until its image runs are in, LightTAR-S run on the text datasets only, so they are rated
+# only where the board shows no image datasets.
+TEXT_ONLY_ENCODINGS = [TFIDF, TILE, CASE, LIGHTTAR]
 NOT_RUN = "Not run yet"
 # Why an entry has no result on a dataset, by encoding, model and dataset; an entry with no result at all is not run yet.
 MISSING_REASONS = {
     (TILE, "LimiX-2", "MUL_TEXT_MELBOURNE_AIRBNB"): "Out of GPU memory in predict",
+    (LIGHTTAR, "TabM", "MUL_TEXT_MELBOURNE_AIRBNB"): "NaN in TabM's input on one fold",
 }
 
 
@@ -252,8 +254,10 @@ if __name__ == "__main__":
     parser.add_argument('--tfidf_results_dir', type=str, default=TFIDF_RESULTS_DIR)
     parser.add_argument('--tile_results_dir', type=str, default=TILE_RESULTS_DIR)
     parser.add_argument('--case_results_dir', type=str, default=CASE_RESULTS_DIR)
+    parser.add_argument('--lighttar_results_dir', type=str, default=LIGHTTAR_RESULTS_DIR)
     parser.add_argument('--n_jobs', type=int, default=-1, help="processes computing the boards; -1 for every CPU")
     args = parser.parse_args()
     export(args.out_dir, {"frozen": args.results_dir, "tar": args.tar_results_dir, "large": args.large_results_dir,
                           "large-tar": args.large_tar_results_dir, "tfidf": args.tfidf_results_dir,
-                          "tile": args.tile_results_dir, "case": args.case_results_dir}, n_jobs=args.n_jobs)
+                          "tile": args.tile_results_dir, "case": args.case_results_dir,
+                          "lighttar": args.lighttar_results_dir}, n_jobs=args.n_jobs)
