@@ -39,22 +39,11 @@ PREFIXES = {TILE: "TILE-", CASE: "CASE-"}
 # only where the board shows no image datasets.
 TEXT_ONLY_ENCODINGS = [TFIDF, TILE, CASE, LARGE_LIGHTTAR]
 NOT_RUN = "Not run yet"
-HF_FAILED, IN_PROGRESS = "Hugging Face download failed; to be rerun", "Run in progress"
 # Why an entry has no result on a dataset, by encoding, model and dataset; an entry with no result at all is not run yet.
 MISSING_REASONS = {
     (TILE, "LimiX-2", "MUL_TEXT_MELBOURNE_AIRBNB"): "Out of GPU memory in predict",
     (LIGHTTAR, "TabM", "MUL_TEXT_MELBOURNE_AIRBNB"): "NaN in TabM's input on one fold",
     (LARGE_LIGHTTAR, "TabM", "MUL_TEXT_MELBOURNE_AIRBNB"): "NaN in TabM's input on one fold",
-    (LARGE_LIGHTTAR, "Causilo", "BIN_TEXT_IMDB_GENRE"): HF_FAILED,
-    (LARGE_LIGHTTAR, "Causilo", "MUL_TEXT_AMERICAN_EAGLE_PRICES"): HF_FAILED,
-    (LARGE_LIGHTTAR, "Causilo", "REG_TEXT_WIKILIQ_PRICES"): HF_FAILED,
-    (LARGE_LIGHTTAR, "Kumo-Tabular-M", "REG_TEXT_RAMEN_RATINGS"): HF_FAILED,
-    (LARGE_LIGHTTAR, "TabM", "MUL_TEXT_AMERICAN_EAGLE_PRICES"): HF_FAILED,
-    (LARGE_LIGHTTAR, "TabDPT-1.3", "BIN_TEXT_OSHA_INJURY"): IN_PROGRESS,
-    (LARGE_LIGHTTAR, "TabDPT-1.3", "MUL_TEXT_BOX_OFFICE"): IN_PROGRESS,
-    (LARGE_LIGHTTAR, "TabDPT-1.3", "MUL_TEXT_NEWS_CHANNEL"): IN_PROGRESS,
-    (LARGE_LIGHTTAR, "Xiaomi-TabLDM", "MUL_TEXT_US_ACCIDENTS"): IN_PROGRESS,
-    (LARGE_LIGHTTAR, "Xiaomi-TabLDM", "MUL_TEXT_WINE_REVIEW"): IN_PROGRESS,
 }
 
 
