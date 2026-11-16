@@ -16,6 +16,13 @@ def test_large_frozen_caches_keep_their_own_encoding_time():
     assert with_tar_encode_times(caches)["encode_s_per_1k"].tolist() == [9.0, 2.0]
 
 
+def test_lighttar_caches_take_their_frozen_twins_time():
+    encoders = ["e5-small", "e5-small-tar", "e5-small-lighttar", "e5-large", "e5-large-lighttar"]
+    caches = pd.DataFrame({"dataset": ["A"] * 5, "encoder": encoders,
+                           "fold": [None, 0, None, None, None], "encode_s_per_1k": [9.0, 2.0, 5.0, 3.0, 8.0]})
+    assert with_tar_encode_times(caches)["encode_s_per_1k"].tolist() == [2.0, 2.0, 2.0, 3.0, 3.0]
+
+
 def test_every_frozen_image_cache_has_a_tuned_twin():
     caches = with_tar_encode_times(pd.read_csv(EMBEDDING_COST_CSV))
     frozen = caches[caches["encoder"] == "dino-small"].set_index("dataset")["encode_s_per_1k"]
