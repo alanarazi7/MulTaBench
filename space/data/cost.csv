@@ -151,7 +151,7 @@ core,classification,text,RandomForest (TILE),RandomForest,tile,1.397,0.1377,0.0,
 core,classification,text,TabFM (LightTAR-S),TabFM,lighttar,1.401,15.6,0.0,0.7617,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 core,classification,text,TabPFN-3.5-Fast (LightTAR-L),TabPFN-3.5-Fast,large-lighttar,1.419,0.4317,0.0,3.5954,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 core,classification,text,TabPFN-v2 (LightTAR-L),TabPFN-v2,large-lighttar,1.4291,2.6568,0.0,3.5954,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-core,classification,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,1.4413,0.4731,0.0,3.8509,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+core,classification,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,1.4343,0.5431,0.0,3.5954,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 core,classification,text,CatBoost (Frozen-L),CatBoost,large,1.4582,0.0205,0.0,3.5954,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 core,classification,text,TabFM (TF-IDF),TabFM,tfidf,1.4603,13.9693,0.0,0.4126,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 core,classification,text,TabPFN-3.5 (LightTAR-L),TabPFN-3.5,large-lighttar,1.5261,0.7918,0.0,3.5954,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -1036,10 +1036,10 @@ core,all,text,TabPFN-3.5 (LightTAR-L),TabPFN-3.5,large-lighttar,1.6072,0.9544,0.
 core,all,text,CatBoost (TAR-L),CatBoost,large-tar,1.6529,0.0278,623.4172,3.8303,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 core,all,text,CatBoost (Frozen-L),CatBoost,large,1.7209,0.0274,0.0,3.6258,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 core,all,text,TabM (LightTAR-L),TabM,large-lighttar,1.7303,0.0773,0.0,3.6258,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+core,all,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,1.735,0.7204,0.0,3.6258,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 core,all,text,CatBoost (LightTAR-S),CatBoost,lighttar,1.7614,0.0182,0.0,0.9291,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 core,all,text,TabFM (CASE),TabFM,case,1.7763,18.3215,0.0,21.2608,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 core,all,text,EXAONE-Tabular (LightTAR-L),EXAONE-Tabular,large-lighttar,1.7773,2.8409,0.0,3.6258,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-core,all,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,1.8207,0.7114,0.0,3.7475,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 core,all,text,LightGBM (TILE),LightGBM,tile,1.8301,0.1584,0.0,6.0645,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 core,all,text,LimiX-2 (LightTAR-L),LimiX-2,large-lighttar,1.9459,24.8197,0.0,3.6258,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 core,all,text,TabICLv2 (LightTAR-L),TabICLv2,large-lighttar,1.9862,0.6037,0.0,3.6258,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -1475,9 +1475,9 @@ extended,classification,text,LimiX-2 (LightTAR-L),LimiX-2,large-lighttar,2.8146,
 extended,classification,text,RandomForest (TILE),RandomForest,tile,2.8841,0.3211,0.0,6.5443,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 extended,classification,text,TabPFN-3 (LightTAR-L),TabPFN-3,large-lighttar,2.9221,1.1901,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,TabICLv2 (LightTAR-L),TabICLv2,large-lighttar,3.0413,1.0028,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,classification,text,Causilo (LightTAR-L),Causilo,large-lighttar,3.0985,0.9594,0.0,7.4502,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,classification,text,Causilo (LightTAR-L),Causilo,large-lighttar,3.0985,1.0464,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,TabPFN-v2.5 (LightTAR-L),TabPFN-v2.5,large-lighttar,3.1152,2.4831,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,classification,text,TabM (LightTAR-L),TabM,large-lighttar,3.1912,0.1679,0.0,7.0429,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,classification,text,TabM (LightTAR-L),TabM,large-lighttar,3.1844,0.1612,0.0,6.9295,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,TabPFN-3.5-Fast (LightTAR-L),TabPFN-3.5-Fast,large-lighttar,3.2048,1.2012,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,TabPFN-3.5 (LightTAR-L),TabPFN-3.5,large-lighttar,3.2583,1.7848,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,Kumo-Tabular-S (LightTAR-L),Kumo-Tabular-S,large-lighttar,3.2682,0.2609,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -1486,7 +1486,7 @@ extended,classification,text,EXAONE-Tabular (LightTAR-L),EXAONE-Tabular,large-li
 extended,classification,text,TabFM (Frozen-L),TabFM,large,3.3966,22.9357,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,TabFM (TAR-L),TabFM,large-tar,3.4453,22.4665,892.472,7.1606,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,3.4512,0.4582,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,3.5082,0.3995,0.0,7.4424,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,3.4939,0.3991,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,LightGBM (TILE),LightGBM,tile,3.6382,0.275,0.0,6.5443,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 extended,classification,text,Kumo-Tabular (LightTAR-L),Kumo-Tabular,large-lighttar,3.6489,0.8374,0.0,7.2823,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,classification,text,TabM (TILE),TabM,tile,3.69,0.5885,0.0,6.5443,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -1919,8 +1919,8 @@ extended,regression,text,TabM (LightTAR-L),TabM,large-lighttar,1.2386,0.0698,0.0
 extended,regression,text,Kumo-Tabular (TAR-L),Kumo-Tabular,large-tar,1.2399,0.4553,580.7858,3.2113,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,regression,text,Kumo-Tabular-S (LightTAR-L),Kumo-Tabular-S,large-lighttar,1.2565,0.164,0.0,3.3592,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,regression,text,Kumo-Tabular (CASE),Kumo-Tabular,case,1.2949,0.6573,0.0,20.7564,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,regression,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,1.3469,0.2914,0.0,3.4017,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,regression,text,Causilo (LightTAR-L),Causilo,large-lighttar,1.3555,0.6437,0.0,3.34,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,regression,text,Causilo (LightTAR-L),Causilo,large-lighttar,1.3496,0.6451,0.0,3.3592,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,regression,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,1.361,0.2875,0.0,3.3592,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,regression,text,XGBoost (CASE),XGBoost,case,1.3858,0.1705,0.0,20.7564,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 extended,regression,text,LimiX-2 (LightTAR-L),LimiX-2,large-lighttar,1.4338,14.5613,0.0,3.3592,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,regression,text,TabPFN-v2.5 (LightTAR-L),TabPFN-v2.5,large-lighttar,1.5226,1.6448,0.0,3.3592,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -2363,9 +2363,9 @@ extended,all,text,TabFM (TAR-S),TabFM,tar,1.9008,17.1055,185.0499,1.0666,0.0,NVI
 extended,all,text,CatBoost (TAR-L),CatBoost,large-tar,1.9172,0.0301,736.6289,5.1859,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 extended,all,text,TabFM (Frozen-S),TabFM,frozen,1.9315,17.0614,0.0,1.0666,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,TabFM (LightTAR-S),TabFM,lighttar,1.946,19.3819,0.0,1.0666,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,all,text,TabM (LightTAR-L),TabM,large-lighttar,1.9507,0.1035,0.0,5.1294,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,TabPFN-3.5-Fast (LightTAR-L),TabPFN-3.5-Fast,large-lighttar,1.958,0.7596,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,all,text,Causilo (LightTAR-L),Causilo,large-lighttar,2.0121,0.7085,0.0,5.3775,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,all,text,TabM (LightTAR-L),TabM,large-lighttar,2.0155,0.1037,0.0,5.1698,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,all,text,Causilo (LightTAR-L),Causilo,large-lighttar,1.9992,0.7115,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,TabPFN-3.5 (LightTAR-L),TabPFN-3.5,large-lighttar,2.0228,1.3073,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,CatBoost (Frozen-L),CatBoost,large,2.032,0.0312,0.0,5.3208,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 extended,all,text,LimiX-2 (LightTAR-L),LimiX-2,large-lighttar,2.0619,28.0831,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -2373,14 +2373,14 @@ extended,all,text,TabICLv2 (LightTAR-L),TabICLv2,large-lighttar,2.1972,0.666,0.0
 extended,all,text,Kumo-Tabular-S (LightTAR-L),Kumo-Tabular-S,large-lighttar,2.2609,0.1808,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,2.359,0.7713,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,TabPFN-v2 (LightTAR-L),TabPFN-v2,large-lighttar,2.4121,2.7207,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-extended,all,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,2.4145,0.3292,0.0,5.3583,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,CatBoost (LightTAR-L),CatBoost,large-lighttar,2.4154,0.0378,0.0,5.3208,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 extended,all,text,TabFM (CASE),TabFM,case,2.4292,20.1048,0.0,28.4614,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,TabFM (TF-IDF),TabFM,tfidf,2.4509,17.2106,0.0,0.7081,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,all,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,2.4803,0.3143,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,LightGBM (TILE),LightGBM,tile,2.5657,0.2171,0.0,5.1204,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 extended,all,text,Kumo-Tabular (LightTAR-L),Kumo-Tabular,large-lighttar,2.5762,0.5981,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,CatBoost (CASE),CatBoost,case,2.7301,0.1845,0.0,28.4614,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
-extended,all,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,2.9015,0.3493,0.0,5.3484,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+extended,all,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,2.8536,0.3477,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,TabFM (Frozen-L),TabFM,large,2.9913,17.2219,0.0,5.3208,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,TabPFN-3 (TILE),TabPFN-3,tile,3.0291,1.5291,0.0,5.1204,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 extended,all,text,TabPFN-3.5 (TILE),TabPFN-3.5,tile,3.1341,2.1951,0.0,5.1204,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -2798,15 +2798,15 @@ all,classification,text,TabFM (Frozen-S),TabFM,frozen,1.2952,17.884,0.0,1.1132,0
 all,classification,text,XGBoost (CASE),XGBoost,case,1.4227,0.1922,0.0,28.3147,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 all,classification,text,TabPFN-v2.5 (LightTAR-L),TabPFN-v2.5,large-lighttar,1.4398,2.2669,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,Kumo-Tabular (CASE),Kumo-Tabular,case,1.5402,0.7402,0.0,28.3147,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,classification,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,1.5475,0.6971,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,TabFM (TF-IDF),TabFM,tfidf,1.6014,17.9196,0.0,0.6882,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,EXAONE-Tabular (LightTAR-L),EXAONE-Tabular,large-lighttar,1.617,3.5636,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,classification,text,TabM (LightTAR-L),TabM,large-lighttar,1.7254,0.0985,0.0,5.2899,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,classification,text,TabM (LightTAR-L),TabM,large-lighttar,1.7223,0.0982,0.0,5.2485,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,TabFM (LightTAR-S),TabFM,lighttar,1.7308,20.2045,0.0,1.1132,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,classification,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,1.7788,0.6675,0.0,5.6729,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,TabFM (CASE),TabFM,case,1.7812,20.6431,0.0,28.3147,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,TabPFN-v2 (LightTAR-L),TabPFN-v2,large-lighttar,1.886,3.192,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,TabPFN-3.5 (LightTAR-L),TabPFN-3.5,large-lighttar,1.8982,1.053,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,classification,text,Causilo (LightTAR-L),Causilo,large-lighttar,1.9452,0.7695,0.0,5.4901,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,classification,text,Causilo (LightTAR-L),Causilo,large-lighttar,1.9452,0.7715,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,TabPFN-3.5-Fast (LightTAR-L),TabPFN-3.5-Fast,large-lighttar,1.9463,0.5922,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,TabPFN-3 (LightTAR-L),TabPFN-3,large-lighttar,1.9707,0.8628,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,TabFM (TAR-L),TabFM,large-tar,2.0437,17.9345,651.2231,5.4515,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -2819,8 +2819,8 @@ all,classification,text,RandomForest (TILE),RandomForest,tile,2.3077,0.2254,0.0,
 all,classification,text,CatBoost (Frozen-S),CatBoost,frozen,2.363,0.018,0.0,1.1132,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 all,classification,text,Kumo-Tabular (LightTAR-L),Kumo-Tabular,large-lighttar,2.5104,0.5496,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,LightGBM (TILE),LightGBM,tile,2.5716,0.1931,0.0,4.6045,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
+all,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,2.6411,0.3012,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,CatBoost (TF-IDF),CatBoost,tfidf,2.7048,0.0097,0.0,0.5448,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
-all,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,2.7066,0.2817,0.0,5.4696,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,LimiX-2 (LightTAR-L),LimiX-2,large-lighttar,2.7841,52.4598,0.0,5.4389,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,classification,text,CatBoost (LightTAR-S),CatBoost,lighttar,2.8121,0.0194,0.0,1.1132,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 all,classification,text,TabPFN-3 (TILE),TabPFN-3,tile,2.8197,1.1379,0.0,4.6045,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -3258,10 +3258,10 @@ all,regression,text,TabM (LightTAR-L),TabM,large-lighttar,1.9338,0.0918,0.0,3.50
 all,regression,text,TabICLv2 (LightTAR-L),TabICLv2,large-lighttar,2.0022,0.6322,0.0,3.5077,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,regression,text,TabPFN-v2.5 (LightTAR-L),TabPFN-v2.5,large-lighttar,2.0597,1.842,0.0,3.5077,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,regression,text,RandomForest (CASE),RandomForest,case,2.0981,0.2049,0.0,21.4076,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
-all,regression,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,2.1953,0.2822,0.0,3.53,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,regression,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,2.2112,0.2825,0.0,3.5077,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,regression,text,Kumo-Tabular-S (LightTAR-L),Kumo-Tabular-S,large-lighttar,2.2213,0.1623,0.0,3.5077,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,regression,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,2.2218,0.7286,0.0,3.5077,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,regression,text,Causilo (LightTAR-L),Causilo,large-lighttar,2.2406,0.676,0.0,3.4994,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,regression,text,Causilo (LightTAR-L),Causilo,large-lighttar,2.2364,0.6797,0.0,3.5077,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,regression,text,TabFM (CASE),TabFM,case,2.2686,17.0768,0.0,21.4076,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,regression,text,TabFM (TF-IDF),TabFM,tfidf,2.3826,14.2303,0.0,0.9327,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,regression,text,XGBoost (TILE),XGBoost,tile,2.4634,0.1944,0.0,6.5804,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
@@ -3692,18 +3692,18 @@ all,all,text,TabPFN-3.5 (LightTAR-L),TabPFN-3.5,large-lighttar,1.7046,1.0892,0.0
 all,all,text,CatBoost (TAR-L),CatBoost,large-tar,1.7252,0.029,680.0231,4.5081,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 all,all,text,TabPFN-v2.5 (LightTAR-L),TabPFN-v2.5,large-lighttar,1.7345,2.0949,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,EXAONE-Tabular (LightTAR-L),EXAONE-Tabular,large-lighttar,1.74,3.1917,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,all,text,TabM (LightTAR-L),TabM,large-lighttar,1.7773,0.0945,0.0,4.3913,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,all,text,TabM (LightTAR-L),TabM,large-lighttar,1.7683,0.0942,0.0,4.3744,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,TabFM (LightTAR-S),TabFM,lighttar,1.8012,18.6911,0.0,0.9978,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,all,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,1.8331,0.7254,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,TabFM (TF-IDF),TabFM,tfidf,1.8362,16.7459,0.0,0.8105,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,all,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,1.8762,0.7225,0.0,4.5578,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,TabPFN-3 (LightTAR-L),TabPFN-3,large-lighttar,1.9174,0.963,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,LimiX-2 (LightTAR-L),LimiX-2,large-lighttar,1.9741,25.8476,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,CatBoost (Frozen-L),CatBoost,large,1.9817,0.0303,0.0,4.4733,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
+all,all,text,Causilo (LightTAR-L),Causilo,large-lighttar,2.0459,0.7221,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,TabICLv2 (LightTAR-L),TabICLv2,large-lighttar,2.0485,0.6149,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,all,text,Causilo (LightTAR-L),Causilo,large-lighttar,2.0532,0.7171,0.0,4.4906,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,TabFM (CASE),TabFM,case,2.1132,19.5783,0.0,24.8611,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,CatBoost (CASE),CatBoost,case,2.189,0.1799,0.0,24.8611,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
-all,all,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,2.1953,0.2822,0.0,4.4884,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,all,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,2.2112,0.2825,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,Kumo-Tabular-S (LightTAR-L),Kumo-Tabular-S,large-lighttar,2.252,0.1628,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,LightGBM (TILE),LightGBM,tile,2.3293,0.1863,0.0,5.5925,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 all,all,text,TabPFN-v2 (LightTAR-L),TabPFN-v2,large-lighttar,2.3554,2.485,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
@@ -3714,7 +3714,7 @@ all,all,text,TabFM (TAR-L),TabFM,large-tar,2.4847,16.7298,680.0231,4.5081,0.0,NV
 all,all,text,XGBoost (TILE),XGBoost,tile,2.6783,0.1944,0.0,5.5925,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz
 all,all,text,TabPFN-3 (TILE),TabPFN-3,tile,2.7401,1.4187,0.0,5.5925,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,TabDPT (TILE),TabDPT,tile,2.7673,52.8782,0.0,5.5925,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
-all,all,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,2.7904,0.2816,0.0,4.4762,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+all,all,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,2.7701,0.2817,0.0,4.4733,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,TabM (TILE),TabM,tile,2.8559,0.3862,0.0,5.5925,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,TabPFN-3.5 (TILE),TabPFN-3.5,tile,2.8604,1.6577,0.0,5.5925,0.0,NVIDIA H100 80GB HBM3,Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
 all,all,text,RandomForest (TILE),RandomForest,tile,2.8969,0.2089,0.0,5.5925,0.0,,INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz

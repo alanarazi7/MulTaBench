@@ -1,14 +1,4 @@
 entry,model,encoding,dataset,tier,task,modality,folds,reason
-Causilo (LightTAR-L),Causilo,large-lighttar,BIN_TEXT_IMDB_GENRE,extended,classification,text,1,Hugging Face download failed; to be rerun
-Causilo (LightTAR-L),Causilo,large-lighttar,MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,1,Hugging Face download failed; to be rerun
-Causilo (LightTAR-L),Causilo,large-lighttar,REG_TEXT_WIKILIQ_PRICES,extended,regression,text,1,Hugging Face download failed; to be rerun
-Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,REG_TEXT_RAMEN_RATINGS,extended,regression,text,1,Hugging Face download failed; to be rerun
 LimiX-2 (TILE),LimiX-2,tile,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,6,Out of GPU memory in predict
-TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,BIN_TEXT_OSHA_INJURY,extended,classification,text,1,Run in progress
-TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,MUL_TEXT_BOX_OFFICE,extended,classification,text,1,Run in progress
-TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,MUL_TEXT_NEWS_CHANNEL,extended,classification,text,1,Run in progress
 TabM (LightTAR-S),TabM,lighttar,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,1,NaN in TabM's input on one fold
-TabM (LightTAR-L),TabM,large-lighttar,MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,1,Hugging Face download failed; to be rerun
 TabM (LightTAR-L),TabM,large-lighttar,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,1,NaN in TabM's input on one fold
-Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,MUL_TEXT_US_ACCIDENTS,core,classification,text,1,Run in progress
-Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,MUL_TEXT_WINE_REVIEW,core,classification,text,6,Run in progress

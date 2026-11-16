@@ -1014,7 +1014,7 @@ BIN_TEXT_IMDB_GENRE,extended,classification,text,CatBoost (TILE),CatBoost,tile,r
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (CASE),Causilo,case,roc_auc,0.064418,0.011759,0.935582,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (Frozen-L),Causilo,large,roc_auc,0.112195,0.009856,0.887805,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (Frozen-S),Causilo,frozen,roc_auc,0.137461,0.014469,0.862539,6,534.0
-BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (LightTAR-L),Causilo,large-lighttar,roc_auc,0.171642,0.02861,0.828358,5,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (LightTAR-L),Causilo,large-lighttar,roc_auc,0.173748,0.026104,0.826252,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (LightTAR-S),Causilo,lighttar,roc_auc,0.190156,0.012725,0.809844,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (TAR-L),Causilo,large-tar,roc_auc,0.114648,0.013052,0.885352,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (TAR-S),Causilo,tar,roc_auc,0.141906,0.013204,0.858094,6,534.0
@@ -1741,7 +1741,7 @@ BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT (TILE),TabDPT,tile,roc_
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (CASE),TabDPT-1.3,case,roc_auc,0.387225,0.014843,0.612775,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (Frozen-L),TabDPT-1.3,large,roc_auc,0.391158,0.016833,0.608842,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (Frozen-S),TabDPT-1.3,frozen,roc_auc,0.395271,0.013969,0.604729,6,3232.0
-BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,roc_auc,0.395069,0.008305,0.604931,5,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,roc_auc,0.394355,0.007631,0.605645,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (LightTAR-S),TabDPT-1.3,lighttar,roc_auc,0.402191,0.00615,0.597809,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (TAR-L),TabDPT-1.3,large-tar,roc_auc,0.388916,0.014977,0.611084,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,TabDPT-1.3 (TAR-S),TabDPT-1.3,tar,roc_auc,0.395491,0.014005,0.604509,6,3232.0
@@ -3605,7 +3605,7 @@ MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,CatBoost (TILE),CatB
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (CASE),Causilo,case,log_loss,0.093326,0.008731,-0.093326,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (Frozen-L),Causilo,large,log_loss,0.090627,0.00771,-0.090627,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (Frozen-S),Causilo,frozen,log_loss,0.09172,0.007566,-0.09172,6,10000.0
-MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (LightTAR-L),Causilo,large-lighttar,log_loss,0.090817,0.008918,-0.090817,5,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (LightTAR-L),Causilo,large-lighttar,log_loss,0.08958,0.008533,-0.08958,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.091326,0.00818,-0.091326,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (TAR-L),Causilo,large-tar,log_loss,0.092045,0.008303,-0.092045,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.093887,0.008846,-0.093887,6,10000.0
@@ -3732,7 +3732,7 @@ MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabICLv2 (TILE),TabI
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabM (CASE),TabM,case,log_loss,0.129105,0.012389,-0.129105,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabM (Frozen-L),TabM,large,log_loss,0.132143,0.011486,-0.132143,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabM (Frozen-S),TabM,frozen,log_loss,0.133724,0.009047,-0.133724,6,10000.0
-MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabM (LightTAR-L),TabM,large-lighttar,log_loss,0.130779,0.009126,-0.130779,5,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabM (LightTAR-L),TabM,large-lighttar,log_loss,0.134596,0.012411,-0.134596,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabM (LightTAR-S),TabM,lighttar,log_loss,0.132471,0.011015,-0.132471,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabM (TAR-L),TabM,large-tar,log_loss,0.130514,0.010528,-0.130514,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,TabM (TAR-S),TabM,tar,log_loss,0.126309,0.009667,-0.126309,6,10000.0
@@ -4123,7 +4123,7 @@ MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT (TILE),TabDPT,tile,log_l
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (CASE),TabDPT-1.3,case,log_loss,1.0452,0.020464,-1.0452,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (Frozen-L),TabDPT-1.3,large,log_loss,1.114509,0.01938,-1.114509,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (Frozen-S),TabDPT-1.3,frozen,log_loss,1.123827,0.01656,-1.123827,6,4939.0
-MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,log_loss,1.124723,0.025335,-1.124723,5,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,log_loss,1.119168,0.026433,-1.119168,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (LightTAR-S),TabDPT-1.3,lighttar,log_loss,1.133683,0.021032,-1.133683,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (TAR-L),TabDPT-1.3,large-tar,log_loss,1.109204,0.019816,-1.109204,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,TabDPT-1.3 (TAR-S),TabDPT-1.3,tar,log_loss,1.140304,0.024732,-1.140304,6,4939.0
@@ -5376,7 +5376,7 @@ MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT (TILE),TabDPT,tile,log
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (CASE),TabDPT-1.3,case,log_loss,1.219615,0.010659,-1.219615,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (Frozen-L),TabDPT-1.3,large,log_loss,1.191825,0.006026,-1.191825,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (Frozen-S),TabDPT-1.3,frozen,log_loss,1.195122,0.005505,-1.195122,6,10000.0
-MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,log_loss,1.201762,0.007973,-1.201762,5,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (LightTAR-L),TabDPT-1.3,large-lighttar,log_loss,1.202933,0.007686,-1.202933,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (LightTAR-S),TabDPT-1.3,lighttar,log_loss,1.204336,0.007065,-1.204336,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (TAR-L),TabDPT-1.3,large-tar,log_loss,1.187035,0.008136,-1.187035,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,TabDPT-1.3 (TAR-S),TabDPT-1.3,tar,log_loss,1.192896,0.006731,-1.192896,6,10000.0
@@ -6094,7 +6094,7 @@ MUL_TEXT_US_ACCIDENTS,core,classification,text,XGBoost (TILE),XGBoost,tile,log_l
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Xiaomi-TabLDM (CASE),Xiaomi-TabLDM,case,log_loss,0.169988,0.008587,-0.169988,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Xiaomi-TabLDM (Frozen-L),Xiaomi-TabLDM,large,log_loss,0.177997,0.009043,-0.177997,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Xiaomi-TabLDM (Frozen-S),Xiaomi-TabLDM,frozen,log_loss,0.173231,0.00827,-0.173231,6,10000.0
-MUL_TEXT_US_ACCIDENTS,core,classification,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,log_loss,0.170625,0.00792,-0.170625,5,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,log_loss,0.170931,0.007123,-0.170931,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Xiaomi-TabLDM (LightTAR-S),Xiaomi-TabLDM,lighttar,log_loss,0.16899,0.007639,-0.16899,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Xiaomi-TabLDM (TAR-L),Xiaomi-TabLDM,large-tar,log_loss,0.159912,0.01026,-0.159912,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Xiaomi-TabLDM (TAR-S),Xiaomi-TabLDM,tar,log_loss,0.163205,0.007844,-0.163205,6,10000.0
@@ -6303,6 +6303,7 @@ MUL_TEXT_WINE_REVIEW,core,classification,text,XGBoost (TILE),XGBoost,tile,log_lo
 MUL_TEXT_WINE_REVIEW,core,classification,text,Xiaomi-TabLDM (CASE),Xiaomi-TabLDM,case,log_loss,0.632481,0.013391,-0.632481,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Xiaomi-TabLDM (Frozen-L),Xiaomi-TabLDM,large,log_loss,0.785467,0.018141,-0.785467,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Xiaomi-TabLDM (Frozen-S),Xiaomi-TabLDM,frozen,log_loss,0.832795,0.017912,-0.832795,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Xiaomi-TabLDM (LightTAR-L),Xiaomi-TabLDM,large-lighttar,log_loss,0.780772,0.015741,-0.780772,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Xiaomi-TabLDM (LightTAR-S),Xiaomi-TabLDM,lighttar,log_loss,0.82266,0.017568,-0.82266,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Xiaomi-TabLDM (TAR-L),Xiaomi-TabLDM,large-tar,log_loss,0.738484,0.015571,-0.738484,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Xiaomi-TabLDM (TAR-S),Xiaomi-TabLDM,tar,log_loss,0.758188,0.014284,-0.758188,6,10000.0
@@ -10778,7 +10779,7 @@ REG_TEXT_RAMEN_RATINGS,extended,regression,text,Kumo-Tabular (TILE),Kumo-Tabular
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Kumo-Tabular-M (CASE),Kumo-Tabular-M,case,root_mean_squared_error,0.913821,0.027809,-0.913821,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Kumo-Tabular-M (Frozen-L),Kumo-Tabular-M,large,root_mean_squared_error,0.914091,0.027736,-0.914091,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Kumo-Tabular-M (Frozen-S),Kumo-Tabular-M,frozen,root_mean_squared_error,0.914125,0.023027,-0.914125,6,2737.0
-REG_TEXT_RAMEN_RATINGS,extended,regression,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,root_mean_squared_error,0.931048,0.02692,-0.931048,5,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Kumo-Tabular-M (LightTAR-L),Kumo-Tabular-M,large-lighttar,root_mean_squared_error,0.934924,0.025883,-0.934924,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Kumo-Tabular-M (LightTAR-S),Kumo-Tabular-M,lighttar,root_mean_squared_error,0.926215,0.027015,-0.926215,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Kumo-Tabular-M (TAR-L),Kumo-Tabular-M,large-tar,root_mean_squared_error,0.916624,0.026865,-0.916624,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Kumo-Tabular-M (TAR-S),Kumo-Tabular-M,tar,root_mean_squared_error,0.918785,0.028176,-0.918785,6,2737.0
@@ -12213,7 +12214,7 @@ REG_TEXT_WIKILIQ_PRICES,extended,regression,text,CatBoost (TILE),CatBoost,tile,r
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (CASE),Causilo,case,root_mean_squared_error,701.752454,123.823911,-701.752454,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (Frozen-L),Causilo,large,root_mean_squared_error,695.61269,124.536036,-695.61269,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (Frozen-S),Causilo,frozen,root_mean_squared_error,700.779793,127.301386,-700.779793,6,8380.0
-REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (LightTAR-L),Causilo,large-lighttar,root_mean_squared_error,719.489452,136.149913,-719.489452,5,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (LightTAR-L),Causilo,large-lighttar,root_mean_squared_error,696.969487,133.687442,-696.969487,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,684.267601,132.590534,-684.267601,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,706.478669,127.108994,-706.478669,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,683.924808,120.362432,-683.924808,6,8380.0
