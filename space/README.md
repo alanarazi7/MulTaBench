@@ -15,7 +15,8 @@ The leaderboard of [MulTaBench](https://github.com/alanarazi7/MulTaBench): a sta
 `data/`, written by `python -m multabench.leaderboard.export` from `multabench/leaderboard/models/`, `models_tar/`,
 `models_large/`, `models_large_tar/`, `models_lighttar/`, `models_large_lighttar/`, `models_tfidf/`, `models_tile/`
 and `models_case/`: each model that reads embeddings is an entry with Frozen-S, one with TAR-S, one with Frozen-L, one
-with TAR-L and one with LightTAR-S encoders, and one each with LightTAR-L, TF-IDF, TILE and CASE on the text datasets.
+with TAR-L, one with LightTAR-S and one with LightTAR-L encoders, and one each with TF-IDF, TILE and CASE on the text
+datasets.
 
 To update the Space after the results change:
 
