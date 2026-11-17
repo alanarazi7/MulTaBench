@@ -1,4 +1,4 @@
-"""The models TILE wraps, each with TILE's defaults (TODO: revisit them per model)."""
+"""The models TILE wraps, each with TILE's defaults."""
 from multabench.baselines.catboost import CatBoost
 from multabench.baselines.causilo import Causilo
 from multabench.baselines.exaone_tabular import EXAONETabular

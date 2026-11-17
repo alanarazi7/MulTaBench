@@ -16,10 +16,6 @@ file as the PRs that complete them are merged.
       in the wrapper, or a GPU with more memory, which the official runs' hardware rules out.
 - [ ] LightTAR-S and LightTAR-L: TabM on Melbourne Airbnb, fold 1, flagged missing: TabM predicts NaN, so `log_loss`
       fails. Same fold for both, other encodings are fine: find which LightTAR features blow up TabM's training.
-- [ ] CASE: ablations: its authors suggest more than
-      32 PCA components, and its 50-token cell cut and 16,000-token context may hurt the long-text datasets.
-- [ ] TILE: revisit its settings per model; every wrapper takes TILE's defaults (30 PCA components per string column,
-      no native categories), where the PFNs may do better with the feature window and categories its authors select.
 
 - [ ] Move `benchmark.py`, `sweep.py` and `collect_results.py` into the package, like
       `multabench.embeddings.embed`, so they run with `python -m` without a checkout.
