@@ -35,15 +35,14 @@ END_TO_END = "end-to-end"
 TFIDF, TILE, CASE, LIGHTTAR, LARGE_LIGHTTAR = "tfidf", "tile", "case", "lighttar", "large-lighttar"
 # An interface's runs name the model it wraps after its prefix.
 PREFIXES = {TILE: "TILE-", CASE: "CASE-"}
-# TF-IDF, TILE, CASE and, until its image runs are in, LightTAR-L run on the text datasets only, so they are rated
-# only where the board shows no image datasets.
-TEXT_ONLY_ENCODINGS = [TFIDF, TILE, CASE, LARGE_LIGHTTAR]
+# TF-IDF, TILE and CASE run on the text datasets only, so they are rated only where the board shows no image datasets.
+TEXT_ONLY_ENCODINGS = [TFIDF, TILE, CASE]
 NOT_RUN = "Not run yet"
 # Why an entry has no result on a dataset, by encoding, model and dataset; an entry with no result at all is not run yet.
 MISSING_REASONS = {
     (TILE, "LimiX-2", "MUL_TEXT_MELBOURNE_AIRBNB"): "Out of GPU memory in predict",
-    (LIGHTTAR, "TabM", "MUL_TEXT_MELBOURNE_AIRBNB"): "NaN in TabM's input on one fold",
-    (LARGE_LIGHTTAR, "TabM", "MUL_TEXT_MELBOURNE_AIRBNB"): "NaN in TabM's input on one fold",
+    (LIGHTTAR, "TabM", "MUL_TEXT_MELBOURNE_AIRBNB"): "TabM predicts NaN on one fold",
+    (LARGE_LIGHTTAR, "TabM", "MUL_TEXT_MELBOURNE_AIRBNB"): "TabM predicts NaN on one fold",
 }
 
 
