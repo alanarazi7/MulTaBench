@@ -1,4 +1,4 @@
 entry,model,encoding,dataset,tier,task,modality,folds,reason
 LimiX-2 (TILE),LimiX-2,tile,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,6,Out of GPU memory in predict
-TabM (LightTAR-S),TabM,lighttar,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,1,NaN in TabM's input on one fold
-TabM (LightTAR-L),TabM,large-lighttar,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,1,NaN in TabM's input on one fold
+TabM (LightTAR-S),TabM,lighttar,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,1,TabM predicts NaN on one fold
+TabM (LightTAR-L),TabM,large-lighttar,MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,1,TabM predicts NaN on one fold
