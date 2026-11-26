@@ -9,6 +9,7 @@ from multabench.utils.devices import get_device
 from multabench.baselines.autogluon_mm import AutoGluonMM
 from multabench.baselines.catboost import CatBoost
 from multabench.baselines.causilo import Causilo
+from multabench.baselines.causilo15 import Causilo15
 from multabench.baselines.contexttab import ConTextTab
 from multabench.baselines.exaone_tabular import EXAONETabular
 from multabench.baselines.kumo_tabular import KumoTabular, KumoTabularMedium, KumoTabularSmall
@@ -48,7 +49,7 @@ BASELINES = [TabSTARv1p1,
              TabPFNv2, TabPFNv2p5,
              TabPFN3, TabPFN3p5, TabPFN3p5Fast,
              KumoTabular, KumoTabularMedium, KumoTabularSmall,
-             Causilo, TabFM,
+             Causilo, Causilo15, TabFM,
              TabDPT13, XiaomiTabLDM, EXAONETabular,
              MitraV2, LimiX2,
              *TILE_MODELS, *CASE_MODELS]

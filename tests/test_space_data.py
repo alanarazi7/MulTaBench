@@ -79,8 +79,11 @@ def test_the_text_boards_pay_no_image_encoding(runs):
 
 
 def test_every_model_has_a_developer_logo_and_link(runs):
+    from benchmark import BASELINES
+
     models = pd.read_csv(os.path.join(SPACE_DATA_DIR, "models.csv"))
-    assert sorted(models[ResultKey.MODEL]) == sorted(runs[ResultKey.MODEL].unique())
+    assert models[ResultKey.MODEL].is_unique
+    assert set(runs[ResultKey.MODEL]) <= set(models[ResultKey.MODEL]) <= {m.MODEL_NAME for m in BASELINES}
     logos = os.path.join(os.path.dirname(SPACE_DATA_DIR), "assets", "logos")
     assert all(os.path.isfile(os.path.join(logos, logo)) for logo in models["logo"])
     assert models["link"].str.startswith("https://").all()
