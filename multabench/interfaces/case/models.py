@@ -1,6 +1,7 @@
 """The models CASE wraps, each with CaseTransformer's defaults."""
 from multabench.baselines.catboost import CatBoost
 from multabench.baselines.causilo import Causilo
+from multabench.baselines.causilo15 import Causilo15
 from multabench.baselines.exaone_tabular import EXAONETabular
 from multabench.baselines.kumo_tabular import KumoTabular, KumoTabularMedium, KumoTabularSmall
 from multabench.baselines.lgbm import LightGBM
@@ -59,6 +60,10 @@ class CaseCausilo(CaseInterface):
     TABULAR_MODEL = Causilo
 
 
+class CaseCausilo15(CaseInterface):
+    TABULAR_MODEL = Causilo15
+
+
 class CaseTabFM(CaseInterface):
     TABULAR_MODEL = TabFM
 
@@ -111,6 +116,6 @@ class CaseRandomForest(CaseInterface):
     TABULAR_MODEL = RandomForest
 
 CASE_MODELS = [CaseTabPFNv2, CaseTabPFNv2p5, CaseTabPFN3, CaseTabPFN3p5, CaseTabPFN3p5Fast, CaseTabICLv2, CaseTabDPT,
-               CaseTabDPT13, CaseEXAONETabular, CaseCausilo, CaseTabFM, CaseKumoTabular, CaseKumoTabularMedium,
-               CaseKumoTabularSmall, CaseMitraV2, CaseLimiX2, CaseXiaomiTabLDM, CaseRealMLP, CaseTabM, CaseXGBoost,
-               CaseCatBoost, CaseLightGBM, CaseRandomForest]
+               CaseTabDPT13, CaseEXAONETabular, CaseCausilo, CaseCausilo15, CaseTabFM, CaseKumoTabular,
+               CaseKumoTabularMedium, CaseKumoTabularSmall, CaseMitraV2, CaseLimiX2, CaseXiaomiTabLDM, CaseRealMLP,
+               CaseTabM, CaseXGBoost, CaseCatBoost, CaseLightGBM, CaseRandomForest]

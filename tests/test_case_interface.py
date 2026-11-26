@@ -144,6 +144,6 @@ def test_case_needs_a_text_dataset_and_its_fold(cached):
 
 def test_each_case_model_is_named_after_its_model_and_shares_its_venv():
     names = {m.TABULAR_MODEL.MODEL_NAME: (m.MODEL_NAME, m.SHORT_NAME) for m in CASE_MODELS}
-    assert names["Kumo-Tabular"] == ("CASE-Kumo-Tabular", "casekumo") and len(CASE_MODELS) == 23
+    assert names["Kumo-Tabular"] == ("CASE-Kumo-Tabular", "casekumo") and len(CASE_MODELS) == 24
     assert all(m.ENV == m.TABULAR_MODEL.ENV and m.NEEDS_GPU == m.TABULAR_MODEL.NEEDS_GPU for m in CASE_MODELS)
     assert all(m.USE_TEXT_EMBEDDINGS for m in CASE_MODELS)
