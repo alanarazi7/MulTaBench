@@ -55,7 +55,8 @@ class TileInterface(TabularModel):
         self.features = TILEFeatures()
         table = self._see(x)
         task = "classification" if self.is_cls else "regression"
-        z = self.features.fit_transform(table, y.to_numpy(), self._embeddings(table), task)
+        embeddings = self._embeddings(table)
+        z = self._reduce_as_new_rows(self.features.fit_transform(table, y.to_numpy(), embeddings, task), embeddings)
         self.tabular_model.fit(self._frame(z, table), y)
 
     def predict(self, x: DataFrame) -> np.ndarray:
@@ -68,13 +69,25 @@ class TileInterface(TabularModel):
         table = self._see(x)
         return self._frame(self.features.transform(table, self._embeddings(table)), table)
 
+    def _reduce_as_new_rows(self, z: np.ndarray, embeddings: Dict[str, np.ndarray]) -> np.ndarray:
+        """Not in upstream TILE: the training rows' PCA components from the fitted reducers' transform, as new rows get
+        them. A column with fewer distinct cells than components, like US Accidents' first, keeps components of pure
+        rounding noise, which fit_transform and transform scale differently; learners then split on it as a row ID."""
+        start = 0
+        for col in self.features.string_columns_:
+            reducer = self.features.reducers_[col]
+            width = reducer[-1].n_components_
+            z[:, start:start + width] = reducer.transform(np.asarray(embeddings[col], dtype=np.float64))
+            start += width
+        return z
+
     def _see(self, x: DataFrame) -> DataFrame:
         self.rows.add(x)
         return tile_table(x, self.image_column)
 
     def _embeddings(self, table: DataFrame) -> Dict[str, np.ndarray]:
-        cells = self.rows.cells(table.index)
-        return {col: block.astype(np.float32) for col, block in zip(self.rows.string_columns, cells)}
+        """As float16, as TILE stores them: TILEFeatures reduces them in float64 itself."""
+        return dict(zip(self.rows.string_columns, self.rows.cells(table.index)))
 
     def _frame(self, z: np.ndarray, table: DataFrame) -> DataFrame:
         """TILEFeatures' array as a table: the features as floats, named after their columns, then the categories."""
