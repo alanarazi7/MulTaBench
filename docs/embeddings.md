@@ -35,8 +35,8 @@ layer after DINO's final norm, while LightTAR reads it before, so `multabench/em
 the last and the middle layer, the sixth of 12; `dino-large-lighttar`'s, the twelfth of 24. Like `dino-small-tar`, their
 runs embed the text columns with frozen E5 of the same size.
 
-The TILE interface, `multabench/embeddings-tile`, is frozen and cached once per dataset too, but it embeds each
-string cell in the context of its row: the input is the whole row serialized as TILE serializes it, every column but
+The TILE interface, `multabench/embeddings-tile-v0.2.1` (built with that TILE release), is frozen and cached once per
+dataset too, but it embeds each string cell in the context of its row: the input is the whole row serialized as TILE serializes it, every column but
 the target and the image column, and its embedding is the row's string cells, one 4096-dimensional vector per string
 column (text or category) in `meta.json`'s `features` order, stored in float16 to halve the cache. A run serializes its own rows as loaded and looks them up, so a
 row's cells are never paired with another row.

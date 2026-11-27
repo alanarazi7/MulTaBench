@@ -73,8 +73,8 @@ class TileInterface(TabularModel):
         return tile_table(x, self.image_column)
 
     def _embeddings(self, table: DataFrame) -> Dict[str, np.ndarray]:
-        cells = self.rows.cells(table.index)
-        return {col: block.astype(np.float32) for col, block in zip(self.rows.string_columns, cells)}
+        """As float16, as TILE stores them: TILEFeatures reduces them in float64 itself."""
+        return dict(zip(self.rows.string_columns, self.rows.cells(table.index)))
 
     def _frame(self, z: np.ndarray, table: DataFrame) -> DataFrame:
         """TILEFeatures' array as a table: the features as floats, named after their columns, then the categories."""
