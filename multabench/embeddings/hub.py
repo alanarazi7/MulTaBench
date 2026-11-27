@@ -31,7 +31,6 @@ from multabench.encoders.constants import (Encoder, IMAGE_ENCODERS, ImageEncoder
                                           TextEncoder)
 from multabench.encoders.e5.constants import format_e5_passage
 from multabench.interfaces.constants import INTERFACES, Interface
-from multabench.interfaces.tile.constants import TILE_VERSION
 
 EMBEDDINGS_NPZ = "embeddings.npz"
 META_JSON = "meta.json"
@@ -68,7 +67,7 @@ def is_tuned(encoder: CachedEncoder) -> bool:
 
 
 def repo_name(encoder: CachedEncoder) -> str:
-    return f"embeddings-{encoder}-{TILE_VERSION}" if encoder == Interface.TILE else f"embeddings-{encoder}"
+    return f"embeddings-{encoder}"
 
 
 def embeddings_repo_id(encoder: CachedEncoder) -> str:

@@ -4,5 +4,3 @@
 LLAMA_3_1_8B = "meta-llama/Llama-3.1-8B"
 LLAMA_3_1_8B_REVISION = "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b"
 
-# The TILE release the cache was built with; its embeddings live in their own repo, embeddings-tile-<version>.
-TILE_VERSION = "v0.2.1"
