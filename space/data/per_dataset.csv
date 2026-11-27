@@ -11,6 +11,12 @@ BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo (LightTAR-L),Ca
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,roc_auc,0.086362,0.003267,0.913638,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo (TAR-L),Causilo,large-tar,roc_auc,0.080098,0.004837,0.919902,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo (TAR-S),Causilo,tar,roc_auc,0.081596,0.00319,0.918404,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.087869,0.004535,0.912131,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.088775,0.003829,0.911225,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.083991,0.004702,0.916009,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.085784,0.003157,0.914216,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.079892,0.005294,0.920108,6,10000.0
+BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.081525,0.003117,0.918475,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,ConTextTab,ConTextTab,end-to-end,roc_auc,0.094719,0.003129,0.905281,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.08977,0.003942,0.91023,6,10000.0
 BIN_IMAGE_CELEB_ATTRACTIVENESS,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,roc_auc,0.090539,0.003427,0.909461,6,10000.0
@@ -151,6 +157,12 @@ BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo (LightTAR-L),Causilo,la
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,roc_auc,0.229244,0.009092,0.770756,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo (TAR-L),Causilo,large-tar,roc_auc,0.21818,0.013877,0.78182,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo (TAR-S),Causilo,tar,roc_auc,0.234306,0.022881,0.765694,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.183843,0.003641,0.816157,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.193885,0.005956,0.806115,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.200782,0.009233,0.799218,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.204685,0.009828,0.795315,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.192321,0.013182,0.807679,6,6000.0
+BIN_IMAGE_HATEFUL_MEME,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.207641,0.019786,0.792359,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,ConTextTab,ConTextTab,end-to-end,roc_auc,0.25616,0.009628,0.74384,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.226757,0.002258,0.773243,6,6000.0
 BIN_IMAGE_HATEFUL_MEME,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,roc_auc,0.233894,0.002532,0.766106,6,6000.0
@@ -291,6 +303,12 @@ BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo (LightTAR-L),Causil
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,roc_auc,0.182191,0.01386,0.817809,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo (TAR-L),Causilo,large-tar,roc_auc,0.206319,0.037232,0.793681,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo (TAR-S),Causilo,tar,roc_auc,0.218949,0.019,0.781051,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.143221,0.015559,0.856779,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.123469,0.009955,0.876531,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.124708,0.016305,0.875292,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.126511,0.025486,0.873489,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.16658,0.036058,0.83342,6,3468.0
+BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.173252,0.020511,0.826748,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,ConTextTab,ConTextTab,end-to-end,roc_auc,0.238045,0.012386,0.761955,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.217479,0.013908,0.782521,6,3468.0
 BIN_IMAGE_MAMMOGRAPHY_CMMD,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,roc_auc,0.217092,0.013582,0.782908,6,3468.0
@@ -431,6 +449,12 @@ BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo (LightTAR-L),Ca
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo (LightTAR-S),Causilo,lighttar,roc_auc,0.066482,0.016315,0.933518,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo (TAR-L),Causilo,large-tar,roc_auc,0.082097,0.016249,0.917903,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo (TAR-S),Causilo,tar,roc_auc,0.070336,0.011161,0.929664,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.081244,0.023084,0.918756,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.076881,0.008699,0.923119,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.046147,0.016506,0.953853,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.063349,0.008003,0.936651,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.074695,0.023587,0.925305,6,291.0
+BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.06972,0.011632,0.93028,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,ConTextTab,ConTextTab,end-to-end,roc_auc,0.086042,0.010494,0.913958,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.084259,0.020752,0.915741,6,291.0
 BIN_IMAGE_OASIS_ALZHEIMERS,extended,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,roc_auc,0.080065,0.014114,0.919935,6,291.0
@@ -571,6 +595,12 @@ BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo (LightTAR-L),C
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo (LightTAR-S),Causilo,lighttar,roc_auc,0.338125,0.014403,0.661875,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo (TAR-L),Causilo,large-tar,roc_auc,0.319632,0.02069,0.680368,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo (TAR-S),Causilo,tar,roc_auc,0.326979,0.018248,0.673021,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.305223,0.017972,0.694777,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.314567,0.018669,0.685433,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.383144,0.021356,0.616856,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.34345,0.016015,0.65655,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.313391,0.022446,0.686609,6,1003.0
+BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.325274,0.023518,0.674726,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,ConTextTab,ConTextTab,end-to-end,roc_auc,0.321502,0.019702,0.678498,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.302798,0.015747,0.697202,6,1003.0
 BIN_IMAGE_PINTEREST_POPULAR,extended,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,roc_auc,0.316368,0.017664,0.683632,6,1003.0
@@ -717,6 +747,15 @@ BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo (TAR-L),Causilo,
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo (TAR-S),Causilo,tar,roc_auc,0.006405,0.000411,0.993595,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,roc_auc,0.005872,0.000638,0.994128,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo (TILE),Causilo,tile,roc_auc,0.005656,0.000482,0.994344,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,roc_auc,0.005324,0.000506,0.994676,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.005139,0.000459,0.994861,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.005171,0.000497,0.994829,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.005029,0.000444,0.994971,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.005108,0.000476,0.994892,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.005944,0.000225,0.994056,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.005689,0.00042,0.994311,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,roc_auc,0.005046,0.000519,0.994954,6,10000.0
+BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,roc_auc,0.004761,0.000377,0.995239,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,ConTextTab,ConTextTab,end-to-end,roc_auc,0.00584,0.000556,0.99416,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,roc_auc,0.005871,0.000507,0.994129,6,10000.0
 BIN_TEXT_CALIFORNIA_PRICES,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.005532,0.000427,0.994468,6,10000.0
@@ -926,6 +965,15 @@ BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo (TAR-L),Causilo,large
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo (TAR-S),Causilo,tar,roc_auc,0.057174,0.008277,0.942826,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,roc_auc,0.057687,0.005112,0.942313,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo (TILE),Causilo,tile,roc_auc,0.023958,0.004455,0.976042,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,roc_auc,0.021852,0.005438,0.978148,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.029092,0.003875,0.970908,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.030762,0.004269,0.969238,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.031923,0.005416,0.968077,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.030391,0.003602,0.969609,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.043865,0.011217,0.956135,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.045148,0.008344,0.954852,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,roc_auc,0.046193,0.006482,0.953807,6,8484.0
+BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,roc_auc,0.021961,0.004718,0.978039,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,ConTextTab,ConTextTab,end-to-end,roc_auc,0.083535,0.008282,0.916465,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,roc_auc,0.028525,0.005473,0.971475,6,8484.0
 BIN_TEXT_FAKE_JOB_POSTING,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.038271,0.004963,0.961729,6,8484.0
@@ -1135,6 +1183,15 @@ BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (TAR-L),Causilo,large-t
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (TAR-S),Causilo,tar,roc_auc,0.141906,0.013204,0.858094,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,roc_auc,0.14809,0.033144,0.85191,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo (TILE),Causilo,tile,roc_auc,0.07861,0.008216,0.92139,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,roc_auc,0.063182,0.011288,0.936818,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.113,0.011999,0.887,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.123786,0.021677,0.876214,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.195755,0.024433,0.804245,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.206085,0.014037,0.793915,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.113434,0.010988,0.886566,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.135226,0.013329,0.864774,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,roc_auc,0.138851,0.028072,0.861149,6,534.0
+BIN_TEXT_IMDB_GENRE,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,roc_auc,0.076879,0.009796,0.923121,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,ConTextTab,ConTextTab,end-to-end,roc_auc,0.144399,0.019612,0.855601,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,roc_auc,0.066902,0.012,0.933098,6,534.0
 BIN_TEXT_IMDB_GENRE,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.116616,0.012557,0.883384,6,534.0
@@ -1344,6 +1401,15 @@ BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo (TAR-L),Causilo,large-
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo (TAR-S),Causilo,tar,roc_auc,0.058277,0.004533,0.941723,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,roc_auc,0.282801,0.006909,0.717199,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo (TILE),Causilo,tile,roc_auc,0.145727,0.007353,0.854273,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,roc_auc,0.122256,0.004864,0.877744,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.131173,0.006232,0.868827,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.144758,0.004733,0.855242,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.078963,0.006076,0.921037,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.093356,0.008061,0.906644,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.059401,0.006292,0.940599,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.059047,0.005022,0.940953,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,roc_auc,0.27558,0.009339,0.72442,6,10000.0
+BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,roc_auc,0.143878,0.006133,0.856122,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,ConTextTab,ConTextTab,end-to-end,roc_auc,0.369995,0.019981,0.630005,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,roc_auc,0.128906,0.005278,0.871094,6,10000.0
 BIN_TEXT_JIGSAW_TOXICITY,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.138554,0.009268,0.861446,6,10000.0
@@ -1553,6 +1619,15 @@ BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo (TAR-L),Causilo,la
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo (TAR-S),Causilo,tar,roc_auc,0.245257,0.009196,0.754743,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,roc_auc,0.27493,0.00629,0.72507,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo (TILE),Causilo,tile,roc_auc,0.173731,0.006112,0.826269,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,roc_auc,0.172093,0.007107,0.827907,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.222646,0.00662,0.777354,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.233124,0.004578,0.766876,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.220632,0.004145,0.779368,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.229151,0.004502,0.770849,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.216781,0.005136,0.783219,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.234513,0.007204,0.765487,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,roc_auc,0.268458,0.00565,0.731542,6,10000.0
+BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,roc_auc,0.167652,0.00442,0.832348,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,ConTextTab,ConTextTab,end-to-end,roc_auc,0.344561,0.010115,0.655439,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,roc_auc,0.178448,0.007408,0.821552,6,10000.0
 BIN_TEXT_KICKSTARTER_FUNDING,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.233197,0.005843,0.766803,6,10000.0
@@ -1762,6 +1837,15 @@ BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo (TAR-L),Causilo,large-
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo (TAR-S),Causilo,tar,roc_auc,0.400571,0.014735,0.599429,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,roc_auc,0.39393,0.012689,0.60607,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo (TILE),Causilo,tile,roc_auc,0.373661,0.019582,0.626339,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,roc_auc,0.358155,0.021591,0.641845,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,roc_auc,0.376927,0.019951,0.623073,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,roc_auc,0.377496,0.016382,0.622504,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,roc_auc,0.396399,0.008033,0.603601,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,roc_auc,0.399283,0.007626,0.600717,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,roc_auc,0.376683,0.015408,0.623317,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,roc_auc,0.383405,0.015532,0.616595,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,roc_auc,0.374618,0.011048,0.625382,6,3232.0
+BIN_TEXT_OSHA_INJURY,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,roc_auc,0.363074,0.020912,0.636926,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,ConTextTab,ConTextTab,end-to-end,roc_auc,0.411062,0.018437,0.588938,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,roc_auc,0.369977,0.019408,0.630023,6,3232.0
 BIN_TEXT_OSHA_INJURY,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,roc_auc,0.387183,0.016468,0.612817,6,3232.0
@@ -1965,6 +2049,12 @@ MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo (LightTAR-L),Causilo,large
 MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.694436,0.030064,-0.694436,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.652257,0.027487,-0.652257,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.681488,0.029533,-0.681488,6,1131.0
+MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.668324,0.021451,-0.668324,6,1131.0
+MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.697835,0.018305,-0.697835,6,1131.0
+MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.63258,0.021309,-0.63258,6,1131.0
+MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.666319,0.024279,-0.666319,6,1131.0
+MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.6394,0.040177,-0.6394,6,1131.0
+MUL_IMAGE_CBIS_DDSM,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.659622,0.031697,-0.659622,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.787193,0.024966,-0.787193,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.695457,0.013978,-0.695457,6,1131.0
 MUL_IMAGE_CBIS_DDSM,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.717309,0.014945,-0.717309,6,1131.0
@@ -2105,6 +2195,12 @@ MUL_IMAGE_CHEXPERT,core,classification,image,Causilo (LightTAR-L),Causilo,large-
 MUL_IMAGE_CHEXPERT,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.685387,0.004713,-0.685387,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.652794,0.003704,-0.652794,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.647008,0.004889,-0.647008,6,10000.0
+MUL_IMAGE_CHEXPERT,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.683687,0.006101,-0.683687,6,10000.0
+MUL_IMAGE_CHEXPERT,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.683701,0.006334,-0.683701,6,10000.0
+MUL_IMAGE_CHEXPERT,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.672559,0.005528,-0.672559,6,10000.0
+MUL_IMAGE_CHEXPERT,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.669836,0.005159,-0.669836,6,10000.0
+MUL_IMAGE_CHEXPERT,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.640717,0.001403,-0.640717,6,10000.0
+MUL_IMAGE_CHEXPERT,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.63371,0.006157,-0.63371,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.707598,0.005789,-0.707598,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.691661,0.006672,-0.691661,6,10000.0
 MUL_IMAGE_CHEXPERT,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.690135,0.005852,-0.690135,6,10000.0
@@ -2245,6 +2341,12 @@ MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo (LightTAR-L),Causilo
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,1.16284,0.038874,-1.16284,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,1.346768,0.275169,-1.346768,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,1.399035,0.127754,-1.399035,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,1.069446,0.028516,-1.069446,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,1.073519,0.034319,-1.073519,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,1.068595,0.027634,-1.068595,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,1.0783,0.036684,-1.0783,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.282087,0.29638,-1.282087,6,638.0
+MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.355069,0.175486,-1.355069,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,1.384185,0.056038,-1.384185,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,1.197525,0.039922,-1.197525,6,638.0
 MUL_IMAGE_CSGO_SKIN_PRICE,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,1.217416,0.031539,-1.217416,6,638.0
@@ -2385,6 +2487,12 @@ MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo (LightTAR-L),Causilo
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,1.410934,0.031887,-1.410934,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,1.424024,0.038452,-1.424024,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,1.480696,0.068961,-1.480696,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,1.410107,0.029057,-1.410107,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,1.39702,0.028917,-1.39702,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,1.490568,0.04947,-1.490568,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,1.40342,0.032276,-1.40342,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.412553,0.03373,-1.412553,6,400.0
+MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.474482,0.064484,-1.474482,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,1.445897,0.064996,-1.445897,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,1.417422,0.031918,-1.417422,6,400.0
 MUL_IMAGE_FLOWER_BOUQUETS,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,1.410813,0.037918,-1.410813,6,400.0
@@ -2525,6 +2633,12 @@ MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo (LightTAR-L),Causilo,l
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.270144,0.006376,-0.270144,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.279836,0.019407,-0.279836,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.291821,0.008231,-0.291821,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.264304,0.00676,-0.264304,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.271025,0.00697,-0.271025,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.247502,0.007121,-0.247502,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.258724,0.00669,-0.258724,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.276003,0.020951,-0.276003,6,8300.0
+MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.290633,0.011273,-0.290633,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.318434,0.007887,-0.318434,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.284425,0.006078,-0.284425,6,8300.0
 MUL_IMAGE_GLAUCOMA_SMDG,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.290466,0.007447,-0.290466,6,8300.0
@@ -2665,6 +2779,12 @@ MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo (LightTAR-L),Cau
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.384346,0.010308,-0.384346,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.369925,0.028947,-0.369925,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.420703,0.047648,-0.420703,6,4980.0
+MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.381007,0.013005,-0.381007,6,4980.0
+MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.410119,0.014151,-0.410119,6,4980.0
+MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.351856,0.014619,-0.351856,6,4980.0
+MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.374611,0.010943,-0.374611,6,4980.0
+MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.366738,0.031589,-0.366738,6,4980.0
+MUL_IMAGE_HAM10000_LESION,extended,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.412708,0.045249,-0.412708,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.482928,0.012995,-0.482928,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.408432,0.010867,-0.408432,6,4980.0
 MUL_IMAGE_HAM10000_LESION,extended,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.432118,0.011578,-0.432118,6,4980.0
@@ -2805,6 +2925,12 @@ MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo (LightTAR-L),C
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,1.020354,0.023904,-1.020354,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,1.104657,0.106875,-1.104657,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,1.181839,0.108852,-1.181839,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.883338,0.02419,-0.883338,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.907116,0.030102,-0.907116,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.879308,0.026601,-0.879308,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.888563,0.022782,-0.888563,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.034327,0.120792,-1.034327,6,2854.0
+MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.115212,0.115494,-1.115212,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,1.220128,0.032302,-1.220128,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.987051,0.024172,-0.987051,6,2854.0
 MUL_IMAGE_HEARTHSTONE_CLASS,extended,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,1.029457,0.018657,-1.029457,6,2854.0
@@ -2945,6 +3071,12 @@ MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo (LightTAR-L),Causilo,larg
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.414182,0.002891,-0.414182,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.528724,0.028068,-0.528724,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.620099,0.044889,-0.620099,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.42842,0.010671,-0.42842,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.456258,0.005921,-0.456258,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.239671,0.009482,-0.239671,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.314018,0.007154,-0.314018,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.473282,0.033325,-0.473282,6,8388.0
+MUL_IMAGE_HUBMAP_HPA,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.59593,0.057104,-0.59593,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.843348,0.006487,-0.843348,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.620062,0.008971,-0.620062,6,8388.0
 MUL_IMAGE_HUBMAP_HPA,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.625266,0.013542,-0.625266,6,8388.0
@@ -3085,6 +3217,12 @@ MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo (LightTAR-L),Causil
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.281087,0.005287,-0.281087,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.20675,0.008713,-0.20675,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.275341,0.024061,-0.275341,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.233849,0.005045,-0.233849,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.288345,0.003146,-0.288345,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.2127,0.003518,-0.2127,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.265421,0.005261,-0.265421,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.191371,0.011995,-0.191371,6,6880.0
+MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.257709,0.018509,-0.257709,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.383313,0.005567,-0.383313,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.262455,0.005464,-0.262455,6,6880.0
 MUL_IMAGE_JUSTIN_INSTAGRAM,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.310754,0.00402,-0.310754,6,6880.0
@@ -3225,6 +3363,12 @@ MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo (LightTAR-L),Causilo,l
 MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.243063,0.020922,-0.243063,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.255845,0.037555,-0.255845,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.280907,0.021608,-0.280907,6,4060.0
+MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.213219,0.016377,-0.213219,6,4060.0
+MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.227605,0.019977,-0.227605,6,4060.0
+MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.215239,0.018712,-0.215239,6,4060.0
+MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.226076,0.022901,-0.226076,6,4060.0
+MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.25356,0.042167,-0.25356,6,4060.0
+MUL_IMAGE_MINECRAFT,extended,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.282707,0.025059,-0.282707,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.291921,0.021297,-0.291921,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.243804,0.017144,-0.243804,6,4060.0
 MUL_IMAGE_MINECRAFT,extended,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.255921,0.021544,-0.255921,6,4060.0
@@ -3365,6 +3509,12 @@ MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo (LightTAR-L),Cau
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.498079,0.016102,-0.498079,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.466264,0.045825,-0.466264,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.510726,0.062935,-0.510726,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.482119,0.026473,-0.482119,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.492332,0.017645,-0.492332,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.479715,0.026252,-0.479715,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.488915,0.018499,-0.488915,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.468772,0.041499,-0.468772,6,1094.0
+MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.506565,0.063859,-0.506565,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.532177,0.027625,-0.532177,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.498462,0.02503,-0.498462,6,1094.0
 MUL_IMAGE_PAD_UFES_LESION,extended,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.504515,0.015844,-0.504515,6,1094.0
@@ -3505,6 +3655,12 @@ MUL_IMAGE_PETFINDER,core,classification,image,Causilo (LightTAR-L),Causilo,large
 MUL_IMAGE_PETFINDER,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,1.262693,0.004148,-1.262693,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,1.17354,0.007972,-1.17354,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,1.263839,0.020819,-1.263839,6,9768.0
+MUL_IMAGE_PETFINDER,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,1.126693,0.005816,-1.126693,6,9768.0
+MUL_IMAGE_PETFINDER,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,1.220046,0.004012,-1.220046,6,9768.0
+MUL_IMAGE_PETFINDER,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,1.117508,0.005644,-1.117508,6,9768.0
+MUL_IMAGE_PETFINDER,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,1.204806,0.005615,-1.204806,6,9768.0
+MUL_IMAGE_PETFINDER,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.110213,0.007446,-1.110213,6,9768.0
+MUL_IMAGE_PETFINDER,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.205924,0.012213,-1.205924,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,1.413453,0.014389,-1.413453,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,1.212858,0.00509,-1.212858,6,9768.0
 MUL_IMAGE_PETFINDER,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,1.29706,0.001724,-1.29706,6,9768.0
@@ -3645,6 +3801,12 @@ MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo (LightTAR-L),Caus
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,1.339275,0.038958,-1.339275,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,1.325625,0.02098,-1.325625,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,1.382646,0.040885,-1.382646,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,1.252829,0.030851,-1.252829,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,1.24314,0.034768,-1.24314,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,1.261778,0.030161,-1.261778,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,1.252444,0.034531,-1.252444,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.282436,0.03168,-1.282436,6,718.0
+MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.307715,0.044784,-1.307715,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,1.444188,0.054791,-1.444188,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,1.331216,0.040253,-1.331216,6,718.0
 MUL_IMAGE_POKEMON_HEIGHT,extended,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,1.34266,0.031166,-1.34266,6,718.0
@@ -3785,6 +3947,12 @@ MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo (LightTAR-L),Causil
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.635037,0.019002,-0.635037,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.576482,0.015824,-0.576482,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.660481,0.044194,-0.660481,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.55735,0.019344,-0.55735,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.586064,0.019325,-0.586064,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.551321,0.016495,-0.551321,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.583814,0.020476,-0.583814,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.495155,0.017788,-0.495155,6,3214.0
+MUL_IMAGE_REDDIT_MEMES,extended,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.580339,0.032661,-0.580339,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.849195,0.029627,-0.849195,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.613755,0.023476,-0.613755,6,3214.0
 MUL_IMAGE_REDDIT_MEMES,extended,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.644357,0.023934,-0.644357,6,3214.0
@@ -3925,6 +4093,12 @@ MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo (LightTAR-L),Cau
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo (LightTAR-S),Causilo,lighttar,log_loss,0.287546,0.012961,-0.287546,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo (TAR-L),Causilo,large-tar,log_loss,0.26727,0.023925,-0.26727,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo (TAR-S),Causilo,tar,log_loss,0.312731,0.012838,-0.312731,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.234421,0.014727,-0.234421,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.267716,0.014395,-0.267716,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.231318,0.015436,-0.231318,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.26611,0.01426,-0.26611,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.271909,0.028457,-0.271909,6,10000.0
+MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.307631,0.020141,-0.307631,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,ConTextTab,ConTextTab,end-to-end,log_loss,0.424028,0.012478,-0.424028,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.272516,0.014215,-0.272516,6,10000.0
 MUL_IMAGE_ZOOSCAN_ZOOPLANKTON,core,classification,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,log_loss,0.312408,0.014551,-0.312408,6,10000.0
@@ -4071,6 +4245,15 @@ MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (TAR-L),Caus
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.093887,0.008846,-0.093887,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,0.089919,0.007909,-0.089919,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo (TILE),Causilo,tile,log_loss,0.090097,0.008869,-0.090097,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,0.08124,0.008118,-0.08124,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.082382,0.008366,-0.082382,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.082375,0.007833,-0.082375,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.082487,0.008065,-0.082487,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.082926,0.008003,-0.082926,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.083957,0.008164,-0.083957,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.084017,0.008449,-0.084017,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,0.081811,0.008515,-0.081811,6,10000.0
+MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,0.08904,0.007924,-0.08904,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,0.117184,0.011458,-0.117184,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,0.091212,0.007626,-0.091212,6,10000.0
 MUL_TEXT_AMERICAN_EAGLE_PRICES,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.089176,0.006774,-0.089176,6,10000.0
@@ -4280,6 +4463,15 @@ MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo (TAR-L),Causilo,la
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.825502,0.011649,-0.825502,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,0.831418,0.009352,-0.831418,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo (TILE),Causilo,tile,log_loss,0.809569,0.009242,-0.809569,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,0.795546,0.009714,-0.795546,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.802368,0.010502,-0.802368,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.805798,0.008899,-0.805798,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.946216,0.022451,-0.946216,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.870768,0.004647,-0.870768,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.803056,0.011154,-0.803056,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.813019,0.015923,-0.813019,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,0.814171,0.009662,-0.814171,6,2645.0
+MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,0.800744,0.009255,-0.800744,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,0.936164,0.022061,-0.936164,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,0.817671,0.010895,-0.817671,6,2645.0
 MUL_TEXT_BOOKS_GOODREADS,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.823837,0.005145,-0.823837,6,2645.0
@@ -4489,6 +4681,15 @@ MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo (TAR-L),Causilo,large-t
 MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.9139,0.019322,-0.9139,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,0.916343,0.020926,-0.916343,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo (TILE),Causilo,tile,log_loss,0.811262,0.013449,-0.811262,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,0.830387,0.015618,-0.830387,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.861054,0.019309,-0.861054,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.871774,0.018769,-0.871774,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.889599,0.024404,-0.889599,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.8792,0.024115,-0.8792,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.861282,0.017812,-0.861282,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.879339,0.020015,-0.879339,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,0.885282,0.020665,-0.885282,6,4939.0
+MUL_TEXT_BOX_OFFICE,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,0.775902,0.014822,-0.775902,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,0.957796,0.021439,-0.957796,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,0.860977,0.02182,-0.860977,6,4939.0
 MUL_TEXT_BOX_OFFICE,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.884062,0.01854,-0.884062,6,4939.0
@@ -4698,6 +4899,15 @@ MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo (TAR-L),Causilo
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.530241,0.00393,-0.530241,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,0.533369,0.002466,-0.533369,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo (TILE),Causilo,tile,log_loss,0.531269,0.004608,-0.531269,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,0.516733,0.004412,-0.516733,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.513596,0.00368,-0.513596,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.514685,0.004037,-0.514685,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.515186,0.004288,-0.515186,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.515426,0.004713,-0.515426,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.516098,0.004658,-0.516098,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.518877,0.004195,-0.518877,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,0.516378,0.003253,-0.516378,6,10000.0
+MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,0.526301,0.004044,-0.526301,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,0.539372,0.003814,-0.539372,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,0.521718,0.003727,-0.521718,6,10000.0
 MUL_TEXT_CONSUMER_COMPLAINT,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.520355,0.00331,-0.520355,6,10000.0
@@ -4907,6 +5117,15 @@ MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo (TAR-L),Causilo,
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,1.142826,0.012429,-1.142826,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,1.162405,0.007484,-1.162405,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo (TILE),Causilo,tile,log_loss,1.082569,0.010196,-1.082569,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,1.10308,0.011291,-1.10308,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,1.12091,0.011061,-1.12091,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,1.117973,0.009455,-1.117973,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,1.107828,0.009867,-1.107828,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,1.107351,0.010928,-1.107351,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.111378,0.01133,-1.111378,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.121779,0.013698,-1.121779,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,1.135337,0.009935,-1.135337,6,10000.0
+MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,1.077125,0.017406,-1.077125,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,1.281445,0.011448,-1.281445,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,1.137771,0.010856,-1.137771,6,10000.0
 MUL_TEXT_DATA_SCIENTIST_SALARY,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,1.154656,0.010456,-1.154656,6,10000.0
@@ -5116,6 +5335,15 @@ MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo (TAR-L),Causilo,large
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,1.943942,0.02359,-1.943942,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,1.933641,0.014869,-1.933641,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo (TILE),Causilo,tile,log_loss,1.822947,0.021544,-1.822947,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,1.815044,0.014124,-1.815044,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,1.86891,0.014443,-1.86891,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,1.882278,0.017719,-1.882278,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,2.082393,0.043058,-2.082393,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,1.943029,0.028365,-1.943029,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.8807,0.024648,-1.8807,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.905701,0.03932,-1.905701,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,1.898382,0.01601,-1.898382,6,1098.0
+MUL_TEXT_KOREAN_DRAMA,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,1.798459,0.017656,-1.798459,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,1.984127,0.028548,-1.984127,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,1.851514,0.013997,-1.851514,6,1098.0
 MUL_TEXT_KOREAN_DRAMA,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,1.903835,0.013968,-1.903835,6,1098.0
@@ -5325,6 +5553,15 @@ MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo (TAR-L),Causilo,l
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,1.449962,0.012657,-1.449962,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,1.420629,0.010037,-1.420629,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo (TILE),Causilo,tile,log_loss,1.411383,0.0139,-1.411383,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,1.361372,0.012187,-1.361372,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,1.357935,0.009885,-1.357935,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,1.363038,0.00871,-1.363038,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,1.358167,0.010044,-1.358167,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,1.361036,0.009237,-1.361036,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.370301,0.016264,-1.370301,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.37645,0.012366,-1.37645,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,1.364713,0.008609,-1.364713,6,10000.0
+MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,1.363633,0.012338,-1.363633,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,1.523507,0.008724,-1.523507,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,1.404421,0.010383,-1.404421,6,10000.0
 MUL_TEXT_MELBOURNE_AIRBNB,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,1.410469,0.011119,-1.410469,6,10000.0
@@ -5533,6 +5770,15 @@ MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo (TAR-L),Causilo,l
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.573224,0.005564,-0.573224,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,0.579235,0.004563,-0.579235,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo (TILE),Causilo,tile,log_loss,0.557523,0.005472,-0.557523,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,0.56225,0.003303,-0.56225,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.570184,0.003749,-0.570184,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.587569,0.004188,-0.587569,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.539589,0.004396,-0.539589,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.5454,0.00434,-0.5454,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.549526,0.00751,-0.549526,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.563655,0.004568,-0.563655,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,0.567036,0.003733,-0.567036,6,10000.0
+MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,0.535684,0.00536,-0.535684,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,0.659081,0.0048,-0.659081,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,0.570106,0.002905,-0.570106,6,10000.0
 MUL_TEXT_MICHELIN_RESTAURANTS,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.580017,0.002624,-0.580017,6,10000.0
@@ -5742,6 +5988,15 @@ MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo (TAR-L),Causilo,large
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,1.169039,0.00611,-1.169039,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,1.195144,0.006854,-1.195144,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo (TILE),Causilo,tile,log_loss,1.178815,0.007511,-1.178815,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,1.121062,0.00677,-1.121062,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,1.141072,0.004189,-1.141072,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,1.144018,0.004081,-1.144018,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,1.147139,0.004295,-1.147139,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,1.146055,0.005034,-1.146055,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.133924,0.004594,-1.133924,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.141335,0.004709,-1.141335,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,1.17069,0.006307,-1.17069,6,10000.0
+MUL_TEXT_NEWS_CHANNEL,extended,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,1.14897,0.006267,-1.14897,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,1.285942,0.011051,-1.285942,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,1.154307,0.007128,-1.154307,6,10000.0
 MUL_TEXT_NEWS_CHANNEL,extended,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,1.169893,0.004783,-1.169893,6,10000.0
@@ -5951,6 +6206,15 @@ MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo (TAR-L),Causilo,larg
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.352506,0.010548,-0.352506,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,0.415064,0.015525,-0.415064,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo (TILE),Causilo,tile,log_loss,0.377453,0.012775,-0.377453,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,0.330381,0.012238,-0.330381,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.342694,0.009565,-0.342694,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.35772,0.007197,-0.35772,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.348328,0.012117,-0.348328,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.352044,0.012746,-0.352044,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.334966,0.010696,-0.334966,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.352592,0.011894,-0.352592,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,0.405564,0.015261,-0.405564,6,3394.0
+MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,0.372165,0.013279,-0.372165,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,0.442474,0.019203,-0.442474,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,0.33922,0.011144,-0.33922,6,3394.0
 MUL_TEXT_PRODUCT_SENTIMENT,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.352504,0.007127,-0.352504,6,3394.0
@@ -6160,6 +6424,15 @@ MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo (TAR-L),Causilo,large-t
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,1.567077,0.012949,-1.567077,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,1.87272,0.023561,-1.87272,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo (TILE),Causilo,tile,log_loss,1.261157,0.017434,-1.261157,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,1.051722,0.011141,-1.051722,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,1.329137,0.018159,-1.329137,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,1.404046,0.011668,-1.404046,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,1.322608,0.016446,-1.322608,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,1.396133,0.016771,-1.396133,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,1.302989,0.02407,-1.302989,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,1.38463,0.016732,-1.38463,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,1.568965,0.018391,-1.568965,6,10000.0
+MUL_TEXT_SPOTIFY_GENRES,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,1.154306,0.023284,-1.154306,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,2.027827,0.024808,-2.027827,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,1.119904,0.012009,-1.119904,6,10000.0
 MUL_TEXT_SPOTIFY_GENRES,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,1.476145,0.022413,-1.476145,6,10000.0
@@ -6369,6 +6642,15 @@ MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo (TAR-L),Causilo,large-tar
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.157724,0.007736,-0.157724,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,0.17583,0.006693,-0.17583,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo (TILE),Causilo,tile,log_loss,0.936063,0.488269,-0.936063,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,0.150888,0.007786,-0.150888,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.15622,0.008067,-0.15622,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.154139,0.009166,-0.154139,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.153595,0.007429,-0.153595,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.153151,0.008772,-0.153151,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.146766,0.010776,-0.146766,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.149165,0.007566,-0.149165,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,0.159434,0.008368,-0.159434,6,10000.0
+MUL_TEXT_US_ACCIDENTS,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,0.888889,0.228549,-0.888889,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,0.241363,0.006959,-0.241363,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,0.16305,0.007458,-0.16305,6,10000.0
 MUL_TEXT_US_ACCIDENTS,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.168204,0.008687,-0.168204,6,10000.0
@@ -6578,6 +6860,15 @@ MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo (TAR-L),Causilo,large-tar,
 MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.705162,0.010646,-0.705162,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,0.953095,0.019178,-0.953095,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo (TILE),Causilo,tile,log_loss,1.031642,0.012862,-1.031642,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,0.592468,0.013289,-0.592468,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.712637,0.016305,-0.712637,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.750848,0.017453,-0.750848,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.706606,0.017658,-0.706606,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.740137,0.017016,-0.740137,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.651169,0.011654,-0.651169,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.679757,0.01086,-0.679757,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,0.914078,0.021298,-0.914078,6,10000.0
+MUL_TEXT_WINE_REVIEW,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,0.977103,0.010835,-0.977103,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,1.353735,0.010812,-1.353735,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,0.60876,0.01081,-0.60876,6,10000.0
 MUL_TEXT_WINE_REVIEW,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.759255,0.017906,-0.759255,6,10000.0
@@ -6787,6 +7078,15 @@ MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo (TAR-L),Causilo,
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo (TAR-S),Causilo,tar,log_loss,0.638157,0.006657,-0.638157,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo (TF-IDF),Causilo,tfidf,log_loss,0.73452,0.005945,-0.73452,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo (TILE),Causilo,tile,log_loss,0.619561,0.004501,-0.619561,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo 1.5 (CASE),Causilo 1.5,case,log_loss,0.611897,0.011086,-0.611897,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,log_loss,0.622059,0.00991,-0.622059,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,log_loss,0.648998,0.006187,-0.648998,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,log_loss,0.620625,0.00934,-0.620625,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,log_loss,0.644159,0.00715,-0.644159,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,log_loss,0.613879,0.009879,-0.613879,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,log_loss,0.636597,0.006982,-0.636597,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,log_loss,0.722276,0.006054,-0.722276,6,10000.0
+MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,Causilo 1.5 (TILE),Causilo 1.5,tile,log_loss,0.615613,0.006434,-0.615613,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,ConTextTab,ConTextTab,end-to-end,log_loss,0.84218,0.007369,-0.84218,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,log_loss,0.618234,0.01089,-0.618234,6,10000.0
 MUL_TEXT_WOMEN_CLOTHING_REVIEW,core,classification,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,log_loss,0.62528,0.008984,-0.62528,6,10000.0
@@ -6990,6 +7290,12 @@ REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo (LightTAR-L),Causilo,larg
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.385156,0.011018,-0.385156,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.38045,0.010449,-0.38045,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.383522,0.011327,-0.383522,6,10000.0
+REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.368491,0.010272,-0.368491,6,10000.0
+REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.369952,0.010658,-0.369952,6,10000.0
+REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.367155,0.010632,-0.367155,6,10000.0
+REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.369113,0.011043,-0.369113,6,10000.0
+REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.366724,0.011437,-0.366724,6,10000.0
+REG_IMAGE_AIRBNB_NYC,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.369649,0.010933,-0.369649,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.395656,0.010805,-0.395656,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.378493,0.009415,-0.378493,6,10000.0
 REG_IMAGE_AIRBNB_NYC,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.380319,0.010071,-0.380319,6,10000.0
@@ -7130,6 +7436,12 @@ REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo (LightTAR-L),Causilo,
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.619329,0.027933,-0.619329,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.576474,0.026745,-0.576474,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.625647,0.044113,-0.625647,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.557613,0.030849,-0.557613,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.608671,0.023684,-0.608671,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.552767,0.026857,-0.552767,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.609244,0.028794,-0.609244,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.565149,0.023916,-0.565149,6,2326.0
+REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.610188,0.044977,-0.610188,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.672908,0.027067,-0.672908,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.575738,0.027789,-0.575738,6,2326.0
 REG_IMAGE_AMAZON_BEST_SELLER,core,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.633987,0.018935,-0.633987,6,2326.0
@@ -7270,6 +7582,12 @@ REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo (LightTAR-L),Causilo,lar
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,2.894616,0.094233,-2.894616,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,2.793408,0.100461,-2.793408,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,2.87958,0.12227,-2.87958,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,2.868218,0.104137,-2.868218,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,3.000381,0.11224,-3.000381,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,2.729058,0.108382,-2.729058,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,2.849242,0.105301,-2.849242,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,2.761365,0.099827,-2.761365,6,10000.0
+REG_IMAGE_AMAZON_PACKAGES,core,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,2.840928,0.116311,-2.840928,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,3.305507,0.11791,-3.305507,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,2.949735,0.113834,-2.949735,6,10000.0
 REG_IMAGE_AMAZON_PACKAGES,core,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,3.066646,0.109017,-3.066646,6,10000.0
@@ -7410,6 +7728,12 @@ REG_IMAGE_DVM_CAR,extended,regression,image,Causilo (LightTAR-L),Causilo,large-l
 REG_IMAGE_DVM_CAR,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,20896.090973,13515.882047,-20896.090973,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,19441.987609,13862.01437,-19441.987609,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,19986.005948,14017.118431,-19986.005948,6,10000.0
+REG_IMAGE_DVM_CAR,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,18872.18392,13879.045569,-18872.18392,6,10000.0
+REG_IMAGE_DVM_CAR,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,19009.040066,13872.557829,-19009.040066,6,10000.0
+REG_IMAGE_DVM_CAR,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,18981.82394,14109.456646,-18981.82394,6,10000.0
+REG_IMAGE_DVM_CAR,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,19177.686013,13875.617804,-19177.686013,6,10000.0
+REG_IMAGE_DVM_CAR,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,18969.437744,14018.347057,-18969.437744,6,10000.0
+REG_IMAGE_DVM_CAR,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,19007.616009,14154.359262,-19007.616009,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,23391.493165,13074.967727,-23391.493165,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,17966.753469,12853.643006,-17966.753469,6,10000.0
 REG_IMAGE_DVM_CAR,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,17918.560788,12709.019997,-17918.560788,6,10000.0
@@ -7550,6 +7874,12 @@ REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo (LightTAR-L),Causilo,
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.088869,0.001447,-0.088869,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.100805,0.002798,-0.100805,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.103774,0.006633,-0.103774,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.08076,0.001586,-0.08076,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.081003,0.001414,-0.081003,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.080782,0.001797,-0.080782,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.080876,0.001442,-0.080876,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.088183,0.00177,-0.088183,6,10000.0
+REG_IMAGE_FLIPKART_RATIO,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.090323,0.003871,-0.090323,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.08938,0.001543,-0.08938,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.085757,0.001835,-0.085757,6,10000.0
 REG_IMAGE_FLIPKART_RATIO,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.086314,0.001492,-0.086314,6,10000.0
@@ -7690,6 +8020,12 @@ REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo (LightTAR-L),Causilo,la
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.12522,0.004366,-0.12522,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.147671,0.01147,-0.147671,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.157389,0.010503,-0.157389,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.113236,0.003908,-0.113236,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.116835,0.003307,-0.116835,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.112736,0.003918,-0.112736,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.116495,0.003749,-0.116495,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.138769,0.011995,-0.138769,6,6554.0
+REG_IMAGE_GOIAS_HOUSES,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.148106,0.010009,-0.148106,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.153438,0.003147,-0.153438,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.122145,0.003999,-0.122145,6,6554.0
 REG_IMAGE_GOIAS_HOUSES,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.125027,0.001679,-0.125027,6,6554.0
@@ -7830,6 +8166,12 @@ REG_IMAGE_HNM_FASHION,core,regression,image,Causilo (LightTAR-L),Causilo,large-l
 REG_IMAGE_HNM_FASHION,core,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,4.323895,0.093874,-4.323895,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,4.316422,0.104114,-4.316422,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,4.344729,0.09614,-4.344729,6,10000.0
+REG_IMAGE_HNM_FASHION,core,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,4.252546,0.095567,-4.252546,6,10000.0
+REG_IMAGE_HNM_FASHION,core,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,4.27197,0.091572,-4.27197,6,10000.0
+REG_IMAGE_HNM_FASHION,core,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,4.255932,0.101206,-4.255932,6,10000.0
+REG_IMAGE_HNM_FASHION,core,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,4.27476,0.096838,-4.27476,6,10000.0
+REG_IMAGE_HNM_FASHION,core,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,4.292626,0.110835,-4.292626,6,10000.0
+REG_IMAGE_HNM_FASHION,core,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,4.303193,0.092274,-4.303193,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,4.418822,0.087353,-4.418822,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,4.326735,0.098857,-4.326735,6,10000.0
 REG_IMAGE_HNM_FASHION,core,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,4.334933,0.083156,-4.334933,6,10000.0
@@ -7970,6 +8312,12 @@ REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo (LightTAR-L),Causilo,l
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.496381,0.008085,-0.496381,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.497614,0.011384,-0.497614,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.502376,0.012794,-0.502376,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.491427,0.007669,-0.491427,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.490775,0.0083,-0.490775,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.50075,0.007134,-0.50075,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.492975,0.008128,-0.492975,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.491844,0.010762,-0.491844,6,1092.0
+REG_IMAGE_KAMERNET_SIZE,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.49722,0.01057,-0.49722,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.500828,0.010006,-0.500828,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.498884,0.006698,-0.498884,6,1092.0
 REG_IMAGE_KAMERNET_SIZE,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.498048,0.007578,-0.498048,6,1092.0
@@ -8110,6 +8458,12 @@ REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo (LightTAR-L),Causilo,larg
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,2296.156799,774.158209,-2296.156799,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,2120.627184,662.852642,-2120.627184,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,2015.66621,723.399708,-2015.66621,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,1842.735092,394.224425,-1842.735092,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,1855.163843,464.904711,-1855.163843,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,1796.745472,562.979226,-1796.745472,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,1886.440637,668.108969,-1886.440637,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,1891.468868,603.71498,-1891.468868,6,267.0
+REG_IMAGE_KHAADI_CLOTHES,core,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,1932.791548,538.502159,-1932.791548,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,2126.507724,383.261055,-2126.507724,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,2278.505091,841.581791,-2278.505091,6,267.0
 REG_IMAGE_KHAADI_CLOTHES,core,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,2412.547386,628.429218,-2412.547386,6,267.0
@@ -8250,6 +8604,12 @@ REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo (LightTAR-L),Causilo
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,430.386078,42.211113,-430.386078,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,429.890303,32.497744,-429.890303,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,426.839995,41.251058,-426.839995,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,421.034934,34.836573,-421.034934,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,416.705587,36.706329,-416.705587,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,426.874234,43.511715,-426.874234,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,417.31015,40.776168,-417.31015,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,420.562036,33.956961,-420.562036,6,646.0
+REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,417.64287,38.171811,-417.64287,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,446.421652,47.837633,-446.421652,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,422.902437,36.61451,-422.902437,6,646.0
 REG_IMAGE_LAHAINA_AUCTION,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,421.716886,36.103885,-421.716886,6,646.0
@@ -8390,6 +8750,12 @@ REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo (LightTAR-L),Causilo,l
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.317729,0.003001,-0.317729,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.312239,0.001313,-0.312239,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.316811,0.003597,-0.316811,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.307172,0.002575,-0.307172,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.311914,0.002973,-0.311914,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.307512,0.003748,-0.307512,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.311218,0.003371,-0.311218,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.306919,0.001894,-0.306919,6,8376.0
+REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.311205,0.00394,-0.311205,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.327809,0.002952,-0.327809,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.311697,0.002526,-0.311697,6,8376.0
 REG_IMAGE_LETTERBOXD_MOVIES,core,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.31604,0.003096,-0.31604,6,8376.0
@@ -8530,6 +8896,12 @@ REG_IMAGE_MANGO_MASS,core,regression,image,Causilo (LightTAR-L),Causilo,large-li
 REG_IMAGE_MANGO_MASS,core,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.049668,0.004613,-0.049668,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.05413,0.003559,-0.05413,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.046706,0.001293,-0.046706,6,364.0
+REG_IMAGE_MANGO_MASS,core,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.053719,0.002574,-0.053719,6,364.0
+REG_IMAGE_MANGO_MASS,core,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.052726,0.00382,-0.052726,6,364.0
+REG_IMAGE_MANGO_MASS,core,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.050793,0.002392,-0.050793,6,364.0
+REG_IMAGE_MANGO_MASS,core,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.049375,0.004648,-0.049375,6,364.0
+REG_IMAGE_MANGO_MASS,core,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.053565,0.003451,-0.053565,6,364.0
+REG_IMAGE_MANGO_MASS,core,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.046623,0.001219,-0.046623,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.054429,0.00312,-0.054429,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.054973,0.002983,-0.054973,6,364.0
 REG_IMAGE_MANGO_MASS,core,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.05366,0.003354,-0.05366,6,364.0
@@ -8670,6 +9042,12 @@ REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo (LightTAR-L),Causilo,large-
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.092139,0.000926,-0.092139,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.091022,0.0016,-0.091022,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.092819,0.001787,-0.092819,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.086069,0.001986,-0.086069,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.087751,0.001692,-0.087751,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.085553,0.001726,-0.085553,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.086987,0.001431,-0.086987,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.084937,0.002047,-0.084937,6,9166.0
+REG_IMAGE_MKPHOTO_BOTS,core,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.087421,0.001966,-0.087421,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.100498,0.001321,-0.100498,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.094392,0.001595,-0.094392,6,9166.0
 REG_IMAGE_MKPHOTO_BOTS,core,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.096161,0.001208,-0.096161,6,9166.0
@@ -8810,6 +9188,12 @@ REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo (LightTAR-L),Causilo,larg
 REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,3138.594817,431.373273,-3138.594817,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,3109.383772,450.249194,-3109.383772,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,3208.637196,374.238714,-3208.637196,6,8246.0
+REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,3008.126388,438.697902,-3008.126388,6,8246.0
+REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,3021.670768,420.195779,-3021.670768,6,8246.0
+REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,2921.588072,482.109728,-2921.588072,6,8246.0
+REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,3008.011096,460.446994,-3008.011096,6,8246.0
+REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,3031.2239,454.582198,-3031.2239,6,8246.0
+REG_IMAGE_PAINTING_PRICE,core,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,3084.862068,431.794593,-3084.862068,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,3400.396765,400.99163,-3400.396765,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,3052.381504,454.410566,-3052.381504,6,8246.0
 REG_IMAGE_PAINTING_PRICE,core,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,3090.600957,451.423552,-3090.600957,6,8246.0
@@ -8950,6 +9334,12 @@ REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo (LightTAR-L),Causilo,l
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.578424,0.008724,-0.578424,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.610398,0.024512,-0.610398,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.621905,0.011273,-0.621905,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.562169,0.009136,-0.562169,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.575468,0.008882,-0.575468,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.558436,0.00893,-0.558436,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.569866,0.008183,-0.569866,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.596653,0.020364,-0.596653,6,10000.0
+REG_IMAGE_ROMANIA_PRICE,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.610537,0.009355,-0.610537,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.637971,0.009022,-0.637971,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.578297,0.009683,-0.578297,6,10000.0
 REG_IMAGE_ROMANIA_PRICE,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.591392,0.009013,-0.591392,6,10000.0
@@ -9090,6 +9480,12 @@ REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo (LightTAR-L),Causil
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.322923,0.024999,-0.322923,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.332194,0.025618,-0.332194,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.326321,0.022888,-0.326321,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.305668,0.025539,-0.305668,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.309732,0.027748,-0.309732,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.304671,0.025937,-0.304671,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.309219,0.027192,-0.309219,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.317493,0.027557,-0.317493,6,10000.0
+REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.312433,0.025819,-0.312433,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.348198,0.025104,-0.348198,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.323464,0.027312,-0.323464,6,10000.0
 REG_IMAGE_SAO_PAULO_HOUSES,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.325724,0.027523,-0.325724,6,10000.0
@@ -9230,6 +9626,12 @@ REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo (LightTAR-L),Causilo,la
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,156414.026203,4087.152481,-156414.026203,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,154985.658004,4746.321841,-154985.658004,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,163132.694743,6403.731822,-163132.694743,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,145935.148432,4105.503052,-145935.148432,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,151137.221838,5553.009197,-151137.221838,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,145607.549291,4201.017939,-145607.549291,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,150956.06436,5292.217229,-150956.06436,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,149609.77685,4922.277961,-149609.77685,6,10000.0
+REG_IMAGE_SOCAL_HOUSES,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,158381.377558,7162.968788,-158381.377558,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,166649.223066,3803.54615,-166649.223066,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,154745.701172,3305.835472,-154745.701172,6,10000.0
 REG_IMAGE_SOCAL_HOUSES,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,160210.104507,4432.205241,-160210.104507,6,10000.0
@@ -9370,6 +9772,12 @@ REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo (LightTAR-L),Causil
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.881261,0.047575,-0.881261,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.843965,0.046954,-0.843965,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.896244,0.03172,-0.896244,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.808768,0.034495,-0.808768,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.845396,0.042381,-0.845396,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.812628,0.036124,-0.812628,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.843482,0.04875,-0.843482,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.814726,0.052698,-0.814726,6,798.0
+REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.860686,0.042615,-0.860686,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.925544,0.033472,-0.925544,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.818255,0.040043,-0.818255,6,798.0
 REG_IMAGE_TOKOPEDIA_WEIGHT,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.865062,0.049118,-0.865062,6,798.0
@@ -9510,6 +9918,12 @@ REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo (LightTAR-L),Causilo,larg
 REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.284899,0.068944,-0.284899,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.323406,0.058355,-0.323406,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.302998,0.054258,-0.302998,6,840.0
+REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.282787,0.08318,-0.282787,6,840.0
+REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.281659,0.071421,-0.281659,6,840.0
+REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.283672,0.084546,-0.283672,6,840.0
+REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.282878,0.068486,-0.282878,6,840.0
+REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.324516,0.062592,-0.324516,6,840.0
+REG_IMAGE_WATCH_TIER,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.300236,0.056452,-0.300236,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.312135,0.072592,-0.312135,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.288399,0.083599,-0.288399,6,840.0
 REG_IMAGE_WATCH_TIER,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.295975,0.072137,-0.295975,6,840.0
@@ -9650,6 +10064,12 @@ REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo (LightTAR-L),Causilo,lar
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo (LightTAR-S),Causilo,lighttar,root_mean_squared_error,0.439102,0.005166,-0.439102,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo (TAR-L),Causilo,large-tar,root_mean_squared_error,0.473964,0.022634,-0.473964,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.490748,0.03498,-0.490748,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.404822,0.007561,-0.404822,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.415485,0.006849,-0.415485,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.40062,0.00796,-0.40062,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.413191,0.006157,-0.413191,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.436172,0.021674,-0.436172,6,8897.0
+REG_IMAGE_ZEPTO_PRICE,extended,regression,image,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.452154,0.025336,-0.452154,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.489086,0.006913,-0.489086,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.44468,0.005813,-0.44468,6,8897.0
 REG_IMAGE_ZEPTO_PRICE,extended,regression,image,EXAONE-Tabular (Frozen-S),EXAONE-Tabular,frozen,root_mean_squared_error,0.462795,0.003569,-0.462795,6,8897.0
@@ -9796,6 +10216,15 @@ REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo (TAR-L),Causilo,large-t
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,52.353341,5.671888,-52.353341,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,50.773569,5.374672,-50.773569,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,50.056118,5.293707,-50.056118,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,47.307892,5.433505,-47.307892,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,48.218591,5.0918,-48.218591,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,48.647038,5.481159,-48.647038,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,48.5326,5.008156,-48.5326,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,48.744373,5.378392,-48.744373,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,48.343876,5.399621,-48.343876,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,49.261009,6.038969,-49.261009,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,48.900491,5.419136,-48.900491,6,2546.0
+REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,47.828807,5.035241,-47.828807,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,51.352412,5.400147,-51.352412,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,48.647953,5.277841,-48.647953,6,2546.0
 REG_TEXT_AIRBNB_SEATTLE,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,49.280784,5.12713,-49.280784,6,2546.0
@@ -10005,6 +10434,15 @@ REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo (TAR-L),Causilo,large-tar
 REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.424243,0.008242,-0.424243,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,0.420761,0.006642,-0.420761,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.399013,0.005118,-0.399013,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.380543,0.003544,-0.380543,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.387706,0.006099,-0.387706,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.390679,0.005515,-0.390679,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.389885,0.005446,-0.389885,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.389674,0.005841,-0.389674,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.392297,0.007242,-0.392297,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.401682,0.006931,-0.401682,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,0.401166,0.006244,-0.401166,6,9594.0
+REG_TEXT_ANIME_PLANET,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.381887,0.004453,-0.381887,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.440692,0.005561,-0.440692,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.397306,0.00465,-0.397306,6,9594.0
 REG_TEXT_ANIME_PLANET,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.410779,0.007544,-0.410779,6,9594.0
@@ -10214,6 +10652,15 @@ REG_TEXT_BABIES_PRICES,core,regression,text,Causilo (TAR-L),Causilo,large-tar,ro
 REG_TEXT_BABIES_PRICES,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,15.321791,3.92579,-15.321791,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,15.754294,3.416526,-15.754294,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,15.217862,3.599054,-15.217862,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,13.626727,3.81142,-13.626727,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,14.912778,3.516687,-14.912778,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,14.401843,3.622178,-14.401843,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,14.41974,4.16845,-14.41974,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,14.678504,3.779142,-14.678504,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,14.646855,3.686472,-14.646855,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,14.924008,3.834497,-14.924008,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,15.413937,3.493436,-15.413937,6,3390.0
+REG_TEXT_BABIES_PRICES,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,15.125184,3.578179,-15.125184,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,19.740747,3.092495,-19.740747,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,14.337013,3.389831,-14.337013,6,3390.0
 REG_TEXT_BABIES_PRICES,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,16.130101,3.414741,-16.130101,6,3390.0
@@ -10423,6 +10870,15 @@ REG_TEXT_BOOK_PRICE,core,regression,text,Causilo (TAR-L),Causilo,large-tar,root_
 REG_TEXT_BOOK_PRICE,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.219318,0.006127,-0.219318,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,0.216755,0.006432,-0.216755,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.188315,0.006001,-0.188315,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.184642,0.006295,-0.184642,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.198285,0.006847,-0.198285,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.20333,0.007011,-0.20333,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.200687,0.006219,-0.200687,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.201428,0.006574,-0.201428,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.199679,0.005647,-0.199679,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.213194,0.006872,-0.213194,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,0.209633,0.006326,-0.209633,6,3326.0
+REG_TEXT_BOOK_PRICE,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.193987,0.014803,-0.193987,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.229697,0.009086,-0.229697,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.190622,0.007289,-0.190622,6,3326.0
 REG_TEXT_BOOK_PRICE,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.205103,0.006812,-0.205103,6,3326.0
@@ -10632,6 +11088,15 @@ REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo (TAR-L),Causilo,large-tar
 REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.771132,0.019649,-0.771132,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,0.771119,0.017214,-0.771119,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.775511,0.02401,-0.775511,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.771711,0.030933,-0.771711,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.758663,0.024208,-0.758663,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.768123,0.030511,-0.768123,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.72995,0.027119,-0.72995,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.730128,0.025078,-0.730128,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.744593,0.02047,-0.744593,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.761443,0.017931,-0.761443,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,0.759987,0.018664,-0.759987,6,3150.0
+REG_TEXT_BOOK_READABILITY,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.758323,0.019076,-0.758323,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.819701,0.026703,-0.819701,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.790743,0.027067,-0.790743,6,3150.0
 REG_TEXT_BOOK_READABILITY,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.775959,0.026795,-0.775959,6,3150.0
@@ -10841,6 +11306,15 @@ REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo (TAR-L),Causilo,
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.409649,0.011708,-0.409649,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,0.415988,0.010459,-0.415988,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.420943,0.013124,-0.420943,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.404008,0.008853,-0.404008,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.402064,0.010212,-0.402064,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.402416,0.011003,-0.402416,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.413036,0.01139,-0.413036,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.410364,0.010816,-0.410364,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.402127,0.010663,-0.402127,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.400467,0.010289,-0.400467,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,0.406046,0.008584,-0.406046,6,1197.0
+REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.439784,0.012045,-0.439784,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.407805,0.010014,-0.407805,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.415991,0.008534,-0.415991,6,1197.0
 REG_TEXT_CHOCOLATE_BAR_RATINGS,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.410263,0.010745,-0.410263,6,1197.0
@@ -11050,6 +11524,15 @@ REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo (TAR-L),Causilo,large-tar
 REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,8836.821589,377.42977,-8836.821589,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,8884.661056,368.861692,-8884.661056,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,8827.999895,397.682767,-8827.999895,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,8694.280889,338.945496,-8694.280889,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,8690.656426,340.452383,-8690.656426,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,8702.790717,335.283885,-8702.790717,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,8692.089729,339.869158,-8692.089729,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,8699.58505,333.724096,-8699.58505,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,8697.370239,333.261443,-8697.370239,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,8696.508202,328.97931,-8696.508202,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,8713.786666,351.984577,-8713.786666,6,10000.0
+REG_TEXT_FIFA22_WAGES,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,8718.40282,372.337018,-8718.40282,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,10938.469017,406.364059,-10938.469017,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,8614.554179,349.74851,-8614.554179,6,10000.0
 REG_TEXT_FIFA22_WAGES,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,8603.605553,352.846027,-8603.605553,6,10000.0
@@ -11259,6 +11742,15 @@ REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo (TAR-L),Causilo,large-
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.541102,0.009346,-0.541102,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,0.556338,0.015489,-0.556338,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.50636,0.013639,-0.50636,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.452127,0.011211,-0.452127,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.516527,0.013322,-0.516527,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.524266,0.013551,-0.524266,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.50848,0.011746,-0.50848,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.516744,0.01167,-0.516744,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.514542,0.012109,-0.514542,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.532481,0.009148,-0.532481,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,0.545487,0.015723,-0.545487,6,10000.0
+REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.495576,0.012425,-0.495576,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.573634,0.01592,-0.573634,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.463474,0.012001,-0.463474,6,10000.0
 REG_TEXT_MERCARI_MARKETPLACE,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.534105,0.013191,-0.534105,6,10000.0
@@ -11468,6 +11960,15 @@ REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo (TAR-L),Causilo,large-
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,3154.814893,488.775611,-3154.814893,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,3202.340001,484.799793,-3202.340001,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,3165.536013,579.413548,-3165.536013,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,2762.343113,455.358463,-2762.343113,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,2653.258713,403.281586,-2653.258713,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,2671.406072,404.846505,-2671.406072,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,2683.250481,423.026651,-2683.250481,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,2695.201861,416.937339,-2695.201861,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,2663.210369,405.714985,-2663.210369,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,2635.537604,447.187257,-2635.537604,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,2698.651687,419.221433,-2698.651687,6,6152.0
+REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,2776.753246,597.758228,-2776.753246,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,4624.299836,729.752202,-4624.299836,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,3107.973474,398.820327,-3107.973474,6,6152.0
 REG_TEXT_MONTGOMERY_SALARIES,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,3037.702099,385.517914,-3037.702099,6,6152.0
@@ -11677,6 +12178,15 @@ REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo (TAR-L),Causilo,large-ta
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.923991,0.02589,-0.923991,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,0.922606,0.024099,-0.922606,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.929584,0.018222,-0.929584,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.909324,0.027346,-0.909324,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.90873,0.023821,-0.90873,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.907658,0.02141,-0.907658,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.921477,0.025767,-0.921477,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.915882,0.022895,-0.915882,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.912091,0.023462,-0.912091,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.912417,0.026192,-0.912417,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,0.912396,0.019609,-0.912396,6,2737.0
+REG_TEXT_RAMEN_RATINGS,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.934232,0.016767,-0.934232,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.931618,0.022144,-0.931618,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.920966,0.026873,-0.920966,6,2737.0
 REG_TEXT_RAMEN_RATINGS,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.919416,0.027957,-0.919416,6,2737.0
@@ -11886,6 +12396,15 @@ REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo (TAR-L),Causilo,large-tar,
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.764229,0.017533,-0.764229,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,0.804686,0.011759,-0.804686,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.626108,0.017011,-0.626108,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.603451,0.013721,-0.603451,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.691756,0.017098,-0.691756,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.721667,0.015522,-0.721667,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.700526,0.013927,-0.700526,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.711192,0.012085,-0.711192,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.686698,0.018534,-0.686698,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.724336,0.019187,-0.724336,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,0.771769,0.012252,-0.771769,6,4772.0
+REG_TEXT_ROTTEN_TOMATOES,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.603975,0.017674,-0.603975,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.753968,0.017422,-0.753968,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.624283,0.014142,-0.624283,6,4772.0
 REG_TEXT_ROTTEN_TOMATOES,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.730847,0.017265,-0.730847,6,4772.0
@@ -12095,6 +12614,15 @@ REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo (TAR-L),Causilo,large-tar
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,20.027735,1.857008,-20.027735,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,20.16394,1.751011,-20.16394,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,16.462382,1.682505,-16.462382,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,17.522562,1.68776,-17.522562,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,18.028558,1.570099,-18.028558,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,18.208437,1.734169,-18.208437,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,17.996715,1.691094,-17.996715,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,18.134112,1.788566,-18.134112,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,18.093265,1.823402,-18.093265,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,18.204449,1.742827,-18.204449,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,18.295056,1.617948,-18.295056,6,10000.0
+REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,15.727296,1.774443,-15.727296,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,24.294395,3.646352,-24.294395,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,17.937942,1.257475,-17.937942,6,10000.0
 REG_TEXT_SCIMAGOJR_IMPACT,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,18.722408,1.418952,-18.722408,6,10000.0
@@ -12304,6 +12832,15 @@ REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo (TAR-L),Causilo,larg
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,810409.257387,136466.001821,-810409.257387,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,835080.059791,77597.019428,-835080.059791,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,750402.996318,130315.124356,-750402.996318,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,729379.154513,130074.781688,-729379.154513,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,828092.225557,141196.79013,-828092.225557,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,818506.838309,134169.810752,-818506.838309,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,810734.429511,128442.317806,-810734.429511,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,813744.949641,131976.888253,-813744.949641,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,800285.35005,126305.387612,-800285.35005,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,795123.089554,126603.888896,-795123.089554,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,831958.278167,136665.845352,-831958.278167,6,10000.0
+REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,752563.456281,122523.862702,-752563.456281,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,1613139.259047,134664.708417,-1613139.259047,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,717497.037781,99356.464078,-717497.037781,6,10000.0
 REG_TEXT_USED_CAR_PAKISTAN,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,812885.129578,111124.101119,-812885.129578,6,10000.0
@@ -12513,6 +13050,15 @@ REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo (TAR-L),Causilo,large-t
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,23915.099936,1964.360114,-23915.099936,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,24130.097424,2675.345008,-24130.097424,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,22067.400745,2573.537411,-22067.400745,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,20610.616535,2438.495392,-20610.616535,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,20952.698292,2007.965797,-20952.698292,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,21304.458714,2132.587323,-21304.458714,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,20892.926205,2061.802833,-20892.926205,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,21027.069945,2066.946427,-21027.069945,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,21091.738681,2089.507618,-21091.738681,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,20969.460096,2137.477302,-20969.460096,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,21125.866203,2114.266614,-21125.866203,6,5357.0
+REG_TEXT_USED_CAR_SAUDI,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,20879.994202,2441.370152,-20879.994202,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,25662.33885,3297.554565,-25662.33885,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,20953.062664,2755.939489,-20953.062664,6,5357.0
 REG_TEXT_USED_CAR_SAUDI,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,21746.802153,1779.869106,-21746.802153,6,5357.0
@@ -12722,6 +13268,15 @@ REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo (TAR-L),Causilo,large-t
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,11861.921566,488.82972,-11861.921566,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,12370.515701,401.420743,-12370.515701,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,11831.006697,724.641384,-11831.006697,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,11152.729007,528.114973,-11152.729007,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,11248.441117,523.615735,-11248.441117,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,11161.449452,498.918789,-11161.449452,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,11133.304436,726.786002,-11133.304436,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,11093.843203,540.964446,-11093.843203,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,11126.190386,640.557295,-11126.190386,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,11141.527879,603.239979,-11141.527879,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,11463.78054,505.56989,-11463.78054,6,10000.0
+REG_TEXT_VANCOUVER_SALARIES,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,11699.101047,734.6204,-11699.101047,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,13395.496778,796.289974,-13395.496778,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,12125.919339,448.303815,-12125.919339,6,10000.0
 REG_TEXT_VANCOUVER_SALARIES,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,12180.969034,552.778107,-12180.969034,6,10000.0
@@ -12931,6 +13486,15 @@ REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo (TAR-L),Causilo,large-ta
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,1.12582,0.21736,-1.12582,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,1.239385,0.241227,-1.239385,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.908316,0.197357,-0.908316,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.830358,0.228212,-0.830358,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,1.055434,0.234831,-1.055434,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,1.048543,0.229736,-1.048543,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,1.043715,0.261687,-1.043715,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,1.037556,0.251114,-1.037556,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,1.048061,0.230155,-1.048061,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,1.066652,0.224553,-1.066652,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,1.170817,0.276962,-1.170817,6,10000.0
+REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.899804,0.224344,-0.899804,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,1.291089,0.229619,-1.291089,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.804239,0.19096,-0.804239,6,10000.0
 REG_TEXT_VIDEO_GAMES_SALES,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,1.129464,0.252163,-1.129464,6,10000.0
@@ -13140,6 +13704,15 @@ REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (TAR-L),Causilo,large-t
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,683.924808,120.362432,-683.924808,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,741.608444,120.614642,-741.608444,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,673.428517,129.991672,-673.428517,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,701.258995,127.029258,-701.258995,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,698.348859,104.987839,-698.348859,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,718.045941,112.66797,-718.045941,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,687.156955,139.673664,-687.156955,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,685.912648,123.05705,-685.912648,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,720.390574,118.641317,-720.390574,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,697.467866,118.279158,-697.467866,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,740.047,112.332142,-740.047,6,8380.0
+REG_TEXT_WIKILIQ_PRICES,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,661.820137,123.431102,-661.820137,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,865.118612,138.042835,-865.118612,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,661.667417,116.56707,-661.667417,6,8380.0
 REG_TEXT_WIKILIQ_PRICES,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,653.461139,104.470516,-653.461139,6,8380.0
@@ -13349,6 +13922,15 @@ REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo (TAR-L),Causilo,lar
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,266.690531,85.361523,-266.690531,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,263.799148,83.065004,-263.799148,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,245.42069,97.461976,-245.42069,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,201.112952,63.222341,-201.112952,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,247.162682,76.285651,-247.162682,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,244.015184,66.251946,-244.015184,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,263.800679,76.520984,-263.800679,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,257.780007,72.436456,-257.780007,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,247.980651,72.966354,-247.980651,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,261.294027,64.692911,-261.294027,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,255.98445,65.429658,-255.98445,6,1498.0
+REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,224.228306,81.928316,-224.228306,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,300.850688,80.29879,-300.850688,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,198.626202,50.914337,-198.626202,6,1498.0
 REG_TEXT_WINE_POLISH_MARKET,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,241.611994,67.414134,-241.611994,6,1498.0
@@ -13558,6 +14140,15 @@ REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo (TAR-L),Causilo,larg
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.087171,0.002186,-0.087171,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,0.08763,0.002439,-0.08763,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.086814,0.00262,-0.086814,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.085893,0.00229,-0.085893,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.085491,0.00214,-0.085491,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.085707,0.002146,-0.085707,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.085419,0.001991,-0.085419,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.08568,0.002011,-0.08568,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.086036,0.002052,-0.086036,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.085745,0.002011,-0.085745,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,0.085893,0.002317,-0.085893,6,5767.0
+REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.089472,0.003372,-0.089472,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.092296,0.002392,-0.092296,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.087824,0.002288,-0.087824,6,5767.0
 REG_TEXT_WINE_VIVINO_SPAIN,extended,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.087185,0.00204,-0.087185,6,5767.0
@@ -13767,6 +14358,15 @@ REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo (TAR-L),Causilo,large-t
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo (TAR-S),Causilo,tar,root_mean_squared_error,0.151631,0.004278,-0.151631,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo (TF-IDF),Causilo,tfidf,root_mean_squared_error,0.152532,0.004733,-0.152532,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo (TILE),Causilo,tile,root_mean_squared_error,0.144761,0.002907,-0.144761,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo 1.5 (CASE),Causilo 1.5,case,root_mean_squared_error,0.143396,0.003947,-0.143396,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo 1.5 (Frozen-L),Causilo 1.5,large,root_mean_squared_error,0.142046,0.003541,-0.142046,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo 1.5 (Frozen-S),Causilo 1.5,frozen,root_mean_squared_error,0.144411,0.004096,-0.144411,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo 1.5 (LightTAR-L),Causilo 1.5,large-lighttar,root_mean_squared_error,0.141895,0.002596,-0.141895,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo 1.5 (LightTAR-S),Causilo 1.5,lighttar,root_mean_squared_error,0.142645,0.004201,-0.142645,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo 1.5 (TAR-L),Causilo 1.5,large-tar,root_mean_squared_error,0.148083,0.003876,-0.148083,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo 1.5 (TAR-S),Causilo 1.5,tar,root_mean_squared_error,0.143545,0.00392,-0.143545,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo 1.5 (TF-IDF),Causilo 1.5,tfidf,root_mean_squared_error,0.140375,0.003796,-0.140375,6,10000.0
+REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,Causilo 1.5 (TILE),Causilo 1.5,tile,root_mean_squared_error,0.142202,0.009883,-0.142202,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,ConTextTab,ConTextTab,end-to-end,root_mean_squared_error,0.172712,0.002875,-0.172712,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,EXAONE-Tabular (CASE),EXAONE-Tabular,case,root_mean_squared_error,0.151724,0.004663,-0.151724,6,10000.0
 REG_TEXT_ZOMATO_RESTAURANTS,core,regression,text,EXAONE-Tabular (Frozen-L),EXAONE-Tabular,large,root_mean_squared_error,0.14982,0.003481,-0.14982,6,10000.0
