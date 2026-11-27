@@ -153,6 +153,14 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 .cta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; align-items: center; padding: 26px 28px; background: var(--ink); color: var(--bg); border-radius: 12px; }
 .cta h2 { color: var(--bg); font-size: 24px; }
 .cta .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+.matrix th.vert { writing-mode: vertical-rl; transform: rotate(180deg); text-transform: none; letter-spacing: 0; font: 500 12px/1.2 var(--body); color: var(--ink); padding: 10px 4px; text-align: left; }
+.matrix td.cell { text-align: right; font: 12.5px var(--mono); font-variant-numeric: tabular-nums; padding: 6px 7px; cursor: pointer; }
+.matrix td.ds, .matrix th.ds { position: sticky; left: 0; z-index: 1; background: var(--surface); }
+.matrix td.ds button { all: unset; cursor: pointer; color: var(--accent); font-weight: 500; }
+.matrix td.ds button:focus-visible { outline: 2px solid var(--accent); }
+.matrix tr.picked td.ds { box-shadow: inset 3px 0 0 var(--accent); }
+.matrix tfoot td { border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; }
+.matrix .sub { color: var(--muted); font-size: 12px; }
 </style>
 </head>
 <body>
@@ -174,6 +182,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <a role="tab" href="#board" data-tab="board">Leaderboard</a>
     <a role="tab" href="#encodings" data-tab="encodings">Encoders</a>
     <a role="tab" href="#cost" data-tab="cost">Pareto</a>
+    <a role="tab" href="#datasets" data-tab="datasets">Datasets</a>
     <a role="tab" href="#paper" data-tab="paper">Cite & Data</a>
   </nav>
   <div class="filters">
@@ -243,6 +252,26 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <h2>Cost</h2>
     <p class="muted">Median time per 1,000 rows on the datasets of the filters above, as a ballpark: models run on different hardware, so their times are not directly comparable, and some encoders were timed on different GPUs, which we plan to fix. Most of the cost is encoding the text and images, which could be optimized.</p>
     <div class="panel scroll"><table id="costTable"></table></div>
+  </section>
+  </div>
+
+  <div class="tabpanel" id="tab-datasets" role="tabpanel">
+  <section>
+    <div class="head">
+      <h2>Per dataset</h2>
+      <div class="controls">
+        <select id="dsView" aria-label="Columns"></select>
+        <select id="dsValue" aria-label="Value"></select>
+        <select id="dsSort" aria-label="Order"></select>
+      </div>
+    </div>
+    <p class="muted">Each cell is an entry's result on a dataset, averaged over its folds, for one encoder across the models or one model across the encoders picked. The shade is how far it is behind the best entry on that dataset, among all entries: blue for the best, red from 2× its error. Click a dataset or a cell for every entry on it.</p>
+    <div class="panel scroll"><table class="matrix" id="dsMatrix"></table></div>
+  </section>
+  <section>
+    <h2 id="dsTitle"></h2>
+    <p class="muted" id="dsNote"></p>
+    <div class="panel scroll"><table id="dsTable"></table></div>
   </section>
   </div>
 
@@ -854,6 +883,8 @@ function drawElo(board) {
 
 // Grouped, a model's entries sit together, ranked by its best one; on by default. The 95% CIs are off by default.
 let byModel = store.get('group_by_model') !== '0', showCI = store.get('show_ci') === '1';
+// Best per model keeps only each model's highest-rated entry among the encoders picked; off by default.
+let bestOnly = store.get('best_per_model') === '1';
 // The Elo plot keeps all models and encoders, or only those with an entry on the Pareto front; all by default.
 const plotOnly = { model: store.get('plot_models') === 'pareto', encoding: store.get('plot_encoders') === 'pareto' };
 const plotRows = (board, front) => {
@@ -882,7 +913,11 @@ function drawGroupTabs() {
     showCI = !showCI; store.set('show_ci', showCI ? '1' : '0'); drawGroupTabs(); render();
   } }, 'Show CI');
   c.setAttribute('aria-pressed', showCI);
-  document.getElementById('groupTabs').replaceChildren(b, c);
+  const best = el('button', { type: 'button', title: "Only each model's best entry, among the encoders picked", onclick: () => {
+    bestOnly = !bestOnly; store.set('best_per_model', bestOnly ? '1' : '0'); drawGroupTabs(); render();
+  } }, 'Best per model');
+  best.setAttribute('aria-pressed', bestOnly);
+  document.getElementById('groupTabs').replaceChildren(best, b, c);
 }
 drawGroupTabs();
 
@@ -912,7 +947,9 @@ function drawBoard(board, front) {
 
 const filterKey = () => keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS);
 function renderBoard() {
-  const board = slice(D.boards[filterKey()]);
+  const shown = slice(D.boards[filterKey()]);
+  // The board is sorted by Elo, so a model's first entry is its best.
+  const board = bestOnly ? shown.filter((r, i) => shown.findIndex(o => o.model === r.model) === i) : shown;
   const names = Object.keys(dsInfo).filter(inFilter);
   const count = (field, key) => names.filter(d => dsInfo[d][field] === key).length;
   const line = (title, field, all) => `<span class="label">${title}</span> ` + all.filter(([k]) => count(field, k))
@@ -952,6 +989,86 @@ function render() {
   renderEncodings(filterKey());
   renderBoard();
   renderCost();
+  renderDatasets();
+}
+
+// Per dataset, each entry's rank among all entries on it and its error over the best one's.
+const dsRows = {};
+D.per_dataset.forEach(r => { (dsRows[r.dataset] ||= []).push(r); });
+Object.values(dsRows).forEach(rs => {
+  rs.sort((a, b) => a.test_error - b.test_error);
+  rs.forEach((r, i) => { r.rank = i + 1; r.of = rs.length; r.ratio = r.test_error / rs[0].test_error; });
+});
+const ENC_ORDER = ['frozen', 'large', 'tar', 'large-tar', 'tfidf', 'tile', 'case', 'lighttar', 'large-lighttar', 'end-to-end'];
+const MODELS = [...new Set(D.per_dataset.map(r => r.model))].sort((a, b) => a.localeCompare(b));
+const VALUES = [['ratio', 'Error ÷ best'], ['rank', 'Rank'], ['error', 'Error'], ['score', 'Score']];
+const SORTS = [['worst', 'Furthest behind first'], ['name', 'By name']];
+const dsPick = { view: store.get('ds_view') || 'enc:tile', value: store.get('ds_value') || 'ratio',
+  sort: store.get('ds_sort') || 'worst', dataset: store.get('ds_dataset') };
+const sig = x => x == null ? '—' : Number(x).toPrecision(4);
+const shortName = d => d.split('_').slice(2).join(' ');
+const shade = r => r.ratio <= 1 ? 'color-mix(in oklab, var(--accent) 24%, var(--surface))'
+  : `color-mix(in oklab, var(--warn) ${Math.round(Math.min(1, Math.log2(r.ratio)) * 48)}%, var(--surface))`;
+const cellText = r => ({ ratio: fmt(r.ratio, 2) + '×', rank: r.rank, error: sig(r.test_error), score: sig(r.test_score) })[dsPick.value];
+const cellTip = r => `${r.entry} on ${r.dataset}: ${r.metric} error ${sig(r.test_error)} ± ${sig(r.test_error_std)}, score ${sig(r.test_score)}, rank ${r.rank} of ${r.of}, ${fmt(r.ratio, 2)}× the best, ${r.folds} folds`;
+
+function dsSelect(id, groups, key, storeKey) {
+  const s = document.getElementById(id);
+  s.innerHTML = groups.map(([label, opts]) => {
+    const html = opts.map(([v, t]) => `<option value="${v}"${v === dsPick[key] ? ' selected' : ''}>${t}</option>`).join('');
+    return label ? `<optgroup label="${label}">${html}</optgroup>` : html;
+  }).join('');
+  s.onchange = () => { dsPick[key] = s.value; store.set(storeKey, s.value); renderDatasets(); };
+}
+
+function renderDatasets() {
+  const encs = ENC_ORDER.filter(e => D.per_dataset.some(r => r.encoding === e));
+  if (!dsPick.view.startsWith('enc:') && !MODELS.includes(dsPick.view.slice(6))) dsPick.view = 'enc:frozen';
+  dsSelect('dsView', [['One encoder, every model', encs.map(e => ['enc:' + e, ENC_LABEL[e]])],
+    ['One model, the encoders picked', MODELS.map(m => ['model:' + m, m])]], 'view', 'ds_view');
+  dsSelect('dsValue', [[null, VALUES]], 'value', 'ds_value');
+  dsSelect('dsSort', [[null, SORTS]], 'sort', 'ds_sort');
+  // The columns: one encoder's models, in the order of the overall board, or one model's encoders picked.
+  const [kind, what] = [dsPick.view.split(':')[0], dsPick.view.slice(dsPick.view.indexOf(':') + 1)];
+  const order = [...D.boards['all|all|all'], ...D.boards['all|all|text']].map(r => r.model);
+  const cols = kind === 'enc'
+    ? [...new Set([...order, ...MODELS])].filter(m => D.per_dataset.some(r => r.encoding === what && r.model === m))
+    : ENC_ORDER.filter(e => (e === 'end-to-end' || encSel.includes(e)) && D.per_dataset.some(r => r.model === what && r.encoding === e));
+  const of = (d, c) => (dsRows[d] || []).find(r => kind === 'enc' ? r.encoding === what && r.model === c : r.model === what && r.encoding === c);
+  let names = Object.keys(dsInfo).filter(inFilter).filter(d => cols.some(c => of(d, c)));
+  const worst = d => Math.max(...cols.map(c => of(d, c)?.ratio ?? 0));
+  names.sort(dsPick.sort === 'worst' ? (a, b) => worst(b) - worst(a) : (a, b) => shortName(a).localeCompare(shortName(b)));
+  if (!names.includes(dsPick.dataset)) dsPick.dataset = names[0];
+  const head = c => kind === 'enc' ? c : ENC_LABEL[c];
+  const t = document.getElementById('dsMatrix');
+  t.innerHTML = `<thead><tr><th class="ds">Dataset</th><th>Best entry</th>${cols.map(c => `<th class="vert">${head(c)}</th>`).join('')}</tr></thead>`;
+  const tb = el('tbody');
+  names.forEach(d => {
+    const best = dsRows[d][0];
+    const tr = el('tr', { className: d === dsPick.dataset ? 'picked' : '' }, `<td class="ds" title="${d}"><button type="button">${shortName(d)}</button><br><span class="sub">${dsInfo[d].task} · ${dsInfo[d].modality} · ${best.metric}</span></td>`
+      + `<td><span class="sub">${best.entry}</span><br><span class="mono">${sig(best.test_error)}</span></td>`
+      + cols.map(c => { const r = of(d, c); return r ? `<td class="cell" style="background:${shade(r)}" title="${cellTip(r)}">${cellText(r)}</td>` : '<td class="cell">—</td>'; }).join(''));
+    tr.onclick = () => { dsPick.dataset = d; store.set('ds_dataset', d); renderDatasets(); document.getElementById('dsTitle').scrollIntoView({ behavior: 'smooth' }); };
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  // The median of each column over the datasets shown, as a summary of where it falls behind.
+  const median = xs => { const s = xs.filter(x => x != null).sort((a, b) => a - b); return s.length ? s[(s.length - 1) >> 1] : null; };
+  t.appendChild(el('tfoot', {}, `<tr><td class="ds">Median ÷ best</td><td></td>${cols.map(c => `<td class="cell">${fmt(median(names.map(d => of(d, c)?.ratio)), 2)}×</td>`).join('')}</tr>`));
+  drawDataset(dsPick.dataset);
+}
+
+// Every entry on one dataset, among the encoders picked, best first.
+function drawDataset(d) {
+  const title = document.getElementById('dsTitle'), table = document.getElementById('dsTable');
+  if (!d) { title.textContent = 'No dataset under these filters'; document.getElementById('dsNote').textContent = ''; table.innerHTML = ''; return; }
+  const rows = slice(dsRows[d]);
+  title.textContent = shortName(d);
+  document.getElementById('dsNote').innerHTML = `<code>${d}</code> · ${dsInfo[d].tier} · ${dsInfo[d].task} · ${dsInfo[d].modality} · ${fmt(rows[0]?.n_train)} training rows · error is ${rows[0]?.metric === 'roc_auc' ? '1 − ROC AUC' : rows[0]?.metric?.replaceAll('_', ' ')}; ranks count every entry, also the encoders not picked.`;
+  table.innerHTML = '<thead><tr><th class="num">Rank</th><th>Encoding</th><th>Model</th><th class="num">Score</th><th class="num">Error</th><th class="num">± std</th><th class="num">÷ best</th><th class="num">Folds</th></tr></thead>';
+  const tb = el('tbody');
+  rows.forEach(r => tb.appendChild(el('tr', {}, `<td class="rank">${r.rank}</td>${encodingCell(r.encoding)}<td class="model">${modelName(r.model)}</td><td class="num">${sig(r.test_score)}</td><td class="num">${sig(r.test_error)}</td><td class="num">${sig(r.test_error_std)}</td><td class="num" style="background:${shade(r)}">${fmt(r.ratio, 2)}×</td><td class="num">${r.folds < 6 ? `<span class="flag">${r.folds}</span>` : r.folds}</td>`)));
+  table.appendChild(tb);
 }
 render();
 
