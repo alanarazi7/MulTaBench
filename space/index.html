@@ -986,7 +986,9 @@ function boardRows() {
 
 const dsResult = {};
 D.per_dataset.forEach(r => { dsResult[r.dataset + '|' + r.entry] = r; });
-const VALUES = [['rank', 'Rank'], ['error', 'Error'], ['score', 'Score'], ['ratio', 'Error ÷ best']];
+// The metric as reported: ROC AUC, log loss or RMSE, whose error is 1 − AUC, the loss or the RMSE.
+const VALUES = [['rank', 'Rank'], ['metric', 'Metric']];
+const metricValue = c => c.metric === 'roc_auc' ? c.test_score : c.test_error;
 let dsValue = VALUES.some(v => v[0] === store.get('ds_value')) ? store.get('ds_value') : 'rank', dsSortBy = null;
 const sig = x => x == null ? '—' : Math.abs(x) >= 1e4 ? Number(x).toExponential(2) : Number(x).toPrecision(3);
 const shortName = d => d.split('_').slice(2).join(' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
@@ -1007,7 +1009,7 @@ function renderDatasets() {
   const cell = {};
   names.forEach(d => {
     const rs = board.map(r => dsResult[d + '|' + r.entry]).filter(Boolean).sort((a, b) => a.test_error - b.test_error);
-    rs.forEach((r, i) => { cell[d + '|' + r.entry] = { ...r, rank: i + 1, p: rs.length > 1 ? i / (rs.length - 1) : 0, ratio: r.test_error / rs[0].test_error }; });
+    rs.forEach((r, i) => { cell[d + '|' + r.entry] = { ...r, rank: i + 1, p: rs.length > 1 ? i / (rs.length - 1) : 0, }; });
   });
   const avgRank = Object.fromEntries(board.map(r => {
     const ranks = names.map(d => cell[d + '|' + r.entry]?.rank).filter(x => x != null);
@@ -1019,8 +1021,8 @@ function renderDatasets() {
     const key = r => dsSortBy === 'avg' ? avgRank[r.entry] : cell[dsSortBy + '|' + r.entry]?.rank;
     rows = [...rows].sort((a, b) => (key(a) ?? Infinity) - (key(b) ?? Infinity));
   }
-  const text = c => ({ rank: c.rank, error: sig(c.test_error), score: sig(c.test_score), ratio: fmt(c.ratio, 2) + '×' })[dsValue];
-  const tip = c => `${c.entry} on ${c.dataset}: ${c.metric} error ${sig(c.test_error)} ± ${sig(c.test_error_std)}, score ${sig(c.test_score)}, rank ${c.rank}, ${fmt(c.ratio, 2)}× the best shown, ${c.folds} folds`;
+  const text = c => dsValue === 'rank' ? c.rank : sig(metricValue(c));
+  const tip = c => `${c.entry} on ${c.dataset}: ${c.metric} ${sig(metricValue(c))} ± ${sig(c.test_error_std)}, rank ${c.rank}, ${c.folds} folds`;
   const sorted = k => dsSortBy === k ? ' aria-sort="ascending"' : '';
   const metricOf = d => dsResult[d + '|' + board.find(r => dsResult[d + '|' + r.entry]).entry].metric;
   const t = document.getElementById('dsMatrix');
