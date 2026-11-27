@@ -153,6 +153,13 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
 .cta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 32px; align-items: center; padding: 26px 28px; background: var(--ink); color: var(--bg); border-radius: 12px; }
 .cta h2 { color: var(--bg); font-size: 24px; }
 .cta .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+#groupTabs .label { font: 500 11.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-right: 4px; }
+.matrix th.vert { writing-mode: vertical-rl; transform: rotate(180deg); text-transform: none; letter-spacing: 0; font: 500 12px/1.2 var(--body); color: var(--ink); padding: 10px 4px; text-align: left; cursor: pointer; }
+.matrix th[aria-sort] { color: var(--accent); }
+.matrix th.sortable { cursor: pointer; }
+.matrix td.cell { text-align: right; font: 12px var(--mono); font-variant-numeric: tabular-nums; padding: 5px 6px; }
+.matrix .sticky { position: sticky; left: 0; z-index: 1; background: var(--surface); }
+.matrix tr.groupEnd td { border-bottom-color: var(--line); }
 </style>
 </head>
 <body>
@@ -174,6 +181,7 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <a role="tab" href="#board" data-tab="board">Leaderboard</a>
     <a role="tab" href="#encodings" data-tab="encodings">Encoders</a>
     <a role="tab" href="#cost" data-tab="cost">Pareto</a>
+    <a role="tab" href="#datasets" data-tab="datasets">Datasets</a>
     <a role="tab" href="#paper" data-tab="paper">Cite & Data</a>
   </nav>
   <div class="filters">
@@ -243,6 +251,17 @@ pre.bib { margin: 0; padding: 16px 18px; font: 12.5px/1.5 var(--mono); white-spa
     <h2>Cost</h2>
     <p class="muted">Median time per 1,000 rows on the datasets of the filters above, as a ballpark: models run on different hardware, so their times are not directly comparable, and some encoders were timed on different GPUs, which we plan to fix. Most of the cost is encoding the text and images, which could be optimized.</p>
     <div class="panel scroll"><table id="costTable"></table></div>
+  </section>
+  </div>
+
+  <div class="tabpanel" id="tab-datasets" role="tabpanel">
+  <section>
+    <div class="head">
+      <h2>Per dataset</h2>
+      <div class="group tabs plottabs" id="dsValueTabs" role="group" aria-label="Value"></div>
+    </div>
+    <p class="muted">The entries of the leaderboard, under the filters above and its Rows choice, on each of their datasets, averaged over the folds. The shade is the entry's rank among the entries shown on that dataset: blue near the top, red near the bottom. Click a column to sort by it; hover a dataset for its full name and metric.</p>
+    <div class="panel scroll"><table class="matrix" id="dsMatrix"></table></div>
   </section>
   </div>
 
@@ -853,7 +872,10 @@ function drawElo(board) {
 }
 
 // Grouped, a model's entries sit together, ranked by its best one; on by default. The 95% CIs are off by default.
-let byModel = store.get('group_by_model') !== '0', showCI = store.get('show_ci') === '1';
+// Rows: every entry by Elo, a model's entries together ranked by its best one (the default), or each model's best only.
+const ROWS = [['all', 'All entries', 'Every entry, by Elo'], ['grouped', 'Grouped by model', "Each model's entries together, ranked by its best one"],
+  ['best', 'Best per model', "Only each model's best entry, among the encoders picked"]];
+let rowsMode = ROWS.some(r => r[0] === store.get('board_rows')) ? store.get('board_rows') : 'grouped', showCI = store.get('show_ci') === '1';
 // The Elo plot keeps all models and encoders, or only those with an entry on the Pareto front; all by default.
 const plotOnly = { model: store.get('plot_models') === 'pareto', encoding: store.get('plot_encoders') === 'pareto' };
 const plotRows = (board, front) => {
@@ -874,20 +896,21 @@ function drawPlotTabs() {
 }
 drawPlotTabs();
 function drawGroupTabs() {
-  const b = el('button', { type: 'button', title: "Each model's entries together, ranked by its best one", onclick: () => {
-    byModel = !byModel; store.set('group_by_model', byModel ? '1' : '0'); drawGroupTabs(); render();
-  } }, 'Group by model');
-  b.setAttribute('aria-pressed', byModel);
+  const rows = ROWS.map(([k, label, title]) => {
+    const b = el('button', { type: 'button', title, onclick: () => { rowsMode = k; store.set('board_rows', k); drawGroupTabs(); render(); } }, label);
+    b.setAttribute('aria-pressed', rowsMode === k);
+    return b;
+  });
   const c = el('button', { type: 'button', title: 'The 95% confidence intervals of the Elo, from bootstrapping the datasets', onclick: () => {
     showCI = !showCI; store.set('show_ci', showCI ? '1' : '0'); drawGroupTabs(); render();
   } }, 'Show CI');
   c.setAttribute('aria-pressed', showCI);
-  document.getElementById('groupTabs').replaceChildren(b, c);
+  document.getElementById('groupTabs').replaceChildren(el('span', { className: 'label' }, 'Rows'), ...rows, c);
 }
 drawGroupTabs();
 
 function drawBoard(board, front) {
-  const t = document.getElementById('boardTable');
+  const t = document.getElementById('boardTable'), byModel = rowsMode === 'grouped';
   // The board is sorted by Elo, so a stable sort on each model's first row keeps its entries in Elo order.
   const first = {}, size = {};
   board.forEach((r, i) => { first[r.model] ??= i; size[r.model] = (size[r.model] || 0) + 1; });
@@ -912,7 +935,7 @@ function drawBoard(board, front) {
 
 const filterKey = () => keyOf(sel.tier, TIERS) + '|' + keyOf(sel.task, TASKS) + '|' + keyOf(sel.modality, MODS);
 function renderBoard() {
-  const board = slice(D.boards[filterKey()]);
+  const board = boardRows();
   const names = Object.keys(dsInfo).filter(inFilter);
   const count = (field, key) => names.filter(d => dsInfo[d][field] === key).length;
   const line = (title, field, all) => `<span class="label">${title}</span> ` + all.filter(([k]) => count(field, k))
@@ -952,6 +975,68 @@ function render() {
   renderEncodings(filterKey());
   renderBoard();
   renderCost();
+  renderDatasets();
+}
+
+// The entries shown: the board, sorted by Elo, so a model's first entry is its best.
+function boardRows() {
+  const shown = slice(D.boards[filterKey()]);
+  return rowsMode === 'best' ? shown.filter((r, i) => shown.findIndex(o => o.model === r.model) === i) : shown;
+}
+
+const dsResult = {};
+D.per_dataset.forEach(r => { dsResult[r.dataset + '|' + r.entry] = r; });
+// The metric as reported: ROC AUC, log loss or RMSE, whose error is 1 − AUC, the loss or the RMSE.
+const VALUES = [['rank', 'Rank'], ['metric', 'Metric']];
+const metricValue = c => c.metric === 'roc_auc' ? c.test_score : c.test_error;
+let dsValue = VALUES.some(v => v[0] === store.get('ds_value')) ? store.get('ds_value') : 'rank', dsSortBy = null;
+const sig = x => x == null ? '—' : Math.abs(x) >= 1e4 ? Number(x).toExponential(2) : Number(x).toPrecision(3);
+const shortName = d => d.split('_').slice(2).join(' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+// Blue near the top of a dataset's ranks, red near the bottom.
+const shade = p => p <= 0.5 ? `color-mix(in oklab, var(--accent) ${Math.round((0.5 - p) * 2 * 30)}%, var(--surface))`
+  : `color-mix(in oklab, var(--warn) ${Math.round((p - 0.5) * 2 * 45)}%, var(--surface))`;
+
+function renderDatasets() {
+  document.getElementById('dsValueTabs').replaceChildren(el('span', { className: 'label' }, 'Value'), ...VALUES.map(([k, label]) => {
+    const b = el('button', { type: 'button', onclick: () => { dsValue = k; store.set('ds_value', k); renderDatasets(); } }, label);
+    b.setAttribute('aria-pressed', dsValue === k);
+    return b;
+  }));
+  const board = boardRows();
+  const names = Object.keys(dsInfo).filter(inFilter).filter(d => board.some(r => dsResult[d + '|' + r.entry]))
+    .sort((a, b) => shortName(a).localeCompare(shortName(b)));
+  // Each dataset's results for the entries shown, ranked by error among them.
+  const cell = {};
+  names.forEach(d => {
+    const rs = board.map(r => dsResult[d + '|' + r.entry]).filter(Boolean).sort((a, b) => a.test_error - b.test_error);
+    rs.forEach((r, i) => { cell[d + '|' + r.entry] = { ...r, rank: i + 1, p: rs.length > 1 ? i / (rs.length - 1) : 0, }; });
+  });
+  const avgRank = Object.fromEntries(board.map(r => {
+    const ranks = names.map(d => cell[d + '|' + r.entry]?.rank).filter(x => x != null);
+    return [r.entry, ranks.length ? ranks.reduce((a, b) => a + b, 0) / ranks.length : null];
+  }));
+  let rows = board;
+  if (rowsMode === 'grouped') { const first = {}; board.forEach((r, i) => { first[r.model] ??= i; }); rows = [...board].sort((a, b) => first[a.model] - first[b.model]); }
+  if (dsSortBy) {
+    const key = r => dsSortBy === 'avg' ? avgRank[r.entry] : cell[dsSortBy + '|' + r.entry]?.rank;
+    rows = [...rows].sort((a, b) => (key(a) ?? Infinity) - (key(b) ?? Infinity));
+  }
+  const text = c => dsValue === 'rank' ? c.rank : sig(metricValue(c));
+  const tip = c => `${c.entry} on ${c.dataset}: ${c.metric} ${sig(metricValue(c))} ± ${sig(c.test_error_std)}, rank ${c.rank}, ${c.folds} folds`;
+  const sorted = k => dsSortBy === k ? ' aria-sort="ascending"' : '';
+  const metricOf = d => dsResult[d + '|' + board.find(r => dsResult[d + '|' + r.entry]).entry].metric;
+  const t = document.getElementById('dsMatrix');
+  t.innerHTML = `<thead><tr><th class="sticky sortable" data-k="" title="Back to the leaderboard's order">Entry</th><th class="vert" data-k="avg"${sorted('avg')}>Average rank</th>`
+    + names.map(d => `<th class="vert" data-k="${d}"${sorted(d)} title="${d} (${metricOf(d)})">${shortName(d)}</th>`).join('') + '</tr></thead>';
+  t.querySelectorAll('th[data-k]').forEach(th => { th.onclick = () => { dsSortBy = th.dataset.k || null; renderDatasets(); }; });
+  const tb = el('tbody');
+  rows.forEach((r, i) => {
+    const end = rowsMode === 'grouped' && !dsSortBy && rows[i + 1]?.model !== r.model;
+    tb.appendChild(el('tr', { className: end ? 'groupEnd' : '' }, `<td class="sticky model"><span class="chip ${r.encoding}" title="${ENC_TITLE[r.encoding]}">${ENC_LABEL[r.encoding]}</span> ${r.model}</td>`
+      + `<td class="cell"><b>${fmt(avgRank[r.entry], 1)}</b></td>`
+      + names.map(d => { const c = cell[d + '|' + r.entry]; return c ? `<td class="cell" style="background:${shade(c.p)}" title="${tip(c)}">${text(c)}</td>` : '<td class="cell">—</td>'; }).join('')));
+  });
+  t.appendChild(tb);
 }
 render();
 
