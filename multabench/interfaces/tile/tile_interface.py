@@ -55,7 +55,8 @@ class TileInterface(TabularModel):
         self.features = TILEFeatures()
         table = self._see(x)
         task = "classification" if self.is_cls else "regression"
-        z = self.features.fit_transform(table, y.to_numpy(), self._embeddings(table), task)
+        embeddings = self._embeddings(table)
+        z = self._reduce_as_new_rows(self.features.fit_transform(table, y.to_numpy(), embeddings, task), embeddings)
         self.tabular_model.fit(self._frame(z, table), y)
 
     def predict(self, x: DataFrame) -> np.ndarray:
@@ -67,6 +68,18 @@ class TileInterface(TabularModel):
     def _transform(self, x: DataFrame) -> DataFrame:
         table = self._see(x)
         return self._frame(self.features.transform(table, self._embeddings(table)), table)
+
+    def _reduce_as_new_rows(self, z: np.ndarray, embeddings: Dict[str, np.ndarray]) -> np.ndarray:
+        """Not in upstream TILE: the training rows' PCA components from the fitted reducers' transform, as new rows get
+        them. A column with fewer distinct cells than components, like US Accidents' first, keeps components of pure
+        rounding noise, which fit_transform and transform scale differently; learners then split on it as a row ID."""
+        start = 0
+        for col in self.features.string_columns_:
+            reducer = self.features.reducers_[col]
+            width = reducer[-1].n_components_
+            z[:, start:start + width] = reducer.transform(np.asarray(embeddings[col], dtype=np.float64))
+            start += width
+        return z
 
     def _see(self, x: DataFrame) -> DataFrame:
         self.rows.add(x)

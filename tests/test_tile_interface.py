@@ -118,6 +118,16 @@ def test_the_wrapped_model_gets_every_string_column_embedded_and_the_bypass_feat
     assert len(pooled) == 2
 
 
+def test_the_training_rows_are_reduced_as_new_rows(pooled, monkeypatch):
+    x, y = table().drop(columns="photo"), Series(np.tile(["no", "yes"], 20), index=table().index)
+    tile = wrap(TileKumoTabular, monkeypatch)
+    tile.fit(x.iloc[:30], y.iloc[:30])
+    tile.predict(x.iloc[:30])
+    train, again = tile.tabular_model.inputs
+    pca = [c for c in train.columns if "_txt_pca_" in c]
+    assert np.array_equal(train[pca].to_numpy(), again[pca].to_numpy())
+
+
 def test_tile_fits_the_real_model_on_its_input(pooled):
     x, y = table().drop(columns="photo"), Series(np.tile(["no", "yes"], 20), index=table().index)
     tile = TileRandomForest(problem_type=SupervisedTask.BINARY, device="cpu")
