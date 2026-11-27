@@ -1,5 +1,6 @@
 import glob
 import os
+import tomllib
 
 import numpy as np
 import pandas as pd
@@ -92,3 +93,9 @@ def test_runs_used_their_hardware(runs):
         assert ok[ResultKey.GPU_TYPE].str.startswith(hardware.gpu_prefix).all()
     else:
         assert ok[ResultKey.GPU_TYPE].isna().all()
+
+
+def test_the_package_ships_every_results_dir():
+    with open(os.path.join(os.path.dirname(RESULTS_DIR), "..", "..", "pyproject.toml"), "rb") as f:
+        shipped = tomllib.load(f)["tool"]["setuptools"]["package-data"]["multabench.leaderboard"]
+    assert {f"{os.path.basename(d)}/*.csv" for d in ENCODING_DIRS.values()} <= set(shipped)
